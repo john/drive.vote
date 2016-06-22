@@ -20,4 +20,7 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hi: "hi"
+  drive: 'drive'
+  vote: 'vote'
+  hi: 'hi'
+  sign_in_with_facebook: 'Sign in with Facebook'
