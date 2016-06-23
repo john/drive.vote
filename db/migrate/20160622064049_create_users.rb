@@ -10,7 +10,16 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       
       t.string :phone_number
       t.string :image_url
-      t.text :description
+      t.string :primary_language
+      t.string :languages_spoken
+      t.string :car_make_and_model # for drivers
+      t.integer :max_passengers # for drivers--not including driver
+      
+      t.datetime :earliest_drive_time
+      t.datetime :latest_drive_time
+      
+      t.text :description # bio of the user
+      t.text :special_requests # needs a carseat, etc
       t.string :address1
       t.string :address2
       t.string :city

@@ -5,7 +5,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:facebook]
   
-  enum user_type: [ :admin, :driver, :rider ]
+  enum user_type: { admin: 0, driver: 1, rider: 2 }
+  
+  validates_presence_of :uid, :provider
+  validates_uniqueness_of :uid, :scope => :provider
+  validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
@@ -22,6 +26,10 @@ class User < ApplicationRecord
         user.email = data["email"] if user.email.blank?
       end
     end
+  end
+  
+  def has_required_fields?
+    !!(self.email? && self.name? && self.phone_number?)
   end
   
 end

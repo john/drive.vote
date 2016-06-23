@@ -20,7 +20,14 @@ ActiveRecord::Schema.define(version: 20160622064049) do
     t.string   "encrypted_password",                                  default: "", null: false
     t.string   "phone_number"
     t.string   "image_url"
+    t.string   "primary_language"
+    t.string   "languages_spoken"
+    t.string   "car_make_and_model"
+    t.integer  "max_passengers"
+    t.datetime "earliest_drive_time"
+    t.datetime "latest_drive_time"
     t.text     "description",            limit: 65535
+    t.text     "special_requests",       limit: 65535
     t.string   "address1"
     t.string   "address2"
     t.string   "city"
