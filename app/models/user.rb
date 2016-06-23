@@ -7,9 +7,19 @@ class User < ApplicationRecord
   
   enum user_type: { admin: 0, driver: 1, rider: 2 }
   
+  phony_normalize :phone_number, as: :phone_number_normalized, default_country_code: 'US'
+  
+  geocoded_by :full_street_address
+  after_validation :geocode
+  
+  # google api key, should work for all enabled apis, including maps & civic info:
+  # AIzaSyDefFnLJQKoz1OQGjaqaJPHMISVcnXZNPc
+  # https://console.developers.google.com/apis/credentials/wizard?api=maps_backend&project=phonic-client-135123
+    
   validates_presence_of :uid, :provider
   validates_uniqueness_of :uid, :scope => :provider
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+  validates :phone_number_normalized, phony_plausible: true
   
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
@@ -28,8 +38,16 @@ class User < ApplicationRecord
     end
   end
   
+  def full_street_address
+    [self.address1, self.address2, self.city, self.state, self.postal_code, self.country].compact.join(', ')
+  end
+  
   def has_required_fields?
-    !!(self.email? && self.name? && self.phone_number?)
+    !!(self.email? && self.name? && self.phone_number? && self.city? && self.state?)
+  end
+  
+  def missing_required_fields?
+    !has_required_fields?
   end
   
 end

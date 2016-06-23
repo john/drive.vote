@@ -9,6 +9,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :encrypted_password, null: false, default: ""
       
       t.string :phone_number
+      t.string :phone_number_normalized
       t.string :image_url
       t.string :primary_language
       t.string :languages_spoken
@@ -26,8 +27,8 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :state
       t.string :postal_code
       t.string :country
-      t.decimal :latitude
-      t.decimal :longitude
+      t.decimal :latitude, {:precision=>15, :scale=>10}
+      t.decimal :longitude, {:precision=>15, :scale=>10}
       
       # facebook omniauth
       t.string :provider
