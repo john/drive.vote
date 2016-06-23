@@ -24,3 +24,5 @@ en:
   vote: 'vote'
   hi: 'hi'
   sign_in_with_facebook: 'Sign in with Facebook'
+  sign_out: 'sign out'
+  users: 'users'

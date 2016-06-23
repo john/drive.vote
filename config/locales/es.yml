@@ -25,6 +25,7 @@ es:
   hi: 'hola'
   sign_in_with_facebook: 'accede con facebook'
   sign_out: 'cerrar sesión'
+  users: 'usuarios'
   
   # https://gist.github.com/jordigg/30fe17c6328d5deab9ec
   devise:

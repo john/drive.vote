@@ -1,20 +1,18 @@
-%h1
-  #{t(:drive).humanize}. #{t(:vote).humanize}!
-
-%h4
-  [
-  - if I18n.locale == I18n.default_locale
-    English
-    |
-    = link_to "Español", :locale=>'es'
-
-  - else
-    = link_to "English", :locale=>'en'
-    |
-    Español
-  ]
 %p
   - if user_signed_in?
-    #{t(:hi).humanize} #{current_user.name} [#{link_to t(:sign_out), destroy_user_session_path, method: :delete}]
+    #{t(:hi).humanize} #{current_user.name}
+    
+    - unless current_user.has_required_fields?
+      %h5
+        No required fields, you're being redirected
+    
   - else
     = link_to t(:sign_in_with_facebook), user_facebook_omniauth_authorize_path
+
+%h4
+  #{t(:users).humanize}
+  
+- if @users.present?
+  - @users.each do |user|
+    %div
+      = user.name
