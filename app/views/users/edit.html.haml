@@ -1,10 +1,20 @@
-.col-sm-7.field
+.col-sm-12.field
   - if current_user.has_required_fields?
     %h2 Edit #{link_to @user.name, @user}
-  
-  - else
-    %h4
-      Please fill in all required fields:
-  
 
-= render 'form'
+    = render 'form'
+    
+  - else
+    %h1
+      #{t(:hi)} #{current_user.name}!
+      
+    %h4
+      Please fill in all required fields
+      %br
+      %small
+        Your name and facebook URL will be visible to other users. Your email, address, and phone number will <b>NOT</b> be visible.
+  
+    - if @type = 'driver'
+      = render 'driver_form'
+    - elsif @type = 'rider'
+      = render 'rider_form'

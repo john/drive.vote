@@ -29,14 +29,16 @@ class UsersController < ApplicationController
     
     # http://www.rubydoc.info/github/google/google-api-ruby-client/Google/Apis/CivicinfoV2/CivicInfoService#query_voter_info-instance_method
     
-    require 'google/apis/civicinfo_v2'
-    c = Google::Apis::CivicinfoV2::CivicInfoService.new
-    c.key = 'AIzaSyDefFnLJQKoz1OQGjaqaJPHMISVcnXZNPc'
+    # require 'google/apis/civicinfo_v2'
+    # c = Google::Apis::CivicinfoV2::CivicInfoService.new
+    # c.key = 'AIzaSyDefFnLJQKoz1OQGjaqaJPHMISVcnXZNPc'
+    #
+    # # recent upcoming elections:
+    # @elections = c.query_election
+    #
+    # @elections.elections.
+    # @voter_info = c.query_voter_info('330 Cabrillo St., San Francisco, CA 94118', election_id: 4224)
     
-    # recent upcoming elections:
-    @elections = c.query_election
-    @voter_info = c.query_voter_info('330 Cabrillo St., San Francisco, CA 94118', election_id: 4224)
-    # @voter_info = c.query_voter_info( @user.full_street_address, election_id:  )
   end
 
   # GET /users/new
@@ -46,6 +48,9 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    # @type = check_for_user_type(request)
+    logger.debug "------------------> session['user_type']: #{session['user_type']}"
+    @type = session['user_type']
   end
 
   # POST /users

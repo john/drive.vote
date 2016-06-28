@@ -11,9 +11,33 @@ class ApplicationController < ActionController::Base
   end
   
   def go_complete_profile
-    if user_signed_in? && current_user.missing_required_fields? && !request.original_url.include?('/edit')
+    if user_signed_in? &&
+        current_user.missing_required_fields? &&
+        !request.original_url.include?('/edit') &&
+        !request.original_url.include?('/sign_out')
       redirect_to edit_user_path(current_user)
     end
+  end
+  
+  
+  
+  def check_for_user_type(parms)
+    logger.debug "INSIDE check_for_user_type"
+    
+    # request.env["omniauth.params"]
+    
+    
+      if parms.has_key?('type')
+        logger.debug "-------------> has type"
+        if parms['type'] == 'driver'
+          return 'driver'
+        elsif parms['type'] == 'rider'
+          return 'rider'
+        else
+          return nil
+        end
+      end
+    # end
   end
   
 end
