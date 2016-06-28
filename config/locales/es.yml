@@ -20,16 +20,25 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 es:
-  drive: 'conduzca'
-  vote: 'vota'
-  home: 'inicio'
-  about: 'quiénes somos'
-  contact: 'contacto'
+  drive: 'Conduzca'
+  vote: 'Vota'
+  home: 'Inicio'
+  about: 'Quiénes somos'
+  contact: 'Contacto'
   
-  home1: '[es translate] matches people who need a ride to their polling place with people who are willing to give them a lift.'
-  home2: '[es translate] You can sign up as a driver or a passenger, or just join the community to get information about where you polling place is, who your elected officials are, and whose running for office in your community.'
+  #home1: '[es translate] matches people who need a ride to their polling place with people who are willing to give them a lift.'
+  #home2: '[es translate] You can sign up as a driver or a passenger, or just join the community to get information about where you polling place is, who your elected officials are, and whose running for office in your community.'
+  election_is_on: 'La elección presidencial de 2016 es el'
+  election_date: 'martes, 8 de noviembre'
+  thats: 'Eso es'
+  days_away: 'días a partir de ahora'
+  give_rides: 'Para llevar a la gente a sus lugares de votación, regístrese aquí:'
+  get_rides: "Si usted cree que necesitará un viaje a su lugar de votación , regístrese aquí:"
+  driver: "Conductor"
+  rider: "Pasajero"
   
-  hi: 'hola'
+  
+  hi: 'Hola'
   sign_in_with_facebook: 'accede con facebook'
   sign_out: 'cerrar sesión'
   users: 'usuarios'
