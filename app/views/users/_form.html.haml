@@ -40,4 +40,14 @@
     = f.text_field :postal_code, class: 'form-control', placeholder: 'Zip', autofocus: true
     
   .col-sm-7.field
+    Add to email list??
+    %br
+    = f.radio_button :email_list, 'yes', :style => 'vertical-align: middle; margin-bottom: 5px;'
+    yes
+    %br
+    = f.radio_button :email_list, 'no', :style => 'vertical-align: middle; margin-bottom: 5px;'
+    
+    
+    
+  .col-sm-7.field
     = f.submit 'Save', class: 'btn', disable_with: 'Saving...'

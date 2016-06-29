@@ -21,6 +21,10 @@ class User < ApplicationRecord
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   validates :phone_number_normalized, phony_plausible: true
   
+  # validates :accepted_tos, :acceptance => true
+  # validates :agree_to_background_check, :acceptance => true
+  # validates_presence_of :state
+  
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email

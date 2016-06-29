@@ -48,8 +48,6 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    # @type = check_for_user_type(request)
-    logger.debug "------------------> session['user_type']: #{session['user_type']}"
     @type = session['user_type']
   end
 
@@ -77,6 +75,8 @@ class UsersController < ApplicationController
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
+        @type = session['user_type']
+        
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -94,6 +94,7 @@ class UsersController < ApplicationController
   end
 
   private
+    
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
@@ -106,8 +107,9 @@ class UsersController < ApplicationController
       # params.fetch(:user, {})
       params.require(:user).permit(:name, :user_type, :email, :phone_number, :image_url,
       :primary_language, :languages_spoken, :car_make_and_model, :max_passengers,
-      :earliest_drive_time, :latest_drive_time, :description, :special_requests,
-      :address1, :address2, :city, :state, :postal_code, :country, :latitude, :longitude
+      :start_drive_time, :end_drive_time, :description, :special_requests,
+      :address1, :address2, :city, :state, :postal_code, :country, :latitude, :longitude,
+      :accepted_tos, :email_list, :agree_to_background_check
       )
     end
 end

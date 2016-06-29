@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'city-state'
-gem 'civic_aide'
 gem 'devise'
 gem 'geocoder'
 gem 'gmaps4rails'

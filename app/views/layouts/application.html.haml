@@ -13,9 +13,12 @@
     
     :css
       body { padding-top: 60px /* 60px to make the container go all the way to the bottom of the topbar */ }
+      .inverse, .inverse a { color: #fff; }
       
     %script{:src => "https://code.jquery.com/jquery-2.2.4.min.js"}
     %script{:src => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'}
+    
+    = stylesheet_link_tag "application", :media => "all"
     
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     
@@ -28,18 +31,27 @@
             %span.icon-bar
             %span.icon-bar
             %span.icon-bar
-          %a.navbar-brand{:href => "/"}
-            %b
-              #{t(:drive).humanize}. #{t(:vote).humanize}!
+            
+          %a.navbar-brand{href: "/", style: 'color: white; font-family: "Times New Roman", Times, serif'}
+            %span.glyphicons.glyphicons-cars.inverse{'aria-hidden': "true", style: 'margin-top:-5px;'}
+            #{t(:drive).humanize}. <i>#{t(:vote).humanize}!</i>
+        
         #navbar.collapse.navbar-collapse
-          %ul.nav.navbar-nav
-            %li= link_to t(:about)
-            %li= link_to t(:contact)
+          -# %ul.nav.navbar-nav
+          -#  %li= link_to t(:about)
+          -#  %li= link_to t(:contact)
+            
           %ul.nav.navbar-nav.navbar-right
             %li= link_to "Español", :locale=>'es'
             %li= link_to "English", :locale=>'en'
+            
             - if user_signed_in?
-              %li= link_to t(:sign_out), destroy_user_session_path, :method => :delete
+              %li.dropdown
+                %a.dropdown-toggle{href: "#", 'data-toggle': "dropdown", role: "button", 'aria-haspopup': "true", 'aria-expanded': "false"}
+                  %span.glyphicon.glyphicon-user.inverse{'aria-hidden': "true"}
+                  %span.caret.inverse
+                  %ul.dropdown-menu{"aria-labelledby": "dropdownMenu1"}
+                    %li= link_to t(:sign_out), destroy_user_session_path, :method => :delete
             
     .container
       = yield

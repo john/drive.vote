@@ -1,10 +1,11 @@
+%link{:rel => "stylesheet", :href => "https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css"}
+
+%script{:src => "https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"}
+
 :css
   .notify { margin-bottom: 4px; }
   .field { margin-top: 15px; }
-  
-.col-sm-7
-  %h3
-    DRIVER FORM!
+  td { vertical-align: top;}
 
 = form_for @user, :role => 'form', :html => {:class => 'form-horizontal'}  do |f|
 
@@ -14,34 +15,82 @@
       %ul
         - @user.errors.full_messages.each do |msg|
           %li= msg
-        
-  .col-sm-7.field
-    -# = f.label :name, :class => 'col-sm-2 control-label'
-    = f.text_field :name, class: 'form-control', placeholder: 'User name', autofocus: true
     
   .col-sm-7.field
     -# = f.label :email, :class => 'col-sm-2 control-label'
-    = f.email_field :email, class: 'form-control', placeholder: 'Email'
-    
-  .col-sm-7.field
-    -# = f.label :email, :class => 'col-sm-2 control-label'
-    = f.telephone_field :phone_number, class: 'form-control', placeholder: 'Phone number'
+    = f.telephone_field :phone_number, class: 'form-control', placeholder: 'Phone number *', autofocus: true
     
   -# = f.label :description, :class => 'col-sm-2 control-label'
   .col-sm-7.field
     = f.text_area :description, class: 'form-control', placeholder: 'Description'
   
   .col-sm-7.field
-    = f.text_field :address1, class: 'form-control', placeholder: 'Address', autofocus: true
+    = f.text_field :address1, class: 'form-control', placeholder: 'Address *'
+  
+  .clearfix
+  
+  .col-sm-4.field
+    = f.text_field :city, class: 'form-control', placeholder: 'City *'
+    
+  .col-sm-3.field
+    = collection_select('user', 'state', CS.states(:us), :first, :last, {prompt: 'Select your state'}, {html_options: "required"})
+  
+  .clearfix
   
   .col-sm-7.field
-    = f.text_field :city, class: 'form-control', placeholder: 'City', autofocus: true
+    = f.text_field :postal_code, class: 'form-control', placeholder: 'Zip *'
+  
+  .col-sm-7.field
+    How many passengers can you take?
+    = collection_select('user', 'max_passengers', {1 => 1, 2 =>2, 3 => 3, 4 => 4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10, 11=>11, 12=>12}, :first, :last)
+  
+  .col-sm-7.field
+    What time are you driving?
+    <p id="datepairExample">
+    <input type="text" class="time start" name="user[start_drive_time]" id="user_start_drive_time" /> to
+    <input type="text" class="time end" name="user[end_drive_time]" id="user_end_drive_time" />
+    </p>  
+  
+  /
+  / t.string :languages_spoken, null: false, default: ""
+  / t.string :car_make_and_model, null: false, default: "" # for drivers
+  /
+  / t.datetime :start_drive_time
+  / t.datetime :end_drive_time
+  
+  .col-sm-7.field
+    %label
+      = f.check_box :email_list, checked: true
+      &nbsp; Add to email list? &nbsp;
     
   .col-sm-7.field
-    = collection_select('@user', 'state', CS.states(:us), :first, :last)
+    %label
+      = f.check_box :accepted_tos, required: 'required'
+      &nbsp; Agree to terms of service? &nbsp;
     
   .col-sm-7.field
-    = f.text_field :postal_code, class: 'form-control', placeholder: 'Zip', autofocus: true
+    %label
+      = f.check_box :agree_to_background_check, required: 'required'
+      &nbsp; Agree to a background check? (maybe put this <i>in</i> the tos?) &nbsp;
     
   .col-sm-7.field
     = f.submit 'Save', class: 'btn', disable_with: 'Saving...'
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datepair.js/0.4.14/datepair.min.js"></script>
+<script type="text/javascript" src="jquery.datepair.js"></script>
+<script>
+// initialize input widgets first
+$('#datepairExample .time').timepicker({
+'showDuration': true,
+'timeFormat': 'g:ia'
+});
+
+$('#datepairExample .date').datepicker({
+'format': 'yyyy-m-d',
+'autoclose': true
+});
+
+// initialize datepair
+$('#datepairExample').datepair();
+</script>
