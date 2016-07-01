@@ -1,44 +1,49 @@
 :css
-  .election-row { margin-top: 20px; padding-top: 10px; }
-  .election-date { margin-top: 0; }
-  .button-row { margin-top: 50px; }
-  .day-count { margin-top: 10px; }
+  .election-row { margin-top: 20px; }
+  /* .election-date { margin-top: 0; font-size: 28px; font-family: Cochin; font-weight: bold;} */
+  .election-date { font-weight: bold;}
+  .day-count { font-style: italic;}
+  .pitch { margin: 0px 0 0 0;}
+  .give-rides { margin-top: 30px; }
+  .get-rides { margin-top: 30px; }
+  .btn-home { width: 150px; }
     
 - if user_signed_in?
   #{t(:hi)} #{current_user.name}
   
 - else
   .row.election-row
-    /   <b>#{t(:drive).humanize}.#{t(:vote).humanize}</b>
-    /   #{t(:home1)}
-    /   #{t(:home2)}
-
     
-    .col-sm-10.col-sm-offset-1.text-center
-      %p
-        = t(:election_is_on)
-      %h1.election-date
+    .col-sm-8.col-sm-offset-2.text-center
+      
+      .pitch
+        %b
+          = t(:drive_the_vote)
+        = t(:pitch)
+      
+  .row
+    .col-sm-4.col-sm-offset-2.text-center
+      .give-rides
+        = simple_format t(:give_rides)
+      
+      %div
+        / = link_to t(:sign_in_with_facebook), user_facebook_omniauth_authorize_path, class: 'btn btn-primary btn-lg', role: 'button'
+        = link_to t(:driver), user_facebook_omniauth_authorize_path(type: 'driver'), class: 'btn-home btn btn-primary btn-lg', role: 'button'
+
+    .col-sm-4.text-center
+      .get-rides
+        = simple_format t(:get_rides)
+      
+      %div
+        = link_to t(:rider), user_facebook_omniauth_authorize_path(type: 'rider'), class: 'btn-home btn btn-primary btn-lg', role: 'button'
+
+  .row.election-row{style: 'margin-top: 50px;'}
+    .col-sm-8.col-sm-offset-2.text-center
+      = t(:election_is_on)
+      .election-date
         = t(:election_date)
       .day-count
         #{t(:thats)} #{(Date.new(2016,11,8).mjd - Date.today.mjd)} #{t(:days_away)}
-      
-  
-  .row.button-row
-
-    .col-sm-4.col-sm-offset-2.text-center{stye: 'border: 1px solid blue;'}
-      = t(:give_rides)
-      %br
-      %br
-      / = link_to t(:sign_in_with_facebook), user_facebook_omniauth_authorize_path, class: 'btn btn-primary btn-lg', role: 'button'
-      = link_to t(:driver), user_facebook_omniauth_authorize_path(type: 'driver'), class: 'btn btn-primary btn-lg', role: 'button'
-
-    .col-sm-4.text-center
-      = t(:get_rides)
-      %br
-      %br
-      / = link_to t(:sign_in_with_facebook), user_facebook_omniauth_authorize_path, class: 'btn btn-primary btn-lg', role: 'button'
-      = link_to t(:rider), user_facebook_omniauth_authorize_path(type: 'rider'), class: 'btn btn-primary btn-lg', role: 'button'
-
 
 %br
 %br

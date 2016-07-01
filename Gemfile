@@ -3,14 +3,15 @@ source 'https://rubygems.org'
 gem 'city-state'
 gem 'devise'
 gem 'geocoder'
-gem 'gmaps4rails'
+# gem 'gmaps4rails'
 gem 'google-api-client'
 gem 'haml-rails'
 gem 'mysql2'
 gem 'omniauth-facebook'
 gem 'phony_rails'
-gem 'rails', '>= 5.0.0.rc1', '< 5.1'
+gem 'rails', '>= 5.0.0.rc2', '< 5.1'
 gem 'rspec-rails'
+gem 'tod'
 gem 'underscore-rails'
 
 
@@ -20,7 +21,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 
 # Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.1.0'
+# gem 'coffee-rails', '~> 4.1.0'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby

@@ -2,7 +2,7 @@
 %html{:lang => 'en'}
   %head
     %meta{:charset => 'utf8'}
-    %title DriveVote
+    %title 🚕 the Vote
     = csrf_meta_tags
     
     %meta{:name => 'viewport', :content => 'width=device-width, initial-scale=1.0'}
@@ -12,18 +12,17 @@
     %link{:rel => "stylesheet", :href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"}
     
     :css
-      body { padding-top: 60px /* 60px to make the container go all the way to the bottom of the topbar */ }
-      .inverse, .inverse a { color: #fff; }
+      /* body { padding-top: 60px } add this back if you switch back to navbar-fixed-top */
+      .inverse, .inverse a { color: #9d9d9d; }
       
     %script{:src => "https://code.jquery.com/jquery-2.2.4.min.js"}
     %script{:src => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'}
     
     = stylesheet_link_tag "application", :media => "all"
-    
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     
   %body
-    %nav.navbar.navbar-inverse.navbar-fixed-top
+    %nav.navbar.navbar-inverse.navbar-static-top
       .container
         .navbar-header
           %button.navbar-toggle.collapsed{:type=>"button", :'data-toggle'=>"collapse", :'data-target'=>"#navbar",  :'aria-expanded'=>"false", :'aria-controls'=>"navbar"}
@@ -34,13 +33,14 @@
             
           %a.navbar-brand{href: "/", style: 'color: white; font-family: "Times New Roman", Times, serif'}
             %span.glyphicons.glyphicons-cars.inverse{'aria-hidden': "true", style: 'margin-top:-5px;'}
-            #{t(:drive).humanize}. <i>#{t(:vote).humanize}!</i>
+            <i>#{t(:drive_the_vote)}!</i>
         
         #navbar.collapse.navbar-collapse
-          -# %ul.nav.navbar-nav
-          -#  %li= link_to t(:about)
-          -#  %li= link_to t(:contact)
-            
+          
+          - unless user_signed_in?
+            .pull-right
+              = link_to t(:sign_in), user_facebook_omniauth_authorize_path, class: 'btn btn-default navbar-btn btn-xs', role: 'button', style: 'margin: 15px 0 0 25px;'
+                
           %ul.nav.navbar-nav.navbar-right
             %li= link_to "Español", :locale=>'es'
             %li= link_to "English", :locale=>'en'
@@ -51,8 +51,10 @@
                   %span.glyphicon.glyphicon-user.inverse{'aria-hidden': "true"}
                   %span.caret.inverse
                   %ul.dropdown-menu{"aria-labelledby": "dropdownMenu1"}
+                    
+                    %li= link_to 'Your settings', edit_user_path(current_user)
+                        
                     %li= link_to t(:sign_out), destroy_user_session_path, :method => :delete
-            
+                    
     .container
       = yield
-    

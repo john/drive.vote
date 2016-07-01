@@ -10,6 +10,8 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.integer :agree_to_background_check
       t.integer :accepted_tos
       t.integer :email_list
+      t.integer :speaks_spanish
+      t.integer :speaks_english
       
       t.string :phone_number, null: false, default: ""
       t.string :phone_number_normalized
@@ -19,8 +21,8 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :car_make_and_model, null: false, default: "" # for drivers
       t.integer :max_passengers # for drivers--not including driver
       
-      t.string :start_drive_time, null: false, default: ""
-      t.string :end_drive_time, null: false, default: ""
+      t.time :start_drive_time
+      t.time :end_drive_time
       
       t.text :description # bio of the user
       t.text :special_requests # needs a carseat, etc

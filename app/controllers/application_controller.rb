@@ -19,25 +19,16 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  
-  
   def check_for_user_type(parms)
-    logger.debug "INSIDE check_for_user_type"
-    
-    # request.env["omniauth.params"]
-    
-    
-      if parms.has_key?('type')
-        logger.debug "-------------> has type"
-        if parms['type'] == 'driver'
-          return 'driver'
-        elsif parms['type'] == 'rider'
-          return 'rider'
-        else
-          return nil
-        end
+    if parms.has_key?('type')
+      if parms['type'] == 'driver'
+        return 'driver'
+      elsif parms['type'] == 'rider'
+        return 'rider'
+      else
+        return nil
       end
-    # end
+    end
   end
   
 end

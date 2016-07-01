@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -21,6 +20,8 @@ ActiveRecord::Schema.define(version: 20160622064049) do
     t.integer  "agree_to_background_check"
     t.integer  "accepted_tos"
     t.integer  "email_list"
+    t.integer  "speaks_spanish"
+    t.integer  "speaks_english"
     t.string   "phone_number",                                                      default: "", null: false
     t.string   "phone_number_normalized"
     t.string   "image_url",                                                         default: "", null: false
@@ -28,8 +29,8 @@ ActiveRecord::Schema.define(version: 20160622064049) do
     t.string   "languages_spoken",                                                  default: "", null: false
     t.string   "car_make_and_model",                                                default: "", null: false
     t.integer  "max_passengers"
-    t.string   "start_drive_time",                                                  default: "", null: false
-    t.string   "end_drive_time",                                                    default: "", null: false
+    t.time     "start_drive_time"
+    t.time     "end_drive_time"
     t.text     "description",               limit: 65535
     t.text     "special_requests",          limit: 65535
     t.string   "address1",                                                          default: "", null: false

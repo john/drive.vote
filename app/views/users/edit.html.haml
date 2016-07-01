@@ -1,19 +1,102 @@
+:css
+  .notify { margin-bottom: 4px; }
+  .field { margin-top: 15px; }
+  td { vertical-align: top;}
+  label { font-weight: normal;}
+  
 .col-sm-12.field
   - if current_user.has_required_fields?
     %h2 Edit #{link_to @user.name, @user}
 
-    = render 'form'
-    
   - else
-    %h1
-      #{t(:hi)} #{current_user.name}!
+    %h4
+      #{t(:thanks)} #{current_user.name}
       %br
       %small
-        Please fill in all required fields to register as a #{@type}
+        Please complete your registration
+        
+  - if @user.errors.any?  
+    #error_explanation
+      %h2= "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
+      %ul
+        - @user.errors.full_messages.each do |msg|
+          %li= msg
+
+= form_for @user, :role => 'form', :html => {:class => 'form-horizontal'}  do |f|
   
-    <span class="glyphicons glyphicons-thumbs-up"></span>
-    <i class="glyphicon glyphicon-home"></i>
-    - if @type = 'driver'
-      = render 'driver_form'
-    - elsif @type = 'rider'
-      = render 'rider_form'
+  .col-sm-8.field
+    = f.radio_button :user_type, 'rider', checked: !!(@type == 'rider')
+    = f.label :user_type, 'Rider', value: 'rider'
+    &nbsp;&nbsp;
+    
+    = f.radio_button :user_type, 'driver', checked: !!(@type == 'driver')
+    = f.label :user_type, 'Driver', value: 'driver'
+    &nbsp;&nbsp;
+    
+    = f.radio_button :user_type, 'dunno', checked: !!(@type == 'dunno')
+    = f.label :user_type, 'Other', value: 'dunno'
+      
+  .col-sm-8.field
+    -# = f.label :email, :class => 'col-sm-2 control-label'
+    = f.telephone_field :phone_number, class: 'form-control', placeholder: 'Phone number *', autofocus: true
+
+  -# = f.label :description, :class => 'col-sm-2 control-label'
+  .col-sm-8.field
+    = f.text_area :description, class: 'form-control', placeholder: 'Description'
+
+  .col-sm-8.field
+    = f.text_field :address1, class: 'form-control', placeholder: 'Address *'
+
+  .clearfix
+
+  .col-sm-4.field
+    = f.text_field :city, class: 'form-control', placeholder: 'City *'
+
+  .col-sm-3.field
+    = collection_select('user', 'state', CS.states(:us), :first, :last, {prompt: 'Select your state'}, {html_options: "required"})
+
+  .clearfix
+
+  .col-sm-8.field
+    = f.text_field :postal_code, class: 'form-control', placeholder: 'Zip *'
+
+  .col-sm-8.field
+    Languages you speak:
+    %label
+    
+      &nbsp;&nbsp;&nbsp;
+      - @user.speaks_english = true if @user.missing_required_fields? && I18n.locale.to_s == 'en'
+      = f.check_box :speaks_english
+      &nbsp; English
+      
+      &nbsp;&nbsp;
+      - @user.speaks_spanish = true if @user.missing_required_fields? && I18n.locale.to_s == 'es'
+      = f.check_box :speaks_spanish, checked: (I18n.locale.to_s == 'es') ? true : false
+      &nbsp; Spanish
+  
+  %link{:rel => "stylesheet", :href => "https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css"}
+  %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"}
+
+  .col-sm-8.field
+    How many passengers can you take?
+    = collection_select('user', 'max_passengers', {1 => 1, 2 =>2, 3 => 3, 4 => 4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10, 11=>11, 12=>12}, :first, :last)
+
+  .col-sm-8.field
+    What time
+    - if @type == 'driver'
+      can you drive?
+    - elsif @type == 'rider'
+      do you need a ride?
+    %br
+    
+    %span#drive_times
+      = collection_select('user', 'start_drive_time', {'7:00am'=>'7:00am', '8:00am'=>'8:00am'}, :first, :last)
+
+  .col-sm-8.field
+    %label
+      = f.check_box :accepted_tos, required: 'required'
+      &nbsp; Agree to #{link_to 'terms of service', '/terms'}? &nbsp;
+      
+  .col-sm-8.field
+    = f.submit 'Save', class: 'btn btn-primary', disable_with: 'Saving...'
+    

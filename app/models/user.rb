@@ -5,7 +5,12 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:facebook]
   
-  enum user_type: { admin: 0, driver: 1, rider: 2 }
+  enum user_type: [:admin, :driver, :rider, :dunno]
+  serialize :start_drive_time, Tod::TimeOfDay
+  serialize :end_drive_time, Tod::TimeOfDay
+  
+  scope :riders, -> { where(user_type: :rider) }
+  scope :drivers, -> { where(user_type: :driver) }
   
   phony_normalize :phone_number, as: :phone_number_normalized, default_country_code: 'US'
   

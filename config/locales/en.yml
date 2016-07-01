@@ -20,24 +20,30 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  drive: 'Drive'
-  vote: 'Vote'
+  drive_the_vote: 'Drive the Vote'
   home: 'Home'
   about: 'About'
   contact: 'Contact'
   
-  # home1: 'matches people who need a ride to their polling place with people who are willing to give them a lift.'
+  pitch: "matches people who need a ride to their polling place with volunteer drivers."
   # home2: 'You can sign up as either a driver or a passenger--or just join the community to get information about where you polling place is, who your elected officials are, and whose running for office in your community.'
   election_is_on: 'The 2016 Presidential Election is on'
   election_date: 'Tuesday, November 8'
   thats: "That's"
   days_away: 'days from now'
-  give_rides: 'To help people get to their polling place by giving rides, register here:'
-  get_rides: "If you think you'll need a ride to your polling place, register here:"
-  driver: "I can drive people"
-  rider: "I need a ride"
+  give_rides: |
+    To volunteer to drive people to
+    their pollig place, register here:
+  get_rides: |
+    If you need a ride to your
+    polling place, register here:
+  driver: "I'll drive"
+  rider: "Shotgun"
   
   hi: 'Hi'
+  thanks: 'Thanks'
+  almost_done: 'Almost done'
+  sign_in: "Sign in"
   sign_in_with_facebook: 'Sign in with Facebook'
-  sign_out: 'sign out'
+  sign_out: 'Sign out'
   users: 'users'

@@ -13,10 +13,14 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     # add error handling
-    @marker_hash = Gmaps4rails.build_markers([@user]) do |user, marker|
-      marker.lat user.latitude
-      marker.lng user.longitude
-    end
+    # @marker_hash = Gmaps4rails.build_markers([@user]) do |user, marker|
+    #   marker.lat user.latitude
+    #   marker.lng user.longitude
+    # end
+    
+    # query for other nearby users. Don't run once they have a confirmed ride.
+    @nearby_drivers = User.drivers.near( [@user.latitude, @user.longitude], 20 ).size
+    @nearby_riders = User.riders.near( [@user.latitude, @user.longitude], 20 )
     
     @google_api_key = 'AIzaSyDefFnLJQKoz1OQGjaqaJPHMISVcnXZNPc'
     # FAIL (gem can't be installed?)
@@ -70,6 +74,8 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    session.delete(:user_type)
+    
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
