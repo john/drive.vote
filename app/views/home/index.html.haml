@@ -3,13 +3,24 @@
   /* .election-date { margin-top: 0; font-size: 28px; font-family: Cochin; font-weight: bold;} */
   .election-date { font-weight: bold;}
   .day-count { font-style: italic;}
-  .pitch { margin: 0px 0 0 0;}
+  .pitch { margin: 0px 0 0 0; }
   .give-rides { margin-top: 30px; }
   .get-rides { margin-top: 30px; }
   .btn-home { width: 150px; }
+  p, div { font-size: 15px; }
     
 - if user_signed_in?
-  #{t(:hi)} #{current_user.name}
+  = render partial: 'election_countdown', locals: {top: '0'}
+  
+  %p{style: 'margin-top: 20px;'}
+    %span{style: "font-weight: bold; font-size: 18px;"}
+      = pluralize(@user_count, 'person')
+    
+    #{"has".pluralize(@user_count)} signed up to Drive the Vote!
+    
+  %p
+    A few weeks before the election we'll start suggesting matches for riders and drivers. We'll send occasional notifications in the meantime as well, like when the location of your polling place has been finalized. They'll be infrequent, and you can unsubscribe from any notification on your #{link_to 'settings page', '#'}. 
+      
   
 - else
   .row.election-row
@@ -37,22 +48,4 @@
       %div
         = link_to t(:rider), user_facebook_omniauth_authorize_path(type: 'rider'), class: 'btn-home btn btn-primary btn-lg', role: 'button'
 
-  .row.election-row{style: 'margin-top: 50px;'}
-    .col-sm-8.col-sm-offset-2.text-center
-      = t(:election_is_on)
-      .election-date
-        = t(:election_date)
-      .day-count
-        #{t(:thats)} #{(Date.new(2016,11,8).mjd - Date.today.mjd)} #{t(:days_away)}
-
-%br
-%br
-%br
-%hr
-  
-- if @users.present?
-  #{t(:users).humanize}
-  
-  - @users.each do |user|
-    %div
-      #{link_to user.name, user} [#{link_to 'edit', edit_user_path(user)}]
+  = render partial: 'election_countdown', locals: {top: '50px'}

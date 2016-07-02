@@ -36,14 +36,14 @@
             <i>#{t(:drive_the_vote)}!</i>
         
         #navbar.collapse.navbar-collapse
-          
-          - unless user_signed_in?
-            .pull-right
-              = link_to t(:sign_in), user_facebook_omniauth_authorize_path, class: 'btn btn-default navbar-btn btn-xs', role: 'button', style: 'margin: 15px 0 0 25px;'
                 
           %ul.nav.navbar-nav.navbar-right
             %li= link_to "Español", :locale=>'es'
             %li= link_to "English", :locale=>'en'
+            - unless user_signed_in?
+              %li
+                %p.navbar-btn
+                  = link_to t(:sign_in), user_facebook_omniauth_authorize_path, class: 'btn btn-default btn-xs', role: 'button', style: 'margin: 7px 0 0 10px;'
             
             - if user_signed_in?
               %li.dropdown

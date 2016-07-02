@@ -77,9 +77,9 @@
   %link{:rel => "stylesheet", :href => "https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css"}
   %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"}
 
-  .col-sm-8.field
-    How many passengers can you take?
-    = collection_select('user', 'max_passengers', {1 => 1, 2 =>2, 3 => 3, 4 => 4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10, 11=>11, 12=>12}, :first, :last)
+  / .col-sm-8.field
+  /   How many passengers can you take?
+  /   = collection_select('user', 'max_passengers', {1 => 1, 2 =>2, 3 => 3, 4 => 4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10, 11=>11, 12=>12}, :first, :last)
 
   .col-sm-8.field
     What time
@@ -87,10 +87,8 @@
       can you drive?
     - elsif @type == 'rider'
       do you need a ride?
-    %br
     
-    %span#drive_times
-      = collection_select('user', 'start_drive_time', {'7:00am'=>'7:00am', '8:00am'=>'8:00am'}, :first, :last)
+    = collection_select('user', 'start_drive_time', {'7:00am'=>'7:00am', '8:00am'=>'8:00am'}, :first, :last)
 
   .col-sm-8.field
     %label
