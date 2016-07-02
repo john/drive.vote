@@ -11,6 +11,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       user_type = check_for_user_type(request.env["omniauth.params"])
       session[:user_type] = user_type
       
+      UserMailer.welcome_email(@user).deliver_later
+      
       sign_in_and_redirect @user, :event => :authentication, :user_type => user_type #this will throw if @user is not activated
       set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
     else

@@ -24,5 +24,15 @@ module DriveVote
     
     config.assets.paths << "#{Rails}/vendor/assets/fonts"
     
+    config.action_mailer.smtp_settings = {
+      user_name: ENV['SEND_GRID_USER_NAME'],
+      password: ENV['SEND_GRID_PASSWORD'],
+      domain: "drive.vote",
+      address: "smtp.sendgrid.net",
+      port: 587,
+      authentication: :plain,
+      enable_starttls_auto: true
+    }
+    
   end
 end

@@ -11,6 +11,7 @@ gem 'omniauth-facebook'
 gem 'phony_rails'
 gem 'rails', '>= 5.0.0.rc2', '< 5.1'
 gem 'rspec-rails'
+gem 'sendgrid'
 gem 'tod'
 gem 'underscore-rails'
 
