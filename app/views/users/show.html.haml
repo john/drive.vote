@@ -1,14 +1,16 @@
 %p#notice= notice
 
 
+.pull-right
+  = link_to 'Edit', edit_user_path(current_user), class: 'btn btn-default'
 %h1
   = @user.name
   %small
     = @user.user_type
   
 %div= @user.description
-%div= @user.email
-%div= @user.phone_number.to_s.phony_formatted(normalize: :US, spaces: '-')
+/ %div= @user.email
+/ %div= @user.phone_number.to_s.phony_formatted(normalize: :US, spaces: '-')
 
 %br
 %p

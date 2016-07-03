@@ -85,4 +85,8 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  
+  # More info here:
+  # http://weblog.rubyonrails.org/2015/1/16/This-week-in-Rails-tokens-migrations-method-source-and-more/
+  config.active_record.time_zone_aware_types = [:datetime, :time]
 end

@@ -52,7 +52,8 @@
                   %span.caret.inverse
                   %ul.dropdown-menu{"aria-labelledby": "dropdownMenu1"}
                     
-                    %li= link_to 'Your settings', edit_user_path(current_user)
+                    %li= link_to 'Your profile', current_user
+                    %li= link_to 'Your settings', "javascript:alert('coming soon');"
                         
                     %li= link_to t(:sign_out), destroy_user_session_path, :method => :delete
                     

@@ -10,8 +10,13 @@ Devise.setup do |config|
 
   # config.omniauth :facebook, "APP_ID", "APP_SECRET", callback_url: "CALLBACK_URL"
                   
+  # this is fnnny
   # https://developers.facebook.com/apps/295556897221526/summary
-  config.omniauth :facebook, '295556897221526', 'cf5bf2b82e173a033bd437a22bdf2767',
+  # config.omniauth :facebook, '295556897221526', 'cf5bf2b82e173a033bd437a22bdf2767',
+  #     {:scope => 'email, publish_actions' }
+
+  # this is drive the vote
+  config.omniauth :facebook, '598384123655141', '886f58906c8e0c2579f9785baaf3ba15',
     {:scope => 'email, publish_actions' }
                   
   # ==> Mailer Configuration

@@ -48,11 +48,11 @@ class User < ApplicationRecord
   end
   
   def full_street_address
-    [self.address1, self.address2, self.city, self.state, self.postal_code, self.country].compact.join(', ')
+    [self.address1, self.address2, self.city, self.state, self.zip, self.country].compact.join(', ')
   end
   
   def has_required_fields?
-    !!(self.email? && self.name? && self.phone_number? && self.city? && self.state?)
+    !!(self.email? && self.name? && self.phone_number? && self.city? && self.state? && self.zip)
   end
   
   def missing_required_fields?

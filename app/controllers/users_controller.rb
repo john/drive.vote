@@ -53,6 +53,10 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @type = session['user_type']
+    @time_hash = {'7:00am'=>'7:00am', '8:00am'=>'8:00am', '9:00am'=>'9:00am',
+      '10:00am'=>'10:00am', '11:00am'=>'11:00am', '12:00pm'=>'12:00pm',
+      '1:00pm'=>'1:00pm', '2:00pm'=>'2:00pm', '3:00pm'=>'3:00pm', '4:00pm'=>'4:00pm',
+      '5:00pm'=>'5:00pm', '6:00pm'=>'6:00pm', '7:00pm'=>'7:00pm'}
   end
 
   # POST /users
@@ -75,10 +79,15 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     session.delete(:user_type)
+    new_user = @user.phone_number.blank?
     
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        
+        # different notice if the user was just created
+        notice = (new_user) ? 'Welcome to Drive the Vote!' : 'User was successfully updated.'
+        
+        format.html { redirect_to @user, notice: notice }
         format.json { render :show, status: :ok, location: @user }
       else
         @type = session['user_type']
@@ -114,7 +123,7 @@ class UsersController < ApplicationController
       params.require(:user).permit(:name, :user_type, :email, :phone_number, :image_url,
       :primary_language, :languages_spoken, :car_make_and_model, :max_passengers,
       :start_drive_time, :end_drive_time, :description, :special_requests,
-      :address1, :address2, :city, :state, :postal_code, :country, :latitude, :longitude,
+      :address1, :address2, :city, :state, :zip, :country, :latitude, :longitude,
       :accepted_tos, :email_list, :agree_to_background_check
       )
     end

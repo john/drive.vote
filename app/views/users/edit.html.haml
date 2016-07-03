@@ -45,7 +45,7 @@
     = f.text_area :description, class: 'form-control', placeholder: 'Description'
 
   .col-sm-8.field
-    = f.text_field :address1, class: 'form-control', placeholder: 'Address *'
+    = f.text_field :address1, class: 'form-control', placeholder: 'Address'
 
   .clearfix
 
@@ -58,7 +58,7 @@
   .clearfix
 
   .col-sm-8.field
-    = f.text_field :postal_code, class: 'form-control', placeholder: 'Zip *'
+    = f.text_field :zip, class: 'form-control', placeholder: 'Zip *'
 
   .col-sm-8.field
     Languages you speak:
@@ -82,13 +82,13 @@
   /   = collection_select('user', 'max_passengers', {1 => 1, 2 =>2, 3 => 3, 4 => 4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10, 11=>11, 12=>12}, :first, :last)
 
   .col-sm-8.field
-    What time
+    Around what time
     - if @type == 'driver'
       can you drive?
     - elsif @type == 'rider'
       do you need a ride?
     
-    = collection_select('user', 'start_drive_time', {'7:00am'=>'7:00am', '8:00am'=>'8:00am'}, :first, :last)
+    = collection_select('user', 'start_drive_time', @time_hash, :first, :last)
 
   .col-sm-8.field
     %label

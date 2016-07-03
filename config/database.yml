@@ -5,16 +5,24 @@
 #   gem 'sqlite3'
 #
 default: &default
-  adapter: mysql2
+  # adapter: mysql2
+  # pool: 5
+  # timeout: 5000
+  # encoding: utf8
+  # reconnect: true
+  # username: root
+  # password:
+  # host: 127.0.0.1
+  # socket: /usr/local/var/mysql/mysql.sock
+  # port: 3306
+  adapter: postgresql
+  encoding: unicode
   pool: 5
   timeout: 5000
-  encoding: utf8
-  reconnect: true
-  username: root
-  password:
+  username: postgres
+  password: postgres
   host: 127.0.0.1
-  socket: /usr/local/var/mysql/mysql.sock
-  port: 3306
+  port: 5432
   
 development:
   <<: *default

@@ -30,7 +30,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :address2, null: false, default: ""
       t.string :city, null: false, default: ""
       t.string :state, null: false, default: ""
-      t.string :postal_code, null: false, default: ""
+      t.string :zip, null: false, default: ""
       t.string :country, null: false, default: ""
       t.decimal :latitude, {:precision=>15, :scale=>10}
       t.decimal :longitude, {:precision=>15, :scale=>10}
