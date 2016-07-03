@@ -32,13 +32,13 @@ en:
   thats: "That's"
   days_away: 'days from now'
   give_rides: |
-    To volunteer to drive people to
-    their pollig place, register here:
+    To volunteer as a driver,
+    register here:
   get_rides: |
-    If you need a ride to your
-    polling place, register here:
+    If you need a ride,
+    register here:
   driver: "I'll drive"
-  rider: "Shotgun"
+  rider: "I need a ride"
   
   hi: 'Hi'
   thanks: 'Thanks'

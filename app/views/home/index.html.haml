@@ -1,12 +1,13 @@
 :css
   .election-row { margin-top: 20px; }
-  .election-date { font-weight: bold;}
-  .day-count { font-style: italic;}
+  .election-date { font-weight: bold; }
+  .day-count { font-style: italic; }
   .pitch { margin: 0px 0 0 0; }
   .give-rides { margin-top: 30px; }
   .get-rides { margin-top: 30px; }
-  .btn-home { width: 150px; }
+  .btn-home { width: 175px; background: #3A5897 }
   p, div { font-size: 15px; }
+  .fb { width: 25px; margin: -5px 10px 0 -10px; }
     
 - if user_signed_in?
   .row
@@ -40,8 +41,8 @@
         / = link_to t(:driver), user_facebook_omniauth_authorize_path(type: 'driver'), class: 'btn-home btn btn-primary btn-lg', role: 'button'
           
         = link_to user_facebook_omniauth_authorize_path(type: 'driver') do
-          %button.btn.btn-home.btn-primary.btn-lg{role: 'button'}
-            <img src="http://i.stack.imgur.com/e2S63.png" width="20" />
+          %button.btn.btn-primary.btn-lg.btn-home{role: 'button'}
+            %img.fb{src: "http://www.firstbaptistashland.com/wp-content/uploads/2015/09/facebook-logo-png-transparent-background-150x150@2x.png"}
             = t(:driver)
 
     .col-sm-4.text-center
@@ -52,7 +53,7 @@
         / = link_to t(:rider), user_facebook_omniauth_authorize_path(type: 'rider'), class: 'btn-home btn btn-primary btn-lg', role: 'button'
         = link_to user_facebook_omniauth_authorize_path(type: 'rider') do
           %button.btn.btn-home.btn-primary.btn-lg{role: 'button'}
-            <img src="http://i.stack.imgur.com/e2S63.png" width="20" />
+            %img.fb{src: "http://www.firstbaptistashland.com/wp-content/uploads/2015/09/facebook-logo-png-transparent-background-150x150@2x.png"}
             = t(:rider)
 
-  = render partial: 'election_countdown', locals: {top: '50px'}
+  = render partial: 'election_countdown', locals: {top: '70px'}
