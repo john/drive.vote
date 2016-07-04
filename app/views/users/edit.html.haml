@@ -2,7 +2,7 @@
   .notify { margin-bottom: 4px; }
   .field { margin-top: 15px; }
   td { vertical-align: top;}
-  label { font-weight: normal;}
+  label { margin-top: 10px; font-weight: normal;}
   
 .col-sm-12.field
   - if current_user.has_required_fields?
@@ -13,7 +13,7 @@
       #{t(:thanks)} #{current_user.name}
       %br
       %small
-        Please complete your registration
+        = t(:complete_registration)
         
   - if @user.errors.any?  
     #error_explanation
@@ -26,42 +26,48 @@
   
   .col-sm-8.field
     = f.radio_button :user_type, 'rider', checked: !!(@type == 'rider')
-    = f.label :user_type, 'Rider', value: 'rider'
+    = f.label :user_type, t(:rider)
     &nbsp;&nbsp;
     
     = f.radio_button :user_type, 'driver', checked: !!(@type == 'driver')
-    = f.label :user_type, 'Driver', value: 'driver'
+    = f.label :user_type, t(:driver)
     &nbsp;&nbsp;
     
     = f.radio_button :user_type, 'dunno', checked: !!(@type == 'dunno')
-    = f.label :user_type, 'Other', value: 'dunno'
+    = f.label :user_type, t(:dunno)
       
   .col-sm-8.field
     -# = f.label :email, :class => 'col-sm-2 control-label'
-    = f.telephone_field :phone_number, class: 'form-control', placeholder: 'Phone number *', autofocus: true
+    = f.label :phone_number, t(:phone_number)
+    = f.telephone_field :phone_number, class: 'form-control', autofocus: true #, placeholder: 'Phone number *'
 
   -# = f.label :description, :class => 'col-sm-2 control-label'
   .col-sm-8.field
-    = f.text_area :description, class: 'form-control', placeholder: 'Description'
+    = f.label t(:description), t(:description)
+    = f.text_area :description, class: 'form-control' #, placeholder: 'Description'
 
   .col-sm-8.field
-    = f.text_field :address1, class: 'form-control', placeholder: 'Address'
+    = f.label :address1, t(:address)
+    = f.text_field :address1, class: 'form-control' #, placeholder: 'Address'
 
   .clearfix
 
   .col-sm-4.field
-    = f.text_field :city, class: 'form-control', placeholder: 'City *'
+    = f.label :city, t(:city)
+    = f.text_field :city, class: 'form-control' #, placeholder: 'City *'
 
   .col-sm-3.field
+    = f.label :state, t(:state)
     = collection_select('user', 'state', CS.states(:us), :first, :last, {prompt: 'Select your state'}, {html_options: "required"})
 
   .clearfix
 
   .col-sm-8.field
+    = f.label :zip
     = f.text_field :zip, class: 'form-control', placeholder: 'Zip *'
 
   .col-sm-8.field
-    Languages you speak:
+    #{t(:languages)}:
     %label
     
       &nbsp;&nbsp;&nbsp;
@@ -82,19 +88,19 @@
   /   = collection_select('user', 'max_passengers', {1 => 1, 2 =>2, 3 => 3, 4 => 4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10, 11=>11, 12=>12}, :first, :last)
 
   .col-sm-8.field
-    Around what time
+    = t(:around_what_time)
     - if @type == 'driver'
-      can you drive?
+      #{t(:can_drive)}?
     - elsif @type == 'rider'
-      do you need a ride?
+      #{t(:need_ride)}?
     
     = collection_select('user', 'start_drive_time', @time_hash, :first, :last)
 
   .col-sm-8.field
     %label
       = f.check_box :accepted_tos, required: 'required'
-      &nbsp; Agree to #{link_to 'terms of service', '/terms'}? &nbsp;
+      &nbsp; #{t(:agree_to)} #{link_to t(:terms_of_service), '/terms'}? &nbsp;
       
   .col-sm-8.field
-    = f.submit 'Save', class: 'btn btn-primary', disable_with: 'Saving...'
+    = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."
     

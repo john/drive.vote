@@ -24,18 +24,32 @@ es:
   home: 'Inicio'
   about: 'Quiénes somos'
   contact: 'Contacto'
+  your_profile: 'Tu perfil'
+  your_settings: 'Sus ajustes'
   
-  pitch: '[es translate] Drive the Vote matches people who need a ride to their polling place with people who are willing to give them a lift.'
-  #home2: '[es translate] You can sign up as a driver or a passenger, or just join the community to get information about where you polling place is, who your elected officials are, and whose running for office in your community.'
+  pitch: "Impulsar el voto coincide con las personas que necesitan un viaje a su lugar de votación con las personas que están dispuestas a darles un ascensor."
   election_is_on: 'La elección presidencial de 2016 es el'
   election_date: 'martes, 8 de noviembre'
   thats: 'Eso es '
   days_away: 'días a partir de ahora'
   give_rides: 'Para llevar a la gente a sus lugares de votación, regístrese aquí:'
   get_rides: "Si usted necesita un viaje a su lugar de votación , regístrese aquí:"
+  will_drive: "Puedo manejar"
+  i_need_ride: "Necesito que me lleven"
   driver: "Conductor"
   rider: "Pasajero"
-  
+  description: 'Descripción'
+  phone_number: 'Número de teléfono'
+  address: 'Dirección'
+  city: 'Ciudad'
+  state: 'Estado'
+  languages: 'Idiomas que hablas'
+  around_what_time: 'En torno a qué hora'
+  can_drive: 'se puede conducir'
+  need_ride: 'usted necesita un paseo'
+  agree_to: 'De acuerdo con'
+  terms_of_service: 'términos de servicio'
+  save: 'Guardar'
   
   hi: 'Hola'
   thanks: 'Gracias'
@@ -44,6 +58,7 @@ es:
   sign_in_with_facebook: 'Accede con Facebook'
   sign_out: 'Cerrar sesión'
   users: 'usuarios'
+  complete_registration: 'Por favor completar su registro'
   
   
   # https://gist.github.com/jordigg/30fe17c6328d5deab9ec
