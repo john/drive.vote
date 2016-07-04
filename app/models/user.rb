@@ -25,9 +25,9 @@ class User < ApplicationRecord
   validates_uniqueness_of :uid, :scope => :provider
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   validates :phone_number_normalized, phony_plausible: true
-  validates_numericality_of :latitude
-  validates_numericality_of :longitude
   
+  # validates_numericality_of :latitude
+  # validates_numericality_of :longitude
   # validates :accepted_tos, :acceptance => true
   # validates :agree_to_background_check, :acceptance => true
   # validates_presence_of :state

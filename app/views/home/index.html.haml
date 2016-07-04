@@ -8,6 +8,8 @@
   .btn-home { width: 175px; background: #3A5897 }
   p, div { font-size: 15px; }
   .fb { width: 25px; margin: -5px 10px 0 -10px; }
+
+%p#notice= notice
     
 - if user_signed_in?
   .row
@@ -36,7 +38,7 @@
         = simple_format t(:give_rides)
       
       %div
-        = link_to user_facebook_omniauth_authorize_path(type: 'driver') do
+        = link_to user_facebook_omniauth_authorize_path(type: 'driver', campaign: params[:campaign_slug]) do
           %button.btn.btn-primary.btn-lg.btn-home{role: 'button'}
             %img.fb{src: "http://www.firstbaptistashland.com/wp-content/uploads/2015/09/facebook-logo-png-transparent-background-150x150@2x.png"}
             = t(:will_drive)
@@ -46,7 +48,7 @@
         = simple_format t(:get_rides)
       
       %div
-        = link_to user_facebook_omniauth_authorize_path(type: 'rider') do
+        = link_to user_facebook_omniauth_authorize_path(type: 'rider', campaign: params[:campaign_slug]) do
           %button.btn.btn-home.btn-primary.btn-lg{role: 'button'}
             %img.fb{src: "http://www.firstbaptistashland.com/wp-content/uploads/2015/09/facebook-logo-png-transparent-background-150x150@2x.png"}
             = t(:i_need_ride)

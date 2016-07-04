@@ -15,4 +15,7 @@ Rails.application.routes.draw do
     resources :elections, only: [:index, :new, :create, :edit, :update, :destroy]
     resources :campaigns, only: [:index, :new, :create, :edit, :update, :destroy]
   end
+  
+  match "/:campaign_slug" => 'home#index', via: :get
+  
 end
