@@ -1,21 +1,18 @@
-class Admin::ElectionsController < ApplicationController
+class Admin::ElectionsController < Admin::AdminApplicationController
+  
   before_action :set_election, only: [:edit, :update, :destroy]
 
-  # GET /elections
   def index
     @elections = Election.all
   end
 
-  # GET /elections/new
   def new
     @election = Election.new
   end
 
-  # GET /elections/1/edit
   def edit
   end
 
-  # POST /elections
   def create
     @election = Election.new(election_params)
 
@@ -26,7 +23,6 @@ class Admin::ElectionsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /elections/1
   def update
     if @election.update(election_params)
       redirect_to @election, notice: 'Election was successfully updated.'
@@ -35,7 +31,6 @@ class Admin::ElectionsController < ApplicationController
     end
   end
 
-  # DELETE /elections/1
   def destroy
     @election.destroy
     redirect_to elections_url, notice: 'Election was successfully destroyed.'

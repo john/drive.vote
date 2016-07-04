@@ -1,4 +1,4 @@
-class Admin::AdminController < ApplicationController
+class Admin::AdminController < Admin::AdminApplicationController
 
   def index
     logger.debug "--------=============>>>>>>>>> FOO"
