@@ -1,0 +1,31 @@
+:css
+  small { margin-left: 20px; }
+  td { padding: 10px 30px 10px 0;}
+  th { font-weight: normal; border-bottom: 1px solid #ddd; margin-bottom: 10px; padding-right: 30px;}
+
+= render 'admin/nav', {active: 'elections'}
+
+%h1
+  Elections
+  %small
+    = link_to 'New Election', new_admin_election_path, class: 'btn btn-default btn-sm'
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Slug
+      %th Description
+      %th Date
+      %th
+      %th
+
+  %tbody
+    - @elections.each do |election|
+      %tr
+        %td= link_to election.name, election
+        %td= election.slug
+        %td= election.description
+        %td= election.date.strftime("%b %-d, %Y")
+        %td= link_to 'Edit', edit_admin_election_path(election)
+        %td= link_to 'Destroy', admin_election_path(election), :method => :delete, :data => { :confirm => 'Are you sure?' }

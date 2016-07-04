@@ -1,0 +1,21 @@
+:css
+  td, th { padding-right: 20px; }
+
+%h1
+  Elections
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Slug
+      %th Description
+      %th Date
+
+  %tbody
+    - @elections.each do |election|
+      %tr
+        %td= link_to election.name, election
+        %td= election.slug
+        %td= election.description
+        %td= election.date.strftime("%b %-d, %Y")

@@ -7,17 +7,15 @@
     
     %meta{:name => 'viewport', :content => 'width=device-width, initial-scale=1.0'}
     %meta{:name => 'description', :content => ''}
+    %meta{:name => 'author', :content => 'John McGrath'}
     
     %link{:href => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', :rel => 'stylesheet'}
     %link{:rel => "stylesheet", :href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"}
     
     :css
       .inverse, .inverse a { color: #9d9d9d; }
-      .about { margin-top: 30px; }
-      footer { margin-bottom: 20px; }
-      
-    %script{:src => "https://code.jquery.com/jquery-2.2.4.min.js"}
-    %script{:src => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'}
+      .about { margin-top: 10px; }
+      footer { border-top: 1px solid #ddd; margin: 30px 20px 15px 20px; }
     
     = stylesheet_link_tag "application", :media => "all"
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
@@ -64,3 +62,6 @@
     %footer
       .about.text-center
         = link_to t(:about), about_path
+        
+-# %script{:src => "https://code.jquery.com/jquery-2.2.4.min.js"}
+%script{:src => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'}

@@ -37,24 +37,22 @@
     = f.label :user_type, t(:dunno)
       
   .col-sm-8.field
-    -# = f.label :email, :class => 'col-sm-2 control-label'
     = f.label :phone_number, t(:phone_number)
-    = f.telephone_field :phone_number, class: 'form-control', autofocus: true #, placeholder: 'Phone number *'
+    = f.telephone_field :phone_number, class: 'form-control', autofocus: true
 
-  -# = f.label :description, :class => 'col-sm-2 control-label'
   .col-sm-8.field
     = f.label t(:description), t(:description)
-    = f.text_area :description, class: 'form-control' #, placeholder: 'Description'
+    = f.text_area :description, class: 'form-control'
 
   .col-sm-8.field
     = f.label :address1, t(:address)
-    = f.text_field :address1, class: 'form-control' #, placeholder: 'Address'
+    = f.text_field :address1, class: 'form-control'
 
   .clearfix
 
   .col-sm-4.field
     = f.label :city, t(:city)
-    = f.text_field :city, class: 'form-control' #, placeholder: 'City *'
+    = f.text_field :city, class: 'form-control'
 
   .col-sm-3.field
     = f.label :state, t(:state)
@@ -64,7 +62,7 @@
 
   .col-sm-8.field
     = f.label :zip
-    = f.text_field :zip, class: 'form-control', placeholder: 'Zip *'
+    = f.text_field :zip, class: 'form-control'
 
   .col-sm-8.field
     #{t(:languages)}:

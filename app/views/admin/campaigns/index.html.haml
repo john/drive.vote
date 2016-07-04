@@ -1,0 +1,34 @@
+:css
+  small { margin-left: 30px; }
+  td { padding: 10px 20px 10px 0;}
+  th { font-weight: normal; border-bottom: 1px solid #ddd; margin-bottom: 10px; padding-right: 20px;}
+
+= render 'admin/nav', {active: 'campaigns'}
+
+%h1
+  Campaigns
+  %small
+    = link_to 'New Campaign', new_admin_campaign_path, class: 'btn btn-default btn-sm'
+    
+%table
+  %thead
+    %tr
+      %th Election
+      %th Name
+      %th Slug
+      %th Description
+      %th Start date
+      %th
+      %th
+
+  %tbody
+    - @campaigns.each do |campaign|
+      - election = Election.find(campaign.election_id)
+      %tr
+        %td= link_to election.name, election
+        %td= link_to campaign.name, campaign
+        %td= campaign.slug
+        %td= campaign.description
+        %td= campaign.start_date.strftime("%b %-d, %Y")
+        %td= link_to 'Edit', edit_admin_campaign_path(campaign)
+        %td= link_to 'Destroy', admin_campaign_path(campaign), :method => :delete, :data => { :confirm => 'Are you sure?' }
