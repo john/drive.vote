@@ -1,0 +1,34 @@
+:css
+  small { margin-left: 20px; }
+
+%h1
+  Campaigns
+  %small
+    = link_to 'New Campaign', new_campaign_path, class: 'btn btn-default btn-sm'
+    
+%table
+  %thead
+    %tr
+      %th Election
+      %th Slug
+      %th Name
+      %th Description
+      %th Start date
+      %th
+      %th
+      %th
+
+  %tbody
+    - @campaigns.each do |campaign|
+      %tr
+        %td= campaign.election_id
+        %td= campaign.slug
+        %td= campaign.name
+        %td= campaign.description
+        %td= campaign.start_date
+        %td= link_to 'Show', campaign
+        %td= link_to 'Edit', edit_campaign_path(campaign)
+        %td= link_to 'Destroy', campaign, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
