@@ -4,7 +4,7 @@
   td { vertical-align: top;}
   label { margin-top: 10px; font-weight: normal;}
   
-.col-sm-12.field
+.col-sm-8.field
   - if current_user.has_required_fields?
     %h2 Edit #{link_to @user.name, @user}
 
@@ -13,7 +13,8 @@
       #{t(:thanks)} #{current_user.name}
       %br
       %small
-        = t(:complete_registration)
+        -##{t(:complete_registration)}
+        Drive the Vote uses the information below to match you to potential rides share. It won't take any action without your permission.
         
   - if @user.errors.any?  
     #error_explanation
@@ -33,7 +34,7 @@
     = f.label :user_type, t(:driver)
     &nbsp;&nbsp;
     
-    = f.radio_button :user_type, 'dunno', checked: !!(@type == 'dunno')
+    = f.radio_button :user_type, 'dunno', checked: !!(@type.nil?)
     = f.label :user_type, t(:dunno)
       
   .col-sm-8.field

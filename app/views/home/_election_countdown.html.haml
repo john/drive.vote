@@ -1,7 +1,5 @@
-.row.election-row{style: "margin-top: #{top}"}
-  .col-sm-8.col-sm-offset-2.text-center
-    = t(:election_is_on)
-    .election-date
-      = t(:election_date)
-    .day-count
-      #{t(:thats)} #{(Date.new(2016,11,8).mjd - Date.today.mjd)} #{t(:days_away)}
+= t(:election_is_on)
+.election-date
+  = t(:election_date)
+.day-count
+  #{t(:thats)} #{(Date.new(2016,11,8).mjd - Date.today.mjd)} #{t(:days_away)}

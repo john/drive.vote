@@ -78,7 +78,6 @@
         #navbar.collapse.navbar-collapse
                 
           %ul.nav.navbar-nav.navbar-right
-            %li= link_to t(:faq), faq_path
             %li= link_to "Español", :locale=>'es'
             %li= link_to "English", :locale=>'en'
             - unless user_signed_in?

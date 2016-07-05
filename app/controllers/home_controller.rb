@@ -5,7 +5,7 @@ class HomeController < ApplicationController
     @user_count = User.count
   end
   
-  def faq
+  def about
   end
   
 end

@@ -52,7 +52,9 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    # user_type is put in to the session in OmniauthCallbacksController
     @type = session['user_type']
+    
     @time_hash = {'7:00am'=>'7:00am', '8:00am'=>'8:00am', '9:00am'=>'9:00am',
       '10:00am'=>'10:00am', '11:00am'=>'11:00am', '12:00pm'=>'12:00pm',
       '1:00pm'=>'1:00pm', '2:00pm'=>'2:00pm', '3:00pm'=>'3:00pm', '4:00pm'=>'4:00pm',

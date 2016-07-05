@@ -22,7 +22,9 @@
 es:
   drive_the_vote: 'Conduzca la Vota'
   home: 'Inicio'
-  faq: 'preguntas más frecuentes'
+  faq: 'Preguntas más frecuentes'
+  about: '¿Quiénes somos?'
+  learn_more: 'Aprende más'
   contact: 'Contacto'
   your_profile: 'Tu perfil'
   your_settings: 'Sus ajustes'
@@ -32,8 +34,6 @@ es:
   election_date: 'martes, 8 de noviembre'
   thats: 'Eso es '
   days_away: 'días a partir de ahora'
-  give_rides: 'Para llevar a la gente a sus lugares de votación, regístrese aquí:'
-  get_rides: "Si usted necesita un viaje a su lugar de votación , regístrese aquí:"
   will_drive: "Puedo manejar"
   i_need_ride: "Necesito que me lleven"
   driver: "Conductor"

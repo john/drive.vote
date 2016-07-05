@@ -23,24 +23,20 @@ en:
   drive_the_vote: 'Drive the Vote'
   home: 'Home'
   faq: 'faq'
+  about: 'About'
+  learn_more: 'Learn more about Drive the Vote'
   contact: 'Contact'
   your_profile: 'Your profile'
   your_settings: 'Your settings'
   
   pitch: "matches people who need a ride to their polling place with volunteer drivers."
   # home2: 'You can sign up as either a driver or a passenger--or just join the community to get information about where you polling place is, who your elected officials are, and whose running for office in your community.'
-  election_is_on: 'The 2016 Presidential Election is on'
+  election_is_on: 'The 2016 Election is on'
   election_date: 'Tuesday, November 8'
   thats: "That's"
   days_away: 'days from now'
-  give_rides: |
-    To volunteer as a driver,
-    register here:
-  get_rides: |
-    If you need a ride,
-    register here:
-  will_drive: "I'll drive"
-  i_need_ride: "I need a ride"
+  will_drive: "Volunteer to drive"
+  i_need_ride: "Request a ride"
   driver: 'Driver'
   rider: 'Rider'
   description: 'Description'

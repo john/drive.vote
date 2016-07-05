@@ -1,14 +1,19 @@
 :css
-  .election-row { margin-top: 10px; }
-  .pitch { margin: 0px 0 0 0; }
+  .election-row { margin: 20px 0 40px 0; }
+  .pitch { font-size: 22px; }
   .election-date { font-weight: bold; }
   .day-count { font-style: italic; }
-  .give-rides { margin-top: 20px; }
-  .get-rides { margin-top: 20px; }
-  .btn-home { width: 175px; background: #3A5897 }
+  .btn-home { width: 210px; background: #3A5897; margin-bottom: 20px; }
+  .later { margin: 0px 0 20px 0; }
+  .learn { margin: 40px 0 20px 0; }
+  .countdown { margin-top: 50px; }
   p, div { font-size: 15px; }
   .fb { width: 25px; margin: -5px 10px 0 -10px; }
-  /* .fb { width: 175px; } */
+  @media (max-width: 400px) {
+    .election-row { margin: 5px 0 25px 0; }
+    .learn { margin: 10px 0 20px 0; }
+    .countdown { margin-top: 30px;}
+  }
 
 %p#notice= notice
     
@@ -27,35 +32,34 @@
       
 - else
   .row.election-row
-    .col-sm-8.col-sm-offset-2.text-center
-      .pitch
-        %b
-          = t(:drive_the_vote)
-        = t(:pitch)
+    .col-sm-12.text-center.pitch
+      %b
+        = t(:drive_the_vote)
+      = t(:pitch)
       
   .row
     .col-sm-4.col-sm-offset-2.text-center
-      .give-rides
-        = simple_format t(:give_rides)
       
-      %div
-        = link_to user_facebook_omniauth_authorize_path(type: 'driver', campaign: params[:campaign_slug]) do
-          %button.btn.btn-primary.btn-lg.btn-home{role: 'button'}
-            %img.fb{src: "https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-128.png"}
-            = t(:will_drive)
-            
-        -# = link_to user_facebook_omniauth_authorize_path(type: 'driver', campaign: params[:campaign_slug]) do
-        -#  %img{src: "https://www.codenameone.com/img/blog/facebook-login-blue.png", style: 'width: 175px;'}
+      = link_to user_facebook_omniauth_authorize_path(type: 'driver', campaign: params[:campaign_slug]) do
+        %button.btn.btn-primary.btn-lg.btn-home{role: 'button'}
+          %img.fb{src: "https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-128.png"}
+          = t(:will_drive)
           
     .col-sm-4.text-center
-      .get-rides
-        = simple_format t(:get_rides)
       
-      %div
-        = link_to user_facebook_omniauth_authorize_path(type: 'rider', campaign: params[:campaign_slug]) do
-          %button.btn.btn-home.btn-primary.btn-lg{role: 'button'}
-            %img.fb{src: "https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-128.png"}
-            = t(:i_need_ride)
+      = link_to user_facebook_omniauth_authorize_path(type: 'rider', campaign: params[:campaign_slug]) do
+        %button.btn.btn-home.btn-primary.btn-lg{role: 'button'}
+          %img.fb{src: "https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-128.png"}
+          = t(:i_need_ride)
+          
+  .row.later
+    .col-sm-12.text-center{style: 'font-size: 13px;'}
+      or #{link_to 'decide later', user_facebook_omniauth_authorize_path(type: 'dunno', campaign: params[:campaign_slug])}
 
-  = render partial: 'election_countdown', locals: {top: '50px'}
+  .row.countdown
+    .col-sm-8.col-sm-offset-2.text-center
+      = render partial: 'election_countdown'
   
+  .row.learn
+    .col-sm-12.text-center
+      = link_to t(:learn_more), about_path
