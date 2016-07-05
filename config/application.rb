@@ -24,6 +24,8 @@ module DriveVote
     
     config.assets.paths << "#{Rails}/vendor/assets/fonts"
     
+    config.action_mailer.preview_path = "spec/mailers/previews"
+    
     config.action_mailer.smtp_settings = {
       user_name: ENV['SEND_GRID_USER_NAME'],
       password: ENV['SEND_GRID_PASSWORD'],

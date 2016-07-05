@@ -8,6 +8,7 @@
   .btn-home { width: 175px; background: #3A5897 }
   p, div { font-size: 15px; }
   .fb { width: 25px; margin: -5px 10px 0 -10px; }
+  /* .fb { width: 175px; } */
 
 %p#notice= notice
     
@@ -40,9 +41,12 @@
       %div
         = link_to user_facebook_omniauth_authorize_path(type: 'driver', campaign: params[:campaign_slug]) do
           %button.btn.btn-primary.btn-lg.btn-home{role: 'button'}
-            %img.fb{src: "http://www.firstbaptistashland.com/wp-content/uploads/2015/09/facebook-logo-png-transparent-background-150x150@2x.png"}
+            %img.fb{src: "https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-128.png"}
             = t(:will_drive)
-
+            
+        -# = link_to user_facebook_omniauth_authorize_path(type: 'driver', campaign: params[:campaign_slug]) do
+        -#  %img{src: "https://www.codenameone.com/img/blog/facebook-login-blue.png", style: 'width: 175px;'}
+          
     .col-sm-4.text-center
       .get-rides
         = simple_format t(:get_rides)
@@ -50,7 +54,7 @@
       %div
         = link_to user_facebook_omniauth_authorize_path(type: 'rider', campaign: params[:campaign_slug]) do
           %button.btn.btn-home.btn-primary.btn-lg{role: 'button'}
-            %img.fb{src: "http://www.firstbaptistashland.com/wp-content/uploads/2015/09/facebook-logo-png-transparent-background-150x150@2x.png"}
+            %img.fb{src: "https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-128.png"}
             = t(:i_need_ride)
 
   = render partial: 'election_countdown', locals: {top: '50px'}

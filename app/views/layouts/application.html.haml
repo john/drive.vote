@@ -5,22 +5,62 @@
     %title 🚕 the Vote
     = csrf_meta_tags
     
-    %meta{:name => 'viewport', :content => 'width=device-width, initial-scale=1.0'}
-    %meta{:name => 'description', :content => ''}
-    %meta{:name => 'author', :content => 'John McGrath'}
+    %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
+    %meta{ name: 'description', content: 'Drive the Vote matches people who need rides to their polling place with volunteer drivers who want to take them there. No car should not mean no vote.' }
+    %meta{ name: 'author', content: 'John McGrath' }
+    
+    %meta{ property: 'og:type', content: "website" }
+    %meta{ property: 'og:title', :content => 'Drive the Vote!' }
+    %meta{ property: 'og:site_name', :content => 'Drive the Vote!' }
+    %meta{ property: 'og:url', :content => 'https://www.drive.vote' }
+    %meta{ property: 'og:description', :content => 'Drive the Vote matches people who need a ride to their polling place with volunteer drivers, and provides information about voting places and dates.' }
+    %meta{ property:'og:image', :content => 'https://www.drive.vote/drive_the_vote.png' }
+    
     
     %link{:href => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', :rel => 'stylesheet'}
     %link{:rel => "stylesheet", :href => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"}
     
     :css
       .inverse, .inverse a { color: #9d9d9d; }
-      .about { margin-top: 10px; }
-      footer { border-top: 1px solid #ddd; margin: 30px 20px 15px 20px; }
+      .faq { margin-top: 10px; }
+      /* footer { border-top: 1px solid #ddd; margin: 30px 20px 15px 20px; } */
+      .shares { border: 0px solid green; margin-top: 15px; margin-left: 50%; opacity: 0.6;}
+      
+      /* Sticky footer styles
+      -------------------------------------------------- */
+      html {
+        position: relative;
+        min-height: 100%;
+      }
+      body {
+        /* Margin bottom by footer height */
+        margin-bottom: 60px;
+      }
+      .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        /* Set the fixed height of the footer here */
+        height: 50px;
+        background-color: #f5f5f5;
+      }
+      
+      
+      
     
     = stylesheet_link_tag "application", :media => "all"
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     
   %body
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=598384123655141";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+    
     %nav.navbar.navbar-inverse.navbar-static-top
       .container
         .navbar-header
@@ -32,11 +72,13 @@
             
           %a.navbar-brand{href: "/", style: 'color: white; font-family: "Times New Roman", Times, serif'}
             %span.glyphicons.glyphicons-cars.inverse{'aria-hidden': "true", style: 'margin-top:-5px;'}
-            <i>#{t(:drive_the_vote)}!</i>
+            %i
+              #{t(:drive_the_vote)}!
         
         #navbar.collapse.navbar-collapse
                 
           %ul.nav.navbar-nav.navbar-right
+            %li= link_to t(:faq), faq_path
             %li= link_to "Español", :locale=>'es'
             %li= link_to "English", :locale=>'en'
             - unless user_signed_in?
@@ -59,9 +101,20 @@
     .container
       = yield
     
-    %footer
-      .about.text-center
-        = link_to t(:about), about_path
+    %footer.footer.center-block
+    
+      .container
+        .col-sm-8.col-sm-offset-2.text-center{ style: 'border: 0px dotted blue;'}
+          %table.shares
+            %tr
+              %td{style: 'padding-right: 5px;'}
+                <div class="fb-share-button" data-href="https://www.drive.vote" data-layout="button" data-size="small" data-mobile-iframe="true" style="margin-left: -80px;"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.drive.vote%2F&amp;src=sdkpreparse">Share</a></div>
+                
+              %td{style: 'padding: 5px 0 0 5px; opacity: 0.6;'}
+                <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.drive.vote" data-text="Get free rides to the polls, or volunteer to drive!" data-via="drivevote" data-size="default">Share on Twitter</a>
+                
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        
         
 -# %script{:src => "https://code.jquery.com/jquery-2.2.4.min.js"}
 %script{:src => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'}

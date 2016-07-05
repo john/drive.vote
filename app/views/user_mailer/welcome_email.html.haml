@@ -12,14 +12,21 @@
       Hi #{@user.name}!
       
     %p
-      You've successfully signed up for Drive the Vote. When your polling place has been officially confirmed we'll let you know where it is, and try to match you to a rider/driver.
+      You've successfully signed up for Drive the Vote. When your polling place has been officially confirmed we'll let you know where it is, and one week before the election we'll try to help match you to a driver in your area.
+    
+    %p
+      <a href="http://twitter.com/intent/tweet?url=http://www.drive.vote&amp;via=campaignmonitor&amp;related=yarrcat" target="_blank">Share on Twitter!</a>
+      &nbsp;|&nbsp;
+      
+      = link_to 'Share on Facebook!', 'http://www.facebook.com/sharer/sharer.php?u=http://www.drive.vote', target: '_blank'
+      
+    
       
     %ul
-      %li Sentence overview of site
-      %li Campaign info?
-      %li Different welcome emails for drivers and riders
-      %li Safety information
-      %li Tell them they can browse, we'll send notifications when the election approaches
       %li Links to dashboard, and to settings
       %li Point them to the blog, suggest they subscribe
-      %li Ask them to share on Facebook, and Twitter
+
+-# different rider/driver/other emails
+-# Primary CTA: share on FB and/or Twitter
+-# Secondary: Sign up for blog
+-# Tertiary: manage account, whitelist our email

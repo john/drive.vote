@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :elections, only: [:index, :show]
   resources :users
   
-  match '/about' => 'home#about', via: :get
+  match '/faq' => 'home#faq', via: :get
     
   match '/admin' => 'admin/admin#index', via: :get
   namespace :admin do
