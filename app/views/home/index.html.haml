@@ -1,6 +1,6 @@
 :css
   .election-row { margin: 20px 0 40px 0; }
-  .pitch { font-size: 22px; }
+  .pitch { font-size: 20px; }
   .election-date { font-weight: bold; }
   .day-count { font-style: italic; }
   .btn-home { width: 210px; background: #3A5897; margin-bottom: 20px; }
@@ -54,7 +54,7 @@
           
   .row.later
     .col-sm-12.text-center{style: 'font-size: 13px;'}
-      or #{link_to 'decide later', user_facebook_omniauth_authorize_path(type: 'dunno', campaign: params[:campaign_slug])}
+      or #{link_to 'just sign up', user_facebook_omniauth_authorize_path(type: 'dunno', campaign: params[:campaign_slug])}
 
   .row.countdown
     .col-sm-8.col-sm-offset-2.text-center
