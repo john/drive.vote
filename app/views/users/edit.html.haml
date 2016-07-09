@@ -86,14 +86,14 @@
   /   How many passengers can you take?
   /   = collection_select('user', 'max_passengers', {1 => 1, 2 =>2, 3 => 3, 4 => 4, 5=>5, 6=>6, 7=>7, 8=>8, 9=>9, 10=>10, 11=>11, 12=>12}, :first, :last)
 
-  .col-sm-8.field
-    = t(:around_what_time)
-    - if @type == 'driver'
-      #{t(:can_drive)}?
-    - elsif @type == 'rider'
-      #{t(:need_ride)}?
-    
-    = collection_select('user', 'start_drive_time', @time_hash, :first, :last)
+  / .col-sm-8.field
+  /   = t(:around_what_time)
+  /   - if @type == 'driver'
+  /     #{t(:can_drive)}?
+  /   - elsif @type == 'rider'
+  /     #{t(:need_ride)}?
+  /
+  /   = collection_select('user', 'start_drive_time', @time_hash, :first, :last)
 
   .col-sm-8.field
     %label

@@ -121,7 +121,7 @@ h3 {
   font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 200;
   line-height: 1.2em;
-  margin: 40px 0 10px;
+  margin: 40px 0 15px;
 }
 
 h1 {
@@ -139,7 +139,7 @@ ul,
 ol {
   font-size: 14px;
   font-weight: normal;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 ul li, 
@@ -196,17 +196,18 @@ ol li {
             <!-- <p>Hi there,</p>
             <p>Sometimes all you want is to send a simple HTML email with a basic design.</p> -->
             
-            <!-- <h1>Really simple HTML email template</h1> -->
+            <h1>Welcome!</h1>
             
-            <h1>Hi <%= @user.name %></h1>
-            <p>You've successfully signed up for <i>Drive the Vote!</i></p>
             
-            <p>We'll send you the location of your polling place once it's official, and if you've signed up as either a rider or a driver, we'll try to match you with someone in your area before the election.</p>
+            <p>Hi <%= @user.name %>,</p>
+            <p>You've successfully signed up for <i>Drive the Vote!</i>. Thank you for caring about civic engagement and taking a step to improve it. Everyone says they love democracy, but almost 40% of people elible to vote, don't. It ain't democracy if we don't vote!</p>
+            
+            <p>We'll send you the location of your polling place once it's official. If you've signed up as either a rider or a driver, we'll try to match you with someone in your area before the election.</p>
             
             <!-- <h2>How do I use it?</h2> -->
             <!-- <p>In the meanwhile, please #{link_to 'subscribe to our blog', 'https://blog.drive.vote'} for occasional non-partisan posts about elections and the electoral process.</p> -->
             
-            <p>Do you know someone else who can drive, or needs a ride? Share <i>DtV!</i></p>
+            <p>Do you know someone else who can drive, or needs a ride?</p>
             
             <!-- button -->
             <table class="btn-primary" cellpadding="0" cellspacing="0" border="0">
@@ -221,7 +222,7 @@ ol li {
             <p>or <a href="http://twitter.com/intent/tweet?url=https://www.drive.vote&text=Drive%20the%20Vote%20matches%20people%20who%20need%20a%20ride%20to%20their%20polling%20place%20with%20volunteer%20drivers.&via=drivevote&related=wordie" target="_blank">Share on Twitter</a></p>
 
             <p>Thanks, and have a lovely day.</p>
-            <p><i>&mdash;DtV</i>
+            <p>John</p>
           </td>
         </tr>
       </table>

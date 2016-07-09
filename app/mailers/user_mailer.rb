@@ -14,4 +14,14 @@ class UserMailer < ApplicationMailer
       mail(to: email_with_name, subject: 'Welcome to Drive the Vote!')
     end
     
+    
+    def welcome_email_not_inlined(user)
+      sendgrid_category "Welcome"
+      @user = user
+      # @url  = 'http://example.com/login'
+      
+      email_with_name = %("#{@user.name}" <#{@user.email}>)
+      mail(to: email_with_name, subject: 'Welcome to Drive the Vote!')
+    end
+    
 end
