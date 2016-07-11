@@ -6,6 +6,7 @@ class User < ApplicationRecord
          :omniauthable, :omniauth_providers => [:facebook]
   
   enum user_type: [:admin, :driver, :rider, :dunno]
+  enum party_affiliation: [:democratic, :republican, :other, :libertarian, :green, :constitution]
   serialize :start_drive_time, Tod::TimeOfDay
   serialize :end_drive_time, Tod::TimeOfDay
   

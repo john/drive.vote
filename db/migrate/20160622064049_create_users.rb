@@ -2,7 +2,8 @@ class CreateUsers < ActiveRecord::Migration[5.0]
   def change
     create_table :users do |t|
       t.string :name, :null => false
-      t.integer :user_type, :null => false, :default => 0
+      t.integer :user_type
+      t.integer :party_affiliation
       
       ## Database authenticatable
       t.string :email,              null: false, default: ""
