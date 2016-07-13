@@ -46,8 +46,7 @@ ActiveRecord::Schema.define(version: 20160704073032) do
 
   create_table "users", force: :cascade do |t|
     t.string   "name",                                                             null: false
-    t.integer  "user_type"
-    t.integer  "party_affiliation"
+    t.integer  "user_type",                                           default: 0,  null: false
     t.string   "email",                                               default: "", null: false
     t.string   "encrypted_password",                                  default: "", null: false
     t.integer  "agree_to_background_check"
