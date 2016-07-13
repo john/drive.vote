@@ -122,7 +122,7 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       # params.fetch(:user, {})
-      params.require(:user).permit(:name, :user_type, :party_affiliation, :email, :phone_number, :image_url,
+      params.require(:user).permit(:name, :user_type, :email, :phone_number, :image_url,
       :primary_language, :languages_spoken, :car_make_and_model, :max_passengers,
       :start_drive_time, :end_drive_time, :description, :special_requests,
       :address1, :address2, :city, :state, :zip, :country, :latitude, :longitude,
