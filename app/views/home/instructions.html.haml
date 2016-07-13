@@ -39,7 +39,6 @@
     text-align: left;
   }
   
-
 %p#notice= notice
   
 .row
@@ -59,7 +58,7 @@
           %span.numberCircle
             2
         %td.instruction
-          When the election nears contact nearby drivers or passengers. We'll remind you.
+          When the election nears, contact nearby drivers or passengers. We'll remind you.
       %tr
         %td.numberContainer
           %span.numberCircle
@@ -70,4 +69,3 @@
     = link_to user_facebook_omniauth_authorize_path(type: params[:type], campaign: params[:campaign_slug]) do
       %button.btn.btn-home.btn-lg{role: 'button', style: 'color: black; width: 350px; font-weight: bold; margin-top: 20px;'}
         GOT IT
-      

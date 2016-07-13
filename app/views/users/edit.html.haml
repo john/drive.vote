@@ -26,14 +26,6 @@
 = form_for @user, :role => 'form', :html => {:class => 'form-horizontal'}  do |f|
   
   .col-sm-8.field
-    .btn-group
-      %button.btn.btn-default{type: "button"}
-        = t(:rider)
-      %button.btn.btn-default{type: "button"}
-        = t(:driver)
-      %button.btn.btn-default{type: "button"}
-        = t(:dunno)
-    %hr
     = f.radio_button :user_type, 'rider', checked: !!(@type == 'rider')
     = f.label :user_type, t(:rider)
     &nbsp;&nbsp;
@@ -86,6 +78,7 @@
       - @user.speaks_spanish = true if @user.missing_required_fields? && I18n.locale.to_s == 'es'
       = f.check_box :speaks_spanish, checked: (I18n.locale.to_s == 'es') ? true : false
       &nbsp; Spanish
+
       
     -#/ .col-sm-8.field
       /
@@ -97,18 +90,19 @@
       /     %button.btn.btn-default{type: "button"}
       /       Other
         
-      %hr
-    
-      = f.radio_button :party_affiliation, 'democratic'
-      = f.label :party_affiliation, 'Democratic'
-      &nbsp;&nbsp;
-    
-      = f.radio_button :party_affiliation, 'republican'
-      = f.label :party_affiliation, 'Republican'
-      &nbsp;&nbsp;
-    
-      = f.radio_button :party_affiliation, 'other'
-      = f.label :party_affiliation, 'Other'
+      / %hr
+      /
+      / = f.radio_button :party_affiliation, 'democratic'
+      / = f.label :party_affiliation, 'Democratic'
+      / &nbsp;&nbsp;
+      /
+      / = f.radio_button :party_affiliation, 'republican'
+      / = f.label :party_affiliation, 'Republican'
+      / &nbsp;&nbsp;
+      /
+      / = f.radio_button :party_affiliation, 'other'
+      / = f.label :party_affiliation, 'Other'
+
   
   %link{:rel => "stylesheet", :href => "https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css"}
   %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"}

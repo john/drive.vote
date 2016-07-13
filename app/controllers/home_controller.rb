@@ -4,9 +4,7 @@ class HomeController < ApplicationController
   skip_before_filter :go_complete_profile, :only => [:instructions]
   
   def index
-  end
-  
-  def instructions
+    @user_count = User.count
   end
   
   def about

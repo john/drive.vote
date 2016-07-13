@@ -16,6 +16,7 @@
     %meta{ property: 'og:description', :content => 'Drive the Vote matches people who need a ride to their polling place with volunteer drivers, and provides information about voting places, dates, and rules.' }
     %meta{ property:'og:image', :content => 'https://www.drive.vote/drive_the_vote.png' }
     
+    
     %link{:href => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', :rel => 'stylesheet'}
     %link{:rel => "stylesheet", :href => "https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css"}
     
@@ -27,7 +28,6 @@
       .navbar { background-color: white; border: 0; box-shadow: none !important }
       .navbar-default { background-color: white; border: 0; box-shadow: none !important }
       .navbar-static-top { background-color: white; border: 0; box-shadow: none !important }
-      
     
     = stylesheet_link_tag "application", :media => "all"
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
@@ -79,26 +79,5 @@
                     
     .container
       = yield
-    
-    
-    / %footer.footer.center-block
-    /   .container
-    /     .col-sm-6.col-sm-offset-3.text-center
-    /       = link_to t(:learn_more), about_path, style: 'font-size: 12px;', class: 'btn btn-xs btn-default'
-    /       -# %table.shares
-    /         / %tr
-    /         /
-    /         /   %td{style: 'border: 0px solid blue;'}
-    /         /     <div class="fb-share-button" data-href="https://www.drive.vote" data-layout="button" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.drive.vote%2F&amp;src=sdkpreparse">Share</a></div>
-    /         /
-    /         /   %td{style: 'border: 0px dotted blue; padding-top: 5px;'}
-    /         /     <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.drive.vote" data-text="Drive the Vote matches people who need a ride to their polling place with volunteer drivers." data-via="drivevote" data-size="default">Share on Twitter</a>
-    /         /
-    /         /     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-    /         /
-    /         /   %td{style: 'width: 100px; border: 0px dotted red;'}
-    /         /     = link_to t(:learn_more), about_path
-        
-        
--# %script{:src => "https://code.jquery.com/jquery-2.2.4.min.js"}
+      
 %script{:src => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'}
