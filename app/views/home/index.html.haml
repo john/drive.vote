@@ -1,17 +1,25 @@
 :css
   .election-row { margin: 20px 0 40px 0; }
-  .pitch { font-size: 20px; }
+  
+  .pitch { font-size: 20px; border: 1px solid red;}
+  
   .election-date { font-weight: bold; }
   .day-count { font-style: italic; }
-  .btn-home { width: 210px; background: #3A5897; margin-bottom: 20px; }
-  .later { margin: 0px 0 20px 0; }
-  .learn { margin: 40px 0 20px 0; }
+  /*.btn-home { width: 210px; background: #3A5897; margin-bottom: 20px; }*/
+  
+  .btn-home { width: 210px; margin-bottom: 20px; }
+  
+  .later { margin: 30px 0 20px 0; }
+  
+  .learn { margin: 90px 0 20px 0; font-size: 11px;}
+  
   .countdown { margin-top: 50px; }
   p, div { font-size: 15px; }
   .fb { width: 25px; margin: -5px 10px 0 -10px; }
+  
   @media (max-width: 400px) {
     .election-row { margin: 5px 0 25px 0; }
-    .learn { margin: 10px 0 20px 0; }
+    /*    .learn { margin: 70px 0 20px 0; }*/
     .countdown { margin-top: 30px;}
   }
 
@@ -31,35 +39,31 @@
     A few weeks before the election we'll start suggesting matches for riders and drivers. We'll send occasional notifications in the meantime as well, like when the location of your polling place has been finalized. They'll be infrequent, and you can unsubscribe from any notification on your #{link_to 'settings page', '#'}. 
       
 - else
-  .row.election-row
-    .col-sm-12.text-center.pitch
-      %b
-        = t(:drive_the_vote)
-      = t(:pitch)
       
   .row
-    .col-sm-4.col-sm-offset-2.text-center
+    .col-sm-6.col-sm-offset-3.text-center
       
-      = link_to user_facebook_omniauth_authorize_path(type: 'driver', campaign: params[:campaign_slug]) do
-        %button.btn.btn-primary.btn-lg.btn-home{role: 'button'}
-          %img.fb{src: "https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-128.png"}
-          = t(:will_drive)
-          
-    .col-sm-4.text-center
+      %div{style: 'margin: 15px 0 10px 0; font-size: 20px;'}
+        %b
+          #{t(:drive_the_vote)}
+        matches people who
       
-      = link_to user_facebook_omniauth_authorize_path(type: 'rider', campaign: params[:campaign_slug]) do
-        %button.btn.btn-home.btn-primary.btn-lg{role: 'button'}
-          %img.fb{src: "https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-128.png"}
-          = t(:i_need_ride)
-          
-  .row.later
-    .col-sm-12.text-center{style: 'font-size: 13px;'}
-      or #{link_to 'just sign up', user_facebook_omniauth_authorize_path(type: 'dunno', campaign: params[:campaign_slug])}
+      = link_to user_facebook_omniauth_authorize_path(type: 'driver', campaign: params[:campaign_slug]), style: 'color: black;' do
+        %button.btn.btn-lg.btn-home{role: 'button', style: 'color: black; width: 350px; font-weight: bold;'}
+          -#= t(:will_drive)
+          Volunteer to Drive
+  .row      
+    .col-sm-6.col-sm-offset-3.text-center
+      
+      %div{style: 'margin: 40px 0 10px 0; font-size: 20px;'}
+        on election day with people who
 
-  .row.countdown
-    .col-sm-8.col-sm-offset-2.text-center
-      = render partial: 'election_countdown'
+      = link_to instructions_path(type: 'rider', campaign: params[:campaign_slug]) do
+        %button.btn.btn-home.btn-lg{role: 'button', style: 'color: black; width: 350px; font-weight: bold;'}
+          -# = t(:i_need_ride)
+          Request a Ride
   
   .row.learn
-    .col-sm-12.text-center
+    .col-sm-12.text-center{style: 'font-size: 12px;'}
+      Or #{link_to 'just sign up', user_facebook_omniauth_authorize_path(type: 'dunno', campaign: params[:campaign_slug])}.
       = link_to t(:learn_more), about_path
