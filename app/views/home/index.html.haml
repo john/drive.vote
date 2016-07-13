@@ -1,69 +1,83 @@
 :css
-  .election-row { margin: 20px 0 40px 0; }
+  .description { margin: 0 0 40px 0; font-size: 20px; }
+  .volunteer { margin-bottom: 10px; }
   
-  .pitch { font-size: 20px; border: 1px solid red;}
-  
-  .election-date { font-weight: bold; }
-  .day-count { font-style: italic; }
-  /*.btn-home { width: 210px; background: #3A5897; margin-bottom: 20px; }*/
-  
-  .btn-home { width: 210px; margin-bottom: 20px; }
+  .btn-home {
+    width: 350px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
   
   .later { margin: 30px 0 20px 0; }
   
+  .sign_up { margin: 10px 0 20px 0; font-size: 11px;}
   .learn { margin: 90px 0 20px 0; font-size: 11px;}
   
-  .countdown { margin-top: 50px; }
   p, div { font-size: 15px; }
   .fb { width: 25px; margin: -5px 10px 0 -10px; }
   
   @media (max-width: 400px) {
-    .election-row { margin: 5px 0 25px 0; }
     /*    .learn { margin: 70px 0 20px 0; }*/
     .countdown { margin-top: 30px;}
   }
 
-%p#notice= notice
+- if notice.present?
+  =raw humane_flash_messages
     
 - if user_signed_in?
   .row
   = render partial: 'election_countdown', locals: {top: '0'}
-  
+
   %p{style: 'margin-top: 20px;'}
     %span{style: "font-weight: bold; font-size: 18px;"}
       = pluralize(@user_count, 'person')
-    
+
     #{"has".pluralize(@user_count)} signed up to Drive the Vote!
-    
+
   %p
-    A few weeks before the election we'll start suggesting matches for riders and drivers. We'll send occasional notifications in the meantime as well, like when the location of your polling place has been finalized. They'll be infrequent, and you can unsubscribe from any notification on your #{link_to 'settings page', '#'}. 
+    A few weeks before the election we'll start suggesting matches for riders and drivers. We'll send occasional notifications in the meantime as well, like when the location of your polling place has been finalized. They'll be infrequent, and you can unsubscribe from any notification on your #{link_to 'settings page', '#'}.
       
 - else
       
   .row
     .col-sm-6.col-sm-offset-3.text-center
       
-      %div{style: 'margin: 15px 0 10px 0; font-size: 20px;'}
+      .description
         %b
           #{t(:drive_the_vote)}
-        matches people who
+        arranges rides
+        %br
+        to the polls on election day.
       
-      = link_to user_facebook_omniauth_authorize_path(type: 'driver', campaign: params[:campaign_slug]), style: 'color: black;' do
-        %button.btn.btn-lg.btn-home{role: 'button', style: 'color: black; width: 350px; font-weight: bold;'}
-          -#= t(:will_drive)
-          Volunteer to Drive
-  .row      
-    .col-sm-6.col-sm-offset-3.text-center
-      
-      %div{style: 'margin: 40px 0 10px 0; font-size: 20px;'}
-        on election day with people who
+      .volunteer
+        -# user_facebook_omniauth_authorize_path
+        = link_to instructions_path(type: 'driver', campaign: params[:campaign_slug]) do
+          %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
+            -#= t(:will_drive)
+            Volunteer to Drive
+          
+      .request
+        = link_to instructions_path(type: 'rider', campaign: params[:campaign_slug]) do
+          %button.btn.btn-lg.btn-inverse.btn-home{role: 'button'}
+            -# = t(:i_need_ride)
+            Request a Ride
 
-      = link_to instructions_path(type: 'rider', campaign: params[:campaign_slug]) do
-        %button.btn.btn-home.btn-lg{role: 'button', style: 'color: black; width: 350px; font-weight: bold;'}
-          -# = t(:i_need_ride)
-          Request a Ride
-  
-  .row.learn
+  .row.sign_up
     .col-sm-12.text-center{style: 'font-size: 12px;'}
       Or #{link_to 'just sign up', user_facebook_omniauth_authorize_path(type: 'dunno', campaign: params[:campaign_slug])}.
-      = link_to t(:learn_more), about_path
+  
+  .navbar.navbar-default.navbar-fixed-bottom
+    .container
+      .col-sm-12.text-center
+        = link_to t(:learn_more), about_path, style: 'font-size: 12px;', class: 'btn btn-xs btn-default'
+    
+  / %footer.footer.center-block
+  /   .row
+  /     .col-sm-6.col-sm-offset-3.text-center
+  /       = link_to t(:learn_more), about_path, style: 'font-size: 12px;', class: 'btn btn-xs btn-default'
+  /
+  / -# .row.learn
+  /   .col-sm-12.text-center{style: 'font-size: 12px;'}
+  /     = link_to t(:learn_more), about_path
+      
+      
