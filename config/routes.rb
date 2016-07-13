@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :users
   
   match '/about' => 'home#about', via: :get
+  match '/instructions' => 'home#instructions', via: :get, as: :instructions
     
   match '/admin' => 'admin/admin#index', via: :get
   namespace :admin do
