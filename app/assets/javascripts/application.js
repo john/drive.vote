@@ -14,8 +14,8 @@
 // https://github.com/apneadiving/Google-Maps-for-Rails
 // require gmaps/google
 
+//= require humane-rails
 //= require underscore
-
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks

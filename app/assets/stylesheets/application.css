@@ -12,5 +12,6 @@
  *
  *= require_tree .
  *= require_self
+ *= require humane-rails/libnotify
  *= require glyphicons
  */
