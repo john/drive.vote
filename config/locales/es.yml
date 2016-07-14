@@ -28,8 +28,9 @@ es:
   contact: 'Contacto'
   your_profile: 'Tu perfil'
   your_settings: 'Sus ajustes'
-  
-  pitch: "Impulsar el voto coincide con las personas que necesitan un viaje a su lugar de votación con las personas que están dispuestas a darles un ascensor."
+  short_description: |
+    organiza paseos a las
+    urnas el día de las elecciones
   election_is_on: 'La elección presidencial de 2016 es el'
   election_date: 'martes, 8 de noviembre'
   thats: 'Eso es '
@@ -59,6 +60,12 @@ es:
   sign_out: 'Cerrar sesión'
   users: 'usuarios'
   complete_registration: 'Por favor completar su registro'
+  
+  how_ridesharing_works: 'Cómo Viajes Compartidos Funciona'
+  fill_out_profile: 'Crear un perfil'
+  contact_nearby_drivers: "Más cerca de la elección, en contacto con los conductores o pasajeros cercanos. Te recordamos."
+  confirm: "Confirmar con mensajes de texto / teléfono"
+  got_it: "LO TENGO"
   
   
   # https://gist.github.com/jordigg/30fe17c6328d5deab9ec

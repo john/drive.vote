@@ -1,34 +1,19 @@
-:css
-  .description { margin: 0 0 40px 0; font-size: 20px; }
-  .volunteer { margin-bottom: 10px; }
-  
-  .btn-home {
-    width: 350px;
-    margin-bottom: 20px;
-    font-weight: bold;
-  }
-  
-  .later { margin: 30px 0 20px 0; }
-  .sign_up { margin: 10px 0 20px 0; font-size: 11px;}
-  p, div { font-size: 15px; }
-  .fb { width: 25px; margin: -5px 10px 0 -10px; }
-
 - if notice.present?
   =raw humane_flash_messages
     
 - if user_signed_in?
-  .row
-  = render partial: 'election_countdown', locals: {top: '0'}
-
-  %p{style: 'margin-top: 20px;'}
-    %span{style: "font-weight: bold; font-size: 18px;"}
-      = pluralize(@user_count, 'person')
-
-    #{"has".pluralize(@user_count)} signed up to Drive the Vote!
-
-  %p
-    A few weeks before the election we'll start suggesting matches for riders and drivers. We'll send occasional notifications in the meantime as well, like when the location of your polling place has been finalized. They'll be infrequent, and you can unsubscribe from any notification on your #{link_to 'settings page', '#'}.
-      
+  / .row
+  / = render partial: 'election_countdown', locals: {top: '0'}
+  /
+  / %p{style: 'margin-top: 20px;'}
+  /   %span{style: "font-weight: bold; font-size: 18px;"}
+  /     = pluralize(@user_count, 'person')
+  /
+  /   #{"has".pluralize(@user_count)} signed up to Drive the Vote!
+  /
+  / %p
+  /   A few weeks before the election we'll start suggesting matches for riders and drivers. We'll send occasional notifications in the meantime as well, like when the location of your polling place has been finalized. They'll be infrequent, and you can unsubscribe from any notification on your #{link_to 'settings page', '#'}.
+  /
 - else
       
   .row
@@ -37,22 +22,17 @@
       .description
         %b
           #{t(:drive_the_vote)}
-        arranges rides
-        %br
-        to the polls on election day.
+        = t(:short_description).gsub( /\n+/, "<br>" ).html_safe
       
       .volunteer
-        -# user_facebook_omniauth_authorize_path
         = link_to instructions_path(type: 'driver', campaign: params[:campaign_slug]) do
           %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
-            -#= t(:will_drive)
-            Volunteer to Drive
+            = t(:will_drive)
           
       .request
         = link_to instructions_path(type: 'rider', campaign: params[:campaign_slug]) do
-          %button.btn.btn-lg.btn-inverse.btn-home{role: 'button'}
-            -# = t(:i_need_ride)
-            Request a Ride
+          %button.btn.btn-lg.btn-danger.btn-home{role: 'button'}
+            = t(:i_need_ride)
 
   .row.sign_up
     .col-sm-12.text-center{style: 'font-size: 12px;'}
@@ -61,4 +41,4 @@
   .navbar.navbar-default.navbar-fixed-bottom
     .container
       .col-sm-12.text-center
-        = link_to t(:learn_more), about_path, style: 'font-size: 12px;', class: 'btn btn-xs btn-default'
+        = link_to t(:learn_more), about_path, class: 'btn btn-xs btn-default', style: 'font-size: 12px;'

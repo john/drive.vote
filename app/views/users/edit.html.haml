@@ -65,19 +65,19 @@
     = f.label :zip
     = f.text_field :zip, class: 'form-control'
 
-  .col-sm-8.field
-    #{t(:languages)}:
-    %label
-    
-      &nbsp;&nbsp;&nbsp;
-      - @user.speaks_english = true if @user.missing_required_fields? && I18n.locale.to_s == 'en'
-      = f.check_box :speaks_english
-      &nbsp; English
-      
-      &nbsp;&nbsp;
-      - @user.speaks_spanish = true if @user.missing_required_fields? && I18n.locale.to_s == 'es'
-      = f.check_box :speaks_spanish, checked: (I18n.locale.to_s == 'es') ? true : false
-      &nbsp; Spanish
+  -# .col-sm-8.field
+    / #{t(:languages)}:
+    / %label
+    /
+    /   &nbsp;&nbsp;&nbsp;
+    /   - @user.speaks_english = true if @user.missing_required_fields? && I18n.locale.to_s == 'en'
+    /   = f.check_box :speaks_english
+    /   &nbsp; English
+    /
+    /   &nbsp;&nbsp;
+    /   - @user.speaks_spanish = true if @user.missing_required_fields? && I18n.locale.to_s == 'es'
+    /   = f.check_box :speaks_spanish, checked: (I18n.locale.to_s == 'es') ? true : false
+    /   &nbsp; Spanish
 
       
     -#/ .col-sm-8.field

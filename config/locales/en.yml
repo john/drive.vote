@@ -27,16 +27,17 @@ en:
   learn_more: 'Learn more'
   contact: 'Contact'
   your_profile: 'Your profile'
-  your_settings: 'Your settings'
-  
-  pitch: "matches people who need a ride to their polling place with volunteer drivers."
+  your_settings: 'Your settings'  
+  short_description: |
+    arranges rides
+    to the polls on election day.
   # home2: 'You can sign up as either a driver or a passenger--or just join the community to get information about where you polling place is, who your elected officials are, and whose running for office in your community.'
   election_is_on: 'The 2016 Election is on'
   election_date: 'Tuesday, November 8'
   thats: "That's"
   days_away: 'days from now'
-  will_drive: "Volunteer to drive"
-  i_need_ride: "Request a ride"
+  will_drive: "Volunteer to Drive"
+  i_need_ride: "Request a Ride"
   driver: 'Driver'
   rider: 'Rider'
   description: 'Description'
@@ -61,3 +62,9 @@ en:
   sign_out: 'Sign out'
   users: 'users'
   complete_registration: 'Please complete your registration'
+  
+  how_ridesharing_works: 'How Ridesharing Works'
+  fill_out_profile: 'Fill out a quick profile'
+  contact_nearby_drivers: "Closer to the election, contact nearby drivers or passengers. We'll remind you."
+  confirm: "Confirm with text messages/phone calls"
+  got_it: "GOT IT"
