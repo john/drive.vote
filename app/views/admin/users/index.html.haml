@@ -1,0 +1,29 @@
+= render 'admin/nav', {active: 'users'}
+
+%h1
+  Users
+  -#%small
+  -#  = link_to 'New Campaign', new_admin_campaign_path, class: 'btn btn-default btn-sm'
+    
+%table
+  %thead
+    %tr
+      -# %th Election
+      %th Name
+      %th Created at
+      %th Description
+      %th Location
+      -# %th
+      %th
+
+  %tbody
+    - @users.each do |user|
+      -# - election = Election.find(campaign.election_id)
+      %tr
+        -# %td= link_to election.name, election
+        %td= link_to user.name, user
+        %td= user.created_at.strftime("%-m/%-d/%Y, %-H:%M %P (%Z)")
+        %td= user.description
+        %td #{user.city}, #{user.state}
+        -# %td= link_to 'Edit', edit_admin_user_path(user)
+        %td= link_to 'Destroy', admin_user_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }

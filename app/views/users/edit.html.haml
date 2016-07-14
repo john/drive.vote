@@ -126,7 +126,7 @@
   .col-sm-8.field
     %label
       = f.check_box :accepted_tos, required: 'required'
-      &nbsp; #{t(:agree_to)} #{link_to t(:terms_of_service), '/terms'}? &nbsp;
+      &nbsp; #{t(:agree_to)} #{link_to t(:terms_of_service), terms_of_service_path, target: '_blank'}? &nbsp;
       
   .col-sm-8.field
     = f.submit t(:save), class: 'btn btn-primary btn-home', disable_with: "#{t(:saving)}..."

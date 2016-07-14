@@ -35,6 +35,7 @@ test:
   <<: *default
   database: vote_test
 
+# http://alumni.lewagon.org/questions/67
 production:
   <<: *default
   database: vote_production

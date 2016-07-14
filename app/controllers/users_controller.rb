@@ -1,13 +1,8 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update]
 
   skip_before_filter :go_complete_profile, :only => [:create, :edit, :update]
   
-  # GET /users
-  # GET /users.json
-  def index
-    @users = User.all
-  end
 
   # GET /users/1
   # GET /users/1.json
@@ -19,10 +14,11 @@ class UsersController < ApplicationController
     # end
     
     # query for other nearby users. Don't run once they have a confirmed ride.
-    @nearby_drivers = User.drivers.near( [@user.latitude, @user.longitude], 20 ).size
-    @nearby_riders = User.riders.near( [@user.latitude, @user.longitude], 20 )
+    # @nearby_drivers = User.drivers.near( [@user.latitude, @user.longitude], 20 ).size
+    # @nearby_riders = User.riders.near( [@user.latitude, @user.longitude], 20 )
+    #
+    # @google_api_key = 'AIzaSyDefFnLJQKoz1OQGjaqaJPHMISVcnXZNPc'
     
-    @google_api_key = 'AIzaSyDefFnLJQKoz1OQGjaqaJPHMISVcnXZNPc'
     # FAIL (gem can't be installed?)
     # client = GoogleCivicInfo::Client.new(:api_key => @google_api_key)
     # @civic_info = client.lookup( @user.full_street_address )
@@ -97,16 +93,6 @@ class UsersController < ApplicationController
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /users/1
-  # DELETE /users/1.json
-  def destroy
-    @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 
