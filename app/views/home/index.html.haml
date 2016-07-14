@@ -2,18 +2,18 @@
   =raw humane_flash_messages
     
 - if user_signed_in?
-  / .row
-  / = render partial: 'election_countdown', locals: {top: '0'}
-  /
-  / %p{style: 'margin-top: 20px;'}
-  /   %span{style: "font-weight: bold; font-size: 18px;"}
-  /     = pluralize(@user_count, 'person')
-  /
-  /   #{"has".pluralize(@user_count)} signed up to Drive the Vote!
-  /
-  / %p
-  /   A few weeks before the election we'll start suggesting matches for riders and drivers. We'll send occasional notifications in the meantime as well, like when the location of your polling place has been finalized. They'll be infrequent, and you can unsubscribe from any notification on your #{link_to 'settings page', '#'}.
-  /
+  .row
+  = render partial: 'election_countdown', locals: {top: '0'}
+
+  %p{style: 'margin-top: 20px;'}
+    %span{style: "font-weight: bold; font-size: 18px;"}
+      = pluralize(@user_count, 'person')
+
+    #{"has".pluralize(@user_count)} signed up to Drive the Vote!
+
+  %p
+    A few weeks before the election we'll start suggesting matches for riders and drivers. We'll send occasional notifications in the meantime as well, like when the location of your polling place has been finalized. They'll be infrequent, and you can unsubscribe from any notification on your #{link_to 'settings page', '#'}.
+
 - else
       
   .row

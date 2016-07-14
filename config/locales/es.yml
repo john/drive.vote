@@ -59,7 +59,7 @@ es:
   sign_in_with_facebook: 'Accede con Facebook'
   sign_out: 'Cerrar sesión'
   users: 'usuarios'
-  complete_registration: 'Por favor completar su registro'
+  complete_registration: 'Por favor completar su registro para que podamos encontrar una coincidencia'
   
   how_ridesharing_works: 'Cómo Viajes Compartidos Funciona'
   fill_out_profile: 'Crear un perfil'
