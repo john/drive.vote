@@ -8,6 +8,3 @@
   %li{class: (active == 'users') ? 'active' : ''}= link_to 'Users', admin_users_path
   %li{class: (active == 'elections') ? 'active' : ''}= link_to 'Elections', admin_elections_path
   %li{class: (active == 'campaigns') ? 'active' : ''}= link_to 'Campaigns', admin_campaigns_path
-  
-- if notice.present?
-  =raw humane_flash_messages
