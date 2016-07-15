@@ -40,7 +40,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :uid, null: false, default: ""
       
       ## Recoverable
-      t.string   :reset_password_token, null: false, default: ""
+      t.string   :reset_password_token
       t.datetime :reset_password_sent_at
 
       ## Rememberable

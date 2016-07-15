@@ -54,6 +54,10 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    dotenv (2.1.1)
+    dotenv-rails (2.1.1)
+      dotenv (= 2.1.1)
+      railties (>= 4.0, < 5.1)
     erubis (2.7.0)
     execjs (2.7.0)
     factory_girl (4.7.0)
@@ -183,11 +187,6 @@ GEM
       nokogiri (~> 1.6.0)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
-    rails_12factor (0.0.3)
-      rails_serve_static_assets
-      rails_stdout_logging
-    rails_serve_static_assets (0.0.5)
-    rails_stdout_logging (0.0.5)
     railties (5.0.0)
       actionpack (= 5.0.0)
       activesupport (= 5.0.0)
@@ -282,6 +281,7 @@ DEPENDENCIES
   byebug
   city-state
   devise
+  dotenv-rails
   factory_girl_rails
   geocoder
   google-api-client
@@ -296,7 +296,6 @@ DEPENDENCIES
   rack-timeout
   rails (>= 5.0.0, < 5.1)
   rails-controller-testing
-  rails_12factor
   rspec-rails
   sass-rails (~> 5.0)
   sendgrid
