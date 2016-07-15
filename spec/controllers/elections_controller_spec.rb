@@ -52,12 +52,12 @@ RSpec.describe ElectionsController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new election as @election" do
-      get :new, params: {}, session: valid_session
-      expect(assigns(:election)).to be_a_new(Election)
-    end
-  end
+  # describe "GET #new" do
+  #   it "assigns a new election as @election" do
+  #     get :new, params: {}, session: valid_session
+  #     expect(assigns(:election)).to be_a_new(Election)
+  #   end
+  # end
 
   describe "GET #edit" do
     it "assigns the requested election as @election" do

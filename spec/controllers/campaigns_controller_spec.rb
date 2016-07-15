@@ -52,12 +52,12 @@ RSpec.describe CampaignsController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new campaign as @campaign" do
-      get :new, params: {}, session: valid_session
-      expect(assigns(:campaign)).to be_a_new(Campaign)
-    end
-  end
+  # describe "GET #new" do
+  #   it "assigns a new campaign as @campaign" do
+  #     get :new, params: {}, session: valid_session
+  #     expect(assigns(:campaign)).to be_a_new(Campaign)
+  #   end
+  # end
 
   describe "GET #edit" do
     it "assigns the requested campaign as @campaign" do

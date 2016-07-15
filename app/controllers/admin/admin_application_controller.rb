@@ -5,8 +5,8 @@ class Admin::AdminApplicationController < ApplicationController
   private
 
     def require_admin_priviledges
-      unless user_signed_in? && current_user.name == 'John McGrath'
-        redirect_to root_path, notice: 'There was an error.'
+      unless user_signed_in? && current_user.name.include?('McGrath')
+        redirect_to '/404.html'
       end
     end
     

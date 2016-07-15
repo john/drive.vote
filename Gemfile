@@ -11,21 +11,14 @@ gem 'omniauth-facebook'
 gem 'pg'
 gem 'phony_rails'
 gem 'puma'
-gem "rack-timeout"
+gem 'rack-timeout'
 gem 'rails', '>= 5.0.0', '< 5.1'
 gem 'rspec-rails'
+gem 'sass-rails', '~> 5.0'
 gem 'sendgrid'
 gem 'tod'
-gem 'underscore-rails'
-
-
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
-
-# Use CoffeeScript for .coffee assets and views
-# gem 'coffee-rails', '~> 4.1.0'
+gem 'underscore-rails'
 
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
@@ -38,6 +31,9 @@ gem 'turbolinks', '~> 5.x'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.0'
 
+group :production do
+  gem 'rails_12factor'
+end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
@@ -56,4 +52,5 @@ end
 group :test do
   gem 'factory_girl_rails', require: false
   gem 'shoulda-matchers'
+  gem 'rails-controller-testing'
 end

@@ -1,18 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe "elections/new", type: :view do
+RSpec.describe "admin/elections/edit", type: :view do
   before(:each) do
-    assign(:election, Election.new(
-      :slug => "MyString",
-      :name => "MyString",
-      :description => "MyText"
-    ))
+    @election = assign(:election, create(:election))
   end
 
-  it "renders new election form" do
+  it "renders the edit election form" do
     render
 
-    assert_select "form[action=?][method=?]", elections_path, "post" do
+    assert_select "form[action=?][method=?]", admin_election_path(@election), "post" do
 
       assert_select "input#election_slug[name=?]", "election[slug]"
 
