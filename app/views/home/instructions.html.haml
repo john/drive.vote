@@ -13,7 +13,13 @@
         %td.number
           ②
         %td.instruction
-          = t(:contact_nearby_drivers)
+          - if params[:type].present?
+            - if params[:type] == 'driver'
+              = t(:get_matched_to_passengers)
+            - else
+              = t(:get_matched_to_drivers)
+          - else
+            = t(:get_matched_general)
       %tr
         %td.number
           ③

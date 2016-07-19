@@ -6,6 +6,9 @@ class User < ApplicationRecord
          :omniauthable, :omniauth_providers => [:facebook]
   
   enum user_type: [:admin, :driver, :rider, :dunno]
+  
+  attr_accessor :city_state
+  
   serialize :start_drive_time, Tod::TimeOfDay
   serialize :end_drive_time, Tod::TimeOfDay
   

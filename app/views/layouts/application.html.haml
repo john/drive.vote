@@ -34,6 +34,12 @@
     = stylesheet_link_tag "application", :media => "all"
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     
+    -#
+      / %script{:src => 'https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js'}
+      / %script{:src => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js'}
+      /
+      / %script{:src => 'https://cdnjs.cloudflare.com/ajax/libs/typeahead-addresspicker/0.1.4/typeahead-addresspicker.min.js'}
+    
   %body
     <div id="fb-root"></div>
     <script>(function(d, s, id) {

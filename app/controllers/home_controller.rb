@@ -4,6 +4,8 @@ class HomeController < ApplicationController
   skip_before_filter :go_complete_profile, :only => [:instructions, :terms_of_service]
   
   def index
+    @user_count = User.count if user_signed_in?
+    render template: "home/index2"
   end
   
   def index2

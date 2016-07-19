@@ -4,16 +4,23 @@
   td { vertical-align: top;}
   label { margin-top: 10px; font-weight: normal;}
   
+-#%script{:src => 'https://maps.googleapis.com/maps/api/js?v=3.exp&key=#{@google_api_key}&sensor=false&libraries=places'}
+
+-# %script{:src => '//maps.google.com/maps/api/js?v=3.23&key=#{@google_api_key}&sensor=false&libraries=places'}
+  
 .col-sm-8.field
   - if current_user.has_required_fields?
     %h2 Edit #{link_to @user.name, @user}
 
   - else
-    %h4
-      #{t(:thanks)} #{current_user.name}
-      %br
-      %small{style: 'color: #777;'}
-        =t(:complete_registration)
+    -# %h4
+      / #{t(:thanks)} #{current_user.name}
+      / %br
+      / %small{style: 'color: #777;'}
+      /   =t(:complete_registration)
+    %b
+      Thanks!
+    We need this info to match you with a ride:
         
   - if @user.errors.any?  
     #error_explanation
@@ -23,3 +30,23 @@
           %li= msg
 
 = render 'form'
+
+#response
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=#{@google_api_key}"></script>
+<script src="https://rawgithub.com/sgruhier/typeahead-addresspicker/master/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+<script src="https://rawgithub.com/sgruhier/typeahead-addresspicker/master/dist/typeahead-addresspicker.js"></script>
+
+:javascript
+  $( function() {
+    var addressPicker = new AddressPicker({autocompleteService: {types: ['(cities)'], componentRestrictions: {country: 'US'}}});
+
+    $('#user_city_state').typeahead({minLength: 0}, {
+      displayKey: 'description',
+      source: addressPicker.ttAdapter(),
+      display: function(data){
+        var city_state = data.description.split(',');
+        return city_state[0] + ', ' + city_state[1];
+      }
+    });
+  })

@@ -20,6 +20,8 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  yes: 'Yes'
+  no: 'No'
   drive_the_vote: 'Drive the Vote'
   home: 'Home'
   faq: 'faq'
@@ -44,7 +46,7 @@ en:
   driver: 'Driver'
   rider: 'Rider'
   description: 'Description'
-  phone_number: 'Phone number'
+  phone_number: 'Cell phone number'
   address: 'Address'
   city: 'City'
   state: 'State'
@@ -68,6 +70,8 @@ en:
   
   how_ridesharing_works: 'How Ridesharing Works'
   fill_out_profile: 'Fill out a quick profile'
-  contact_nearby_drivers: "Closer to the election, contact nearby drivers or passengers. We'll remind you."
+  get_matched_to_drivers: "Get matched to drivers"
+  get_matched_to_passengers: "Get matched to passengers"
+  get_matched_general: "Get matched to drivers or passengers"
   confirm: "Confirm with text messages/phone calls"
   got_it: "GOT IT"

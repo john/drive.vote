@@ -20,6 +20,8 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 es:
+  yes: 'Sí'
+  no: 'No'
   drive_the_vote: 'Conduzca la Vota'
   home: 'Inicio'
   faq: 'Preguntas más frecuentes'
@@ -43,7 +45,7 @@ es:
   driver: "Conductor"
   rider: "Pasajero"
   description: 'Descripción'
-  phone_number: 'Número de teléfono'
+  phone_number: 'Número Celular'
   address: 'Dirección'
   city: 'Ciudad'
   state: 'Estado'
@@ -66,7 +68,10 @@ es:
   
   how_ridesharing_works: 'Cómo Viajes Compartidos Funciona'
   fill_out_profile: 'Crear un perfil'
-  contact_nearby_drivers: "Más cerca de la elección, en contacto con los conductores o pasajeros cercanos. Te recordamos."
+  get_matched_to_drivers: "Consigue emparejado a los conductores"
+  get_matched_to_passengers: "Consigue emparejado a los pasajeros"
+  get_matched_general: "Consigue emparejado con los conductores o pasajeros"
+  get_matched: "Consigue emparejado con los conductores o pasajeros"
   confirm: "Confirmar con mensajes de texto / teléfono"
   got_it: "LO TENGO"
   

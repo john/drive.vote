@@ -51,6 +51,9 @@ class UsersController < ApplicationController
     # user_type is put in to the session in OmniauthCallbacksController
     @type = session['user_type']
     
+    # This key is tied to john@fnnny.com, needs the Google Places Web API enabled
+    @google_api_key = 'AIzaSyBaEubvpgWxx7oxKiDgnp5sWF_qggJeCQg'
+    
     @time_hash = {'7:00am'=>'7:00am', '8:00am'=>'8:00am', '9:00am'=>'9:00am',
       '10:00am'=>'10:00am', '11:00am'=>'11:00am', '12:00pm'=>'12:00pm',
       '1:00pm'=>'1:00pm', '2:00pm'=>'2:00pm', '3:00pm'=>'3:00pm', '4:00pm'=>'4:00pm',

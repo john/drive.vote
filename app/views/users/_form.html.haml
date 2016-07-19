@@ -1,27 +1,28 @@
+:css
+  .btn-clear { background-color: white; color: #333; border: 2px solid #bdc3c7; padding-right: 30px; padding-left: 30px;}
+  
 = form_for @user, :role => 'form', :html => {:class => 'form-horizontal'}  do |f|
   
   .col-sm-8.field
-    = f.radio_button :user_type, 'rider', checked: !!(@type == 'rider')
-    &nbsp;
-    = f.label :user_type, t(:rider), value: 'rider'
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Can you drive?
+    &nbsp;&nbsp;&nbsp;&nbsp;
+
+    %label
+      .btn.btn-default.btn-clear
+        = f.radio_button :user_type, 'driver', checked: !!(@type == 'driver')
+        &nbsp;
+        = t(:yes)
     
-    = f.radio_button :user_type, 'driver', checked: !!(@type == 'driver')
-    &nbsp;
-    = f.label :user_type, t(:driver), value: 'driver'
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    
-    = f.radio_button :user_type, 'dunno', checked: !!(@type.nil?)
-    &nbsp;
-    = f.label :user_type, t(:dunno), value: 'dunno'
+    &nbsp;&nbsp;
+    %label
+      .btn.btn-default.btn-clear
+        = f.radio_button :user_type, 'rider', checked: !!(@type == 'rider')
+        &nbsp;
+        = t(:no)
       
   .col-sm-8.field
-    = f.label :phone_number, t(:phone_number)
+    = f.label :phone_number, "#{t(:phone_number)} *"
     = f.telephone_field :phone_number, class: 'form-control', autofocus: true
-
-  .col-sm-8.field
-    = f.label t(:description), t(:description)
-    = f.text_area :description, class: 'form-control'
 
   .col-sm-8.field
     = f.label :address1, t(:address)
@@ -29,21 +30,41 @@
 
   .clearfix
 
-  .col-sm-4.field
-    = f.label :city, t(:city)
-    = f.text_field :city, class: 'form-control'
-
-  .col-sm-3.field
-    = f.label :state, t(:state)
-    %br
-    = collection_select('user', 'state', CS.states(:us), :first, :last, {prompt: 'Select your state'}, {html_options: "required"})
-
-  .clearfix
-
   .col-sm-8.field
-    = f.label :zip
-    = f.text_field :zip, class: 'form-control'
+    = f.label :city_state, "#{t(:city)} and #{t(:state)} *"
+    = f.text_field :city_state, class: 'form-control'
+    
+  .col-sm-8.field
+    = f.submit t(:save), class: 'btn btn-primary', style: 'width: 100%', disable_with: "#{t(:saving)}..."
+    
+    .small{style: 'margin: 0 0 50px 0;'}
+      By saving your are agreeing to the #{link_to t(:terms_of_service), terms_of_service_path, target: '_blank'}.
+    
+    
+  -#
+    / = f.radio_button :user_type, 'dunno', checked: !!(@type.nil?)
+    / &nbsp;
+    / = f.label :user_type, t(:dunno), value: 'dunno'
+    
+  -# Don't display if they're coming from signup, otherwise do
+    / .col-sm-8.field
+    /   = f.label t(:description), t(:description)
+    /   = f.text_area :description, class: 'form-control'
+    
+    
+  -# 
+    / .col-sm-1.field
+    /   = f.label :state, t(:state)
+    /   %br
+    /   = collection_select('user', 'state', CS.states(:us), :first, :first, {prompt: ''}, {html_options: "required"})
+    /
+    / .col-sm-2.field
+    /   = f.label :zip
+    /   = f.text_field :zip, class: 'form-control'
 
+
+
+  -# Don't display if they're coming from signup, otherwise do
   -# .col-sm-8.field
     / #{t(:languages)}:
     / %label
@@ -84,7 +105,8 @@
 
   
       -# %link{:rel => "stylesheet", :href => "https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css"}
-  %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"}
+  
+  /%script{:src => "https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"}
 
   / .col-sm-8.field
   /   How many passengers can you take?
@@ -99,11 +121,7 @@
   /
   /   = collection_select('user', 'start_drive_time', @time_hash, :first, :last)
 
-  .col-sm-8.field
-    %label
-      = f.check_box :accepted_tos, required: 'required'
-      &nbsp; #{t(:agree_to)} #{link_to t(:terms_of_service), terms_of_service_path, target: '_blank'}? &nbsp;
-      
-  .col-sm-8.field
-    = f.submit t(:save), class: 'btn btn-primary btn-home', disable_with: "#{t(:saving)}..."
-    
+  -# .col-sm-8.field
+    / %label
+    /   = f.check_box :accepted_tos, required: 'required'
+    /   &nbsp; #{t(:agree_to)} #{link_to t(:terms_of_service), terms_of_service_path, target: '_blank'}? &nbsp;
