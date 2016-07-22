@@ -3,7 +3,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview
   def facebook
     # You need to implement the method below in your model (e.g. app/models/user.rb)
-    @user = User.from_omniauth(request.env["omniauth.auth"])
+    @user = User.from_omniauth(request.env["omniauth.auth"], request.env["omniauth.params"])
     
     if @user.persisted?
       user_type = check_for_user_type(request.env["omniauth.params"])

@@ -5,12 +5,18 @@ Rails.application.routes.draw do
   
   resources :campaigns, only: [:index, :show]
   resources :elections, only: [:index, :show]
-  resources :users #, only: [:show, :new, :create, :edit, :update]
+  
+  resources :users do #, only: [:show, :new, :create, :edit, :update]
+    get :confirm, on: :member
+  end
+  match '/confirm' => 'home#confirm', via: :get, as: :confirm
   
   match '/index2' => 'home#index2', via: :get, as: :index2
+  match '/instructions' => 'home#instructions', via: :get, as: :instructions
+  
+  
   match '/about' => 'home#about', via: :get, as: :about
   match '/terms_of_service' => 'home#terms_of_service', via: :get, as: :terms_of_service
-  match '/instructions' => 'home#instructions', via: :get, as: :instructions
     
   match '/admin' => 'admin/admin#index', via: :get
   namespace :admin do

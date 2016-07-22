@@ -22,6 +22,12 @@
 en:
   yes: 'Yes'
   no: 'No'
+  or: 'or'
+  hi: 'Hi'
+  thanks: 'Thanks'
+  save: 'Save'
+  saving: 'Saving'
+  
   drive_the_vote: 'Drive the Vote'
   home: 'Home'
   faq: 'faq'
@@ -56,12 +62,9 @@ en:
   need_ride: 'do you need a ride'
   agree_to: 'Agree to'
   terms_of_service: 'terms of service'
-  save: 'Save'
-  saving: 'Saving'
   
-  hi: 'Hi'
-  thanks: 'Thanks'
   almost_done: 'Almost done'
+  just_sign_up: 'just sign up'
   sign_in: "Sign in"
   sign_in_with_facebook: 'Sign in with Facebook'
   sign_out: 'Sign out'

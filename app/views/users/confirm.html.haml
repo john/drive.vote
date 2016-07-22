@@ -1,0 +1,37 @@
+%link{:href => 'http://addtocalendar.com/atc/1.5/atc-style-blue.css', :rel => 'stylesheet'}
+
+:javascript
+  (function () {
+    if (window.addtocalendar)if(typeof window.addtocalendar.start == "function") return;
+    if (window.ifaddtocalendar == undefined) {
+      window.ifaddtocalendar = 1;
+      var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+      s.type = 'text/javascript';s.charset = 'UTF-8';s.async = true;
+      s.src = ('https:' == window.location.protocol ? 'https' : 'http')+'://addtocalendar.com/atc/1.5/atc.min.js';
+      var h = d[g]('body')[0];h.appendChild(s);
+    }
+  })();
+
+:css
+  /*  h5, h6, p { text-align: left; }*/
+
+.row
+  .col-sm-6.col-sm-offset-3
+    %h4
+      Thanks!
+    
+    %p{style: 'margin-top: -5px;'}
+      We'll contact you before the election.
+      
+    %p
+      The election is on Tuesday, November 8, 2016. 
+      %span.addtocalendar.atc-style-blue
+        %var.atc_event
+          %var.atc_date_start 2016-05-04 12:00:00
+          %var.atc_date_end 2016-05-04 18:00:00
+          %var.atc_timezone Europe/London
+          %var.atc_title Star Wars Day Party
+          %var.atc_description May the force be with you
+          %var.atc_location Tatooine
+          %var.atc_organizer Luke Skywalker
+          %var.atc_organizer_email luke@starwars.com

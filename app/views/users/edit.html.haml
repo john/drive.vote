@@ -31,11 +31,9 @@
 
 = render 'form'
 
-#response
-
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=#{@google_api_key}"></script>
-<script src="https://rawgithub.com/sgruhier/typeahead-addresspicker/master/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
-<script src="https://rawgithub.com/sgruhier/typeahead-addresspicker/master/dist/typeahead-addresspicker.js"></script>
+%script{:src => 'https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/dist/typeahead.bundle.min.js'}
+%script{:src => 'https://cdnjs.cloudflare.com/ajax/libs/typeahead-addresspicker/0.1.4/typeahead-addresspicker.min.js'}
 
 :javascript
   $( function() {
@@ -48,5 +46,20 @@
         var city_state = data.description.split(',');
         return city_state[0] + ', ' + city_state[1];
       }
+    });
+    
+    addressPicker.bindDefaultTypeaheadEvent($('#user_city_state'));
+    
+    $(addressPicker).on('addresspicker:selected', function (event, result) {
+      
+      //alert('result.address(): ' + result.address());
+      
+      var city_state = result.address().split(',');
+      $('#user_city').val( city_state[0] );
+      $('#user_state').val( city_state[1] );
+      
+      //alert("city:" + $('#user_city').val() );
+      //alert("state:" + $('#user_state').val() );
+      
     });
   })

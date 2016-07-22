@@ -1,39 +1,13 @@
 .row
-  .col-sm-6.col-sm-offset-3.text-center
-    - if user_signed_in?
-      .row
-        = render partial: 'election_countdown', locals: {top: '0'}
+  - if user_signed_in?
+    .col-sm-6.col-sm-offset-3
+      = render partial: 'signed_in'
 
-      %p{style: 'margin-top: 20px;'}
-        %span{style: "font-weight: bold; font-size: 18px;"}
-          = pluralize(@user_count, 'person')
-
-        #{"is".pluralize(@user_count)} Driving the Vote!
-
-      %p
-        A few weeks before the election we'll suggest matches for riders and drivers. We'll send the occasional notification between now and then, like when the location of your polling place has been finalized.
-
-    - else
-      .description
-        %b
-          #{t(:drive_the_vote)}
-        = t(:short_description).gsub( /\n+/, "<br>" ).html_safe
-  
-      .volunteer
-        = link_to instructions_path(type: 'driver', campaign: params[:campaign_slug]) do
-          %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
-            = t(:will_drive)
-      
-      .request
-        = link_to instructions_path(type: 'rider', campaign: params[:campaign_slug]) do
-          %button.btn.btn-lg.btn-danger.btn-home{role: 'button'}
-            = t(:i_need_ride)
-
-      .row.sign_up
-        .col-sm-12.text-center{style: 'font-size: 12px;'}
-          Or #{link_to 'just sign up', user_facebook_omniauth_authorize_path(type: 'dunno', campaign: params[:campaign_slug])}.
+  - else
+    .col-sm-6.col-sm-offset-3.text-center
+      = render partial: 'signed_out'
   
 .navbar.navbar-default.navbar-fixed-bottom
   .container
     .col-sm-12.text-center
-      = link_to t(:learn_more), about_path, class: 'btn btn-xs btn-default', style: 'font-size: 12px;'
+      = link_to t(:learn_more), about_path(locale: I18n.locale.to_s), class: 'btn btn-xs btn-default', style: 'font-size: 12px;'

@@ -22,6 +22,12 @@
 es:
   yes: 'Sí'
   no: 'No'
+  or: 'o'
+  hi: 'Hola'
+  thanks: 'Gracias'
+  save: 'Guardar'
+  saving: 'Guardiendo'
+  
   drive_the_vote: 'Conduzca la Vota'
   home: 'Inicio'
   faq: 'Preguntas más frecuentes'
@@ -55,11 +61,11 @@ es:
   need_ride: 'usted necesita un paseo'
   agree_to: 'De acuerdo con'
   terms_of_service: 'términos de servicio'
-  save: 'Guardar'
   
-  hi: 'Hola'
-  thanks: 'Gracias'
+  
+  
   almost_done: 'Casi termino'
+  just_sign_up: 'sólo tiene que registrarse'
   sign_in: "Iniciar sesión"
   sign_in_with_facebook: 'Accede con Facebook'
   sign_out: 'Cerrar sesión'

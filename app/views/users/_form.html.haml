@@ -1,5 +1,5 @@
 :css
-  .btn-clear { background-color: white; color: #333; border: 2px solid #bdc3c7; padding-right: 30px; padding-left: 30px;}
+  .btn-clear { background-color: white; color: #333; border: 2px solid #bdc3c7; padding-right: 20px; padding-left: 20px;}
   
 = form_for @user, :role => 'form', :html => {:class => 'form-horizontal'}  do |f|
   
@@ -34,12 +34,15 @@
     = f.label :city_state, "#{t(:city)} and #{t(:state)} *"
     = f.text_field :city_state, class: 'form-control'
     
+    -# These hidden fields
+    = f.hidden_field :city, :value => '' 
+    = f.hidden_field :state, :value => '' 
+    
   .col-sm-8.field
-    = f.submit t(:save), class: 'btn btn-primary', style: 'width: 100%', disable_with: "#{t(:saving)}..."
+    = f.submit t(:save), class: 'btn btn-primary', style: 'width: 100%; margin-top: 10px;', disable_with: "#{t(:saving)}..."
     
-    .small{style: 'margin: 0 0 50px 0;'}
+    .small{style: 'margin: 10px 0 50px 0;'}
       By saving your are agreeing to the #{link_to t(:terms_of_service), terms_of_service_path, target: '_blank'}.
-    
     
   -#
     / = f.radio_button :user_type, 'dunno', checked: !!(@type.nil?)

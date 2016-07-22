@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 20160704073032) do
     t.string   "phone_number_normalized"
     t.string   "image_url",                                           default: "", null: false
     t.string   "primary_language",                                    default: "", null: false
+    t.string   "signup_locale",                                       default: "", null: false
     t.string   "languages_spoken",                                    default: "", null: false
     t.string   "car_make_and_model",                                  default: "", null: false
     t.integer  "max_passengers"
@@ -75,7 +76,7 @@ ActiveRecord::Schema.define(version: 20160704073032) do
     t.decimal  "longitude",                 precision: 15, scale: 10
     t.string   "provider",                                            default: "", null: false
     t.string   "uid",                                                 default: "", null: false
-    t.string   "reset_password_token",                                default: "", null: false
+    t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.integer  "sign_in_count",                                       default: 0,  null: false

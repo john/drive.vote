@@ -6,6 +6,7 @@ class User < ApplicationRecord
          :omniauthable, :omniauth_providers => [:facebook]
   
   enum user_type: [:admin, :driver, :rider, :dunno]
+  enum party_affiliation: [:democratic, :republican, :green, :libertarian, :conservative]
   
   attr_accessor :city_state
   
@@ -35,12 +36,16 @@ class User < ApplicationRecord
   # validates :agree_to_background_check, :acceptance => true
   # validates_presence_of :state
   
-  def self.from_omniauth(auth)
+  def self.from_omniauth(auth, params={})
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
       user.password = Devise.friendly_token[0,20]
       user.name = auth.info.name   # assuming the user model has a name
       user.image_url = auth.info.image # assuming the user model has an image
+      
+      if params.has_key?('locale')
+        user.signup_locale = params['locale']
+      end
     end
   end
   

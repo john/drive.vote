@@ -2,7 +2,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
   def change
     create_table :users do |t|
       t.string :name, :null => false
-      t.integer :user_type, :null => false, :default => 0
+      t.integer :user_type
       
       ## Database authenticatable
       t.string :email,              null: false, default: ""
@@ -10,23 +10,24 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.integer :agree_to_background_check
       t.integer :accepted_tos
       t.integer :email_list
-      t.integer :speaks_spanish
-      t.integer :speaks_english
+      t.integer :party_affiliation
       
       t.string :phone_number, null: false, default: ""
       t.string :phone_number_normalized
       t.string :image_url, null: false, default: ""
-      t.string :primary_language, null: false, default: ""
+      
       t.string :signup_locale, null: false, default: ""
+      t.integer :speaks_spanish
+      t.integer :speaks_english
+      t.string :primary_language, null: false, default: ""
       t.string :languages_spoken, null: false, default: ""
+      
       t.string :car_make_and_model, null: false, default: "" # for drivers
       t.integer :max_passengers # for drivers--not including driver
-      
       t.time :start_drive_time
       t.time :end_drive_time
       
       t.text :description # bio of the user
-      t.text :special_requests # needs a carseat, etc
       t.string :address1, null: false, default: ""
       t.string :address2, null: false, default: ""
       t.string :city, null: false, default: ""
