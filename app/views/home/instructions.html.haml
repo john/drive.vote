@@ -26,6 +26,6 @@
         %td.instruction
           = t(:confirm)
         
-    = link_to user_facebook_omniauth_authorize_path(type: params[:type], campaign: params[:campaign_slug], locale: I18n.locale.to_s) do
+    = link_to user_facebook_omniauth_authorize_path(type: params[:type], campaign: params[:campaign], locale: I18n.locale.to_s) do
       %button.btn.btn-primary.btn-lg.btn-home{role: 'button'}
         = t(:got_it)

@@ -93,7 +93,7 @@ class UsersController < ApplicationController
         
         format.html do
           if new_user
-            redirect_to confirm_userpath(@user), notice: notice
+            redirect_to confirm_user_path(@user), notice: notice
           else
             redirect_to @user, notice: notice
           end

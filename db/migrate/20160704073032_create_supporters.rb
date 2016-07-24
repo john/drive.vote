@@ -3,6 +3,8 @@ class CreateSupporters < ActiveRecord::Migration[5.0]
     create_table :supporters do |t|
       t.integer :user_id
       t.integer :campaign_id
+      t.string :locale
+      t.string :locale, null: false, default: ""
 
       t.timestamps
     end

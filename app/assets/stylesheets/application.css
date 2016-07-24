@@ -12,7 +12,8 @@
  *
  *= require_tree .
  *= require_self
- *= require humane-rails/libnotify
- *= require glyphicons
  *= require drive.vote
+ *= require glyphicons
+ *= require humane-rails/libnotify
+ 
  */

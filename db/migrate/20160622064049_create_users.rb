@@ -16,7 +16,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :phone_number_normalized
       t.string :image_url, null: false, default: ""
       
-      t.string :signup_locale, null: false, default: ""
+      t.string :locale, null: false, default: ""
       t.integer :speaks_spanish
       t.integer :speaks_english
       t.string :primary_language, null: false, default: ""

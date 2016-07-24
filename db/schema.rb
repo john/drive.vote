@@ -38,34 +38,35 @@ ActiveRecord::Schema.define(version: 20160704073032) do
   create_table "supporters", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "campaign_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.string   "locale",      default: "", null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.index ["campaign_id"], name: "index_supporters_on_campaign_id", using: :btree
     t.index ["user_id"], name: "index_supporters_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
     t.string   "name",                                                             null: false
-    t.integer  "user_type",                                           default: 0,  null: false
+    t.integer  "user_type"
     t.string   "email",                                               default: "", null: false
     t.string   "encrypted_password",                                  default: "", null: false
     t.integer  "agree_to_background_check"
     t.integer  "accepted_tos"
     t.integer  "email_list"
-    t.integer  "speaks_spanish"
-    t.integer  "speaks_english"
+    t.integer  "party_affiliation"
     t.string   "phone_number",                                        default: "", null: false
     t.string   "phone_number_normalized"
     t.string   "image_url",                                           default: "", null: false
+    t.string   "locale",                                              default: "", null: false
+    t.integer  "speaks_spanish"
+    t.integer  "speaks_english"
     t.string   "primary_language",                                    default: "", null: false
-    t.string   "signup_locale",                                       default: "", null: false
     t.string   "languages_spoken",                                    default: "", null: false
     t.string   "car_make_and_model",                                  default: "", null: false
     t.integer  "max_passengers"
     t.time     "start_drive_time"
     t.time     "end_drive_time"
     t.text     "description"
-    t.text     "special_requests"
     t.string   "address1",                                            default: "", null: false
     t.string   "address2",                                            default: "", null: false
     t.string   "city",                                                default: "", null: false

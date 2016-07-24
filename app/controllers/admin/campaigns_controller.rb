@@ -20,7 +20,7 @@ class Admin::CampaignsController < Admin::AdminApplicationController
     @campaign = Campaign.new(campaign_params)
 
     if @campaign.save
-      redirect_to @campaign, notice: 'Campaign was successfully created.'
+      redirect_to admin_campaigns_path, notice: 'Campaign was successfully created.'
     else
       render :new
     end

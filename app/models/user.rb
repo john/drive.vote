@@ -36,6 +36,10 @@ class User < ApplicationRecord
   # validates :agree_to_background_check, :acceptance => true
   # validates_presence_of :state
   
+  def is_admin?
+    true
+  end
+  
   def self.from_omniauth(auth, params={})
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
@@ -44,7 +48,7 @@ class User < ApplicationRecord
       user.image_url = auth.info.image # assuming the user model has an image
       
       if params.has_key?('locale')
-        user.signup_locale = params['locale']
+        user.locale = params['locale']
       end
     end
   end

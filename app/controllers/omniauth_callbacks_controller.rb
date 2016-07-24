@@ -3,19 +3,35 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview
   def facebook
     # You need to implement the method below in your model (e.g. app/models/user.rb)
-    @user = User.from_omniauth(request.env["omniauth.auth"], request.env["omniauth.params"])
+    
+    
+    passed_thru_params = request.env["omniauth.params"]
+    logger.debug "passed_thru_params: " + passed_thru_params.inspect
+    
+    @user = User.from_omniauth(request.env["omniauth.auth"], passed_thru_params)
     
     if @user.persisted?
-      user_type = check_for_user_type(request.env["omniauth.params"])
+      user_type = check_for_user_type(passed_thru_params)
       session[:user_type] = user_type
    
-      if request.env["omniauth.params"].has_key?('campaign')
-        slug = request.env["omniauth.params"]['campaign']
+      # if params.has_key?('locale')
+      if passed_thru_params.has_key?('campaign')
+            
+        logger.debug '--'
+        logger.debug "passed_thru_params: " + passed_thru_params.inspect
+        logger.debug '--'
+        
+        slug = passed_thru_params['campaign']
         campaign = Campaign.find_by_slug(slug)
         
         if campaign.present?
-          supporter = Supporter.create!( user_id: @user.id, campaign_id: campaign.id )
+          supporter = Supporter.create!( user_id: @user.id, campaign_id: campaign.id, locale: passed_thru_params['locale'])
+        else
+          logger.debug '-- NO CAMPAIGN PRESENT -- '
         end
+        
+      else
+        logger.debug '-- NO PARAMS PASSED THROUGH -- '
       end
         
       UserMailer.welcome_email(@user).deliver_later

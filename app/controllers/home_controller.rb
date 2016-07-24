@@ -5,7 +5,7 @@ class HomeController < ApplicationController
   
   def index
     # @user_count = User.count if user_signed_in?
-    # render template: "home/index2"
+    render template: "home/index2"
   end
   
   def index2
