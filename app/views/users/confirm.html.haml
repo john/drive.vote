@@ -16,22 +16,43 @@
   /*  h5, h6, p { text-align: left; }*/
 
 .row
-  .col-sm-6.col-sm-offset-3
+  .col-sm-6.col-sm-offset-3.text-center
     %h4
       Thanks!
     
     %p{style: 'margin-top: -5px;'}
       We'll contact you before the election.
       
+  .col-sm-3.col-sm-offset-3{style: 'margin-bottom: 10px;'}
+      
+    %a.btn.btn-block.btn-social.btn-twitter{href: "http://twitter.com/intent/tweet?text=Rideshare%20to%20the%20polls%20with%20Drive%20the%20Vote!&amp;url=http://www.drive.vote&amp;via=drivevote&amp;related=wordie", target: '_blank'}
+      %span.fa.fa-twitter
+      Share on Twitter
+      
+    
+    
+  .col-sm-3{style: 'margin-bottom: 10px;'}
+      
+    %a.btn.btn-block.btn-social.btn-facebook{href: "http://www.facebook.com/sharer/sharer.php?u=http://www.drive.vote", target: '_blank'}
+      %span.fa.fa-facebook
+      Share on Facebook
+      
+      
+
+      
+      -# <a href="https://twitter.com/intent/tweet" class="twitter-mention-button" data-size="large" data-text="Rideshare to the polls with Drive the Vote!" data-related="wordie" data-show-count="false">Share Drive the Vote on Twitter!</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+  .col-sm-6.col-sm-offset-3.text-center
+    %br
     %p
-      The election is on Tuesday, November 8, 2016. 
+      The election is on Tuesday, November 8, 2016.
+    
+    %p
       %span.addtocalendar.atc-style-blue
         %var.atc_event
-          %var.atc_date_start 2016-05-04 12:00:00
+          %var.atc_date_start 2016-11-08 12:00:00
           %var.atc_date_end 2016-05-04 18:00:00
-          %var.atc_timezone Europe/London
-          %var.atc_title Star Wars Day Party
-          %var.atc_description May the force be with you
-          %var.atc_location Tatooine
-          %var.atc_organizer Luke Skywalker
-          %var.atc_organizer_email luke@starwars.com
+          %var.atc_timezone America/Los_Angeles
+          %var.atc_title 2016 U.S. Presidential Election
+          %var.atc_description Get to my polling place and vote!
+          %var.atc_location #{current_user.city}, #{current_user.state}

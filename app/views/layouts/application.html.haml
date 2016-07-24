@@ -20,7 +20,12 @@
     %meta{ property:'og:image', :content => 'https://www.drive.vote/drive_the_vote.png' }
     
     %link{:href => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', :rel => 'stylesheet'}
-    %link{:rel => "stylesheet", :href => "https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css"}
+    
+    %link{:href => "https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css", :rel => "stylesheet"}
+    
+    %link{href: "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css", rel: "stylesheet"}
+    
+    %link{href: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css", rel: "stylesheet"}
     
     :css
       .faq { margin-top: 10px; }
@@ -66,7 +71,7 @@
                 = link_to t(:sign_in), user_facebook_omniauth_authorize_path
             %li= link_to "Español", :locale=>'es'
             %li= link_to "English", :locale=>'en'
-            - if false #!user_signed_in?
+            - if !user_signed_in?
               %li.hidden-xs
                 %p.navbar-btn
                   = link_to t(:sign_in), user_facebook_omniauth_authorize_path, class: 'btn btn-default btn-xs', role: 'button', style: 'margin: 7px 0 0 10px;'
