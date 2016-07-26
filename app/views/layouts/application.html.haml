@@ -13,6 +13,8 @@
     %meta{ name: 'description', content: 'Drive the Vote matches people who need rides to their polling place with volunteer drivers who want to take them there. No car should not mean no vote.' }
     %meta{ name: 'author', content: 'John McGrath' }
     
+    <meta name="google-site-verification" content="viExRr2P8s3c3Tq1fXu9qc2Tg_npPT7HtkBTpD97t_0" />
+    
     %meta{ property: 'og:type', content: "website" }
     %meta{ property: 'og:title', :content => 'Drive the Vote!' }
     %meta{ property: 'og:site_name', :content => 'Drive the Vote!' }
@@ -37,6 +39,15 @@
     = stylesheet_link_tag "application", :media => "all"
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     
+    :javascript
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-80989577-1', 'auto');
+      ga('send', 'pageview');
+      
   %body
     <div id="fb-root"></div>
     <script>(function(d, s, id) {
@@ -108,13 +119,4 @@
         humane.notice( '#{notice}' );
         //]]>
       
-%script{:src => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'}
-:javascript
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-80989577-1', 'auto');
-  ga('send', 'pageview');
-  
+%script{:src => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'}  

@@ -1,12 +1,9 @@
 class Admin::CampaignsController < Admin::AdminApplicationController
   
-  before_action :set_campaign, only: [:show, :edit, :update, :destroy]
+  before_action :set_campaign, only: [:edit, :update, :destroy]
 
   def index
     @campaigns = Campaign.all
-  end
-
-  def show
   end
 
   def new
@@ -49,4 +46,5 @@ class Admin::CampaignsController < Admin::AdminApplicationController
     def campaign_params
       params.require(:campaign).permit(:election_id, :slug, :name, :description, :start_date)
     end
+  
 end

@@ -21,8 +21,8 @@ class CreateMessages < ActiveRecord::Migration[5.0]
       t.string :sms_sid, null: false, default: ""
       t.string :sms_status, null: false, default: ""
       
-      t.integer :num_media, null: false, default: ""
-      t.integer :num_segments, null: false, default: ""
+      t.integer :num_media
+      t.integer :num_segments
       t.string :message_sid, null: false, default: ""
       t.string :account_sid, null: false, default: ""
 

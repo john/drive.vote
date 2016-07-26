@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 
-RSpec.describe RideAreasController, type: :controller do
+RSpec.describe Admin::RideAreasController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
   # RideArea. As you add validations to RideArea, be sure to
