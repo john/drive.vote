@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160704073032) do
+ActiveRecord::Schema.define(version: 20160725070026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,48 @@ ActiveRecord::Schema.define(version: 20160704073032) do
     t.datetime "date"
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer  "ride_area_id"
+    t.integer  "status",          default: 0
+    t.string   "to",              default: "", null: false
+    t.string   "to_city",         default: "", null: false
+    t.string   "to_state",        default: "", null: false
+    t.string   "to_country",      default: "", null: false
+    t.string   "to_zip",          default: "", null: false
+    t.string   "from",            default: "", null: false
+    t.string   "from_city",       default: "", null: false
+    t.string   "from_state",      default: "", null: false
+    t.string   "from_country",    default: "", null: false
+    t.string   "from_zip",        default: "", null: false
+    t.text     "body"
+    t.string   "sms_message_sid", default: "", null: false
+    t.string   "sms_sid",         default: "", null: false
+    t.string   "sms_status",      default: "", null: false
+    t.integer  "num_media",                    null: false
+    t.integer  "num_segments",                 null: false
+    t.string   "message_sid",     default: "", null: false
+    t.string   "account_sid",     default: "", null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  create_table "ride_areas", force: :cascade do |t|
+    t.string   "slug",                                   default: "", null: false
+    t.string   "name",                                   default: "", null: false
+    t.text     "description"
+    t.string   "phone_number"
+    t.string   "short_code"
+    t.string   "city",                                   default: "", null: false
+    t.string   "county",                                 default: "", null: false
+    t.string   "state",                                  default: "", null: false
+    t.string   "zip",                                    default: "", null: false
+    t.string   "country",                                default: "", null: false
+    t.decimal  "latitude",     precision: 15, scale: 10
+    t.decimal  "longitude",    precision: 15, scale: 10
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
   end
 
   create_table "supporters", force: :cascade do |t|

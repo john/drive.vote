@@ -20,8 +20,10 @@
     %h4
       Thanks!
     
-    %p{style: 'margin-top: -5px;'}
+    %p{style: 'margin-top: -10px;'}
       We'll contact you before the election.
+    %p{style: 'margin-top: 30px;'}
+      The more people who participate, the greater the impact. Please share!
       
   .col-sm-3.col-sm-offset-3{style: 'margin-bottom: 10px;'}
       
@@ -29,30 +31,24 @@
       %span.fa.fa-twitter
       Share on Twitter
       
-    
-    
   .col-sm-3{style: 'margin-bottom: 10px;'}
       
     %a.btn.btn-block.btn-social.btn-facebook{href: "http://www.facebook.com/sharer/sharer.php?u=http://www.drive.vote", target: '_blank'}
       %span.fa.fa-facebook
       Share on Facebook
       
-      
-
-      
-      -# <a href="https://twitter.com/intent/tweet" class="twitter-mention-button" data-size="large" data-text="Rideshare to the polls with Drive the Vote!" data-related="wordie" data-show-count="false">Share Drive the Vote on Twitter!</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-  .col-sm-6.col-sm-offset-3.text-center
-    %br
-    %p
-      The election is on Tuesday, November 8, 2016.
-    
-    %p
-      %span.addtocalendar.atc-style-blue
-        %var.atc_event
-          %var.atc_date_start 2016-11-08 12:00:00
-          %var.atc_date_end 2016-05-04 18:00:00
-          %var.atc_timezone America/Los_Angeles
-          %var.atc_title 2016 U.S. Presidential Election
-          %var.atc_description Get to my polling place and vote!
-          %var.atc_location #{current_user.city}, #{current_user.state}
+  -#
+    / .col-sm-6.col-sm-offset-3.text-center
+    /   %br
+    /   %p
+    /     The election is on Tuesday, November 8, 2016.
+    /
+    /   %p
+    /     %span.addtocalendar.atc-style-blue
+    /       %var.atc_event
+    /         %var.atc_date_start 2016-11-08 12:00:00
+    /         %var.atc_date_end 2016-05-04 18:00:00
+    /         %var.atc_timezone America/Los_Angeles
+    /         %var.atc_title 2016 U.S. Presidential Election
+    /         %var.atc_description Get to my polling place and vote!
+    /         %var.atc_location #{current_user.city}, #{current_user.state}

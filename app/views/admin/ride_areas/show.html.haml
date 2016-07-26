@@ -1,0 +1,43 @@
+:css
+  .message { border-bottom: 1px solid #ccc; padding: 20px; }
+  .field-name { text-align: right; padding: 0 20px 0 0; color: #999; }
+  .info { text-align: right; padding: 0 0 0 0; color: #999; text-align: left; color: #222;}
+  
+= render 'admin/nav', {active: 'ride_areas'}
+
+%h2{style: 'margin: 30px 0 40px 0'}
+  = @ride_area.name
+
+
+%h6
+  Messages
+  
+#messages
+  - @ride_area.messages.order('created_at DESC').each do |message|
+    .message
+      %table
+        %tr
+          %td.field-name
+            Received:
+          %td.info
+            = message.created_at.in_time_zone('Pacific Time (US & Canada)').strftime("%l:%M%P, %-m/%-d %Z")
+        %tr
+          %td.field-name
+            From:
+          %td.info
+            = message.from.phony_formatted(normalize: :US, spaces: '-')
+        %tr
+          %td.field-name
+            Message:
+          %td.info
+            = message.body
+        %tr
+          %td.field-name
+            Status:
+          %td.info
+            = message.status
+        %tr
+          %td
+          %td.info
+            = link_to 'View', admin_message_path(message), class: 'btn btn-xs btn-primary'
+              

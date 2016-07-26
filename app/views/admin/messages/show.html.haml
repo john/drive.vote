@@ -1,0 +1,39 @@
+:css
+  .field-name { text-align: right; padding: 0 20px 5px 0; color: #999; }
+  .info { text-align: right; padding: 0 0 5px 0; color: #999; text-align: left; color: #222;}
+
+
+%table.table
+  %tr
+    %td
+      %table
+        %tr
+          %td.field-name
+            From:
+          %td.info
+            = @message.from.phony_formatted(normalize: :US, spaces: '-')
+        %tr
+          %td.field-name
+            Message:
+          %td.info
+            = @message.body
+        %tr
+          %td.field-name
+            Status:
+          %td.info
+
+            = form_for [:admin, @message] do |f|
+              - if @message.errors.any?
+                #error_explanation
+                  %h2= "#{pluralize(@message.errors.count, "error")} prohibited this campaign from being saved:"
+                  %ul
+                    - @message.errors.full_messages.each do |msg|
+                      %li= msg
+    
+              %div{style: 'border: 1px solid black;'}
+                -# = f.label :election_id
+                = collection_select('campaign', 'election_id', Election.all.map{|e| [e.id, e.name]}, :first, :last, {prompt: 'Select election'}, {html_options: "required"})
+            
+          
+            
+            = @message.status

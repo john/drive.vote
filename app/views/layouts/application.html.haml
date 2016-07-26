@@ -4,6 +4,7 @@
     %meta{:charset => 'utf8'}
     %title 🚕 the Vote
     = csrf_meta_tags
+    = action_cable_meta_tag
     
     %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
     %meta{ name: "apple-mobile-web-app-capable", content: "yes" }
@@ -20,11 +21,8 @@
     %meta{ property:'og:image', :content => 'https://www.drive.vote/drive_the_vote.png' }
     
     %link{:href => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', :rel => 'stylesheet'}
-    
     %link{:href => "https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css", :rel => "stylesheet"}
-    
     %link{href: "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css", rel: "stylesheet"}
-    
     %link{href: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css", rel: "stylesheet"}
     
     :css

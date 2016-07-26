@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   
   root 'home#index'
   
+  # Serve websocket cable requests in-process
+  mount ActionCable.server => '/cable'
+  
   resources :campaigns, only: [:index, :show]
   resources :elections, only: [:index, :show]
   
@@ -20,10 +23,16 @@ Rails.application.routes.draw do
     
   match '/admin' => 'admin/admin#index', via: :get
   namespace :admin do
+    
+    post 'twilio/voice' => 'twilio#voice'
+    post 'twilio/sms' => 'twilio#sms'
+    
     match '/' => 'home#index', :via => :get
-    resources :users, only: [:index, :destroy]
-    resources :elections, only: [:index, :new, :create, :edit, :update, :destroy]
     resources :campaigns, only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :elections, only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :messages, only: [:show, :update]
+    resources :ride_areas, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+    resources :users, only: [:index, :destroy]
   end
   
   match "/:campaign_slug" => 'home#index', via: :get

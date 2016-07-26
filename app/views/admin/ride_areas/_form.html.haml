@@ -1,0 +1,33 @@
+:css
+  .notify { margin-bottom: 4px; }
+  .field, .actions { margin-top: 15px; }
+  td { vertical-align: top;}
+  label { margin-top: 10px; font-weight: normal;}
+
+
+= form_for [:admin, @ride_area] do |f|
+  - if @ride_area.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@ride_area.errors.count, "error")} prohibited this ride_area from being saved:"
+      %ul
+        - @ride_area.errors.full_messages.each do |msg|
+          %li= msg
+    
+  .col-sm-8.field
+    = f.label :slug
+    = f.text_field :slug, class: 'form-control'
+    
+  .col-sm-8.field
+    = f.label :name
+    = f.text_field :name, class: 'form-control'
+    
+  .col-sm-8.field
+    = f.label t(:description), t(:description)
+    = f.text_area :description, class: 'form-control'
+    
+  .col-sm-8.field
+    = f.label :phone_number
+    = f.text_field :phone_number, class: 'form-control'
+    
+  .col-sm-8.actions
+    = f.submit 'Save', class: 'btn btn-primary'
