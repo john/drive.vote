@@ -18,7 +18,7 @@ Devise.setup do |config|
 
   # this is drive the vote
   config.omniauth :facebook, '598384123655141', '886f58906c8e0c2579f9785baaf3ba15',
-    {:scope => 'email, publish_actions' }
+    {:scope => 'email' }
                   
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
