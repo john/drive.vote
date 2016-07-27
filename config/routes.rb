@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   
   match '/about' => 'home#about', via: :get, as: :about
   match '/terms_of_service' => 'home#terms_of_service', via: :get, as: :terms_of_service
+  match '/privacy' => 'home#privacy', via: :get, as: :privacy
     
   match '/admin' => 'admin/admin#index', via: :get
   namespace :admin do
