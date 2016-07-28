@@ -34,6 +34,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       end
       
       if Rails.env.production?
+        # http://azukiweb.com/blog/2015/activejob-on-heroku-rails-4/
         UserMailer.welcome_email(@user).deliver_later
       end
       
