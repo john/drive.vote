@@ -14,13 +14,10 @@ gem 'puma'
 gem 'rack-timeout'
 gem 'rails', '>= 5.0.0', '< 5.1'
 gem 'redis'
-
 gem 'rspec'
 gem 'rspec-rails'
-
 gem 'sass-rails', '~> 5.0'
 gem 'sendgrid'
-# gem 'thin'
 gem 'tod'
 gem 'twilio-ruby'
 gem 'uglifier', '>= 1.3.0'
