@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include HasPartyAffiliation
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -6,7 +8,6 @@ class User < ApplicationRecord
          :omniauthable, :omniauth_providers => [:facebook]
   
   enum user_type: [:admin, :driver, :rider, :dunno]
-  enum party_affiliation: [:democratic, :republican, :green, :libertarian, :conservative]
   
   attr_accessor :city_state
   

@@ -3,7 +3,7 @@
   .field, .actions { margin-top: 15px; }
   td { vertical-align: top;}
   label { margin-top: 10px; font-weight: normal;}
-
+  /* .radsio { margin-right: 5px; } */
 
 = form_for [:admin, @campaign] do |f|
   - if @campaign.errors.any?
@@ -24,6 +24,29 @@
   .col-sm-8.field
     = f.label :name
     = f.text_field :name, class: 'form-control'
+    
+  .col-sm-8.field    
+    = f.radio_button :party_affiliation, 'democratic'
+    = f.label :party_affiliation, 'Democratic'
+    &nbsp;&nbsp;
+
+    = f.radio_button :party_affiliation, 'republican'
+    = f.label :party_affiliation, 'Republican'
+    &nbsp;&nbsp;
+
+    = f.radio_button :party_affiliation, 'green'
+    = f.label :party_affiliation, 'Green'
+    &nbsp;&nbsp;
+    
+    = f.radio_button :party_affiliation, 'libertarian'
+    = f.label :party_affiliation, 'Libertarian'
+    &nbsp;&nbsp;
+
+    = f.radio_button :party_affiliation, 'conservative'
+    = f.label :party_affiliation, 'Conservative'
+
+    
+    
     
   .col-sm-8.field
     = f.label t(:description), t(:description)

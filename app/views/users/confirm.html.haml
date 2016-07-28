@@ -12,30 +12,15 @@
     }
   })();
 
-:css
-  /*  h5, h6, p { text-align: left; }*/
-
 .row
   .col-sm-6.col-sm-offset-3.text-center
     %h4
       Thanks!
-    
+      
     %p{style: 'margin-top: -10px;'}
       We'll contact you before the election.
-    %p{style: 'margin-top: 30px;'}
-      The more people who participate, the greater the impact. Please share!
       
-  .col-sm-3.col-sm-offset-3{style: 'margin-bottom: 10px;'}
-      
-    %a.btn.btn-block.btn-social.btn-twitter{href: "http://twitter.com/intent/tweet?text=Rideshare%20to%20the%20polls%20with%20Drive%20the%20Vote!&amp;url=http://www.drive.vote&amp;via=drivevote&amp;related=wordie", target: '_blank'}
-      %span.fa.fa-twitter
-      Share on Twitter
-      
-  .col-sm-3{style: 'margin-bottom: 10px;'}
-      
-    %a.btn.btn-block.btn-social.btn-facebook{href: "http://www.facebook.com/sharer/sharer.php?u=http://www.drive.vote", target: '_blank'}
-      %span.fa.fa-facebook
-      Share on Facebook
+  = render 'home/share'
       
   -#
     / .col-sm-6.col-sm-offset-3.text-center

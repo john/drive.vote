@@ -1,15 +1,13 @@
 class HomeController < ApplicationController
-  http_basic_authenticate_with name: "hi", password: "comeonin", only: :index2
+  http_basic_authenticate_with name: "hi", password: "comeonin", only: :index
   
   skip_before_action :go_complete_profile, :only => [:instructions, :terms_of_service, :privacy]
   
   def index
-    # @user_count = User.count if user_signed_in?
-    render template: "home/index2"
+    @is_new_user = params['is_new_user'].present?
   end
   
-  def index2
-    @user_count = User.count if user_signed_in?
+  def coming_soon
   end
   
   def about

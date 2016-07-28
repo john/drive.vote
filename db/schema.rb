@@ -17,12 +17,13 @@ ActiveRecord::Schema.define(version: 20160725070026) do
 
   create_table "campaigns", force: :cascade do |t|
     t.integer  "election_id"
-    t.string   "slug",        default: "", null: false
-    t.string   "name",        default: "", null: false
+    t.string   "slug",              default: "", null: false
+    t.string   "name",              default: "", null: false
+    t.integer  "party_affiliation"
     t.text     "description"
     t.datetime "start_date"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.index ["slug"], name: "index_campaigns_on_slug", unique: true, using: :btree
   end
 
@@ -52,8 +53,8 @@ ActiveRecord::Schema.define(version: 20160725070026) do
     t.string   "sms_message_sid", default: "", null: false
     t.string   "sms_sid",         default: "", null: false
     t.string   "sms_status",      default: "", null: false
-    t.integer  "num_media",                    null: false
-    t.integer  "num_segments",                 null: false
+    t.integer  "num_media"
+    t.integer  "num_segments"
     t.string   "message_sid",     default: "", null: false
     t.string   "account_sid",     default: "", null: false
     t.datetime "created_at",                   null: false

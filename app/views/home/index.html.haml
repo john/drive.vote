@@ -1,22 +1,12 @@
 .row
-  .col-sm-6.col-sm-offset-3.text-center
-    
-    .description
-      %b
-        #{t(:drive_the_vote)}
-      = t(:short_description).gsub( /\n+/, "<br>" ).html_safe
-    
-    .volunteer
-      %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
-        #{t(:coming_soon)}!
-        
-    .request
-      %button.btn.btn-lg.btn-danger.btn-home{role: 'button'}
-        = link_to t(:click_here), 'http://goo.gl/forms/6Yv1fV4YvxySFZix2', target: '_blank', style: 'color: white; text-decoration: underline;'
-        = t(:to_be_notified)
+  - if user_signed_in?
+    = render partial: 'signed_in'
 
-
+  - else
+    .col-sm-6.col-sm-offset-3.text-center
+      = render partial: 'signed_out'
+  
 .navbar.navbar-default.navbar-fixed-bottom
   .container
     .col-sm-12.text-center
-      = link_to t(:learn_more), about_path, class: 'btn btn-xs btn-default', style: 'font-size: 12px;'
+      = link_to t(:learn_more), about_path(locale: I18n.locale.to_s), class: 'btn btn-xs btn-default', style: 'font-size: 12px;'

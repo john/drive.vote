@@ -14,7 +14,6 @@ Rails.application.routes.draw do
   end
   match '/confirm' => 'home#confirm', via: :get, as: :confirm
   
-  match '/index2' => 'home#index2', via: :get, as: :index2
   match '/instructions' => 'home#instructions', via: :get, as: :instructions
   
   
