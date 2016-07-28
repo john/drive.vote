@@ -1,5 +1,5 @@
 module Webhookable
-extend ActiveSupport::Concern
+  extend ActiveSupport::Concern
 
 	def set_header
     response.headers["Content-Type"] = "text/xml"

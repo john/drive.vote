@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  include UserParams
+  
   before_action :set_user, only: [:show, :edit, :update]
 
   skip_before_action :go_complete_profile, :only => [:create, :edit, :update]
@@ -78,20 +80,27 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     session.delete(:user_type)
-    new_user = @user.phone_number.blank?
+    is_new_user = @user.phone_number.blank?
+    
+    logger.debug '------------------------------'
+    logger.debug "is_new_user: #{is_new_user}"
+    logger.debug '------------------------------'
     
     respond_to do |format|
       if @user.update(user_params)
         
         # different notice if the user was just created
-        notice = (new_user) ? 'Welcome to Drive the Vote!' : 'User was successfully updated.'
+        notice = (is_new_user) ? 'Welcome to Drive the Vote!' : 'User was successfully updated.'
         
         format.html do
-          if new_user
-            redirect_to confirm_user_path(@user), notice: notice
-          else
-            redirect_to @user, notice: notice
-          end
+          # if new_user
+          #   redirect_to confirm_user_path(@user), notice: notice
+          # else
+          #   redirect_to @user, notice: notice
+          # end
+          
+          redirect_to root_path, notice: notice, is_new_user: is_new_user.to_s
+          
         end
         format.json { render :show, status: :ok, location: @user }
       else
@@ -103,21 +112,4 @@ class UsersController < ApplicationController
     end
   end
 
-  private
-    
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      # params.fetch(:user, {})
-      params.require(:user).permit(:name, :user_type, :email, :phone_number, :image_url,
-      :primary_language, :languages_spoken, :car_make_and_model, :max_passengers,
-      :start_drive_time, :end_drive_time, :description, :address1,
-      :address2, :city, :state, :zip, :country, :latitude, :longitude,
-      :accepted_tos, :email_list, :agree_to_background_check, :party_affiliation
-      )
-    end
 end

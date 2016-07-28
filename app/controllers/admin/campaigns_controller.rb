@@ -1,4 +1,5 @@
 class Admin::CampaignsController < Admin::AdminApplicationController
+  include CampaignParams
   
   before_action :set_campaign, only: [:edit, :update, :destroy]
 
@@ -35,16 +36,5 @@ class Admin::CampaignsController < Admin::AdminApplicationController
     @campaign.destroy
     redirect_to campaigns_url, notice: 'Campaign was successfully destroyed.'
   end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_campaign
-      @campaign = Campaign.find(params[:id])
-    end
-
-    # Only allow a trusted parameter "white list" through.
-    def campaign_params
-      params.require(:campaign).permit(:election_id, :slug, :name, :description, :start_date)
-    end
   
 end
