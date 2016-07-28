@@ -33,10 +33,11 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         logger.debug '-- NO PARAMS PASSED THROUGH -- '
       end
       
-      if Rails.env.production?
+      #if Rails.env.production?
         # http://azukiweb.com/blog/2015/activejob-on-heroku-rails-4/
-        UserMailer.welcome_email(@user).deliver_later
-      end
+        # UserMailer.welcome_email(@user).deliver_later
+        UserMailer.welcome_email(@user).deliver_now
+      #end
       
       sign_in_and_redirect @user, event: :authentication, user_type: user_type, is_new_user: true #this will throw if @user is not activated
       set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
