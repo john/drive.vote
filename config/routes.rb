@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks" }
   
+  require 'sidekiq/web'
+  Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
+  authenticate :user do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+  
   root 'home#index'
   
   # Serve websocket cable requests in-process
@@ -14,7 +20,7 @@ Rails.application.routes.draw do
   end
   match '/confirm' => 'home#confirm', via: :get, as: :confirm
   
-  match '/instructions' => 'home#instructions', via: :get, as: :instructions
+  # match '/instructions' => 'home#instructions', via: :get, as: :instructions
   
   
   match '/about' => 'home#about', via: :get, as: :about

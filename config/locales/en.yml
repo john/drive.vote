@@ -22,7 +22,7 @@
 en:
   yes: 'Yes'
   no: 'No'
-  or: 'or'
+  or: 'not sure?'
   hi: 'Hi'
   thanks: 'Thanks'
   save: 'Save'
@@ -40,7 +40,7 @@ en:
   your_profile: 'Your profile'
   your_settings: 'Your settings'  
   short_description: |
-    arranges rides
+    arranges free rides
     to the polls on election day.
   # home2: 'You can sign up as either a driver or a passenger--or just join the community to get information about where you polling place is, who your elected officials are, and whose running for office in your community.'
   election_is_on: 'The 2016 Election is on'
@@ -70,6 +70,11 @@ en:
   sign_out: 'Sign out'
   users: 'users'
   complete_registration: 'Please complete your registration so we can find a match'
+  
+  will_contact: "Within a week of the election we'll contact you to try and arrange a free ride."
+  help_others: "Help others Drive the Vote!"
+  share_on_twitter: "Share on Twitter"
+  share_on_facebook: "Share on Facebook"
   
   how_ridesharing_works: 'How Ridesharing Works'
   fill_out_profile: 'Fill out a quick profile'

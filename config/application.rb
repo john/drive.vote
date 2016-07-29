@@ -21,22 +21,20 @@ module DriveVote
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
-    
-    config.active_job.queue_adapter = :sidekiq
-    
+
     config.assets.paths << "#{Rails}/vendor/assets/fonts"
     
     config.action_mailer.preview_path = "spec/mailers/previews"
     
-    config.action_mailer.smtp_settings = {
-      user_name: ENV['SEND_GRID_USER_NAME'],
-      password: ENV['SEND_GRID_PASSWORD'],
-      domain: "drive.vote",
-      address: "smtp.sendgrid.net",
-      port: 587,
-      authentication: :plain,
-      enable_starttls_auto: true
-    }
+    # config.action_mailer.smtp_settings = {
+    #   user_name: ENV['SEND_GRID_USER_NAME'],
+    #   password: ENV['SEND_GRID_PASSWORD'],
+    #   domain: "drive.vote",
+    #   address: "smtp.sendgrid.net",
+    #   port: 587,
+    #   authentication: :plain,
+    #   enable_starttls_auto: true
+    # }
     
   end
 end

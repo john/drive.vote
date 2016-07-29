@@ -1,3 +1,20 @@
+GIT
+  remote: git://github.com/sinatra/rack-protection.git
+  revision: 8d4f9d488d0591ac7b360d9137b94f8d68901f16
+  specs:
+    rack-protection (2.0.0)
+      rack
+
+GIT
+  remote: git://github.com/sinatra/sinatra.git
+  revision: 3e2379d7175ea7f5896f7a6f9c010c56e587ff03
+  specs:
+    sinatra (2.0.0.pre.alpha)
+      mustermann (~> 0.4)
+      rack (~> 2.0)
+      rack-protection (~> 2.0)
+      tilt (~> 2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -136,6 +153,8 @@ GEM
     multi_json (1.12.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    mustermann (0.4.0)
+      tool (~> 0.2)
     nio4r (1.2.1)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
@@ -199,6 +218,8 @@ GEM
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
     redis (3.3.1)
+    redis-namespace (1.5.2)
+      redis (~> 3.0, >= 3.0.4)
     representable (2.3.0)
       uber (~> 0.0.7)
     responders (2.2.0)
@@ -208,7 +229,7 @@ GEM
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
       rspec-mocks (~> 3.5.0)
-    rspec-core (3.5.1)
+    rspec-core (3.5.2)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -240,10 +261,11 @@ GEM
     sexp_processor (4.7.0)
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
-    sidekiq (4.1.2)
+    sidekiq (4.1.4)
       concurrent-ruby (~> 1.0)
       connection_pool (~> 2.2, >= 2.2.0)
       redis (~> 3.2, >= 3.2.1)
+      sinatra (>= 1.4.7)
     signet (0.7.3)
       addressable (~> 2.3)
       faraday (~> 0.9)
@@ -264,6 +286,7 @@ GEM
     thread_safe (0.3.5)
     tilt (2.0.5)
     tod (2.1.0)
+    tool (0.2.3)
     turbolinks (5.0.0)
       turbolinks-source (~> 5)
     turbolinks-source (5.0.0)
@@ -274,7 +297,7 @@ GEM
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uber (0.0.15)
-    uglifier (3.0.0)
+    uglifier (3.0.1)
       execjs (>= 0.3.0, < 3)
     underscore-rails (1.8.3)
     warden (1.2.6)
@@ -307,16 +330,19 @@ DEPENDENCIES
   pg
   phony_rails
   puma
+  rack-protection!
   rack-timeout
   rails (>= 5.0.0, < 5.1)
   rails-controller-testing
   redis
+  redis-namespace
   rspec
   rspec-rails
   sass-rails (~> 5.0)
   sendgrid
   shoulda-matchers
   sidekiq
+  sinatra!
   spring
   spring-watcher-listen (~> 2.0.0)
   tod
