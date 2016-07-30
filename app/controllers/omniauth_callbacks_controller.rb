@@ -5,6 +5,11 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # You need to implement the method below in your model (e.g. app/models/user.rb)
     
     passed_thru_params = request.env["omniauth.params"]
+    
+    logger.debug '------------------------------'
+    logger.debug "passed_thru_params: #{passed_thru_params.inspect}"
+    logger.debug '------------------------------'
+    
     @user = User.from_omniauth(request.env["omniauth.auth"], passed_thru_params)
     
     if @user.persisted?
@@ -26,7 +31,12 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         end
       end
       
-      sign_in_and_redirect @user, event: :authentication, user_type: user_type, is_new_user: true #this will throw if @user is not activated
+      locale = passed_thru_params['locale'].present? ? passed_thru_params['locale'] : I18n.locale.to_s
+      logger.debug '------------------------------'
+      logger.debug "locale: #{locale}"
+      logger.debug '------------------------------'
+      
+      sign_in_and_redirect @user, event: :authentication, user_type: user_type, is_new_user: true, locale: locale
       set_flash_message(:notice, :success, kind: "Facebook") if is_navigational_format?
     else
       session["devise.facebook_data"] = request.env["omniauth.auth"]

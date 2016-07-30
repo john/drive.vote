@@ -93,14 +93,7 @@ class UsersController < ApplicationController
         notice = (is_new_user) ? 'Welcome to Drive the Vote!' : 'User was successfully updated.'
         
         format.html do
-          # if new_user
-          #   redirect_to confirm_user_path(@user), notice: notice
-          # else
-          #   redirect_to @user, notice: notice
-          # end
-          
-          redirect_to root_path, notice: notice, is_new_user: is_new_user.to_s
-          
+          redirect_to root_path, notice: notice, is_new_user: is_new_user.to_s, locale: I18n.locale.to_s
         end
         format.json { render :show, status: :ok, location: @user }
       else

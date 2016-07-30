@@ -61,6 +61,9 @@ en:
   can_drive: 'can you drive'
   need_ride: 'do you need a ride'
   agree_to: 'Agree to'
+  
+  need_more_info: 'We need a little more info to match you with a ride'
+  by_saving: 'By saving your are agreeing to the'
   terms_of_service: 'terms of service'
   
   almost_done: 'Almost done'

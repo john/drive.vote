@@ -60,9 +60,10 @@ es:
   can_drive: 'se puede conducir'
   need_ride: 'usted necesita un paseo'
   agree_to: 'De acuerdo con'
+  
+  need_more_info: 'Necesitamos un poco más de información para que coincida con un paseo'
+  by_saving: 'Al guardar el está de acuerdo con los'
   terms_of_service: 'términos de servicio'
-  
-  
   
   almost_done: 'Casi termino'
   just_sign_up: 'sólo tiene que registrarse'

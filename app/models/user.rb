@@ -6,6 +6,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:facebook]
+         
+  after_create :send_welcome_email
   
   enum user_type: [:admin, :driver, :rider, :dunno]
   
@@ -52,9 +54,6 @@ class User < ApplicationRecord
         user.locale = params['locale']
       end
     end
-    
-    # http://azukiweb.com/blog/2015/activejob-on-heroku-rails-4/
-    UserMailer.welcome_email(@user).deliver_later
   end
   
   def self.new_with_session(params, session)
@@ -75,6 +74,12 @@ class User < ApplicationRecord
   
   def missing_required_fields?
     !has_required_fields?
+  end
+  
+  private
+  
+  def send_welcome_email
+    UserMailer.welcome_email(self).deliver_later
   end
   
 end

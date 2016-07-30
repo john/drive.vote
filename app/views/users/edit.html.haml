@@ -19,9 +19,9 @@
       / %small{style: 'color: #777;'}
       /   =t(:complete_registration)
     %b{style: 'font-size: 16px;'}
-      Thanks!
+      #{t(:thanks)}!
     %br
-    We need a little more info to match you with a ride
+    = t(:need_more_info)
         
   - if @user.errors.any?  
     #error_explanation
