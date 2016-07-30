@@ -1,7 +1,7 @@
 !!! html
-%html{:lang => 'en'}
+%html{lang: 'en'}
   %head
-    %meta{:charset => 'utf8'}
+    %meta{charset: 'utf8'}
     %title 🚕 the Vote
     = csrf_meta_tags
     
@@ -18,14 +18,14 @@
     <meta name="google-site-verification" content="viExRr2P8s3c3Tq1fXu9qc2Tg_npPT7HtkBTpD97t_0" />
     
     %meta{ property: 'og:type', content: "website" }
-    %meta{ property: 'og:title', :content => 'Drive the Vote!' }
-    %meta{ property: 'og:site_name', :content => 'Drive the Vote!' }
-    %meta{ property: 'og:url', :content => 'https://www.drive.vote' }
-    %meta{ property: 'og:description', :content => 'Drive the Vote matches people who need a ride to their polling place with volunteer drivers, and provides information about voting places, dates, and rules.' }
-    %meta{ property:'og:image', :content => 'https://www.drive.vote/drive_the_vote.png' }
+    %meta{ property: 'og:title', content: 'Drive the Vote!' }
+    %meta{ property: 'og:site_name', content: 'Drive the Vote!' }
+    %meta{ property: 'og:url', content: 'https://www.drive.vote' }
+    %meta{ property: 'og:description', content: 'Drive the Vote matches people who need a ride to their polling place with volunteer drivers, and provides information about voting places, dates, and rules.' }
+    %meta{ property:'og:image', content: 'https://www.drive.vote/drive_the_vote.png' }
     
-    %link{:href => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', :rel => 'stylesheet'}
-    %link{:href => "https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css", :rel => "stylesheet"}
+    %link{href: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', rel: 'stylesheet'}
+    %link{href: "https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css", rel: "stylesheet"}
     %link{href: "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css", rel: "stylesheet"}
     %link{href: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css", rel: "stylesheet"}
     
@@ -36,7 +36,7 @@
       .navbar-default { background-color: white; border: 0; box-shadow: none !important }
       .navbar-static-top { background-color: white; border: 0; box-shadow: none !important }
     
-    = stylesheet_link_tag "application", :media => "all"
+    = stylesheet_link_tag "application", media: "all"
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     
     :javascript
@@ -78,8 +78,8 @@
             - if !user_signed_in?
               %li.visible-xs.hidden-sm.hidden-md.hidden-lg
                 = link_to t(:sign_in), user_facebook_omniauth_authorize_path(locale: I18n.locale.to_s)
-            %li= link_to "Español", :locale=>'es'
-            %li= link_to "English", :locale=>'en'
+            %li= link_to "Español", locale: 'es'
+            %li= link_to "English", locale: 'en'
             - if !user_signed_in?
               %li.hidden-xs
                 %p.navbar-btn
@@ -95,7 +95,7 @@
                   %ul.dropdown-menu{"aria-labelledby": "dropdownMenu1"}
                     -# %li= link_to t(:your_profile), current_user
                     %li= link_to t(:your_settings), "javascript:alert('coming soon');"
-                    %li= link_to t(:sign_out), destroy_user_session_path, {:method => :delete}
+                    %li= link_to t(:sign_out), destroy_user_session_path, {method: :delete}
                     
               -# on smaller screens, when you've got a burger, you don't
               -# %li.visible-xs.hidden-sm.hidden-md.hidden-lg
@@ -103,7 +103,7 @@
               %li.visible-xs.hidden-sm.hidden-md.hidden-lg
                 = link_to t(:your_settings), "javascript:alert('coming soon');"
               %li.visible-xs.hidden-sm.hidden-md.hidden-lg
-                = link_to t(:sign_out), destroy_user_session_path, {:method => :delete}
+                = link_to t(:sign_out), destroy_user_session_path, {method: :delete}
     
                     
     .container        
@@ -119,4 +119,4 @@
         humane.notice( '#{notice}' );
         //]]>
       
-%script{:src => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'}  
+%script{src: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'}  

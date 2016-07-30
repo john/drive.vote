@@ -52,6 +52,9 @@ class User < ApplicationRecord
         user.locale = params['locale']
       end
     end
+    
+    # http://azukiweb.com/blog/2015/activejob-on-heroku-rails-4/
+    UserMailer.welcome_email(@user).deliver_later
   end
   
   def self.new_with_session(params, session)
