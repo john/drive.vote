@@ -32,8 +32,6 @@
     :css
       .faq { margin-top: 10px; }
       .shares { width: 260px; border: 0px solid green; opacity: 0.6; font-size: 13px; margin: 0 auto;}
-      
-      nav
       .navbar { background-color: white; border: 0; box-shadow: none !important }
       .navbar-default { background-color: white; border: 0; box-shadow: none !important }
       .navbar-static-top { background-color: white; border: 0; box-shadow: none !important }
@@ -96,14 +94,14 @@
                   %span.caret.inverse
                   %ul.dropdown-menu{"aria-labelledby": "dropdownMenu1"}
                     -# %li= link_to t(:your_profile), current_user
-                    -# %li= link_to t(:your_settings), "javascript:alert('coming soon');"
+                    %li= link_to t(:your_settings), "javascript:alert('coming soon');"
                     %li= link_to t(:sign_out), destroy_user_session_path, {:method => :delete}
                     
               -# on smaller screens, when you've got a burger, you don't
               -# %li.visible-xs.hidden-sm.hidden-md.hidden-lg
               -#  = link_to t(:your_profile), current_user
-              -# %li.visible-xs.hidden-sm.hidden-md.hidden-lg
-              -#   = link_to t(:your_settings), "javascript:alert('coming soon');"
+              %li.visible-xs.hidden-sm.hidden-md.hidden-lg
+                = link_to t(:your_settings), "javascript:alert('coming soon');"
               %li.visible-xs.hidden-sm.hidden-md.hidden-lg
                 = link_to t(:sign_out), destroy_user_session_path, {:method => :delete}
     
