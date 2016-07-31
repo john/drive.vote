@@ -17,10 +17,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :image_url, null: false, default: ""
       
       t.string :locale, null: false, default: ""
-      t.integer :speaks_spanish
-      t.integer :speaks_english
-      t.string :primary_language, null: false, default: ""
-      t.string :languages_spoken, null: false, default: ""
+      t.string :languages, null: false, default: ""
       
       t.string :car_make_and_model, null: false, default: "" # for drivers
       t.integer :max_passengers # for drivers--not including driver

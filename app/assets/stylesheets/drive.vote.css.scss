@@ -1,3 +1,14 @@
+form {
+  
+  .notify { margin-bottom: 4px; }
+  .field, .actions { margin-top: 15px; }
+  .btn {margin-bottom: 30px; }
+  td { vertical-align: top;}
+  label { margin-top: 10px; font-weight: normal;}
+  
+}
+
+
 p, div {
   font-size: 15px;
 }
@@ -5,6 +16,10 @@ p, div {
 td {
   vertical-align: top;
   border: 0px solid gray;
+}
+
+.admin {
+  background-color: #ffff99;
 }
 
 .description {

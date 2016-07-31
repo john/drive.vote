@@ -2,9 +2,7 @@ class Admin::TwilioController < Admin::AdminApplicationController
   include Webhookable
 
   after_filter :set_header
-
   skip_before_action :verify_authenticity_token
-  
   
   def sms
     message = Message.new
@@ -18,18 +16,25 @@ class Admin::TwilioController < Admin::AdminApplicationController
     # ActionCable.server.broadcast 'message', { from: message.from, body: message.body, status: message.status }
     # head :ok
     
-    if ride_area = RideArea.find_by_phone_number( message.to )
-      message.ride_area_id = ride_area.id
+    if ride_zone = RideZone.find_by_phone_number( message.to )
+      message.ride_zone_id = ride_zone.id
       
       if message.save
         message.reload
         message_body = params["Body"]
         from_number = params["From"]
+        
+        logger.debug '--------------'
+        logger.debug "from_number: #{from_number}"
+        logger.debug "rideaarea number: #{ride_zone.phone_number}"
+        logger.debug '--------------'
+        
+        
         boot_twilio
         sms = @client.messages.create(
           message_id: message.id,
-          # to: Rails.application.secrets.twilio_number,
-          from: from_number,
+          to: from_number,
+          from: ride_zone.phone_number,
           body: "Hi, thanks for contacting us. Someone will text you momentarily to arrange a ride."
         )
       else

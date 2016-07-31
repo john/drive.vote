@@ -1,0 +1,30 @@
+= render 'admin/nav', {active: 'rides'}
+
+%h1
+  Rides
+  %small
+    = link_to 'New Ride', new_admin_ride_path, class: 'btn btn-default btn-sm'
+
+%table
+  %thead
+    %tr
+      %th Ride
+      %th Name
+      %th Description
+      %th Status
+      %th
+      %th
+      %th
+
+  %tbody
+    - @rides.each do |ride|
+      %tr
+        %td= ride.id
+        %td= ride.name
+        %td= ride.description
+        %td= ride.status
+        %td
+          -# = link_to 'Show', ride
+        %td= link_to 'Edit', edit_admin_ride_path(ride)
+        %td
+          -#= link_to 'Destroy', ride, :method => :delete, :data => { :confirm => 'Are you sure?' }

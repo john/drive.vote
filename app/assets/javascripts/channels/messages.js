@@ -1,7 +1,5 @@
 // app/assets/javascripts/channels/messages.js
 
-// app/assets/javascripts/channels/ride_areas.js
-
 //= require cable
 //= require_self
 //= require_tree .
