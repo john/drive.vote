@@ -1,6 +1,14 @@
 # README
 
-Drive the Vote helps people arrange rides to the polls on election day. Please email <john@drive.vote> with questions or comments. Thanks!
+Drive the Vote helps people arrange free rides to the polls on election day.
+
+## Contributing
+
+1. Fork it
+1. Create your feature branch (git checkout -b my-new-feature)
+1. Commit your changes (git commit -am 'Add some feature')
+1. Push to the branch (git push origin my-new-feature)
+1 Create new Pull Request
 
 ## License
 
