@@ -1,16 +1,9 @@
-:css
-  .notify { margin-bottom: 4px; }
-  .field, .actions { margin-top: 15px; }
-  td { vertical-align: top;}
-  label { margin-top: 10px; font-weight: normal;}
-
-
-= form_for [:admin, @ride_area] do |f|
-  - if @ride_area.errors.any?
+= form_for [:admin, @ride_zone] do |f|
+  - if @ride_zone.errors.any?
     #error_explanation
-      %h2= "#{pluralize(@ride_area.errors.count, "error")} prohibited this ride_area from being saved:"
+      %h2= "#{pluralize(@ride_zone.errors.count, "error")} prohibited this ride_zone from being saved:"
       %ul
-        - @ride_area.errors.full_messages.each do |msg|
+        - @ride_zone.errors.full_messages.each do |msg|
           %li= msg
     
   .col-sm-8.field
@@ -30,4 +23,4 @@
     = f.text_field :phone_number, class: 'form-control'
     
   .col-sm-8.actions
-    = f.submit 'Save', class: 'btn btn-primary'
+    = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."

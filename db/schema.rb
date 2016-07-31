@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160725070026) do
+ActiveRecord::Schema.define(version: 20160731174918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20160725070026) do
   end
 
   create_table "messages", force: :cascade do |t|
-    t.integer  "ride_area_id"
+    t.integer  "ride_zone_id"
     t.integer  "status",          default: 0
     t.string   "to",              default: "", null: false
     t.string   "to_city",         default: "", null: false
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 20160725070026) do
     t.datetime "updated_at",                   null: false
   end
 
-  create_table "ride_areas", force: :cascade do |t|
+  create_table "ride_zones", force: :cascade do |t|
     t.string   "slug",                                   default: "", null: false
     t.string   "name",                                   default: "", null: false
     t.text     "description"
@@ -76,6 +76,17 @@ ActiveRecord::Schema.define(version: 20160725070026) do
     t.decimal  "longitude",    precision: 15, scale: 10
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
+  end
+
+  create_table "rides", force: :cascade do |t|
+    t.integer  "campaign_id"
+    t.integer  "ride_zone_id"
+    t.string   "name",         default: "", null: false
+    t.text     "description"
+    t.datetime "pickup_at"
+    t.integer  "status"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "supporters", force: :cascade do |t|
@@ -101,10 +112,7 @@ ActiveRecord::Schema.define(version: 20160725070026) do
     t.string   "phone_number_normalized"
     t.string   "image_url",                                           default: "", null: false
     t.string   "locale",                                              default: "", null: false
-    t.integer  "speaks_spanish"
-    t.integer  "speaks_english"
-    t.string   "primary_language",                                    default: "", null: false
-    t.string   "languages_spoken",                                    default: "", null: false
+    t.string   "languages",                                           default: "", null: false
     t.string   "car_make_and_model",                                  default: "", null: false
     t.integer  "max_passengers"
     t.time     "start_drive_time"

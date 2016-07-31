@@ -1,0 +1,27 @@
+= render 'admin/nav', {active: 'ride_zones'}
+
+%h1
+  Ride Areas
+  %small
+    = link_to 'New Ride Zone', new_admin_ride_zone_path, class: 'btn btn-default btn-sm'
+    
+%table
+  %thead
+    %tr
+      %th Election
+      %th Name
+      %th Slug
+      %th Description
+      %th Phone number
+      %th
+      %th
+
+  %tbody
+    - @ride_zones.each do |ride_zone|
+      %tr
+        %td= link_to ride_zone.name, admin_ride_zone_path(ride_zone)
+        %td= ride_zone.slug
+        %td= ride_zone.description
+        %td= ride_zone.phone_number
+        %td= link_to 'Edit', edit_admin_ride_zone_path(ride_zone)
+        %td= link_to 'Destroy', admin_ride_zone_path(ride_zone), :method => :delete, :data => { :confirm => 'Are you sure?' }

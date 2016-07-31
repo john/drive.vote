@@ -6,7 +6,11 @@
 %ul.nav.nav-tabs
   %li{class: (active == 'home') ? 'active' : ''}= link_to 'Admin home', admin_path
   %li{class: (active == 'users') ? 'active' : ''}= link_to 'Users', admin_users_path
-  %li{class: (active == 'elections') ? 'active' : ''}= link_to 'Elections', admin_elections_path
-  %li{class: (active == 'campaigns') ? 'active' : ''}= link_to 'Campaigns', admin_campaigns_path
-  %li{class: (active == 'ride_areas') ? 'active' : ''}= link_to 'Ride Areas', admin_ride_areas_path
+  
+  - if current_user_is_super_admin?
+    %li{class: (active == 'elections') ? 'active admin' : 'admin'}= link_to 'Elections', admin_elections_path
+    %li{style: 'background-color: #ffff99', class: (active == 'campaigns') ? 'active admin' : 'admin'}= link_to 'Campaigns', admin_campaigns_path
+  
+  %li{class: (active == 'ride_zones') ? 'active' : ''}= link_to 'Ride Zones', admin_ride_zones_path
+  %li{class: (active == 'rides') ? 'active' : ''}= link_to 'Rides', admin_rides_path
   

@@ -37,7 +37,10 @@ Rails.application.routes.draw do
     resources :campaigns, only: [:index, :new, :create, :edit, :update, :destroy]
     resources :elections, only: [:index, :new, :create, :edit, :update, :destroy]
     resources :messages, only: [:show, :update]
-    resources :ride_areas, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+    resources :ride_zones, only: [:index, :show, :new, :create, :edit, :update, :destroy]
+    
+    resources :rides
+    
     resources :users, only: [:index, :destroy]
   end
   

@@ -1,6 +1,6 @@
-class CreateRideAreas < ActiveRecord::Migration[5.0]
+class CreateRideZones < ActiveRecord::Migration[5.0]
   def change
-    create_table :ride_areas do |t|
+    create_table :ride_zones do |t|
       t.string :slug, null: false, default: ""
       t.string :name, null: false, default: ""
       t.text :description

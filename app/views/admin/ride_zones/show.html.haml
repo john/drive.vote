@@ -3,17 +3,16 @@
   .field-name { text-align: right; padding: 0 20px 0 0; color: #999; }
   .info { text-align: right; padding: 0 0 0 0; color: #999; text-align: left; color: #222;}
   
-= render 'admin/nav', {active: 'ride_areas'}
+= render 'admin/nav', {active: 'ride_zones'}
 
 %h2{style: 'margin: 30px 0 40px 0'}
-  = @ride_area.name
-
+  = @ride_zone.name
 
 %h6
   Messages
   
 #messages
-  - @ride_area.messages.order('created_at DESC').each do |message|
+  - @ride_zone.messages.order('created_at DESC').each do |message|
     .message
       %table
         %tr

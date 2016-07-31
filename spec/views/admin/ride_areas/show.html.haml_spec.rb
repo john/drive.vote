@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe "admin/ride_areas/show", :type => :view do
+RSpec.describe "admin/ride_zones/show", :type => :view do
   before(:each) do
-    @ride_area = assign(:ride_area, create(:ride_area))
+    @ride_zone = assign(:ride_zone, create(:ride_zone))
   end
 
   it "renders a ride area" do
