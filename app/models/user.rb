@@ -7,17 +7,21 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:facebook]
          
+  rolify
+         
   after_create :send_welcome_email
   
-  enum user_type: [:admin, :driver, :rider, :dunno]
+  # scope :admins, -> { where(user_type: :admin) }
+  # scope :dispatchers, -> { where(user_type: :dispatcher) }
+  # scope :drivers, -> { where(user_type: :driver) }
+  # scope :riders, -> { where(user_type: :rider) }
   
   attr_accessor :city_state
+  attr_accessor :user_type
+  # attr_accessor :role_ids
   
   serialize :start_drive_time, Tod::TimeOfDay
   serialize :end_drive_time, Tod::TimeOfDay
-  
-  scope :riders, -> { where(user_type: :rider) }
-  scope :drivers, -> { where(user_type: :driver) }
   
   phony_normalize :phone_number, as: :phone_number_normalized, default_country_code: 'US'
   

@@ -13,7 +13,7 @@
       %th Created at
       %th Description
       %th Location
-      -# %th
+      %th
       %th
 
   %tbody
@@ -25,5 +25,5 @@
         %td= user.created_at.strftime("%-m/%-d/%Y, %-H:%M %P (%Z)")
         %td= user.description
         %td #{user.city}, #{user.state}
-        -# %td= link_to 'Edit', edit_admin_user_path(user)
+        %td= link_to 'Edit', edit_admin_user_path(user)
         %td= link_to 'Destroy', admin_user_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }

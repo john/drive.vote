@@ -11,10 +11,9 @@ module UserParams
   def user_params
     # params.fetch(:user, {})
     params.require(:user).permit(:name, :user_type, :email, :phone_number, :image_url,
-    :primary_language, :languages_spoken, :car_make_and_model, :max_passengers,
-    :start_drive_time, :end_drive_time, :description, :address1,
-    :address2, :city, :state, :zip, :country, :latitude, :longitude,
-    :accepted_tos, :email_list, :agree_to_background_check, :party_affiliation
+    :languages_spoken, :max_passengers, :start_drive_time, :end_drive_time,
+    :description, :address1, :address2, :city, :state, :zip, :country, :latitude,
+    :longitude, :accepted_tos, :email_list, :agree_to_background_check, :party_affiliation
     )
   end
   

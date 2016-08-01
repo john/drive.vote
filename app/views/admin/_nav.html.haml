@@ -7,7 +7,7 @@
   %li{class: (active == 'home') ? 'active' : ''}= link_to 'Admin home', admin_path
   %li{class: (active == 'users') ? 'active' : ''}= link_to 'Users', admin_users_path
   
-  - if current_user_is_super_admin?
+  - if current_user.has_role? :admin
     %li{class: (active == 'elections') ? 'active admin' : 'admin'}= link_to 'Elections', admin_elections_path
     %li{style: 'background-color: #ffff99', class: (active == 'campaigns') ? 'active admin' : 'admin'}= link_to 'Campaigns', admin_campaigns_path
   

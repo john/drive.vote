@@ -24,7 +24,7 @@ RSpec.describe CampaignsController, type: :controller do
   # Campaign. As you add validations to Campaign, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    {name: 'foo', slug: 'bar'}
+    {owner_id: 1, name: 'foo', slug: 'bar'}
   }
 
   let(:invalid_attributes) {

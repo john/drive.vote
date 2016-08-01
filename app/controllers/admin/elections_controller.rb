@@ -9,6 +9,7 @@ class Admin::ElectionsController < Admin::AdminApplicationController
 
   def new
     @election = Election.new
+    @election.owner_id = current_user.id
   end
 
   def edit

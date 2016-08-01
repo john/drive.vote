@@ -82,12 +82,21 @@ class UsersController < ApplicationController
     session.delete(:user_type)
     is_new_user = @user.phone_number.blank?
     
-    logger.debug '------------------------------'
-    logger.debug "is_new_user: #{is_new_user}"
-    logger.debug '------------------------------'
-    
     respond_to do |format|
       if @user.update(user_params)
+        
+        # https://github.com/RolifyCommunity/rolify/issues/246
+        # get just the global roles
+        Role.where(resource_id: nil, resource_type: nil).each do |role|
+          role_name = role.name.to_sym
+          if params[role_name] == "1"
+            @user.grant( role_name )
+          elsif params[role_name] == "0"
+            @user.revoke( role_name )
+            
+          end
+        end
+        
         
         # different notice if the user was just created
         notice = (is_new_user) ? 'Welcome to Drive the Vote!' : 'User was successfully updated.'

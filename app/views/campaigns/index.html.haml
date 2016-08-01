@@ -11,7 +11,7 @@
       %th Name
       %th Description
       %th Start date
-      - if current_user_is_admin?
+      - if current_user.has_role? :admin
         %th
         %th
 
@@ -23,6 +23,6 @@
         %td= link_to campaign.name, campaign
         %td= campaign.description
         %td= campaign.start_date
-        - if current_user_is_admin?
+        - if current_user.has_role? :admin
           %td= link_to 'Edit', edit_admin_campaign_path(campaign)
           %td= link_to 'Destroy', campaign, :method => :delete, :data => { :confirm => 'Are you sure?' }

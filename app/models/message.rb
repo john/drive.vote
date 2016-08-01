@@ -1,6 +1,6 @@
 class Message < ApplicationRecord
-  belongs_to :ride_area
+  belongs_to :ride_zone
   
-  enum status: { active: 0, working: 1, closed: 2 }
+  enum status: { active: 0, inprogress: 1, closed: 2 }
 
 end

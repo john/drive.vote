@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160731174918) do
+ActiveRecord::Schema.define(version: 20160731220317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "campaigns", force: :cascade do |t|
+    t.integer  "owner_id",                       null: false
     t.integer  "election_id"
     t.string   "slug",              default: "", null: false
     t.string   "name",              default: "", null: false
@@ -28,6 +29,7 @@ ActiveRecord::Schema.define(version: 20160731174918) do
   end
 
   create_table "elections", force: :cascade do |t|
+    t.integer  "owner_id",                 null: false
     t.string   "slug",        default: "", null: false
     t.string   "name",        default: "", null: false
     t.text     "description"
@@ -79,6 +81,7 @@ ActiveRecord::Schema.define(version: 20160731174918) do
   end
 
   create_table "rides", force: :cascade do |t|
+    t.integer  "owner_id",                  null: false
     t.integer  "campaign_id"
     t.integer  "ride_zone_id"
     t.string   "name",         default: "", null: false
@@ -87,6 +90,16 @@ ActiveRecord::Schema.define(version: 20160731174918) do
     t.integer  "status"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string   "name"
+    t.string   "resource_type"
+    t.integer  "resource_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
+    t.index ["name"], name: "index_roles_on_name", using: :btree
   end
 
   create_table "supporters", force: :cascade do |t|
@@ -113,7 +126,6 @@ ActiveRecord::Schema.define(version: 20160731174918) do
     t.string   "image_url",                                           default: "", null: false
     t.string   "locale",                                              default: "", null: false
     t.string   "languages",                                           default: "", null: false
-    t.string   "car_make_and_model",                                  default: "", null: false
     t.integer  "max_passengers"
     t.time     "start_drive_time"
     t.time     "end_drive_time"
@@ -140,6 +152,12 @@ ActiveRecord::Schema.define(version: 20160731174918) do
     t.datetime "updated_at",                                                       null: false
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  end
+
+  create_table "users_roles", id: false, force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "role_id"
+    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
   end
 
 end

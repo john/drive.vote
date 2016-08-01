@@ -1,7 +1,7 @@
 class CreateMessages < ActiveRecord::Migration[5.0]
   def change
     create_table :messages do |t|
-      t.integer :ride_area_id
+      t.integer :ride_zone_id
       t.integer :status, default: 0
       t.string :to, null: false, default: ""
       t.string :to_city, null: false, default: ""

@@ -1,10 +1,3 @@
-:css
-  .notify { margin-bottom: 4px; }
-  .field, .actions { margin-top: 15px; }
-  td { vertical-align: top;}
-  label { margin-top: 10px; font-weight: normal;}
-  /* .radsio { margin-right: 5px; } */
-
 = form_for [:admin, @campaign] do |f|
   - if @campaign.errors.any?
     #error_explanation
@@ -16,6 +9,10 @@
   .col-sm-8.field
     = f.label :election_id
     = collection_select('campaign', 'election_id', Election.all.map{|e| [e.id, e.name]}, :first, :last, {prompt: 'Select election'}, {html_options: "required"})
+    
+  .col-sm-8.field
+    = f.label :owner_id
+    = collection_select('campaign', 'owner_id', User.with_role(:admin).map{|u| [u.id, u.name]}, :first, :last, {prompt: 'Select owner'}, {html_options: "required"})
     
   .col-sm-8.field
     = f.label :slug
@@ -45,9 +42,6 @@
     = f.radio_button :party_affiliation, 'conservative'
     = f.label :party_affiliation, 'Conservative'
 
-    
-    
-    
   .col-sm-8.field
     = f.label t(:description), t(:description)
     = f.text_area :description, class: 'form-control'
@@ -57,4 +51,4 @@
     = f.datetime_select :start_date
     
   .col-sm-8.actions
-    = f.submit 'Save', class: 'btn btn-primary'
+    = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."

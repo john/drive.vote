@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "admin/rides/show", type: :view do
   before(:each) do
     @ride = assign(:ride, Ride.create!(
+      :owner_id => 1,
       :campaign_id => 2,
       :name => "Name",
       :description => "MyText",

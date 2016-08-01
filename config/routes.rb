@@ -41,7 +41,7 @@ Rails.application.routes.draw do
     
     resources :rides
     
-    resources :users, only: [:index, :destroy]
+    resources :users, only: [:edit, :update, :index, :destroy]
   end
   
   match "/:campaign_slug" => 'home#index', via: :get

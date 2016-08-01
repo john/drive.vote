@@ -19,7 +19,6 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :locale, null: false, default: ""
       t.string :languages, null: false, default: ""
       
-      t.string :car_make_and_model, null: false, default: "" # for drivers
       t.integer :max_passengers # for drivers--not including driver
       t.time :start_drive_time
       t.time :end_drive_time

@@ -9,6 +9,7 @@ class Admin::CampaignsController < Admin::AdminApplicationController
 
   def new
     @campaign = Campaign.new
+    @campaign.owner_id = current_user.id
   end
 
   def edit
