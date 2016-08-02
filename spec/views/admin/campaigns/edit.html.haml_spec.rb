@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "admin/campaigns/edit", type: :view do
   before(:each) do
+    allow(view).to receive(:current_user).and_return( create(:user) )
     @campaign = assign(:campaign, create(:campaign))
   end
 

@@ -1,11 +1,12 @@
 = render 'admin/nav', {active: 'ride_zones'}
 
 %h1
-  Ride Areas
+  Ride Zones
+  &nbsp;
   %small
-    = link_to 'New Ride Zone', new_admin_ride_zone_path, class: 'btn btn-default btn-sm'
+    = link_to 'New Ride Zone', new_admin_ride_zone_path, class: 'btn btn-default btn-xs'
     
-%table
+%table.admin
   %thead
     %tr
       %th Election

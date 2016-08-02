@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "admin/elections/edit", type: :view do
   before(:each) do
+    allow(view).to receive(:current_user).and_return( create(:user) )
     @election = assign(:election, create(:election))
   end
 

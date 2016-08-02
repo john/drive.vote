@@ -1,3 +1,5 @@
+# require 'devise/strategies/auth0_authenticatable'
+
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
@@ -19,7 +21,7 @@ Devise.setup do |config|
   # this is drive the vote
   config.omniauth :facebook, '598384123655141', '886f58906c8e0c2579f9785baaf3ba15',
     {:scope => 'email' }
-                  
+             
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
@@ -258,10 +260,14 @@ Devise.setup do |config|
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
-  #
+  
+  
   # config.warden do |manager|
-  #   manager.intercept_401 = false
-  #   manager.default_strategies(scope: :user).unshift :some_external_strategy
+  #   # manager.intercept_401 = false
+  #   # manager.default_strategies(scope: :user).unshift :some_external_strategy
+  #
+  #   manager.strategies.add(:auth0_authenticatable, Devise::Strategies::Auth0Authenticatable)
+  #   manager.default_strategies(scope: :user).unshift :auth0_authenticatable
   # end
 
   # ==> Mountable engine configurations

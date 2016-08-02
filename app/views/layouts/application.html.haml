@@ -5,8 +5,8 @@
     %title 🚕 the Vote
     = csrf_meta_tags
     
-    - if request.original_url.include?('messages')
-      = action_cable_meta_tag
+    -# if request.original_url.include?('messages')
+      // = action_cable_meta_tag
     
     %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
     %meta{ name: "apple-mobile-web-app-capable", content: "yes" }
@@ -38,8 +38,27 @@
     
     = stylesheet_link_tag "application", media: "all"
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    <script src="https://cdn.auth0.com/js/lock-passwordless-1.0.min.js"></script>
+
     
     :javascript
+      // auth0
+      var clientID = 'OZnDaflWQOer1N9kxgL0r2aAzCn74G56';
+      var domain = 'johnmcgrath.auth0.com';
+
+      var lock = new Auth0LockPasswordless(clientID, domain);
+
+      function open() {
+        lock.sms({
+          //callbackURL: 'https://drive.vote/auth/auth0/callback',
+          callbackURL: 'http://local.drive.vote:3000/auth/auth0/callback',
+          //callbackURL: 'http://89236e61.ngrok.io/auth/auth0/callback',
+          authParams: {
+            scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes 
+          }
+        });
+      }
+    
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -96,6 +115,8 @@
                     -# %li= link_to t(:your_profile), current_user
                     %li= link_to t(:your_settings), "javascript:alert('coming soon');"
                     %li= link_to t(:sign_out), destroy_user_session_path, {method: :delete}
+                    - if current_user.has_role? :admin
+                      %li= link_to 'admin', admin_path, style: 'color: red;'
                     
               -# on smaller screens, when you've got a burger, you don't
               -# %li.visible-xs.hidden-sm.hidden-md.hidden-lg

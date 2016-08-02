@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "admin/rides/edit", type: :view do
   before(:each) do
+    allow(view).to receive(:current_user).and_return( create(:user)  )
     @ride = assign(:ride, Ride.create!(
       :owner_id => 1,
       :campaign_id => 1,

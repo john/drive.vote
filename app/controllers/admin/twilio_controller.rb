@@ -4,6 +4,8 @@ class Admin::TwilioController < Admin::AdminApplicationController
   after_filter :set_header
   skip_before_action :verify_authenticity_token
   
+  skip_before_action :require_admin_priviledges
+  
   def sms
     message = Message.new
     params.each do |param|
@@ -12,7 +14,7 @@ class Admin::TwilioController < Admin::AdminApplicationController
     
     message.save
     
-    ActionCable.server.broadcast 'messages', { from: message.from, body: message.body, status: message.status }
+    # ActionCable.server.broadcast 'messages', { from: message.from, body: message.body, status: message.status }
     # ActionCable.server.broadcast 'message', { from: message.from, body: message.body, status: message.status }
     # head :ok
     
@@ -28,7 +30,6 @@ class Admin::TwilioController < Admin::AdminApplicationController
         logger.debug "from_number: #{from_number}"
         logger.debug "rideaarea number: #{ride_zone.phone_number}"
         logger.debug '--------------'
-        
         
         boot_twilio
         sms = @client.messages.create(

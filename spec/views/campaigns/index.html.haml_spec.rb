@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "campaigns/index", type: :view do
   before(:each) do
+    allow(view).to receive(:current_user).and_return( create(:user)  )
     assign(:campaigns, [
       create(:campaign),
       create(:campaign, election_id: 2, slug: 'Trump16', name: 'Trump 2016')

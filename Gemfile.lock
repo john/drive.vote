@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/sinatra/rack-protection.git
-  revision: b561ee250f165af50094dc8389d403540c74d94c
+  revision: 7e723a74763bb83989d1249cdceb9cceb2ee6f01
   specs:
     rack-protection (2.0.0)
       rack
@@ -334,6 +334,7 @@ DEPENDENCIES
   humane-rails
   jquery-rails
   listen (~> 3.0.5)
+  omniauth
   omniauth-facebook
   pg
   phony_rails

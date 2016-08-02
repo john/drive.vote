@@ -1,13 +1,21 @@
 form {
-  
   .notify { margin-bottom: 4px; }
   .field, .actions { margin-top: 15px; }
   .btn {margin-bottom: 30px; }
   td { vertical-align: top;}
   label { margin-top: 10px; font-weight: normal;}
-  
 }
 
+.admin {
+    small { margin-left: 30px; }
+    td { padding: 10px 20px 10px 0;}
+    th {
+      font-weight: normal;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 10px;
+      padding-right: 20px;
+    }
+}
 
 p, div {
   font-size: 15px;
@@ -18,7 +26,7 @@ td {
   border: 0px solid gray;
 }
 
-.admin {
+.admin-only {
   background-color: #ffff99;
 }
 

@@ -7,6 +7,17 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   end
 
   def show
+    status = params[:status]
+    @messages = case status
+    when 'closed'
+      @ride_zone.messages.order('created_at DESC').closed
+    when 'inprogress'
+      @ride_zone.messages.order('created_at DESC').inprogress
+    when 'unassigned'
+      @ride_zone.messages.order('created_at DESC').unassigned
+    else
+      @ride_zone.messages.order('created_at DESC')
+    end
   end
 
   def new

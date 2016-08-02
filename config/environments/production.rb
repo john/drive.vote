@@ -1,9 +1,21 @@
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider(
+    :auth0,
+    ENV['AUTH0_CLIENT_ID'],
+    ENV['AUTH0_CLIENT_SECRET'],
+    ENV['AUTH0_CLIENT_SECRET'],
+    ENV['AUTH0_NAMESPACE'],
+    callback_path: "https://drive.vote/auth/auth0/callback"
+  )
+end
+
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   
   # Websocket for messages
-  config.action_cable.url = "ws://local.drive.vote:3000/cable"
-  config.action_cable.allowed_request_origins = ['https://drive.vote']
+  # config.action_cable.url = "ws://drive.vote/cable"
+  # config.action_cable.allowed_request_origins = ['https://drive.vote']
 
   # Code is not reloaded between requests.
   config.cache_classes = true

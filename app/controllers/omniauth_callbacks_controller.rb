@@ -5,7 +5,6 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # You need to implement the method below in your model (e.g. app/models/user.rb)
     
     passed_thru_params = request.env["omniauth.params"]
-    
     @user = User.from_omniauth(request.env["omniauth.auth"], passed_thru_params)
     user_type = check_for_user_type(passed_thru_params)
     
@@ -17,10 +16,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       session[:user_type] = user_type
       
       if passed_thru_params.has_key?('campaign')
-        
         slug = passed_thru_params['campaign']
         campaign = Campaign.find_by_slug(slug)
-        
         if campaign.present?
           supporter = Supporter.create!( user_id: @user.id, campaign_id: campaign.id, locale: passed_thru_params['locale'])
         end

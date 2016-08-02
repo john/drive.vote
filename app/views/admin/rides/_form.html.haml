@@ -7,7 +7,7 @@
           %li= msg
 
   - if current_user.has_role? :admin
-    .col-sm-8.field.admin
+    .col-sm-8.field.admin-only
       = f.label :campaign_id
       = f.number_field :campaign_id, class: 'form-control'
     

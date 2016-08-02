@@ -11,8 +11,31 @@
 %h6
   Messages
   
+  %span{style: 'margin-left: 50px; font-weight: normal; font-size: 16px;'}
+    filter: &nbsp;&nbsp;
+    
+  %select#message-status
+    %option
+      all
+    - Message.statuses.each do |status|
+      - selected = (params[:status].present? && params[:status] == status[0]) ? 'selected' : ''
+      
+      - if selected.present?
+        %option{selected: selected}
+          = status[0]
+      - else
+        %option
+          = status[0]
+  
+  :javascript
+    $('#message-status').change(function() {
+      console.log('fu');
+      window.location = "/admin/ride_zones/#{@ride_zone.id}?status=" + $(this).val();
+    });
+    
+    
 #messages
-  - @ride_zone.messages.order('created_at DESC').each do |message|
+  - @messages.each do |message|
     .message
       %table
         %tr
@@ -39,4 +62,4 @@
           %td
           %td.info
             = link_to 'View', admin_message_path(message), class: 'btn btn-xs btn-primary'
-              
+            

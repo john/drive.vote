@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  
+  # get "/auth/auth0/callback" => "auth0#callback"
+#   get "/auth/failure" => "auth0#failure"
+
   devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks" }
   
   require 'sidekiq/web'
@@ -9,8 +13,13 @@ Rails.application.routes.draw do
   
   root 'home#index'
   
+  # https://blog.heroku.com/real_time_rails_implementing_websockets_in_rails_5_with_action_cable
+  # NOTE: to re-enable you also need to uncomment ./channels in application.js,
+  # and the code in /channels/messages.js
+  # and the meta tag in application.html.haml
+  # and lined in development.rb and production.rb
   # Serve websocket cable requests in-process
-  mount ActionCable.server => '/cable'
+  # mount ActionCable.server => '/cable'
   
   resources :campaigns, only: [:index, :show]
   resources :elections, only: [:index, :show]
