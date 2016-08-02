@@ -13,17 +13,6 @@
 Rails.application.configure do
   Rails.env = 'development'
   
-  # config.middleware.use OmniAuth::Builder do
-  #   provider(
-  #     :auth0,
-  #     ENV['AUTH0_CLIENT_ID'],
-  #     ENV['AUTH0_CLIENT_SECRET'],
-  #     ENV['AUTH0_CLIENT_SECRET'],
-  #     ENV['AUTH0_NAMESPACE'],
-  #     callback_path: "http://local.drive.vote:3000/auth/auth0/callback"
-  #   )
-  # end
-  #
   # Websocket for messages
   # config.action_cable.url = "ws://local.drive.vote:3000/cable"
   # config.action_cable.allowed_request_origins = ['http://local.drive.vote:3000']
