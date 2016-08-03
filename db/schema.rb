@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20160803015624) do
   enable_extension "plpgsql"
 
   create_table "campaigns", force: :cascade do |t|
-    t.integer  "owner_id",                       null: false
+    t.integer  "owner_id"
     t.integer  "election_id"
     t.string   "slug",              default: "", null: false
     t.string   "name",              default: "", null: false
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20160803015624) do
   end
 
   create_table "elections", force: :cascade do |t|
-    t.integer  "owner_id",                 null: false
+    t.integer  "owner_id"
     t.string   "slug",        default: "", null: false
     t.string   "name",        default: "", null: false
     t.text     "description"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 20160803015624) do
 
   create_table "messages", force: :cascade do |t|
     t.integer  "ride_zone_id"
+    t.integer  "ride_id"
     t.integer  "status",          default: 0
     t.string   "to",              default: "", null: false
     t.string   "to_city",         default: "", null: false
