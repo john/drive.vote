@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160731220317) do
+ActiveRecord::Schema.define(version: 20160803015624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,29 @@ ActiveRecord::Schema.define(version: 20160731220317) do
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
     t.index ["slug"], name: "index_campaigns_on_slug", unique: true, using: :btree
+  end
+
+  create_table "conversations", force: :cascade do |t|
+    t.integer  "ride_zone_id",                                          null: false
+    t.integer  "user_id",                                               null: false
+    t.string   "from_phone",                               default: "", null: false
+    t.string   "to_phone",                                 default: "", null: false
+    t.integer  "status",                                   default: 0,  null: false
+    t.integer  "lifecycle",                                default: 0,  null: false
+    t.string   "from_address",                             default: ""
+    t.string   "from_city",                                default: ""
+    t.string   "from_state",                               default: ""
+    t.decimal  "from_latitude",  precision: 15, scale: 10
+    t.decimal  "from_longitude", precision: 15, scale: 10
+    t.string   "to_address",                               default: ""
+    t.string   "to_city",                                  default: ""
+    t.string   "to_state",                                 default: ""
+    t.decimal  "to_latitude",    precision: 15, scale: 10
+    t.decimal  "to_longitude",   precision: 15, scale: 10
+    t.datetime "pickup_time"
+    t.integer  "ride_id"
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
   end
 
   create_table "elections", force: :cascade do |t|
@@ -61,6 +84,8 @@ ActiveRecord::Schema.define(version: 20160731220317) do
     t.string   "account_sid",     default: "", null: false
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.integer  "conversation_id"
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
   end
 
   create_table "ride_zones", force: :cascade do |t|
@@ -78,6 +103,7 @@ ActiveRecord::Schema.define(version: 20160731220317) do
     t.decimal  "longitude",    precision: 15, scale: 10
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
+    t.index ["phone_number"], name: "index_ride_zones_on_phone_number", unique: true, using: :btree
   end
 
   create_table "rides", force: :cascade do |t|
@@ -150,7 +176,9 @@ ActiveRecord::Schema.define(version: 20160731220317) do
     t.string   "last_sign_in_ip",                                     default: "", null: false
     t.datetime "created_at",                                                       null: false
     t.datetime "updated_at",                                                       null: false
+    t.integer  "language",                                            default: 0,  null: false
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["phone_number_normalized"], name: "index_users_on_phone_number_normalized", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
