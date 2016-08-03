@@ -14,10 +14,10 @@ Geocoder.configure(
   :timeout => 10,
 
   # set default units to kilometers:
-  :units => :km,
+  :units => :km
 
   # caching (see below for details):
-  :cache => Redis.new,
+  # :cache => Redis.new,
   # :cache_prefix => "dtv_geo"
 
 )

@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
-  
-  # get "/auth/auth0/callback" => "auth0#callback"
-#   get "/auth/failure" => "auth0#failure"
 
-  devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks" }
+  devise_for :users, controllers: {
+    omniauth_callbacks: "users/omniauth_callbacks",
+    session: 'users/sessions',
+    registrations: 'users/registrations',
+    confirmations: 'users/confirmations',
+    passwords: 'users/passwords',
+    unlocks: 'users/unlocks'
+  }
   
   require 'sidekiq/web'
   Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
@@ -28,9 +32,6 @@ Rails.application.routes.draw do
     get :confirm, on: :member
   end
   match '/confirm' => 'home#confirm', via: :get, as: :confirm
-  
-  # match '/instructions' => 'home#instructions', via: :get, as: :instructions
-  
   
   match '/about' => 'home#about', via: :get, as: :about
   match '/terms_of_service' => 'home#terms_of_service', via: :get, as: :terms_of_service

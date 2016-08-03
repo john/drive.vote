@@ -1,21 +1,49 @@
-%h2 Sign up
+%h3{style: 'margin-top: 0'}
+  - if resource.user_type == 'driver'
+    I Can Drive
+  - else
+    I Need a Ride
+
 = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
   = devise_error_messages!
-  .field
-    = f.label :email
-    %br/
-    = f.email_field :email, autofocus: true
-  .field
+  
+  = f.hidden_field :user_type
+  
+  .col-sm-8.field
+    = f.label :name, "#{t(:name)} *"
+    = f.text_field :name, class: 'form-control', autofocus: true
+    
+  .col-sm-8.field
+    = f.label :email, "Email *"
+    = f.email_field :email, class: 'form-control', required: 'true'
+  
+  .col-sm-8.field
+    = f.label :phone_number, "#{t(:phone_number)} *"
+    = f.telephone_field :phone_number, class: 'form-control', required: 'true'
+    
+  .col-sm-8.field
+    = f.label :zip, "Zip code *"
+    = f.text_field :zip, class: 'form-control', required: 'true'
+  
+  .col-sm-8.field
     = f.label :password
     - if @minimum_password_length
       %em
         (#{@minimum_password_length} characters minimum)
     %br/
-    = f.password_field :password, autocomplete: "off"
-  .field
-    = f.label :password_confirmation
-    %br/
-    = f.password_field :password_confirmation, autocomplete: "off"
-  .actions
-    = f.submit "Sign up"
-= render "devise/shared/links"
+    = f.password_field :password, autocomplete: "off", class: 'form-control', required: 'true'
+      
+  -#
+    / .field
+    /   = f.label :password_confirmation
+    /   %br/
+    /   = f.password_field :password_confirmation, autocomplete: "off"
+    
+  .col-sm-8.field
+    = f.submit t(:save), class: 'btn btn-primary', style: 'width: 100%; margin: 10px 0 0 0', disable_with: "#{t(:saving)}..."
+    
+    .small{style: 'margin-top: -10px 0 0 0;'}
+      By saving your are agreeing to the #{link_to t(:terms_of_service), terms_of_service_path, target: '_blank'}.
+    %br
+      
+-# = render "devise/shared/links"

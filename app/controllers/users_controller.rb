@@ -3,9 +3,6 @@ class UsersController < ApplicationController
   
   before_action :set_user, only: [:show, :edit, :update]
 
-  skip_before_action :go_complete_profile, :only => [:create, :edit, :update]
-  
-
   # GET /users/1
   # GET /users/1.json
   def show
