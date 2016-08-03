@@ -10,7 +10,7 @@ class Admin::TwilioController < Admin::AdminApplicationController
 
   rescue_from ConfigurationError do |e|
     # todo: alerting on errors
-    logger.warn "Configuration error #{e.message} #{params}"
+    logger.warn "Configuration error #{e.message} #{params.inspect}"
     render_twiml_message(e.message)
   end
 
@@ -39,21 +39,22 @@ class Admin::TwilioController < Admin::AdminApplicationController
 
   # Find the ride zone based on the 'to' phone number
   def establish_ride_zone
-    to_phone = PhonyRails.normalize_number(params[:to])
+    to_phone = PhonyRails.normalize_number(params['To'])
     @ride_zone = RideZone.find_by_phone_number(to_phone)
     raise ConfigurationError.new(CONFIG_ERROR_MSG) unless @ride_zone
   end
 
   # Find the user and any existing conversation, or create them as needed
   def establish_user_conversation
-    from_phone = PhonyRails.normalize_number(params[:from])
+    to_phone = PhonyRails.normalize_number(params['To'])
+    from_phone = PhonyRails.normalize_number(params['From'])
     @user = User.find_by_phone_number_normalized(from_phone)
     if @user.nil?
       @user = User.create!(name: '', password: '12345678', phone_number: from_phone, phone_number_normalized: from_phone, uid: from_phone, provider: 'sms', email: "#{from_phone}@sms.org")
       # todo: user role as passenger?
     end
     @conversation = Conversation.where(user_id: @user.id).where.not(status: :closed).first
-    @conversation ||= Conversation.create(user_id: @user.id, from_phone: from_phone, ride_zone: @ride_zone)
+    @conversation ||= Conversation.create(user_id: @user.id, from_phone: from_phone, to_phone: to_phone, ride_zone: @ride_zone)
   end
 
   # def twilio_client
