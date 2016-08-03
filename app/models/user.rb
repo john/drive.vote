@@ -5,7 +5,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :omniauth_providers => [:facebook]
+         :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
 
   rolify
 
@@ -33,8 +33,6 @@ class User < ApplicationRecord
   # google api key, should work for all enabled apis, including maps & civic info:
   # AIzaSyDefFnLJQKoz1OQGjaqaJPHMISVcnXZNPc
   # https://console.developers.google.com/apis/credentials/wizard?api=maps_backend&project=phonic-client-135123
-
-  validates_presence_of :uid, :provider
   validates_uniqueness_of :uid, :scope => :provider
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   validates :phone_number_normalized, phony_plausible: true

@@ -1,53 +1,77 @@
--# <script src="https://cdn.auth0.com/js/lock-passwordless-1.0.min.js"></script>
--# :javascript
-  / // auth0
-  / var clientID = 'OZnDaflWQOer1N9kxgL0r2aAzCn74G56';
-  / var domain = 'johnmcgrath.auth0.com';
-  /
-  / var lock = new Auth0LockPasswordless(clientID, domain);
-  /
-  / function open() {
-  /   lock.sms({
-  /     //callbackURL: 'https://drive.vote/auth/auth0/callback',
-  /     callbackURL: 'http://local.drive.vote:3000/auth/auth0/callback',
-  /     //callbackURL: 'http://89236e61.ngrok.io/auth/auth0/callback',
-  /     authParams: {
-  /       scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
-  /     }
-  /   });
-  / }
+:css
+  .btn-fb { width: 250px; background: #3A5897; margin-bottom: 20px; }
+  .btn-goog { width: 250px; background: #E02F2F; margin-bottom: 20px; }
+  .soc { width: 25px; margin: -5px 10px 0 -10px; }
 
 
 .description
   %b
     #{t(:drive_the_vote)}
   = t(:short_description).gsub( /\n+/, "<br>" ).html_safe
+  
+  
+  %br
 
-.volunteer
-  = link_to user_facebook_omniauth_authorize_path(type: 'driver', campaign: params[:campaign_slug], locale: I18n.locale.to_s) do
-    %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
-      = t(:will_drive)
+  Sign up to
+  <b>volunteer to drive</b><br>
+  or
+  <b>request a free ride</b>.
+  
+  %br
+  %br
 
-.request
-  = link_to user_facebook_omniauth_authorize_path(type: 'rider', campaign: params[:campaign_slug], locale: I18n.locale.to_s) do
-    %button.btn.btn-lg.btn-danger.btn-home{role: 'button'}
-      = t(:i_need_ride)
+  -#
+    / .volunteer
+    /   = link_to user_facebook_omniauth_authorize_path(type: 'driver', campaign: params[:campaign_slug], locale: I18n.locale.to_s) do
+    /     %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
+    /       = t(:will_drive)
+    /
+    / .request
+    /   = link_to user_facebook_omniauth_authorize_path(type: 'rider', campaign: params[:campaign_slug], locale: I18n.locale.to_s) do
+    /     %button.btn.btn-lg.btn-danger.btn-home{role: 'button'}
+    /       = t(:i_need_ride)
       
--#
-  / %p
-  /   *** OR ***
-  /
-  / %p
-  /   %button.btn.btn-primary{ onclick: "window.open();" }
-  /     SMS
 
-  -#    
-    / = link_to user_facebook_omniauth_authorize_path(type: 'driver', campaign: params[:campaign_slug], locale: I18n.locale.to_s) do
-    /   %button.btn.btn-primary.btn-lg.btn-home{role: 'button'}
-    /     = t(:got_it)
+  -# rather than passing 'type' let them choose on the subsequent form
+  = link_to user_facebook_omniauth_authorize_path(type: 'driver') do
+    %button.btn.btn-primary.btn-lg.btn-fb{role: 'button'}
+      %img.soc{src: "https://cdn1.iconfinder.com/data/icons/logotypes/32/square-facebook-128.png"}
+      Sign up with Facebook
+  %br
+      
+  = link_to user_google_oauth2_omniauth_authorize_path(type: 'driver') do
+    %button.btn.btn-primary.btn-lg.btn-goog{role: 'button'}
+      %img.soc{src: "https://cdn1.iconfinder.com/data/icons/logotypes/32/square-google-plus-128.png"}
+      Sign up with Google
+      
+  %br
+  = link_to 'or use email', '', class: 'use-email-btn'
+  
+  .use-email{style: 'display: none;'}
+    = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+      = devise_error_messages!
+      .field
+        = f.label :name
+        %br/
+        = f.text_field :name, autofocus: true
+      
+      .field
+        = f.label :email
+        %br/
+        = f.email_field :email
+      .field
+        = f.label :password
+        - if @minimum_password_length
+          %em
+            (#{@minimum_password_length} characters minimum)
+        %br/
+        = f.password_field :password, autocomplete: "off"
+
+      .actions
+        = f.submit "Sign up", class: 'btn'
         
-        
--#
-  / .row.sign_up
-  /   .col-sm-12.text-center{style: 'font-size: 12px;'}
-  /     #{t(:or)} #{link_to t(:just_sign_up), user_facebook_omniauth_authorize_path(type: 'dunno', campaign: params[:campaign_slug])}.
+  :javascript
+    $(".use-email-btn").click(function(){
+        $(".use-email").toggle();
+        return false;
+    });

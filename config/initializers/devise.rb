@@ -20,7 +20,9 @@ Devise.setup do |config|
 
   # this is drive the vote
   config.omniauth :facebook, '598384123655141', '886f58906c8e0c2579f9785baaf3ba15',
-    {:scope => 'email' }
+    {scope: 'email' }
+    
+  config.omniauth :google_oauth2, ENV["GOOGLE_CLIENT_ID"], ENV["GOOGLE_CLIENT_SECRET"]
              
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
