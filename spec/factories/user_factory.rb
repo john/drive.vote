@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  
+
   factory :user do
     name 'Bella Abzug'
     email 'bella@gmail.com'
@@ -9,7 +9,7 @@ FactoryGirl.define do
     city 'New York'
     state 'NY'
   end
-  
+
   # set up roles for this soon
   factory :admin_user do
     name 'Barack Obama'
@@ -20,5 +20,5 @@ FactoryGirl.define do
     city 'Chicago'
     state 'IL'
   end
-  
+
 end

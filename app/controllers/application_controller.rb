@@ -1,24 +1,27 @@
 class ApplicationController < ActionController::Base
   include Pundit
-  
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  
+
+  class ConfigurationError < StandardError
+  end
+
   def after_sign_in_path_for(resource)
     root_path
   end
-  
+
   # https://github.com/plataformatec/devise/pull/4033/files
   protect_from_forgery prepend: true
-  
+
   before_action :set_locale
   before_action :go_complete_profile
- 
+
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
   end
-  
+
   def go_complete_profile
     if user_signed_in? &&
         current_user.missing_required_fields? &&
@@ -27,7 +30,7 @@ class ApplicationController < ActionController::Base
       redirect_to edit_user_path(current_user)
     end
   end
-  
+
   def check_for_user_type(parms)
     if parms.has_key?('type')
       if parms['type'] == 'driver'
@@ -39,5 +42,5 @@ class ApplicationController < ActionController::Base
       end
     end
   end
-  
+
 end
