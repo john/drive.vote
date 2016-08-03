@@ -1,3 +1,5 @@
+#ruby=2.2.5
+#ruby-gemset=drive.vote
 source 'https://rubygems.org'
 
 gem 'city-state'
