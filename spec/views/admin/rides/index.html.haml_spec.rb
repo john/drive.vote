@@ -6,14 +6,12 @@ RSpec.describe "admin/rides/index", type: :view do
     assign(:rides, [
       Ride.create!(
         :owner_id => 1,
-        :campaign_id => 2,
         :name => "Name",
         :description => "MyText",
         :status => 0
       ),
       Ride.create!(
         :owner_id => 1,
-        :campaign_id => 2,
         :name => "Name",
         :description => "MyText",
         :status => 0

@@ -9,30 +9,14 @@
 john = User.create!(
   name: 'John McGrath',
   email: 'john@fnnny.com',
-  password: 'foobarbah',
+  password: 'H3yS@ilor',
   phone_number: '2073328709',
-  phone_number_normalized: '+12073328709',
+  # phone_number_normalized: '+12073328709',
   image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
   locale: 'en',
   address1: '330 Cabrillo St.',
   city: 'San Francisco',
   state: 'CA'
-)
-
-pres = Election.create(
-  owner_id: john.id,
-  slug: 'president_2016',
-  name: '2016 Presidential Election',
-  date: '2016-11-08 08:27:00'
-)
-
-hillary = Campaign.create(
-  election_id: pres.id,
-  owner_id: john.id,
-  slug: 'hillary2016',
-  name: 'Hillary for America 2016',
-  start_date: '2016-08-01 08:27:00',
-  party_affiliation: 0
 )
 
 roles = Role.create( [{name: 'admin'}, {name: 'dispatcher'}, {name: 'driver'}, {name: 'rider'}] )
