@@ -14,8 +14,6 @@ john = User.create!(
   phone_number_normalized: '+12073328709',
   image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
   locale: 'en',
-  provider: 'facebook',
-  uid: '10155022838063242',
   address1: '330 Cabrillo St.',
   city: 'San Francisco',
   state: 'CA'
@@ -95,8 +93,6 @@ if  Rails.env == "development"
     phone_number_normalized: '+12073328709',
     image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
     locale: 'en',
-    provider: 'facebook',
-    uid: '99955022838063242',
     address1: '330 Cabrillo St.',
     city: 'San Francisco',
     state: 'CA'

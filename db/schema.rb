@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160803015624) do
+ActiveRecord::Schema.define(version: 20160804022526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "campaigns", force: :cascade do |t|
-    t.integer  "owner_id"
+    t.integer  "owner_id",                       null: false
     t.integer  "election_id"
     t.string   "slug",              default: "", null: false
     t.string   "name",              default: "", null: false
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20160803015624) do
   end
 
   create_table "elections", force: :cascade do |t|
-    t.integer  "owner_id"
+    t.integer  "owner_id",                 null: false
     t.string   "slug",        default: "", null: false
     t.string   "name",        default: "", null: false
     t.text     "description"
@@ -63,7 +63,6 @@ ActiveRecord::Schema.define(version: 20160803015624) do
 
   create_table "messages", force: :cascade do |t|
     t.integer  "ride_zone_id"
-    t.integer  "ride_id"
     t.integer  "status",          default: 0
     t.string   "to",              default: "", null: false
     t.string   "to_city",         default: "", null: false
@@ -165,8 +164,6 @@ ActiveRecord::Schema.define(version: 20160803015624) do
     t.string   "country",                                             default: "", null: false
     t.decimal  "latitude",                  precision: 15, scale: 10
     t.decimal  "longitude",                 precision: 15, scale: 10
-    t.string   "provider",                                            default: "", null: false
-    t.string   "uid",                                                 default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"

@@ -3,29 +3,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
 # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
-  def new  
-    # super
-    #
-    # if params[:type].present?
-    #   logger.debug "------------> type: #{params[:type]}"
-    #   self.resource.user_type = params[:type]
-    #   logger.debug "------------> self.resource.user_type: #{self.resource.user_type}"
-    # end
-    #
-    # logger.debug "----------------------"
-    # logger.debug "------------> self.resource: #{self.resource.inspect}"
-    # logger.debug "----------------------"
-    #
-    #
-    # self.resource
+  def new
     resource = build_resource({})
-    
+
     if params[:type].present?
       logger.debug "------------> type: #{params[:type]}"
       resource.user_type = params[:type]
       logger.debug "------------> resource.user_type: #{self.resource.user_type}"
     end
-    
+
     respond_with resource
   end
 
