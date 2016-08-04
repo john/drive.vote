@@ -3,6 +3,8 @@ class UsersController < ApplicationController
 
   before_action :set_user, only: [:show, :edit, :update]
 
+  before_action :set_vars
+
   # GET /users/1
   # GET /users/1.json
   def show
@@ -49,9 +51,6 @@ class UsersController < ApplicationController
   def edit
     # user_type is put in to the session in OmniauthCallbacksController
     @type = session['user_type']
-
-    # This key is tied to john@fnnny.com, needs the Google Places Web API enabled
-    @google_api_key = 'AIzaSyCp4DCD46mbNzHNld5EM6d1_COhIAb7RAk'
   end
 
   def confirm
@@ -94,7 +93,6 @@ class UsersController < ApplicationController
           end
         end
 
-
         # different notice if the user was just created
         notice = (is_new_user) ? 'Welcome to Drive the Vote!' : 'User was successfully updated.'
 
@@ -111,4 +109,9 @@ class UsersController < ApplicationController
     end
   end
 
+  private
+
+  def set_vars
+    @google_api_key = ENV['GOOGLE_API_KEY']
+  end
 end
