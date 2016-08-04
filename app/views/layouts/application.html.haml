@@ -4,41 +4,41 @@
     %meta{charset: 'utf8'}
     %title 🚕 the Vote
     = csrf_meta_tags
-    
+
     -# if request.original_url.include?('messages')
       // = action_cable_meta_tag
-    
+
     %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
     %meta{ name: "apple-mobile-web-app-capable", content: "yes" }
     %meta{ name: "mobile-web-app-capable", content: "yes" }
-    
+
     %meta{ name: 'description', content: 'Drive the Vote matches people who need rides to their polling place with volunteer drivers who want to take them there. No car should not mean no vote.' }
     %meta{ name: 'author', content: 'John McGrath' }
-    
+
     <meta name="google-site-verification" content="viExRr2P8s3c3Tq1fXu9qc2Tg_npPT7HtkBTpD97t_0" />
-    
+
     %meta{ property: 'og:type', content: "website" }
     %meta{ property: 'og:title', content: 'Drive the Vote!' }
     %meta{ property: 'og:site_name', content: 'Drive the Vote!' }
     %meta{ property: 'og:url', content: 'https://www.drive.vote' }
     %meta{ property: 'og:description', content: 'Drive the Vote matches people who need a ride to their polling place with volunteer drivers, and provides information about voting places, dates, and rules.' }
     %meta{ property:'og:image', content: 'https://www.drive.vote/drive_the_vote.png' }
-    
+
     %link{href: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', rel: 'stylesheet'}
     %link{href: "https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css", rel: "stylesheet"}
     %link{href: "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css", rel: "stylesheet"}
     %link{href: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css", rel: "stylesheet"}
-    
+
     :css
       .faq { margin-top: 10px; }
       .shares { width: 260px; border: 0px solid green; opacity: 0.6; font-size: 13px; margin: 0 auto;}
       .navbar { background-color: white; border: 0; box-shadow: none !important }
       .navbar-default { background-color: white; border: 0; box-shadow: none !important }
       .navbar-static-top { background-color: white; border: 0; box-shadow: none !important }
-    
+
     = stylesheet_link_tag "application", media: "all"
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
-    
+
     :javascript
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -47,7 +47,7 @@
 
       ga('create', 'UA-80989577-1', 'auto');
       ga('send', 'pageview');
-      
+
   %body
     <div id="fb-root"></div>
     <script>(function(d, s, id) {
@@ -57,7 +57,7 @@
     js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=598384123655141";
     fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
-    
+
     %nav.navbar.navbar-default.navbar-static-top
       .container
         .navbar-header
@@ -66,27 +66,27 @@
             %span.icon-bar
             %span.icon-bar
             %span.icon-bar
-            
+
           %a.navbar-brand{href: root_path(locale: I18n.locale.to_s), style: 'font-family: "Times New Roman", Times, serif'}
             %span.glyphicons.glyphicons-cars.inverse{'aria-hidden': "true", style: 'margin-top:-7px;'}
-            
+
             %i.hidden-xs
               #{t(:drive_the_vote)}!
-        
+
         #navbar.collapse.navbar-collapse
           %ul.nav.navbar-nav.navbar-right
             - if !user_signed_in?
               %li.visible-xs.hidden-sm.hidden-md.hidden-lg
-                = link_to t(:sign_in), user_facebook_omniauth_authorize_path(locale: I18n.locale.to_s)
+                = link_to t(:sign_in), "/users/sign_in?locale=#{I18n.locale.to_s}"
             %li= link_to "Español", locale: 'es'
             %li= link_to "English", locale: 'en'
             - if !user_signed_in?
               %li.hidden-xs
                 %p.navbar-btn
-                  = link_to t(:sign_in), user_facebook_omniauth_authorize_path(locale: I18n.locale.to_s), class: 'btn btn-default btn-xs', role: 'button', style: 'margin: 7px 0 0 10px;'
-            
+                  = link_to t(:sign_in), "/users/sign_in?locale=#{I18n.locale.to_s}", class: 'btn btn-default btn-xs', role: 'button', style: 'margin: 7px 0 0 10px;'
+
             - if user_signed_in?
-            
+
               -# on larger screens, you want a dropdown
               %li.dropdown.hidden-xs
                 %a.dropdown-toggle{href: "#", 'data-toggle': "dropdown", role: "button", 'aria-haspopup': "true", 'aria-expanded': "false"}
@@ -98,7 +98,7 @@
                     %li= link_to t(:sign_out), destroy_user_session_path, {method: :delete}
                     - if current_user.has_role? :admin
                       %li= link_to 'admin', admin_path, style: 'color: red;'
-                    
+
               -# on smaller screens, when you've got a burger, you don't
               -# %li.visible-xs.hidden-sm.hidden-md.hidden-lg
               -#  = link_to t(:your_profile), current_user
@@ -106,11 +106,11 @@
                 = link_to t(:your_settings), "javascript:alert('coming soon');"
               %li.visible-xs.hidden-sm.hidden-md.hidden-lg
                 = link_to t(:sign_out), destroy_user_session_path, {method: :delete}
-    
-                    
-    .container        
+
+
+    .container
       = yield
-      
+
     - if notice.present? || alert.present?
       :javascript
         //<![CDATA[
@@ -120,5 +120,5 @@
         //humane.timeoutAfterMove = 1;
         humane.notice( '#{notice}' );
         //]]>
-      
-%script{src: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'}  
+
+%script{src: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'}

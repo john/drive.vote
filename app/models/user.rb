@@ -4,13 +4,13 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :omniauth_providers => [:facebook]
+         :recoverable, :rememberable, :trackable, :validatable
 
   rolify
 
   enum language: { unknown: 0, english: 1, spanish: 2 }, _suffix: true
 
+  after_create :add_rolify_role
   after_create :send_welcome_email
 
   # scope :admins, -> { where(user_type: :admin) }
@@ -33,41 +33,11 @@ class User < ApplicationRecord
   # google api key, should work for all enabled apis, including maps & civic info:
   # AIzaSyDefFnLJQKoz1OQGjaqaJPHMISVcnXZNPc
   # https://console.developers.google.com/apis/credentials/wizard?api=maps_backend&project=phonic-client-135123
-
-  validates_presence_of :uid, :provider
-  validates_uniqueness_of :uid, :scope => :provider
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   validates :phone_number_normalized, phony_plausible: true
 
-  # validates_numericality_of :latitude
-  # validates_numericality_of :longitude
-  # validates :accepted_tos, :acceptance => true
-  # validates :agree_to_background_check, :acceptance => true
-  # validates_presence_of :state
-
   def is_admin?
     true
-  end
-
-  def self.from_omniauth(auth, params={})
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.email = auth.info.email
-      user.password = Devise.friendly_token[0,20]
-      user.name = auth.info.name   # assuming the user model has a name
-      user.image_url = auth.info.image # assuming the user model has an image
-
-      if params.has_key?('locale')
-        user.locale = params['locale']
-      end
-    end
-  end
-
-  def self.new_with_session(params, session)
-    super.tap do |user|
-      if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
-        user.email = data["email"] if user.email.blank?
-      end
-    end
   end
 
   def full_street_address
@@ -83,6 +53,12 @@ class User < ApplicationRecord
   end
 
   private
+
+  def add_rolify_role
+    if self.user_type.present?
+      self.add_role self.user_type
+    end
+  end
 
   def send_welcome_email
     UserMailer.welcome_email(self).deliver_later

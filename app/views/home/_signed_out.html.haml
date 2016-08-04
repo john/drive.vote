@@ -1,53 +1,16 @@
--# <script src="https://cdn.auth0.com/js/lock-passwordless-1.0.min.js"></script>
--# :javascript
-  / // auth0
-  / var clientID = 'OZnDaflWQOer1N9kxgL0r2aAzCn74G56';
-  / var domain = 'johnmcgrath.auth0.com';
-  /
-  / var lock = new Auth0LockPasswordless(clientID, domain);
-  /
-  / function open() {
-  /   lock.sms({
-  /     //callbackURL: 'https://drive.vote/auth/auth0/callback',
-  /     callbackURL: 'http://local.drive.vote:3000/auth/auth0/callback',
-  /     //callbackURL: 'http://89236e61.ngrok.io/auth/auth0/callback',
-  /     authParams: {
-  /       scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
-  /     }
-  /   });
-  / }
-
-
 .description
   %b
     #{t(:drive_the_vote)}
   = t(:short_description).gsub( /\n+/, "<br>" ).html_safe
+  
+  %br
 
-.volunteer
-  = link_to user_facebook_omniauth_authorize_path(type: 'driver', campaign: params[:campaign_slug], locale: I18n.locale.to_s) do
-    %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
-      = t(:will_drive)
+  .volunteer
+    = link_to new_user_registration_path(type: 'driver', locale: I18n.locale.to_s) do
+      %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
+        = t(:will_drive)
 
-.request
-  = link_to user_facebook_omniauth_authorize_path(type: 'rider', campaign: params[:campaign_slug], locale: I18n.locale.to_s) do
-    %button.btn.btn-lg.btn-danger.btn-home{role: 'button'}
-      = t(:i_need_ride)
-      
--#
-  / %p
-  /   *** OR ***
-  /
-  / %p
-  /   %button.btn.btn-primary{ onclick: "window.open();" }
-  /     SMS
-
-  -#    
-    / = link_to user_facebook_omniauth_authorize_path(type: 'driver', campaign: params[:campaign_slug], locale: I18n.locale.to_s) do
-    /   %button.btn.btn-primary.btn-lg.btn-home{role: 'button'}
-    /     = t(:got_it)
-        
-        
--#
-  / .row.sign_up
-  /   .col-sm-12.text-center{style: 'font-size: 12px;'}
-  /     #{t(:or)} #{link_to t(:just_sign_up), user_facebook_omniauth_authorize_path(type: 'dunno', campaign: params[:campaign_slug])}.
+  .request
+    = link_to new_user_registration_path(type: 'rider', locale: I18n.locale.to_s) do
+      %button.btn.btn-lg.btn-danger.btn-home{role: 'button'}
+        = t(:i_need_ride)

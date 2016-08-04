@@ -27,7 +27,24 @@ RSpec.describe Admin::UsersController, type: :controller do
       # expect(assigns(:user)).to be_a_new(User)
     end
   end
-  
+
+  describe "DELETE destroy" do
+    it "destroys the requested user" do
+      skip
+      # user = User.create! valid_attributes
+      # expect {
+      #   delete :destroy, {:id => user.to_param}, valid_session
+      # }.to change(User, :count).by(-1)
+    end
+
+    it "redirects to the users list" do
+      skip
+      # user = User.create! valid_attributes
+      # delete :destroy, {:id => user.to_param}, valid_session
+      # expect(response).to redirect_to(users_url)
+    end
+  end
+
 end
 
 

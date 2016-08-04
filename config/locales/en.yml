@@ -70,12 +70,12 @@ en:
   almost_done: 'Almost done'
   just_sign_up: 'just sign up'
   sign_in: "Sign in"
-  sign_in_with_facebook: 'Sign in with Facebook'
+  signing_in: "Signing in..."
   sign_out: 'Sign out'
   users: 'users'
   complete_registration: 'Please complete your registration so we can find a match'
   
-  will_contact: "Within a week of the election we'll contact you to try and arrange a free ride."
+  will_contact: "Thanks! Near the election we'll contact you to help out."
   help_others: "Help others Drive the Vote!"
   share_on_twitter: "Share on Twitter"
   share_on_facebook: "Share on Facebook"

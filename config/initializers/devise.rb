@@ -10,17 +10,6 @@ Devise.setup do |config|
   # by default. You can change it below and use your own secret key.
   # config.secret_key = '0058a0898f00f053fc8cd791f28bbc10411f747d02c5c4d5bd0b60f1bf76b53a39aa1988f593bddaf901dd4eaf3fd2430c3b49c1e4bdb0af6f0cac1c8293538f'
   config.secret_key = '9b0dc34b94c5fedc83e2b5c79618552f73af5e3e16d430c6873d088046917094ebda9fa14a0448f3543d3a3da66f157053481136a6f946b0d7c1afa06901d2fc'
-
-  # config.omniauth :facebook, "APP_ID", "APP_SECRET", callback_url: "CALLBACK_URL"
-                  
-  # this is fnnny
-  # https://developers.facebook.com/apps/295556897221526/summary
-  # config.omniauth :facebook, '295556897221526', 'cf5bf2b82e173a033bd437a22bdf2767',
-  #     {:scope => 'email, publish_actions' }
-
-  # this is drive the vote
-  config.omniauth :facebook, '598384123655141', '886f58906c8e0c2579f9785baaf3ba15',
-    {:scope => 'email' }
              
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,

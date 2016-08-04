@@ -4,15 +4,11 @@ source 'https://rubygems.org'
 
 gem 'city-state'
 gem 'devise'
-# gem 'devise-auth0'
 gem 'geocoder'
-# gem 'gmaps4rails'
 gem 'google-api-client'
 gem 'haml-rails'
 gem 'humane-rails'
-gem 'omniauth'
-# gem 'omniauth-auth0'
-gem 'omniauth-facebook'
+gem 'jquery-rails'
 gem 'pg'
 gem 'phony_rails'
 gem 'puma'
@@ -29,22 +25,11 @@ gem 'sass-rails', '~> 5.0'
 gem 'sendgrid'
 gem 'sidekiq'
 gem 'sinatra', github: 'sinatra/sinatra', :require => false # for sidekiq
-# gem 'thin'
 gem 'tod'
+gem 'turbolinks', '~> 5.x'
 gem 'twilio-ruby'
 gem 'uglifier', '>= 1.3.0'
 gem 'underscore-rails'
-
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks', '~> 5.x'
-
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-# gem 'jbuilder', '~> 2.0'
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
