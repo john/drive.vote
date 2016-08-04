@@ -6,27 +6,21 @@
         - @ride.errors.full_messages.each do |msg|
           %li= msg
 
-  - if current_user.has_role? :admin
-    .col-sm-8.field.admin-only
-      = f.label :campaign_id
-      = f.number_field :campaign_id, class: 'form-control'
-    
   .col-sm-8.field
     = f.label :name
     = f.text_field :name, class: 'form-control'
-    
+
   .col-sm-8.field
     = f.label :description
     = f.text_area :description, class: 'form-control'
-    
+
   .col-sm-8.field
     = f.label :pickup_at
     = f.datetime_select :pickup_at
-    
+
   .col-sm-8.field
     = f.label :status
     = f.number_field :status, class: 'form-control'
-  
+
   .col-sm-8.actions
     = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."
-    

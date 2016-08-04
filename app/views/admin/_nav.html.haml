@@ -1,11 +1,5 @@
 %ul.nav.nav-tabs
   %li{class: (active == 'home') ? 'active' : ''}= link_to 'Admin home', admin_path
   %li{class: (active == 'users') ? 'active' : ''}= link_to 'Users', admin_users_path
-  
-  - if current_user.has_role? :admin
-    %li{class: (active == 'elections') ? 'active admin-only' : 'admin'}= link_to 'Elections', admin_elections_path
-    %li{style: 'background-color: #ffff99', class: (active == 'campaigns') ? 'active admin-only' : 'admin'}= link_to 'Campaigns', admin_campaigns_path
-  
   %li{class: (active == 'ride_zones') ? 'active' : ''}= link_to 'Ride Zones', admin_ride_zones_path
   %li{class: (active == 'rides') ? 'active' : ''}= link_to 'Rides', admin_rides_path
-  
