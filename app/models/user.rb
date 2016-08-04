@@ -10,6 +10,7 @@ class User < ApplicationRecord
 
   enum language: { unknown: 0, english: 1, spanish: 2 }, _suffix: true
 
+  after_create :add_rolify_role
   after_create :send_welcome_email
 
   # scope :admins, -> { where(user_type: :admin) }
@@ -52,6 +53,12 @@ class User < ApplicationRecord
   end
 
   private
+
+  def add_rolify_role
+    if self.user_type.present?
+      self.add_role self.user_type
+    end
+  end
 
   def send_welcome_email
     UserMailer.welcome_email(self).deliver_later

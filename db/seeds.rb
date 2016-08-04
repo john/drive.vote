@@ -39,7 +39,7 @@ roles = Role.create( [{name: 'admin'}, {name: 'dispatcher'}, {name: 'driver'}, {
 roles.each { |role| john.grant( role.name.to_sym ) }
 
 if  Rails.env == "development"
-  
+
   ride_zones = RideZone.create!([
     {
       slug: 'toledo_d_4',
@@ -47,7 +47,7 @@ if  Rails.env == "development"
       phone_number: '+14193860121'
     }
   ])
-  
+
   messages = Message.create!([
     {
       ride_zone_id: ride_zones.first.id,
@@ -84,12 +84,12 @@ if  Rails.env == "development"
       account_sid: 'AC475463f2a2fc6828b1d32769febd680d'
     }
   ])
-  
+
   test_john = User.create!(
     name: 'John Test',
     email: 'john@fryolator.com',
     password: 'phubharblarg',
-    phone_number: '2073328709',
+    phone_number: '2123328709',
     phone_number_normalized: '+12073328709',
     image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
     locale: 'en',

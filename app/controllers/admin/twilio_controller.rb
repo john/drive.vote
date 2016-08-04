@@ -50,7 +50,7 @@ class Admin::TwilioController < Admin::AdminApplicationController
     from_phone = PhonyRails.normalize_number(params['From'])
     @user = User.find_by_phone_number_normalized(from_phone)
     if @user.nil?
-      @user = User.create!(name: '', password: '12345678', phone_number: from_phone, phone_number_normalized: from_phone, email: "#{from_phone}@sms.org")
+      @user = User.create!(name: '', user_type: 'rider', password: '12345678', phone_number: from_phone, phone_number_normalized: from_phone, email: "#{from_phone}@sms.org")
       # todo: user role as passenger?
     end
     @conversation = Conversation.where(user_id: @user.id).where.not(status: :closed).first
