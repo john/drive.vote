@@ -12,9 +12,6 @@ FactoryGirl.define do
   factory :admin_user do
     name 'Barack Obama'
     email 'barack@gmail.com'
-    password '0123456789'
-    uid '323456789'
-    provider 'facebook'
     city 'Chicago'
     state 'IL'
   end
