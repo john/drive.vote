@@ -11,7 +11,7 @@
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  
+
   # Websocket for messages
   # config.action_cable.url = "ws://drive.vote/cable"
   # config.action_cable.allowed_request_origins = ['https://drive.vote']
@@ -26,8 +26,11 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
-  config.action_controller.perform_caching = true
+  # config.consider_all_requests_local       = false
+  # config.action_controller.perform_caching = true
+
+  # Show full error reports in prod for now
+  config.consider_all_requests_local = true
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
@@ -71,7 +74,7 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   config.active_job.queue_adapter     = :sidekiq
-  
+
   config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.
@@ -100,7 +103,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  
+
   # More info here:
   # http://weblog.rubyonrails.org/2015/1/16/This-week-in-Rails-tokens-migrations-method-source-and-more/
   config.active_record.time_zone_aware_types = [:datetime, :time]

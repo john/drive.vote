@@ -15,19 +15,6 @@ ActiveRecord::Schema.define(version: 20160804035225) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "campaigns", force: :cascade do |t|
-    t.integer  "owner_id",                       null: false
-    t.integer  "election_id"
-    t.string   "slug",              default: "", null: false
-    t.string   "name",              default: "", null: false
-    t.integer  "party_affiliation"
-    t.text     "description"
-    t.datetime "start_date"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.index ["slug"], name: "index_campaigns_on_slug", unique: true, using: :btree
-  end
-
   create_table "conversations", force: :cascade do |t|
     t.integer  "ride_zone_id",                                          null: false
     t.integer  "user_id",                                               null: false
@@ -51,18 +38,9 @@ ActiveRecord::Schema.define(version: 20160804035225) do
     t.datetime "updated_at",                                            null: false
   end
 
-  create_table "elections", force: :cascade do |t|
-    t.integer  "owner_id",                 null: false
-    t.string   "slug",        default: "", null: false
-    t.string   "name",        default: "", null: false
-    t.text     "description"
-    t.datetime "date"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-  end
-
   create_table "messages", force: :cascade do |t|
     t.integer  "ride_zone_id"
+    t.integer  "ride_id"
     t.integer  "status",          default: 0
     t.string   "to",              default: "", null: false
     t.string   "to_city",         default: "", null: false
@@ -108,7 +86,6 @@ ActiveRecord::Schema.define(version: 20160804035225) do
 
   create_table "rides", force: :cascade do |t|
     t.integer  "owner_id",                  null: false
-    t.integer  "campaign_id"
     t.integer  "ride_zone_id"
     t.string   "name",         default: "", null: false
     t.text     "description"
@@ -126,16 +103,6 @@ ActiveRecord::Schema.define(version: 20160804035225) do
     t.datetime "updated_at"
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id", using: :btree
     t.index ["name"], name: "index_roles_on_name", using: :btree
-  end
-
-  create_table "supporters", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "campaign_id"
-    t.string   "locale",      default: "", null: false
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.index ["campaign_id"], name: "index_supporters_on_campaign_id", using: :btree
-    t.index ["user_id"], name: "index_supporters_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
