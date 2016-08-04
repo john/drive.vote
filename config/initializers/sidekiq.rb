@@ -1,6 +1,6 @@
 # /config/initializers/sidekiq.rb
 
-redis_url = Rails.env.development? ? 'redis://localhost:6379/0' : ENV['REDISCLOUD_URL']
+redis_url = Rails.env.development? ? 'redis://localhost:6379/0' : (ENV["REDISCLOUD_URL"] or ENV["REDIS_URL"])
 
 Sidekiq.configure_server do |config|
   config.redis = { url: redis_url, namespace: "dtv_#{Rails.env}" }
