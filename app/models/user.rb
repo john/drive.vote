@@ -12,6 +12,7 @@ class User < ApplicationRecord
 
   after_create :add_rolify_role
   after_create :send_welcome_email
+  belongs_to :ride_zone
 
   # scope :admins, -> { where(user_type: :admin) }
   # scope :dispatchers, -> { where(user_type: :dispatcher) }

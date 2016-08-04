@@ -22,10 +22,11 @@ Rails.application.routes.draw do
   # and the meta tag in application.html.haml
   # and lined in development.rb and production.rb
   # Serve websocket cable requests in-process
-  # mount ActionCable.server => '/cable'
+  mount ActionCable.server => '/cable'
 
   resources :campaigns, only: [:index, :show]
   resources :elections, only: [:index, :show]
+  resources :driving, only: [:index]
 
   resources :users do #, only: [:show, :new, :create, :edit, :update]
     get :confirm, on: :member

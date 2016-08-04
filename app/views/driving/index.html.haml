@@ -1,0 +1,14 @@
+:javascript
+  function c() { document.getElementById('server-status').innerText = "Connected!"; }
+  function d() { document.getElementById('server-status').innerText = "Disconnected..."; }
+  function r(data) { document.getElementById('received-data').innerText = JSON.stringify(data); }
+  createDrivingChannel(c, d, r);
+
+Driving App
+
+<div id="server-status">Waiting for connection</div>
+<div id="received-data">No data</div>
+
+<input type=submit onclick="javascript: App.driving.send_available()" value="Available"/>
+<input type=submit onclick="javascript: App.driving.send_unavailable()" value="Unavailable"/>
+<input type=submit onclick="javascript: App.driving.send_location()" value="Send Location"/>
