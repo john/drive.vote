@@ -1,95 +1,30 @@
-<!doctype html>
-<html style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">
-<head style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">
-<meta name="viewport" content="width=device-width" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">
-<title style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">Really Simple HTML Email Template</title>
+<!-- <p>Hi there,</p>
+<p>Sometimes all you want is to send a simple HTML email with a basic design.</p> -->
 
-</head>
+<h1 style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, sans-serif;font-size: 36px;line-height: 1.2em;margin: 40px 0 15px;padding: 0;color: #111111;font-weight: 200;">Welcome Driver!</h1>
 
-<body bgcolor="#f6f6f6" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;-webkit-font-smoothing: antialiased;height: 100%;-webkit-text-size-adjust: none;width: 100% !important;">
 
-<!-- body -->
-<table class="body-wrap" bgcolor="#f6f6f6" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 20px;width: 100%;">
+<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">Hi <%= @user.name %>,</p>
+<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">You've successfully signed up for <i style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">Drive the Vote</i>. Thank you for caring about our democracy! Almost 40% of people in the US who are elible to vote, don't. Together we can change that.</p>
+
+<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">When the location of your polling place is official we'll send you an update, and as the election approaches we'll be in touch about transportation to the polls.</p>
+
+<!-- <h2>How do I use it?</h2> -->
+<!-- <p>In the meanwhile, please #{link_to 'subscribe to our blog', 'https://blog.drive.vote'} for occasional non-partisan posts about elections and the electoral process.</p> -->
+
+<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">Do you know others who need rides, or want to help?</p>
+
+<!-- button -->
+<table class="btn-primary" cellpadding="0" cellspacing="0" border="0" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;margin-bottom: 10px;width: auto !important;">
   <tr style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">
-    <td style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;"></td>
-    <td class="container" bgcolor="#FFFFFF" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0 auto !important;padding: 20px;border: 1px solid #f0f0f0;clear: both !important;display: block !important;max-width: 600px !important;">
-
-      <!-- content -->
-      <div class="content" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0 auto;padding: 0;display: block;max-width: 600px;">
-      <table style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;width: 100%;">
-        <tr style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">
-          <td style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">
-            <!-- <p>Hi there,</p>
-            <p>Sometimes all you want is to send a simple HTML email with a basic design.</p> -->
-
-            <h1 style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, sans-serif;font-size: 36px;line-height: 1.2em;margin: 40px 0 15px;padding: 0;color: #111111;font-weight: 200;">Welcome Driver!</h1>
-
-
-            <p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">Hi <%= @user.name %>,</p>
-            <p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">You've successfully signed up for <i style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">Drive the Vote</i>. Thank you for caring about our democracy! Almost 40% of people in the US who are elible to vote, don't. Together we can change that.</p>
-
-            <p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">When the location of your polling place is official we'll send you an update, and as the election approaches we'll be in touch about transportation to the polls.</p>
-
-            <!-- <h2>How do I use it?</h2> -->
-            <!-- <p>In the meanwhile, please #{link_to 'subscribe to our blog', 'https://blog.drive.vote'} for occasional non-partisan posts about elections and the electoral process.</p> -->
-
-            <p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">Do you know others who need rides, or want to help?</p>
-
-            <!-- button -->
-            <table class="btn-primary" cellpadding="0" cellspacing="0" border="0" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;margin-bottom: 10px;width: auto !important;">
-              <tr style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">
-                <td style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;background-color: #3b5998;border-radius: 25px;text-align: center;vertical-align: top;">
-                  <a href="http://www.facebook.com/sharer.php?u=https://www.drive.vote" target="_blank" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 2;margin: 0;padding: 0;color: #ffffff;background-color: #3b5998;border: solid 1px #3b5998;border-radius: 25px;border-width: 10px 20px;display: inline-block;cursor: pointer;font-weight: bold;text-decoration: none;">Share on Facebook</a>
-                </td>
-              </tr>
-            </table>
-            <!-- /button -->
-
-            <p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">or <a href="http://twitter.com/intent/tweet?url=https://www.drive.vote&text=Drive%20the%20Vote%20matches%20people%20who%20need%20a%20ride%20to%20their%20polling%20place%20with%20volunteer%20drivers.&via=drivevote&related=wordie" target="_blank" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;color: #348eda;">Share on Twitter</a></p>
-
-            <p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">Thanks, and have a lovely day :-)</p>
-            <p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">John</p>
-          </td>
-        </tr>
-      </table>
-      </div>
-      <!-- /content -->
-
+    <td style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;background-color: #3b5998;border-radius: 25px;text-align: center;vertical-align: top;">
+      <a href="http://www.facebook.com/sharer.php?u=https://www.drive.vote" target="_blank" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 2;margin: 0;padding: 0;color: #ffffff;background-color: #3b5998;border: solid 1px #3b5998;border-radius: 25px;border-width: 10px 20px;display: inline-block;cursor: pointer;font-weight: bold;text-decoration: none;">Share on Facebook</a>
     </td>
-    <td style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;"></td>
   </tr>
 </table>
-<!-- /body -->
+<!-- /button -->
 
-<!-- footer -->
-<table class="footer-wrap" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;width: 100%;clear: both !important;">
-  <tr style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">
-    <td style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;"></td>
-    <td class="container" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0 auto !important;padding: 0;clear: both !important;display: block !important;max-width: 600px !important;">
+<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">or <a href="http://twitter.com/intent/tweet?url=https://www.drive.vote&text=Drive%20the%20Vote%20matches%20people%20who%20need%20a%20ride%20to%20their%20polling%20place%20with%20volunteer%20drivers.&via=drivevote&related=wordie" target="_blank" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;color: #348eda;">Share on Twitter</a></p>
 
-      <!-- content -->
-      <div class="content" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0 auto;padding: 0;display: block;max-width: 600px;">
-        <table style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;width: 100%;">
-          <tr style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">
-            <td align="center" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">
-              <p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 12px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;color: #666666;">
-                <a href="http://twitter.com/drivevote" target="_blank" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;color: #999999;">Follow @drivevote on Twitter</a>
-
-                <!-- &nbsp;|&nbsp;
-                <a href="#"><unsubscribe>Unsubscribe</unsubscribe></a>. -->
-              </p>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <!-- /content -->
-
-    </td>
-    <td style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;"></td>
-  </tr>
-</table>
-<!-- /footer -->
-
-</body>
-</html>
+<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">Thanks, and have a lovely day :-)</p>
+<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">John</p>

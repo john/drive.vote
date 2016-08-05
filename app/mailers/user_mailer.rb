@@ -1,6 +1,8 @@
 class UserMailer < ApplicationMailer
   include SendGrid
 
+  layout 'mailer'
+
   sendgrid_enable   :ganalytics, :opentrack, :clicktrack
   default from: 'john@drive.vote'
 
