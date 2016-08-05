@@ -19,7 +19,6 @@ class UserMailer < ApplicationMailer
   def welcome_email_driver(user)
     sendgrid_category "welcome_driver"
     @user = user
-    @url  = 'http://example.com/login'
 
     email_with_name = %("#{@user.name}" <#{@user.email}>)
     mail(to: email_with_name, subject: 'Welcome to Drive the Vote, Driver!')
@@ -28,16 +27,14 @@ class UserMailer < ApplicationMailer
   def welcome_email_rider(user)
     sendgrid_category "welcome_rider"
     @user = user
-    @url  = 'http://example.com/login'
 
     email_with_name = %("#{@user.name}" <#{@user.email}>)
     mail(to: email_with_name, subject: 'Welcome to Drive the Vote, Rider!')
   end
 
   def welcome_email_not_inlined(user)
-    sendgrid_category "Welcome"
+    sendgrid_category "welcome_not_inlined"
     @user = user
-    # @url  = 'http://example.com/login'
 
     email_with_name = %("#{@user.name}" <#{@user.email}>)
     mail(to: email_with_name, subject: 'Welcome to Drive the Vote!')
