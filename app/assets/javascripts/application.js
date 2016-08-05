@@ -14,7 +14,7 @@
 // https://github.com/apneadiving/Google-Maps-for-Rails
 // require gmaps/google
 
-//      = require_tree ./channels
+//= require_tree ./channels
 
 //= require humane-rails
 //= require underscore
