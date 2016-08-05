@@ -9,11 +9,16 @@ FactoryGirl.define do
   end
 
   # set up roles for this soon
-  factory :admin_user do
+  factory :admin_user, class: User do
     name 'Barack Obama'
     email 'barack@gmail.com'
+    password '345678901'
     city 'Chicago'
     state 'IL'
+
+    after(:create) do |admin_user|
+      admin_user.add_role( :admin )
+    end
   end
 
 end

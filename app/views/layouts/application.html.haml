@@ -99,6 +99,7 @@
                     - if current_user.has_role? :admin
                       %li= link_to 'admin', admin_path, style: 'color: red;'
 
+              -# JANK, should be DRY'd
               -# on smaller screens, when you've got a burger, you don't
               -# %li.visible-xs.hidden-sm.hidden-md.hidden-lg
               -#  = link_to t(:your_profile), current_user
@@ -106,6 +107,9 @@
                 = link_to t(:your_settings), "javascript:alert('coming soon');"
               %li.visible-xs.hidden-sm.hidden-md.hidden-lg
                 = link_to t(:sign_out), destroy_user_session_path, {method: :delete}
+              - if current_user.has_role? :admin
+                %li.visible-xs.hidden-sm.hidden-md.hidden-lg
+                  = link_to 'admin', admin_path, style: 'color: red;'
 
 
     .container

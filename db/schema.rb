@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160804035225) do
+ActiveRecord::Schema.define(version: 20160805070036) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,7 +40,6 @@ ActiveRecord::Schema.define(version: 20160804035225) do
 
   create_table "messages", force: :cascade do |t|
     t.integer  "ride_zone_id"
-    t.integer  "ride_id"
     t.integer  "status",          default: 0
     t.string   "to",              default: "", null: false
     t.string   "to_city",         default: "", null: false

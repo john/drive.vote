@@ -24,9 +24,6 @@ Rails.application.routes.draw do
   # Serve websocket cable requests in-process
   # mount ActionCable.server => '/cable'
 
-  resources :campaigns, only: [:index, :show]
-  resources :elections, only: [:index, :show]
-
   resources :users do #, only: [:show, :new, :create, :edit, :update]
     get :confirm, on: :member
   end
@@ -43,12 +40,14 @@ Rails.application.routes.draw do
     post 'twilio/voice' => 'twilio#voice'
     post 'twilio/sms' => 'twilio#sms'
 
-    resources :campaigns, only: [:index, :new, :create, :edit, :update, :destroy]
-    resources :elections, only: [:index, :new, :create, :edit, :update, :destroy]
     resources :messages, only: [:show, :update]
     resources :rides
     resources :ride_zones, only: [:index, :show, :new, :create, :edit, :update, :destroy]
-    resources :users, only: [:edit, :update, :index, :destroy]
+
+    get '/ride_zones/:id/add_dispatcher' => 'ride_zones#add_dispatcher'
+
+
+    resources :users, only: [:show, :edit, :update, :index, :destroy]
   end
 
   match "/:campaign_slug" => 'home#index', via: :get

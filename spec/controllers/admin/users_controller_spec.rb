@@ -6,7 +6,7 @@ RSpec.describe Admin::UsersController, type: :controller do
   # Ride. As you add validations to Ride, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    {name: 'foo', description: 'bar'}
+    {name: 'Joe Test User', email: 'foo@bar.com', password: '12345abcde', phone_number: '2073328709', zip: '94118'}
   }
 
   let(:invalid_attributes) {
@@ -23,8 +23,16 @@ RSpec.describe Admin::UsersController, type: :controller do
 
   describe "GET index" do
     it "works" do
-      get :index, {}, valid_session
+      get :index, params: {}, session: valid_session
       # expect(assigns(:user)).to be_a_new(User)
+    end
+  end
+
+  describe "GET show" do
+    it "assigns the requested user as @user" do
+      user = User.create! valid_attributes
+      get :show, params: {:id => user.to_param}, session: valid_session
+      expect(assigns(:user)).to eq(user)
     end
   end
 

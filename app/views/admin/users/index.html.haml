@@ -16,7 +16,7 @@
   %tbody
     - @users.each do |user|
       %tr
-        %td= link_to user.name, user
+        %td= link_to user.name, admin_user_path(user)
         %td= user.created_at.strftime("%-m/%-d/%Y, %-H:%M %P (%Z)")
         %td= user.description
         %td #{[user.city, user.state, user.zip].reject(&:blank?).join(', ')}
