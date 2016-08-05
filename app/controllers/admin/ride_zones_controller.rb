@@ -1,22 +1,22 @@
 class Admin::RideZonesController < Admin::AdminApplicationController
-  
-  before_action :set_ride_zone, only: [:show, :edit, :update, :destroy]
+
+  before_action :set_ride_zone, only: [:show, :edit, :update, :destroy, :add_dispatcher, :add_driver]
 
   def index
     @ride_zones = RideZone.all
   end
 
   def show
+    @dispatchers = User.with_role(:dispatcher, @ride_zone)
+
     status = params[:status]
-    @messages = case status
-    when 'closed'
-      @ride_zone.messages.order('created_at DESC').closed
-    when 'inprogress'
-      @ride_zone.messages.order('created_at DESC').inprogress
-    when 'unassigned'
-      @ride_zone.messages.order('created_at DESC').unassigned
+    if status.present?
+      rel = @ride_zone.conversations.order('created_at DESC')
+      if rel.respond_to? status
+        @conversations = rel.public_send(status)
+      end
     else
-      @ride_zone.messages.order('created_at DESC')
+      @conversations = @ride_zone.conversations.order('created_at DESC')
     end
   end
 
@@ -50,6 +50,22 @@ class Admin::RideZonesController < Admin::AdminApplicationController
     redirect_to ride_zones_url, notice: 'RideZone was successfully destroyed.'
   end
 
+  def add_dispatcher
+    if params[:user_id].present?
+      @user = User.find(params[:user_id])
+      @user.add_role(:dispatcher, @ride_zone)
+    end
+    redirect_to :back, notice: 'Added dispatcher!'
+  end
+
+  def add_driver
+    if params[:user_id].present?
+      @user = User.find(params[:user_id])
+      @user.add_role(:driver, @ride_zone)
+    end
+    redirect_to :back, notice: 'Added driver!'
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_ride_zone
@@ -61,5 +77,5 @@ class Admin::RideZonesController < Admin::AdminApplicationController
       params.require(:ride_zone).permit( :slug, :name, :description, :phone_number, :short_code,
     :city, :county, :state, :zip, :country, :latitude, :longitude )
     end
-    
+
 end

@@ -11,6 +11,5 @@ RSpec.describe "users/edit", :type => :view do
     assert_select "form[action=?][method=?]", user_path(@user), "post" do
     end
   end
-  
-  
+
 end

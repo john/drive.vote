@@ -40,7 +40,7 @@ RSpec.describe UsersController, :type => :controller do
   describe "GET show" do
     it "assigns the requested user as @user" do
       user = User.create! valid_attributes
-      get :show, {:id => user.to_param}, valid_session
+      get :show, params: {:id => user.to_param}, session: valid_session
       expect(assigns(:user)).to eq(user)
     end
   end
@@ -48,7 +48,7 @@ RSpec.describe UsersController, :type => :controller do
   describe "GET edit" do
     it "assigns the requested user as @user" do
       user = User.create! valid_attributes
-      get :edit, {:id => user.to_param}, valid_session
+      get :edit, params: {:id => user.to_param}, session: valid_session
       expect(assigns(:user)).to eq(user)
     end
   end
@@ -104,20 +104,20 @@ RSpec.describe UsersController, :type => :controller do
 
       it "updates the requested user" do
         user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => new_attributes}, valid_session
+        put :update, params: {:id => user.to_param, :user => new_attributes}, session: valid_session
         user.reload
         skip("Add assertions for updated state")
       end
 
       it "assigns the requested user as @user" do
         user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => valid_attributes}, valid_session
+        put :update, params: {:id => user.to_param, :user => valid_attributes}, session: valid_session
         expect(assigns(:user)).to eq(user)
       end
 
       it "redirects to the user" do
         user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => valid_attributes}, valid_session
+        put :update, params: {:id => user.to_param, :user => valid_attributes}, session: valid_session
         expect(response).to redirect_to(root_path)
       end
     end

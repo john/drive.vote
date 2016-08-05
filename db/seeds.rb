@@ -32,9 +32,19 @@ if  Rails.env == "development"
     }
   ])
 
+  conversation = Conversation.create!(
+    ride_zone_id: ride_zones.first.id,
+    user_id: john.id,
+    from_phone: '+12073328709',
+    to_phone: '+14193860121',
+    status: 0
+  )
+
+
   messages = Message.create!([
     {
       ride_zone_id: ride_zones.first.id,
+      conversation_id: conversation.id,
       status: 0,
       to: '+14193860121', to_city: 'TOLEDO', to_state: 'OH',
       to_country: 'US', to_zip: '43607',
@@ -52,6 +62,7 @@ if  Rails.env == "development"
     },
     {
       ride_zone_id: ride_zones.first.id,
+      conversation_id: conversation.id,
       status: 2,
       to: '+14193860121', to_city: 'TOLEDO', to_state: 'OH',
       to_country: 'US', to_zip: '43607',

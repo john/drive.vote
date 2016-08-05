@@ -1,0 +1,19 @@
+.pull-right
+  = link_to 'Edit', edit_user_path(current_user), class: 'btn btn-default'
+%h1
+  = @user.name
+  %small
+    = @user.user_type
+
+%p
+  @user.description
+
+
+%p
+  Roles:
+
+%p
+  Driving for Ride Zones:
+  - RideZone.find_roles(:driver, @user).each do |rz|
+    %div
+      = rz.name

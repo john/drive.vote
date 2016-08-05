@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe "Rides", type: :request do
-  describe "GET /admin/rides" do
+RSpec.describe "AdminHome", type: :request do
+  describe "GET /admin" do
 
     it "redirects if you're not logged in" do
-      get admin_rides_path
+      get admin_path
       expect(response).to have_http_status(302)
     end
 
@@ -12,7 +12,7 @@ RSpec.describe "Rides", type: :request do
       user = create(:user)
       post user_session_path, params: { :login => user.email, :password => user.password }
 
-      get admin_rides_path
+      get admin_path
       expect(response).to have_http_status(302)
     end
 
@@ -21,7 +21,7 @@ RSpec.describe "Rides", type: :request do
       post user_session_path, params: { 'user[email]' => user.email, 'user[password]' => user.password }
       follow_redirect!
 
-      get admin_rides_path
+      get admin_path
       expect(response).to have_http_status(200)
     end
 

@@ -20,7 +20,7 @@ RSpec.describe Admin::TwilioController, type: :controller do
 
     it 'works' do
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
-      response.should be_successful
+      expect(response).to be_successful
     end
 
     it 'creates user' do

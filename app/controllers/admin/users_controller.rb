@@ -1,8 +1,11 @@
 class Admin::UsersController < Admin::AdminApplicationController
   include UserParams
-  
-  before_action :set_user, only: [:edit, :update, :destroy]
-  
+
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+
+  def show
+  end
+
   def index
     @users = User.all
   end
@@ -11,7 +14,7 @@ class Admin::UsersController < Admin::AdminApplicationController
     @user.destroy
     redirect_to users_url, notice: 'User was successfully destroyed.'
   end
-  
+
   def edit
     role_ids = []
     Role.all.each do |role|
@@ -19,7 +22,7 @@ class Admin::UsersController < Admin::AdminApplicationController
     end
     @user.role_ids = role_ids
   end
-  
+
   # # PATCH/PUT /users/1
   # # PATCH/PUT /users/1.json
   # def update

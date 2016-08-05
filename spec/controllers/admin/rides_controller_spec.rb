@@ -18,7 +18,12 @@ RSpec.describe Admin::RidesController, type: :controller do
   # RidesController. Be sure to keep this updated too.
   let(:valid_session) {
     controller.stub(:signed_in?).and_return(true)
+
+    # stub method is deprecated, but the 'allow' syntax isn't working, don't know why -jm
+    #allow(controller).to receive(:signed_in?).and_return(true)
+
     controller.stub(:require_admin_priviledges).and_return(true)
+    #allow(controller).to receive(:require_admin_priviledges).and_return(true)
   }
 
   describe "GET #index" do
