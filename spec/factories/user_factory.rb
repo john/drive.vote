@@ -2,7 +2,7 @@ FactoryGirl.define do
 
   factory :user do
     name 'Bella Abzug'
-    sequence(:email) { |n| 'bella%04d@gmail.com' % n }
+    sequence(:email) { |n| 'bella%04d@example.com' % n }
     password '123456789'
     city 'New York'
     state 'NY'
@@ -11,7 +11,7 @@ FactoryGirl.define do
   # set up roles for this soon
   factory :admin_user, class: User do
     name 'Barack Obama'
-    email 'barack@gmail.com'
+    email 'barack@example.com'
     password '345678901'
     city 'Chicago'
     state 'IL'
