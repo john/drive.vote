@@ -1,7 +1,7 @@
 class UserMailer < ApplicationMailer
   include SendGrid
 
-  sendgrid_enable   :ganalytics, :opentrack, :clicktrack    
+  sendgrid_enable   :ganalytics, :opentrack, :clicktrack
   default from: 'john@drive.vote'
 
   # Use the previewer to check emails:
@@ -11,18 +11,26 @@ class UserMailer < ApplicationMailer
   # Get it right using welcome_email_not_inlined, then take the contents of that
   # template, and inline the CSS. Remeber to just delete the styles in the header
   # once they've been inlined:
-  
+
   # http://templates.mailchimp.com/resources/inline-css/
 
-  def welcome_email(user)
+  def welcome_email_driver(user)
     sendgrid_category "Welcome"
     @user = user
     @url  = 'http://example.com/login'
 
     email_with_name = %("#{@user.name}" <#{@user.email}>)
-    mail(to: email_with_name, subject: 'Welcome to Drive the Vote!')
+    mail(to: email_with_name, subject: 'Welcome to Drive the Vote, Driver!')
   end
 
+  def welcome_email_rider(user)
+    sendgrid_category "Welcome"
+    @user = user
+    @url  = 'http://example.com/login'
+
+    email_with_name = %("#{@user.name}" <#{@user.email}>)
+    mail(to: email_with_name, subject: 'Welcome to Drive the Vote, Rider!')
+  end
 
   def welcome_email_not_inlined(user)
     sendgrid_category "Welcome"
@@ -32,5 +40,4 @@ class UserMailer < ApplicationMailer
     email_with_name = %("#{@user.name}" <#{@user.email}>)
     mail(to: email_with_name, subject: 'Welcome to Drive the Vote!')
   end
-
 end
