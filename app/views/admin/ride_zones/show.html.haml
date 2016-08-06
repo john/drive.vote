@@ -5,24 +5,33 @@
 
 = render 'admin/nav', {active: 'ride_zones'}
 
-%h2{style: 'margin: 30px 0 40px 0'}
+%h1
   = @ride_zone.name
+  - if current_user.has_role?(:admin)
+    &nbsp;
+    %small
+      = link_to 'Edit', edit_admin_ride_zone_path(@ride_zone), class: 'btn btn-default btn-xs'
 
-%hr
-Add dispatcher:
-%select#add-dispatcher
-  %option
-  = options_for_select( User.all.map{ |u| [u.name, u.id] } )
+%h6
+  Dispatchers
 
-%hr
-Dispatchers:
+#dispatchers
+  - if @dispatchers.present?
+    %ul
+      - @dispatchers.each do |dispatcher|
+        %li
+          = dispatcher.name
 
-- if @dispatchers.present?
-  %ul
-    - @dispatchers.each do |dispatcher|
-      %li
-        = dispatcher.name
-%hr
+
+%h6
+  Drivers
+
+#drivers
+  - if @drivers.present?
+    %ul
+      - @drivers.each do |driver|
+        %li
+          = driver.name
 
 %h6
   Conversations
@@ -43,16 +52,14 @@ Dispatchers:
         %option
           = status[0]
 
+
+
   :javascript
     $('#conversation-status').change(function() {
-      console.log('bar');
       window.location = "/admin/ride_zones/#{@ride_zone.id}?status=" + $(this).val();
     });
 
-    $('#add-dispatcher').change(function() {
-      console.log('fu');
-      window.location = "/admin/ride_zones/#{@ride_zone.id}/add_dispatcher?user_id=" + $(this).val();
-    });
+
 
 
 #conversations

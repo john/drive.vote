@@ -1,5 +1,48 @@
 = render 'admin/nav', {active: 'ride_zones'}
 
-%h1 Editing Ride Zone
+%h1
+  Editing #{link_to @ride_zone.name, admin_ride_zone_path(@ride_zone)}
+
+%br
+%div{style: 'font-size: 14px; font-weight: bold;'}
+  Dispatchers:
+
+- if @dispatchers.present?
+  %ul
+    - @dispatchers.each do |dispatcher|
+      %li
+        #{dispatcher.name} &nbsp; [ #{link_to 'x', remove_dispatcher_admin_ride_zone_path(@ride_zone, user_id: dispatcher.id), method: :delete, data: {confirm: "For real?"}} ]
+
+Add dispatcher:
+%select#add-dispatcher
+  %option
+  = options_for_select( User.all.map{ |u| [u.name, u.id] } )
+
+%hr
+%br
+%div{style: 'font-size: 14px; font-weight: bold;'}
+  Drivers:
+
+- if @drivers.present?
+  %ul
+    - @drivers.each do |driver|
+      %li
+        #{driver.name} &nbsp; [ #{link_to 'x', remove_driver_admin_ride_zone_path(@ride_zone, user_id: driver.id), method: :delete, data: {confirm: "Are you certain?"}} ]
+
+Add driver:
+%select#add-driver
+  %option
+  = options_for_select( User.all.map{ |u| [u.name, u.id] } )
+
+:javascript
+  $('#add-dispatcher').change(function() {
+    $.post( "/admin/ride_zones/#{@ride_zone.id}/add_dispatcher?user_id=" + $(this).val() );
+  });
+
+  $('#add-driver').change(function() {
+    $.post( "/admin/ride_zones/#{@ride_zone.id}/add_driver?user_id=" + $(this).val() );
+  });
+
+%hr
 
 = render 'form'

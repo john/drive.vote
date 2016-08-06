@@ -24,7 +24,7 @@
             = form_for [:admin, @message] do |f|
               - if @message.errors.any?
                 #error_explanation
-                  %h2= "#{pluralize(@message.errors.count, "error")} prohibited this campaign from being saved:"
+                  %h2= "#{pluralize(@message.errors.count, "error")} prohibited this message from being saved:"
                   %ul
                     - @message.errors.full_messages.each do |msg|
                       %li= msg

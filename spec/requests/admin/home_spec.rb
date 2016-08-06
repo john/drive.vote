@@ -10,7 +10,7 @@ RSpec.describe "AdminHome", type: :request do
 
     it "redirects if you're logged in as a non-admin" do
       user = create(:user)
-      post user_session_path, params: { :login => user.email, :password => user.password }
+      sign_in user
 
       get admin_path
       expect(response).to have_http_status(302)
@@ -18,8 +18,7 @@ RSpec.describe "AdminHome", type: :request do
 
     it "succeeds if you're logged in as an admin" do
       user = create(:admin_user)
-      post user_session_path, params: { 'user[email]' => user.email, 'user[password]' => user.password }
-      follow_redirect!
+      sign_in user
 
       get admin_path
       expect(response).to have_http_status(200)

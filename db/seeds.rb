@@ -8,6 +8,7 @@
 
 john = User.create!(
   name: 'John McGrath',
+  available: false,
   email: 'john@fnnny.com',
   password: 'H3yS@ilor',
   phone_number: '2073328709',
@@ -82,6 +83,7 @@ if  Rails.env == "development"
 
   test_john = User.create!(
     name: 'John Test',
+    available: false,
     email: 'john@fryolator.com',
     password: 'phubharblarg',
     phone_number: '2123328709',

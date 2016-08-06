@@ -4,7 +4,7 @@ class Admin::TwilioController < Admin::AdminApplicationController
   before_action :establish_ride_zone
   before_action :establish_user_conversation
   skip_before_action :verify_authenticity_token
-  skip_before_action :require_admin_priviledges
+  skip_before_action :require_admin_privileges
 
   CONFIG_ERROR_MSG = 'Sorry, we cannot process your request'.freeze
 

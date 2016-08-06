@@ -1,3 +1,25 @@
+module DeviseRequestSpecHelpers
+
+  include Warden::Test::Helpers
+
+  def sign_in(resource_or_scope, resource = nil)
+    resource ||= resource_or_scope
+    scope = Devise::Mapping.find_scope!(resource_or_scope)
+    login_as(resource, scope: scope)
+  end
+
+  def sign_out(resource_or_scope)
+    scope = Devise::Mapping.find_scope!(resource_or_scope)
+    logout(scope)
+  end
+
+end
+
+RSpec.configure do |config|
+  config.include DeviseRequestSpecHelpers, type: :request
+end
+
+
 # require 'devise/strategies/auth0_authenticatable'
 
 # Use this hook to configure devise mailer, warden hooks and so forth.
@@ -10,7 +32,7 @@ Devise.setup do |config|
   # by default. You can change it below and use your own secret key.
   # config.secret_key = '0058a0898f00f053fc8cd791f28bbc10411f747d02c5c4d5bd0b60f1bf76b53a39aa1988f593bddaf901dd4eaf3fd2430c3b49c1e4bdb0af6f0cac1c8293538f'
   config.secret_key = '9b0dc34b94c5fedc83e2b5c79618552f73af5e3e16d430c6873d088046917094ebda9fa14a0448f3543d3a3da66f157053481136a6f946b0d7c1afa06901d2fc'
-             
+
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
@@ -249,8 +271,8 @@ Devise.setup do |config|
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
-  
-  
+
+
   # config.warden do |manager|
   #   # manager.intercept_401 = false
   #   # manager.default_strategies(scope: :user).unshift :some_external_strategy
