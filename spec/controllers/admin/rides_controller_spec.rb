@@ -22,8 +22,8 @@ RSpec.describe Admin::RidesController, type: :controller do
     # stub method is deprecated, but the 'allow' syntax isn't working, don't know why -jm
     #allow(controller).to receive(:signed_in?).and_return(true)
 
-    controller.stub(:require_admin_priviledges).and_return(true)
-    #allow(controller).to receive(:require_admin_priviledges).and_return(true)
+    controller.stub(:require_admin_privileges).and_return(true)
+    #allow(controller).to receive(:require_admin_privileges).and_return(true)
   }
 
   describe "GET #index" do

@@ -18,15 +18,25 @@ RSpec.describe Admin::UsersController, type: :controller do
   # RidesController. Be sure to keep this updated too.
   let(:valid_session) {
     controller.stub(:signed_in?).and_return(true)
-    controller.stub(:require_admin_priviledges).and_return(true)
+    controller.stub(:require_admin_privileges).and_return(true)
   }
 
   describe "GET index" do
-    it "works" do
+    it "renders" do
       get :index, params: {}, session: valid_session
       # expect(assigns(:user)).to be_a_new(User)
     end
   end
+
+  describe "GET #index" do
+    it "assigns all users as @users" do
+      user = User.create! valid_attributes
+      get :index, params: {}, session: valid_session
+      expect(assigns(:users)).to eq([user])
+    end
+  end
+
+
 
   describe "GET show" do
     it "assigns the requested user as @user" do

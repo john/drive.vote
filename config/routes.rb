@@ -42,14 +42,22 @@ Rails.application.routes.draw do
 
     resources :messages, only: [:show, :update]
     resources :rides
-    resources :ride_zones, only: [:index, :show, :new, :create, :edit, :update, :destroy]
 
-    get '/ride_zones/:id/add_dispatcher' => 'ride_zones#add_dispatcher'
+    resources :ride_zones, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+      member do
+        get 'add_dispatcher'
+        get 'add_driver'
+
+        delete 'remove_dispatcher'
+        delete 'remove_driver'
+      end
+    end
+
+    # get '/ride_zones/:id/add_dispatcher' => 'ride_zones#add_dispatcher'
+    # get '/ride_zones/:id/add_driver' => 'ride_zones#add_driver'
 
 
     resources :users, only: [:show, :edit, :update, :index, :destroy]
   end
-
-  match "/:campaign_slug" => 'home#index', via: :get
 
 end

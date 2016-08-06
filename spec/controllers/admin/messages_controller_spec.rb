@@ -19,7 +19,7 @@ RSpec.describe Admin::MessagesController, type: :controller do
   # RideZonesController. Be sure to keep this updated too.
   let(:valid_session) {
     controller.stub(:signed_in?).and_return(true)
-    controller.stub(:require_admin_priviledges).and_return(true)
+    controller.stub(:require_admin_privileges).and_return(true)
   }
 
 #   describe "GET #index" do

@@ -16,11 +16,11 @@ class Admin::UsersController < Admin::AdminApplicationController
   end
 
   def edit
-    role_ids = []
-    Role.all.each do |role|
-      role_ids << role.id if @user.has_role? role.name.to_sym
-    end
-    @user.role_ids = role_ids
+    # role_ids = []
+    # Role.all.each do |role|
+    #   role_ids << role.id if @user.has_role? role.name.to_sym
+    # end
+    # @user.role_ids = role_ids
   end
 
   # # PATCH/PUT /users/1

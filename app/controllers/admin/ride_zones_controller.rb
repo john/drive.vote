@@ -1,14 +1,18 @@
 class Admin::RideZonesController < Admin::AdminApplicationController
 
-  before_action :set_ride_zone, only: [:show, :edit, :update, :destroy, :add_dispatcher, :add_driver]
+  skip_before_action :require_admin_privileges, only: [:show, :edit, :update]
+  before_action :set_ride_zone, except: [:index, :new, :create]
+  before_action :require_zone_privilege
 
   def index
     @ride_zones = RideZone.all
   end
 
   def show
-    @dispatchers = User.with_role(:dispatcher, @ride_zone)
+    @dispatchers = @ride_zone.dispatchers #User.with_role(:dispatcher, @ride_zone)
+    @drivers = @ride_zone.drivers #User.with_role(:driver, @ride_zone)
 
+    # TODO: @drivers_on_call = User.with_role(:driver, @ride_zone).on_call
     status = params[:status]
     if status.present?
       rel = @ride_zone.conversations.order('created_at DESC')
@@ -25,6 +29,8 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   end
 
   def edit
+    @dispatchers = User.with_role(:dispatcher, @ride_zone)
+    @drivers = User.with_role(:driver, @ride_zone)
   end
 
   def create
@@ -53,23 +59,49 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   def add_dispatcher
     if params[:user_id].present?
       @user = User.find(params[:user_id])
-      @user.add_role(:dispatcher, @ride_zone)
+      unless @user.has_role?(:dispatcher, @ride_zone)
+        @user.add_role(:dispatcher, @ride_zone)
+      end
     end
-    redirect_to :back, notice: 'Added dispatcher!'
+    redirect_back(fallback_location: root_path, notice: 'Added dispatcher!')
   end
 
   def add_driver
     if params[:user_id].present?
       @user = User.find(params[:user_id])
-      @user.add_role(:driver, @ride_zone)
+      unless @user.has_role?(:driver, @ride_zone)
+        @user.add_role(:driver, @ride_zone)
+      end
     end
-    redirect_to :back, notice: 'Added driver!'
+    redirect_back(fallback_location: root_path, notice: 'Added dispatcher!')
+  end
+
+  def remove_dispatcher
+    if params[:user_id].present?
+      @user = User.find(params[:user_id])
+      @user.remove_role(:dispatcher, @ride_zone)
+    end
+    redirect_back(fallback_location: root_path, notice: 'Removed dispatcher!')
+  end
+
+  def remove_driver
+    if params[:user_id].present?
+      @user = User.find(params[:user_id])
+      @user.remove_role(:driver, @ride_zone)
+    end
+    redirect_back(fallback_location: root_path, notice: 'Removed driver!')
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_ride_zone
       @ride_zone = RideZone.find(params[:id])
+    end
+
+    def require_zone_privilege
+      unless user_signed_in? && ( current_user.has_role?(:admin) || current_user.has_role?(:dispatcher, @ride_zone) )
+        redirect_to '/404.html'
+      end
     end
 
     # Only allow a trusted parameter "white list" through.

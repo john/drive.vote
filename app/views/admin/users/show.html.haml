@@ -1,13 +1,12 @@
-.pull-right
-  = link_to 'Edit', edit_user_path(current_user), class: 'btn btn-default'
 %h1
   = @user.name
-  %small
-    = @user.user_type
+  - if current_user.has_role?(:admin)
+    &nbsp;
+    %small
+      = link_to 'Edit', edit_admin_user_path(current_user), class: 'btn btn-default'
 
 %p
   @user.description
-
 
 %p
   Roles:
