@@ -2,6 +2,7 @@
   "name": "drive.vote",
   "description": "What ever will happen",
   "scripts": {
+    "postdeploy": "bundle exec rake db:migrate"
   },
   "env": {
     "LANG": {
