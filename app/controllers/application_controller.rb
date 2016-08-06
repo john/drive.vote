@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
   end
-  
+
   def check_for_user_type(parms)
     if parms.has_key?('type')
       if parms['type'] == 'driver'
@@ -31,11 +31,11 @@ class ApplicationController < ActionController::Base
       end
     end
   end
-  
+
   protected
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:user_type, :name, :email, :phone_number, :zip])
   end
-  
+
 end
