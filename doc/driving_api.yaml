@@ -1,0 +1,263 @@
+swagger: '2.0'
+info:
+  title: Drive the Vote Driving API
+  description: REST API for the mobile DtV app
+  version: "0.0.5"
+# the domain of the service
+host: www.drive.vote
+# array of all schemes that your API supports
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /driving/update_location:
+    post:
+      summary: Sets the driver's current location
+      description: |
+        Call this endpoint when the driver becomes available, completes a ride, or at a set interval.
+        Clients should use the returned interval to allow the server to throttle calls.
+      parameters:
+        - name: body
+          in: body
+          description: Driver location
+          required: true
+          schema:
+            $ref: '#/definitions/LocationData'
+      responses:
+        200:
+          description: OK response with interval
+          schema:
+            $ref: '#/definitions/UpdateLocationResponse'
+  /driving/available:
+    post:
+      summary: Indicates the driver is available for rides
+      description: |
+        Call this endpoint when the driver is 'on duty' and available to accept rides
+      parameters:
+        - name: body
+          in: body
+          description: Driver location
+          required: false
+          schema:
+            $ref: '#/definitions/LocationData'
+      responses:
+        200:
+          description: ok response
+          schema:
+            $ref: '#/definitions/OKResponse'
+  /driving/unavailable:
+    post:
+      summary: Indicates the driver is unavailable for rides
+      description: |
+        Call this endpoint when the driver is 'off duty' and will not accept rides
+      responses:
+        200:
+          description: OK response
+          schema:
+            $ref: '#/definitions/OKResponse'
+  /driving/status:
+    get:
+      summary: Gets the server's understanding of driver status
+      description: |
+        Call this endpoint to determine what the server believes the driver's status is,
+        in terms of availability and any active ride. Polling intervals are also included.
+      responses:
+        200:
+          description: OK response
+          schema:
+            $ref: '#/definitions/DrivingStatusResponse'
+  /driving/accept_ride:
+    post:
+      summary: Indicates the driver will be responsible for a ride
+      description: |
+        Call this endpoint when the driver wants to claim a ride and carry it out
+      parameters:
+        - name: ride_id
+          in: query
+          type: integer
+          description: Unique id of the ride
+          required: true
+      responses:
+        200:
+          description: OK response means the driver got the ride
+          schema:
+            $ref: '#/definitions/OKResponse'
+        400:
+          description: |
+            The driver did not get the ride. Either the driver already has a ride or
+            another driver grabbed this ride.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /driving/unaccept_ride:
+    post:
+      summary: Indicates the driver will no longer be handling the ride
+      description: |
+        Call this endpoint when the driver wants to claim abandon a ride they accepted.
+        The ride will go back into 'waiting for pickup' state and be available for other drivers.
+      parameters:
+        - name: ride_id
+          in: query
+          type: integer
+          description: Unique id of the ride
+          required: true
+      responses:
+        200:
+          description: OK response means the driver was released from the ride
+          schema:
+            $ref: '#/definitions/OKResponse'
+        400:
+          description: |
+            The release did not succeed, probably because the driver was not assigned
+            to this ride.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /driving/pickup_ride:
+    post:
+      summary: Indicates the driver has picked up the rider
+      description: |
+        Call this endpoint when the driver indicates the rider has been picked up
+      parameters:
+        - name: ride_id
+          in: query
+          type: integer
+          description: Unique id of the ride
+          required: true
+      responses:
+        200:
+          description: OK response
+          schema:
+            $ref: '#/definitions/OKResponse'
+        400:
+          description: |
+            The server does not think this driver owns this ride
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /driving/complete_ride:
+    post:
+      summary: Indicates the driver has completed the ride
+      description: |
+        Call this endpoint when the driver indicates the ride is complete
+      parameters:
+        - name: ride_id
+          in: query
+          type: integer
+          description: Unique id of the ride
+          required: true
+      responses:
+        200:
+          description: OK response
+          schema:
+            $ref: '#/definitions/OKResponse'
+        400:
+          description: |
+            The server does not think this driver owns this ride
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /driving/waiting_rides:
+    get:
+      summary: Gets one or more nearby rides waiting for a driver
+      description: |
+        Call this endpoint to get a list of rides near the driver. If the driver has been
+        assigned a ride, that will be returned with status 'driver_assigned'. Otherwise the
+        rides will have status 'waiting_pickup'. If this endpoint is called while the driver
+        already has accepted a ride, that ride will be returned with its current status.
+      responses:
+        200:
+          description: ok response
+          schema:
+            $ref: '#/definitions/WaitingRidesResponse'
+definitions:
+  DrivingStatusResponse:
+    type: object
+    properties:
+      response:
+        type: object
+        properties:
+          available:
+            type: boolean
+            description: Whether the server thinks the driver is available
+          active_ride:
+            $ref: '#/definitions/Ride'
+          waiting_rides_interval:
+            type: integer
+            description: Server's request for how long to wait before next call for waiting rides
+          update_location_interval:
+            type: integer
+            description: Minimum time before next location update
+  WaitingRidesResponse:
+    type: object
+    properties:
+      response:
+        type: array
+        items:
+          $ref: '#/definitions/Ride'
+      waiting_rides_interval:
+        type: integer
+        description: Server's request for how long to wait before next call for waiting rides
+  Ride:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique id of the ride
+      pickup_at:
+        type: string
+        format: dateTime
+        description: Time for the ride pickup
+      status:
+        type: string
+        description: |
+          Current status of the ride. One of waiting_pickup, driver_assigned, picked_up, complete.
+      from_address:
+        type: string
+        description: Address of the start of the ride
+      from_latitude:
+        type: number
+        format: double
+        description: The start latitude
+      from_longitude:
+        type: number
+        format: double
+        description: The start longitude
+      to_address:
+        type: string
+        description: Address of the end of the ride
+      to_latitude:
+        type: number
+        format: double
+        description: The end latitude
+      to_longitude:
+        type: number
+        format: double
+        description: The end latitude
+  UpdateLocationResponse:
+    type: object
+    properties:
+      response:
+        type: string
+        description: Text response
+      update_location_interval:
+        type: integer
+        description: Minimum time before next location update
+  OKResponse:
+    type: object
+    properties:
+      response:
+        type: string
+        description: Always 'ok'
+  ErrorResponse:
+    type: object
+    properties:
+      error:
+        type: string
+        description: Description of the problem
+  LocationData:
+    type: object
+    properties:
+      latitude:
+        type: number
+        format: double
+      longitude:
+        type: number
+        format: double

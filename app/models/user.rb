@@ -27,8 +27,8 @@ class User < ApplicationRecord
 
   phony_normalize :phone_number, as: :phone_number_normalized, default_country_code: 'US'
 
-  geocoded_by :full_street_address
-  after_validation :geocode
+  # geocoded_by :full_street_address
+  # after_validation :geocode
 
   # google api key, should work for all enabled apis, including maps & civic info:
   # AIzaSyDefFnLJQKoz1OQGjaqaJPHMISVcnXZNPc
@@ -38,6 +38,12 @@ class User < ApplicationRecord
 
   def is_admin?
     true
+  end
+
+  def driver_ride_zone_id
+    # the roles table has entries for driver with resource id = ride zone id
+    driver_role = self.roles.where(name: 'driver').first
+    driver_role.try(:resource_id)
   end
 
   def full_street_address
