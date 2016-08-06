@@ -45,8 +45,8 @@ Rails.application.routes.draw do
 
     resources :ride_zones, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
       member do
-        get 'add_dispatcher'
-        get 'add_driver'
+        post 'add_dispatcher'
+        post 'add_driver'
 
         delete 'remove_dispatcher'
         delete 'remove_driver'

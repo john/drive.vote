@@ -18,8 +18,6 @@ Add dispatcher:
   %option
   = options_for_select( User.all.map{ |u| [u.name, u.id] } )
 
-
-
 %hr
 %br
 %div{style: 'font-size: 14px; font-weight: bold;'}
@@ -36,19 +34,15 @@ Add driver:
   %option
   = options_for_select( User.all.map{ |u| [u.name, u.id] } )
 
-
 :javascript
   $('#add-dispatcher').change(function() {
-    window.location = "/admin/ride_zones/#{@ride_zone.id}/add_dispatcher?user_id=" + $(this).val();
+    $.post( "/admin/ride_zones/#{@ride_zone.id}/add_dispatcher?user_id=" + $(this).val() );
   });
 
   $('#add-driver').change(function() {
-    window.location = "/admin/ride_zones/#{@ride_zone.id}/add_driver?user_id=" + $(this).val();
+    $.post( "/admin/ride_zones/#{@ride_zone.id}/add_driver?user_id=" + $(this).val() );
   });
 
 %hr
-
-
-
 
 = render 'form'
