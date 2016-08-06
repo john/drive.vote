@@ -61,12 +61,12 @@ class Admin::RideZonesController < Admin::AdminApplicationController
       @user = User.find(params[:user_id])
       unless @user.has_role?(:dispatcher, @ride_zone)
         @user.add_role(:dispatcher, @ride_zone)
-        notic = 'Added dispatcher!'
+        msg = 'Added dispatcher!'
       else
-        notic = 'User was already a dispatcher :/'
+        msg = 'User was already a dispatcher :/'
       end
     end
-    flash[:notice] = notic
+    flash[:notice] = msg
     redirect_back(fallback_location: root_path)
   end
 
@@ -75,12 +75,12 @@ class Admin::RideZonesController < Admin::AdminApplicationController
       @user = User.find(params[:user_id])
       unless @user.has_role?(:driver, @ride_zone)
         @user.add_role(:driver, @ride_zone)
-        notic = 'Added driver!'
+        msg = 'Added driver!'
       else
-        notic = 'User was already a driver :/'
+        msg = 'User was already a driver :/'
       end
     end
-    flash[:notice] = notic
+    flash[:notice] = msg
     redirect_back(fallback_location: root_path)
   end
 
