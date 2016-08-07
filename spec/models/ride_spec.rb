@@ -28,7 +28,7 @@ RSpec.describe Ride, type: :model do
       ride.assign_driver(driver).should be_truthy
       ride.clear_driver(driver).should be_truthy
       ride.reload.driver_id.should be_nil
-      ride.status.should == 'waiting_pickup'
+      ride.status.should == 'waiting_assignment'
     end
 
     it 'does not clear different driver' do

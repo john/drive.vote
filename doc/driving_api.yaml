@@ -160,7 +160,7 @@ paths:
       description: |
         Call this endpoint to get a list of rides near the driver. If the driver has been
         assigned a ride, that will be returned with status 'driver_assigned'. Otherwise the
-        rides will have status 'waiting_pickup'. If this endpoint is called while the driver
+        rides will have status 'waiting_assignment'. If this endpoint is called while the driver
         already has accepted a ride, that ride will be returned with its current status.
       responses:
         200:
@@ -208,7 +208,7 @@ definitions:
             description: Number of drivers in the ride zone that are available
           active_rides:
             type: integer
-            description: Number of rides that are in progress (waiting for pickup, driver assigned, picked up)
+            description: Number of rides that are in progress (waiting for assignment, driver assigned, picked up)
           completed_rides:
             type: integer
             description: Number of rides that have completed in this ride zone
@@ -238,7 +238,7 @@ definitions:
       status:
         type: string
         description: |
-          Current status of the ride. One of waiting_pickup, driver_assigned, picked_up, complete.
+          Current status of the ride. One of waiting_assignment, driver_assigned, picked_up, complete.
       from_address:
         type: string
         description: Address of the start of the ride

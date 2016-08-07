@@ -1,7 +1,7 @@
 class Ride < ApplicationRecord
   belongs_to :ride_zone
 
-  enum status: { incomplete_info: 0, scheduled: 1, waiting_pickup: 2, driver_assigned: 3, picked_up: 4, complete: 5 }
+  enum status: { incomplete_info: 0, scheduled: 1, waiting_assignment: 2, driver_assigned: 3, picked_up: 4, complete: 5 }
 
   validates_presence_of :owner_id
   belongs_to :driver, class_name: 'User', foreign_key: :driver_id
@@ -16,7 +16,7 @@ class Ride < ApplicationRecord
 
   # returns true if driver was valid and cleared
   def clear_driver driver
-    waiting = Ride.statuses[:waiting_pickup]
+    waiting = Ride.statuses[:waiting_assignment]
     safe_update = "update rides set driver_id = null, status = #{waiting} where id = #{self.id} and driver_id = #{driver.id}"
     (ActiveRecord::Base.connection.exec_update(safe_update) == 1)
   end
@@ -42,7 +42,7 @@ class Ride < ApplicationRecord
 
   # return up to limit Rides near the specified location
   def self.waiting_nearby ride_zone_id, latitude, longitude, limit, radius
-    rides = Ride.where(ride_zone_id: ride_zone_id, status: :waiting_pickup).to_a
+    rides = Ride.where(ride_zone_id: ride_zone_id, status: :waiting_assignment).to_a
     pt = Geokit::LatLng.new(latitude, longitude)
     rides.map do |ride|
       ride_pt = Geokit::LatLng.new(ride.from_latitude, ride.from_longitude)
@@ -58,6 +58,6 @@ class Ride < ApplicationRecord
   end
 
   def self.active_statuses
-    [:waiting_pickup, :driver_assigned, :picked_up]
+    [:waiting_assignment, :driver_assigned, :picked_up]
   end
 end

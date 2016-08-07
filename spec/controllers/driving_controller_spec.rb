@@ -136,7 +136,7 @@ RSpec.describe DrivingController, :type => :controller do
 
     it 'updates ride status' do
       post :unaccept_ride, params: {ride_id: ride.id}
-      ride.reload.status.should == 'waiting_pickup'
+      ride.reload.status.should == 'waiting_assignment'
     end
 
     it 'does not allow unaccepting un-owned rides' do
