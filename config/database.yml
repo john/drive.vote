@@ -1,20 +1,5 @@
-# SQLite version 3.x
-#   gem install sqlite3
-#
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
-#
+
 default: &default
-  # adapter: mysql2
-  # pool: 5
-  # timeout: 5000
-  # encoding: utf8
-  # reconnect: true
-  # username: root
-  # password:
-  # host: 127.0.0.1
-  # socket: /usr/local/var/mysql/mysql.sock
-  # port: 3306
   adapter: postgresql
   encoding: unicode
   pool: 5
@@ -23,7 +8,7 @@ default: &default
   password: admin
   host: 127.0.0.1
   port: 5432
-  
+
 development:
   <<: *default
   database: vote_development

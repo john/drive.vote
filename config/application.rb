@@ -23,18 +23,9 @@ module DriveVote
     # -- all .rb files in that directory are automatically loaded.
 
     config.assets.paths << "#{Rails}/vendor/assets/fonts"
-    
+    config.assets.initialize_on_precompile = false
+
     config.action_mailer.preview_path = "spec/mailers/previews"
-    
-    # config.action_mailer.smtp_settings = {
-    #   user_name: ENV['SEND_GRID_USER_NAME'],
-    #   password: ENV['SEND_GRID_PASSWORD'],
-    #   domain: "drive.vote",
-    #   address: "smtp.sendgrid.net",
-    #   port: 587,
-    #   authentication: :plain,
-    #   enable_starttls_auto: true
-    # }
-    
+
   end
 end
