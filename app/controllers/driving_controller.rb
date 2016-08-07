@@ -41,11 +41,8 @@ class DrivingController < ApplicationController
     if @active_ride
       render json: {error: 'Driver already on ride'}, status: 400
     else
-      ride_id = params[:ride_id]
-      assigned = Ride.statuses[:driver_assigned]
-      # avoid multiple simultaneous ride updates by enforcing null driver_id check
-      safe_update = "update rides set driver_id = #{@driver_id}, status = #{assigned} where id = #{ride_id} and driver_id is null"
-      perform_update safe_update, 'Ride was already taken by another driver'
+      update = -> { r = Ride.find(params[:ride_id]); r && r.assign_driver(current_user) }
+      perform_update update, 'Ride was already taken by another driver'
     end
   end
 
@@ -53,10 +50,8 @@ class DrivingController < ApplicationController
     if @active_ride.nil?
       render json: {error: 'Driver not on ride'}, status: 400
     else
-      ride_id = params[:ride_id]
-      waiting = Ride.statuses[:waiting_pickup]
-      safe_update = "update rides set driver_id = null, status = #{waiting} where id = #{ride_id} and driver_id = #{@driver_id}"
-      perform_update safe_update, 'Ride was already taken'
+      update = -> { r = Ride.find(params[:ride_id]); r && r.clear_driver(current_user) }
+      perform_update update, 'Ride not for this driver'
     end
   end
 
@@ -64,11 +59,8 @@ class DrivingController < ApplicationController
     if @active_ride.nil?
       render json: {error: 'Driver not on ride'}, status: 400
     else
-      ride_id = params[:ride_id]
-      picked_up = Ride.statuses[:picked_up]
-      # ensure driver is owner
-      safe_update = "update rides set status = #{picked_up} where id = #{ride_id} and driver_id = #{@driver_id}"
-      perform_update safe_update, 'Ride not for this driver'
+      update = -> { r = Ride.find(params[:ride_id]); r && r.pickup_by(current_user) }
+      perform_update update, 'Ride not for this driver'
     end
   end
 
@@ -76,11 +68,8 @@ class DrivingController < ApplicationController
     if @active_ride.nil?
       render json: {error: 'Driver not on ride'}, status: 400
     else
-      ride_id = params[:ride_id]
-      complete = Ride.statuses[:complete]
-      # ensure driver is owner
-      safe_update = "update rides set status = #{complete} where id = #{ride_id} and driver_id = #{@driver_id}"
-      perform_update safe_update, 'Ride not for this driver'
+      update = -> { r = Ride.find(params[:ride_id]); r && r.complete_by(current_user) }
+      perform_update update, 'Ride not for this driver'
     end
   end
 
@@ -106,11 +95,9 @@ class DrivingController < ApplicationController
     current_user.update_attributes(latitude: lat, longitude: lng)
   end
 
-  # this routine executes a sql update and expects 1 row to be updated
-  # in which case it will render an OK response
-  # if zero rows were updated, it sends an error response with error_msg
-  def perform_update sql, error_msg
-    if ActiveRecord::Base.connection.exec_update(sql) == 1
+  # this routine executes function and renders OK response or error
+  def perform_update func, error_msg
+    if func.call
       render json: OK_RESPONSE
     else
       render json: {error: error_msg}, status: 400

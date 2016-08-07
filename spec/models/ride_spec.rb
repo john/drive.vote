@@ -5,6 +5,64 @@ RSpec.describe Ride, type: :model do
   it { should belong_to(:ride_zone) }
   it { should validate_presence_of(:owner_id) }
 
+  describe 'driver functions' do
+    let(:rz) { create :ride_zone }
+    let(:ride) { create :ride, ride_zone: rz }
+    let(:driver) { u = create :user; u.add_role(:driver, rz); u }
+    let(:driver2) { u = create :user; u.add_role(:driver, rz); u }
+
+    it 'assigns driver' do
+      ride.assign_driver(driver).should be_truthy
+      ride.reload.driver_id.should == driver.id
+      ride.status.should == 'driver_assigned'
+    end
+
+    it 'does not assign driver if already has one' do
+      ride.assign_driver(driver).should be_truthy
+      ride.assign_driver(driver2).should be_falsey
+      ride.reload.driver_id.should == driver.id
+      ride.status.should == 'driver_assigned'
+    end
+
+    it 'clears driver' do
+      ride.assign_driver(driver).should be_truthy
+      ride.clear_driver(driver).should be_truthy
+      ride.reload.driver_id.should be_nil
+      ride.status.should == 'waiting_pickup'
+    end
+
+    it 'does not clear different driver' do
+      ride.assign_driver(driver).should be_truthy
+      ride.clear_driver(driver2).should be_falsey
+      ride.reload.driver_id.should == driver.id
+      ride.status.should == 'driver_assigned'
+    end
+
+    it 'picks up by driver' do
+      ride.assign_driver(driver).should be_truthy
+      ride.pickup_by(driver).should be_truthy
+      ride.reload.status.should == 'picked_up'
+    end
+
+    it 'does not pick up with different driver' do
+      ride.assign_driver(driver).should be_truthy
+      ride.pickup_by(driver2).should be_falsey
+      ride.reload.status.should == 'driver_assigned'
+    end
+
+    it 'completes up by driver' do
+      ride.assign_driver(driver).should be_truthy
+      ride.complete_by(driver).should be_truthy
+      ride.reload.status.should == 'complete'
+    end
+
+    it 'does not complete with different driver' do
+      ride.assign_driver(driver).should be_truthy
+      ride.complete_by(driver2).should be_falsey
+      ride.reload.status.should == 'driver_assigned'
+    end
+  end
+
   describe 'waiting nearby' do
     let!(:zone) { create :ride_zone }
     let!(:other_zone) { create :ride_zone }
