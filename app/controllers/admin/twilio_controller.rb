@@ -48,9 +48,9 @@ class Admin::TwilioController < Admin::AdminApplicationController
   def establish_user_conversation
     to_phone = PhonyRails.normalize_number(params['To'])
     from_phone = PhonyRails.normalize_number(params['From'])
-    pseudo_name = "#{from_phone} via sms"
+    sms_name = User.sms_name(from_phone)
     attrs = {
-        name: pseudo_name,
+        name: sms_name,
         user_type: 'voter',
         password: '12345678',
         phone_number: from_phone,
@@ -61,7 +61,7 @@ class Admin::TwilioController < Admin::AdminApplicationController
     @user = begin
       User.create!(attrs)
     rescue ActiveRecord::RecordNotUnique
-      User.where(phone_number_normalized: from_phone, name: pseudo_name).first
+      User.where(phone_number_normalized: from_phone, name: sms_name).first
     end
     @conversation = Conversation.where(user_id: @user.id).where.not(status: :closed).first
     @conversation ||= Conversation.create(user_id: @user.id, from_phone: from_phone, to_phone: to_phone, ride_zone: @ride_zone)
