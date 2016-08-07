@@ -167,6 +167,15 @@ paths:
           description: ok response
           schema:
             $ref: '#/definitions/WaitingRidesResponse'
+  /driving/ridezone_stats:
+    get:
+      summary: Gets driving statistics for the driver's ride zone
+      description: That's it!
+      responses:
+        200:
+          description: ok response
+          schema:
+            $ref: '#/definitions/RideZoneStatisticsResponse'
 definitions:
   DrivingStatusResponse:
     type: object
@@ -185,6 +194,27 @@ definitions:
           update_location_interval:
             type: integer
             description: Minimum time before next location update
+  RideZoneStatisticsResponse:
+    type: object
+    properties:
+      response:
+        type: object
+        properties:
+          total_drivers:
+            type: integer
+            description: Total number of drivers signed up in the ride zone
+          available_drivers:
+            type: integer
+            description: Number of drivers in the ride zone that are available
+          active_rides:
+            type: integer
+            description: Number of rides that are in progress (waiting for pickup, driver assigned, picked up)
+          completed_rides:
+            type: integer
+            description: Number of rides that have completed in this ride zone
+          scheduled_rides:
+            type: integer
+            description: Number of rides that are scheduled but not yet active
   WaitingRidesResponse:
     type: object
     properties:

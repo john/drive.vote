@@ -94,7 +94,8 @@ class DrivingController < ApplicationController
   end
 
   def ridezone_stats
-    render json: {response: {}} # todo
+    stats = RideZone.find(current_user.driver_ride_zone_id).driving_stats
+    render json: {response: stats}
   end
 
   private

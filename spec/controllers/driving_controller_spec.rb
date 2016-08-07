@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe DrivingController, :type => :controller, focus: true do
+RSpec.describe DrivingController, :type => :controller do
   let(:rz) { create :ride_zone }
   let(:driver) { d = create :user; d.add_role(:driver, rz); d }
   let(:car_location) { {latitude: 35, longitude: -122} }
@@ -201,9 +201,9 @@ RSpec.describe DrivingController, :type => :controller, focus: true do
     end
 
     it 'returns interval' do
-
+      controller.stub(:waiting_rides_interval) { 42 }
       get :waiting_rides
-      response.should be_successful
+      JSON.parse(response.body)['waiting_rides_interval'].should == 42
     end
 
     it 'returns rides' do
@@ -217,6 +217,20 @@ RSpec.describe DrivingController, :type => :controller, focus: true do
         DrivingController::RIDES_RADIUS).and_return(rides)
       get :waiting_rides
       JSON.parse(response.body)['response'].should == rides.map {|r| r.api_json}
+    end
+  end
+
+  describe 'zone stats' do
+    it 'is successful' do
+      get :ridezone_stats
+      response.should be_successful
+    end
+
+    it 'returns ridezone data' do
+      expected = {foo: :bar}
+      RideZone.any_instance.should_receive(:driving_stats).and_return(expected)
+      get :ridezone_stats
+      JSON.parse(response.body)['response'].should == expected.as_json
     end
   end
 end

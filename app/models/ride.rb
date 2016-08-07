@@ -27,4 +27,8 @@ class Ride < ApplicationRecord
       a[0] <=> b[0]
     end.map {|pair| pair[1]}[0..limit-1]
   end
+
+  def self.active_statuses
+    [:waiting_pickup, :driver_assigned, :picked_up]
+  end
 end
