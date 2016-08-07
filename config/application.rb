@@ -23,7 +23,6 @@ module DriveVote
     # -- all .rb files in that directory are automatically loaded.
 
     config.assets.paths << "#{Rails}/vendor/assets/fonts"
-    config.assets.initialize_on_precompile = false
 
     config.action_mailer.preview_path = "spec/mailers/previews"
 
