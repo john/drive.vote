@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160806051203) do
+ActiveRecord::Schema.define(version: 20160807190024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,17 +40,8 @@ ActiveRecord::Schema.define(version: 20160806051203) do
 
   create_table "messages", force: :cascade do |t|
     t.integer  "ride_zone_id"
-    t.integer  "status",          default: 0
     t.string   "to",              default: "", null: false
-    t.string   "to_city",         default: "", null: false
-    t.string   "to_state",        default: "", null: false
-    t.string   "to_country",      default: "", null: false
-    t.string   "to_zip",          default: "", null: false
     t.string   "from",            default: "", null: false
-    t.string   "from_city",       default: "", null: false
-    t.string   "from_state",      default: "", null: false
-    t.string   "from_country",    default: "", null: false
-    t.string   "from_zip",        default: "", null: false
     t.text     "body"
     t.string   "sms_message_sid", default: "", null: false
     t.string   "sms_sid",         default: "", null: false

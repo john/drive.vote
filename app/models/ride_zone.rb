@@ -3,6 +3,7 @@ class RideZone < ApplicationRecord
 
   has_many :conversations
   has_many :messages
+  has_many :rides
 
   validates_presence_of :name
 

@@ -8,6 +8,7 @@ host: www.drive.vote
 # array of all schemes that your API supports
 schemes:
   - https
+basePath: /api/1
 produces:
   - application/json
 paths:
@@ -19,7 +20,8 @@ paths:
       description: |
         Call this endpoint to get the conversations associated with ride_zone id RZID. With no
         parameters, this returns all conversations that are not status=closed. You can specify
-        the status parameter to filter.
+        the status parameter to filter. These conversations do not have messages. To see messages
+        for a specific conversation, call /conversations/CONVID.
       parameters:
         - name: status
           in: query
@@ -31,6 +33,10 @@ paths:
           description: Requested conversations are returned
           schema:
             $ref: '#/definitions/ConversationsResponse'
+        404:
+          description: Ride zone RZID not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
   /ride_zone/RZID/rides:
     get:
       summary: Gets all or some rides for the ride zone RZID
@@ -50,31 +56,22 @@ paths:
           required: false
       responses:
         200:
-          description: Requested conversations are returned
+          description: Requested rides are returned
           schema:
             $ref: '#/definitions/RidesResponse'
-  /ride_zone/RZID/drivers:
-    get:
-      tags:
-        - Drivers
-      summary: Gets the drivers associated with the ride zone RZID
-      description: |
-        Call this endpoint to get a list of all drivers associated with the ride zone RZID.
-      responses:
-        200:
-          description: Requested conversations are returned
+        404:
+          description: Ride zone RZID not found
           schema:
-            $ref: '#/definitions/DriversResponse'
-  /rides:
+            $ref: '#/definitions/ErrorResponse'
     post:
       tags:
         - Rides
-      summary: Creates a new ride
+      summary: Creates a new ride in ride zone RZID
       description: |
         Call this endpoint to create a new ride. You do not need to include the id or any lat/long
-        parameters in the Ride JSON.
+        parameters in the Ride JSON. Posted body is {'ride' : { attributes } }
       parameters:
-        - name: body
+        - name: ride
           in: body
           schema:
             $ref: '#/definitions/Ride'
@@ -87,14 +84,50 @@ paths:
           description: There was missing or invalid data
           schema:
             $ref: '#/definitions/ErrorResponse'
-  /conversations/CID/messages:
+        404:
+          description: Ride zone RZID not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /ride_zone/RZID/drivers:
+    get:
+      tags:
+        - Drivers
+      summary: Gets the drivers associated with the ride zone RZID
+      description: |
+        Call this endpoint to get a list of all drivers associated with the ride zone RZID.
+      responses:
+        200:
+          description: Requested drivers are returned
+          schema:
+            $ref: '#/definitions/DriversResponse'
+        404:
+          description: Ride zone RZID not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /conversations/CONVID:
+    get:
+      tags:
+        - Conversations
+      summary: Retreives a single conversation with messages for id CONVID
+      description: |
+        Call this endpoint to get a single conversation and all its messages
+      responses:
+        200:
+          description: OK response with conversation
+          schema:
+            $ref: '#/definitions/OKResponse'
+        404:
+          description: Conversation not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /conversations/CONVID/messages:
     post:
       tags:
         - Conversations
       summary: Creates a new message reply in a conversation
       description: |
-        Call this endpoint to reply to a conversation. Post body should be JSON object with one
-        field "message".
+        Call this endpoint to reply to a conversation. Post body should be JSON object like
+        { "message" : { "body" : "text of message" } }
       parameters:
         - name: body
           in: body
@@ -107,6 +140,18 @@ paths:
             $ref: '#/definitions/OKResponse'
         400:
           description: There was missing or invalid data
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        404:
+          description: Conversation not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Error processing the message
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        503:
+          description: Timeout determining if message was delivered
           schema:
             $ref: '#/definitions/ErrorResponse'
 definitions:
@@ -262,6 +307,9 @@ definitions:
         description: Time for the ride pickup, unix epoch
       is_from_voter:
         type: boolean
+      created_at:
+        type: integer
+        description: Unix epoch time
       body:
         type: string
         description: Text of the message
@@ -269,8 +317,11 @@ definitions:
     type: object
     properties:
       message:
-        type: string
-        description: Text of the message
+        type: object
+        properties:
+          body:
+            type: string
+            description: The text of the message to send
   OKResponse:
     type: object
     properties:

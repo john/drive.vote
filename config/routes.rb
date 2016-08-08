@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   # Serve websocket cable requests in-process
   # mount ActionCable.server => '/cable'
 
+
   resources :driving do
     collection do
       get 'demo' => 'driving#demo'
@@ -40,9 +41,29 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :api do
+    namespace :v1, path: '1' do
+      resources :conversations, only: [:show] do
+        member do
+          post 'messages' => 'conversations#create_message'
+        end
+      end
+
+      resources :ride_zones do
+        member do
+          get 'conversations' => 'ride_zones#conversations'
+          get 'drivers' => 'ride_zones#drivers'
+          get 'rides' => 'ride_zones#rides'
+          post 'rides' => 'ride_zones#create_ride'
+        end
+      end
+    end
+  end
+
   resources :users do #, only: [:show, :new, :create, :edit, :update]
     get :confirm, on: :member
   end
+
   match '/confirm' => 'home#confirm', via: :get, as: :confirm
 
   match '/about' => 'home#about', via: :get, as: :about

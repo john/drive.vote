@@ -10,6 +10,18 @@ FactoryGirl.define do
     factory :waiting_ride do
       status Ride.statuses[:waiting_assignment]
     end
+
+    factory :assigned_ride do
+      status Ride.statuses[:driver_assigned]
+    end
+
+    factory :picked_up_ride do
+      status Ride.statuses[:picked_up]
+    end
+
+    factory :complete_ride do
+      status Ride.statuses[:complete]
+    end
   end
 
 end

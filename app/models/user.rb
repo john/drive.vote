@@ -38,6 +38,10 @@ class User < ApplicationRecord
     true
   end
 
+  def api_json
+    self.as_json(only: [:id, :name, :phone_number_normalized, :availability, :latitude, :longitude])
+  end
+
   def driver_ride_zone_id
     # the roles table has entries for driver with resource id = ride zone id
     driver_role = self.roles.where(name: 'driver').first

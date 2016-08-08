@@ -4,14 +4,12 @@ RSpec.describe RideZone, type: :model do
 
   it { should have_many(:messages) }
 
-  it 'calculates stats' do
+  it 'calculates stats', focus:true do
     rz = create :ride_zone
     rz2 = create :ride_zone
-    d1 = create :user, available: true
-    d2 = create :user, available: false
-    d3 = create :user # not in this rz
-    d1.add_role(:driver, rz)
-    d2.add_role(:driver, rz)
+    d1 = create :driver_user, available: true, ride_zone: rz
+    d2 = create :driver_user, available: false, ride_zone: rz
+    d3 = create :driver_user, ride_zone: rz2
 
     Ride.statuses.each { |s| create :ride, ride_zone: rz, status: s[0]}
     Ride.statuses.each { |s| create :ride, ride_zone: rz2, status: s[0]} # should not be in counts

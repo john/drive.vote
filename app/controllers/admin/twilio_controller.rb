@@ -57,10 +57,4 @@ class Admin::TwilioController < Admin::AdminApplicationController
     @conversation ||= Conversation.create(user_id: @user.id, from_phone: from_phone, to_phone: to_phone, ride_zone: @ride_zone)
   end
 
-  # def twilio_client
-  #   account_sid = Rails.application.secrets.twilio_sid
-  #   auth_token = Rails.application.secrets.twilio_token
-  #   @twilio_client ||= Twilio::REST::Client.new account_sid, auth_token
-  # end
-
 end
