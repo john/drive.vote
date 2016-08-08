@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160806024245) do
+ActiveRecord::Schema.define(version: 20160806051203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,14 +84,23 @@ ActiveRecord::Schema.define(version: 20160806024245) do
   end
 
   create_table "rides", force: :cascade do |t|
-    t.integer  "owner_id",                  null: false
+    t.integer  "owner_id",                                              null: false
     t.integer  "ride_zone_id"
-    t.string   "name",         default: "", null: false
+    t.string   "name",                                     default: "", null: false
     t.text     "description"
     t.datetime "pickup_at"
     t.integer  "status"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
+    t.integer  "driver_id"
+    t.decimal  "from_latitude",  precision: 15, scale: 10
+    t.decimal  "from_longitude", precision: 15, scale: 10
+    t.string   "from_address"
+    t.decimal  "to_latitude",    precision: 15, scale: 10
+    t.decimal  "to_longitude",   precision: 15, scale: 10
+    t.string   "to_address"
+    t.index ["driver_id"], name: "index_rides_on_driver_id", using: :btree
+    t.index ["ride_zone_id"], name: "index_rides_on_ride_zone_id", using: :btree
   end
 
   create_table "roles", force: :cascade do |t|

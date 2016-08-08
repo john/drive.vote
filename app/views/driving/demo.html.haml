@@ -1,0 +1,104 @@
+:javascript
+  // calls the callback with an object with attributes latitude and longitude or {} if not available
+  function get_location(cb) {
+     if ("geolocation" in navigator) {
+       navigator.geolocation.getCurrentPosition(
+         function(position) {
+            cb({'latitude': position.coords.latitude, 'longitude': position.coords.longitude});
+         },
+         function() {
+           console.log('unable to get current position')
+           cb({})
+         }
+       )
+     }
+     else {
+       console.log('there is no geolocation available')
+       cb({})
+     }
+  }
+  function send_available() {
+    get_location(function(loc) {
+      $.ajax('/driving/available', {method: 'POST', data: loc, content_type: 'application/json'});
+    });
+  }
+  function send_unavailable() {
+    $.ajax('/driving/unavailable', {method: 'POST'});
+  }
+  function accept_ride(ride_id) {
+    $.ajax('/driving/accept_ride?ride_id='+ride_id, {
+      method: 'POST',
+      success: function(data, status, xhr) { document.getElementById('ar_result').innerText = 'success: '+JSON.stringify(data)},
+      error: function(xhr, status, err) { document.getElementById('ar_result').innerText = 'error: '+xhr.responseText}
+      });
+  }
+  function unaccept_ride(ride_id) {
+    $.ajax('/driving/unaccept_ride?ride_id='+ride_id, {
+      method: 'POST',
+      success: function(data, status, xhr) { document.getElementById('uar_result').innerText = 'success: '+JSON.stringify(data)},
+      error: function(xhr, status, err) { document.getElementById('uar_result').innerText = 'error: '+xhr.responseText}
+      });
+  }
+  function pickup_ride(ride_id) {
+    $.ajax('/driving/pickup_ride?ride_id='+ride_id, {
+      method: 'POST',
+      success: function(data, status, xhr) { document.getElementById('pu_result').innerText = 'success: '+JSON.stringify(data)},
+      error: function(xhr, status, err) { document.getElementById('pu_result').innerText = 'error: '+xhr.responseText}
+      });
+  }
+  function complete_ride(ride_id) {
+    get_location(function(loc) {
+      $.ajax('/driving/complete_ride?ride_id='+ride_id, {
+        method: 'POST',
+        data: loc,
+        content_type: 'application/json',
+        success: function(data, status, xhr) { document.getElementById('cr_result').innerText = 'success: '+JSON.stringify(data)},
+        error: function(xhr, status, err) { document.getElementById('cr_result').innerText = 'error: '+xhr.responseText}
+      });
+    });
+  }
+  function send_location() {
+    get_location(function(loc) {
+      if (loc !== {}) {
+        $.ajax('/driving/location', { method: 'POST', data: loc, content_type: 'application/json'});
+      }
+    })
+  }
+  function get_status() {
+    $.ajax('/driving/status', {
+      method: 'GET',
+      success: function(data, status, xhr) { document.getElementById('status_result').innerText = 'success: '+JSON.stringify(data)},
+      error: function(xhr, status, err) { document.getElementById('status_result').innerText = 'error: '+xhr.responseText}
+      });
+  }
+  function get_waiting_rides() {
+    get_location(function(loc) {
+      var url = '/driving/waiting_rides?latitude=' + loc['latitude'] + '&longitude=' + loc['longitude']
+      $.ajax(url, {
+        method: 'GET',
+        success: function(data, status, xhr) { document.getElementById('rides_result').innerText = 'success: '+JSON.stringify(data)},
+        error: function(xhr, status, err) { document.getElementById('rides_result').innerText = 'error: '+err}
+      });
+    });
+  }
+
+= "Welcome #{current_user.name}"
+<p>
+<input value="Available" type=submit onclick="javascript: send_available()"/>
+<p>
+<input value="Unavailable" type=submit onclick="javascript: send_unavailable()"/>
+<p>
+<input value="Send Location" type=submit onclick="javascript: send_location()"/>
+<p>
+<input value="Accept Ride" type=submit onclick="javascript: accept_ride(1)"/>
+<div id='ar_result'>result...</div>
+<input value="Unaccept Ride" type=submit onclick="javascript: unaccept_ride(1)"/>
+<div id='uar_result'>result...</div>
+<input value="Pickup Ride" type=submit onclick="javascript: pickup_ride(1)"/>
+<div id='pu_result'>result...</div>
+<input value="Complete Ride" type=submit onclick="javascript: complete_ride(1)"/>
+<div id='cr_result'>result...</div>
+<input value="Waiting Rides" type=submit onclick="javascript: get_waiting_rides()"/>
+<div id='rides_result'>result...</div>
+<input value="Status" type=submit onclick="javascript: get_status()"/>
+<div id='status_result'>result...</div>

@@ -24,6 +24,22 @@ Rails.application.routes.draw do
   # Serve websocket cable requests in-process
   # mount ActionCable.server => '/cable'
 
+  resources :driving do
+    collection do
+      get 'demo' => 'driving#demo'
+      get 'status' => 'driving#status'
+      post 'location' => 'driving#update_location'
+      post 'available' => 'driving#available'
+      post 'unavailable' => 'driving#unavailable'
+      post 'accept_ride' => 'driving#accept_ride'
+      post 'unaccept_ride' => 'driving#unaccept_ride'
+      post 'pickup_ride' => 'driving#pickup_ride'
+      post 'complete_ride' => 'driving#complete_ride'
+      get 'waiting_rides' => 'driving#waiting_rides'
+      get 'ridezone_stats' => 'driving#ridezone_stats'
+    end
+  end
+
   resources :users do #, only: [:show, :new, :create, :edit, :update]
     get :confirm, on: :member
   end
