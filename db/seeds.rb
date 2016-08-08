@@ -33,6 +33,15 @@ if  Rails.env == "development"
     }
   ])
 
+
+  ride_zones = RideZone.create!([
+    {
+      slug: 'tampa_fl',
+      name: 'Tampa, FL',
+      phone_number: '+19993860121'
+    }
+  ])
+
   conversation = Conversation.create!(
     ride_zone_id: ride_zones.first.id,
     user_id: john.id,
@@ -82,5 +91,6 @@ if  Rails.env == "development"
     city: 'San Francisco',
     state: 'CA'
   )
-  roles.each { |role| test_john.grant( role.name.to_sym ) }
+  # roles.each { |role| test_john.grant( role.name.to_sym ) }
+
 end

@@ -89,10 +89,6 @@ Rails.application.routes.draw do
       end
     end
 
-    # get '/ride_zones/:id/add_dispatcher' => 'ride_zones#add_dispatcher'
-    # get '/ride_zones/:id/add_driver' => 'ride_zones#add_driver'
-
-
     resources :users, only: [:show, :edit, :update, :index, :destroy]
   end
 

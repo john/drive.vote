@@ -49,6 +49,11 @@ class User < ApplicationRecord
     driver_role.try(:resource_id)
   end
 
+  def dispatcher_ride_zone_id
+    dispatcher_role = self.roles.where(name: 'dispatcher').first
+    dispatcher_role.try(:resource_id)
+  end
+
   def full_street_address
     [self.address1, self.address2, self.city, self.state, self.zip, self.country].compact.join(', ')
   end

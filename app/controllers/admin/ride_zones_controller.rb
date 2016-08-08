@@ -57,50 +57,54 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   end
 
   def add_dispatcher
-    if params[:user_id].present?
-      @user = User.find(params[:user_id])
-      unless @user.has_role?(:dispatcher, @ride_zone)
-        @user.add_role(:dispatcher, @ride_zone)
-        msg = 'Added dispatcher!'
-      else
-        msg = 'User was already a dispatcher :/'
-      end
-    end
-    flash[:notice] = msg
-    redirect_back(fallback_location: root_path)
+    add_role(:dispatcher)
   end
 
   def add_driver
-    if params[:user_id].present?
-      @user = User.find(params[:user_id])
-      unless @user.has_role?(:driver, @ride_zone)
-        @user.add_role(:driver, @ride_zone)
-        msg = 'Added driver!'
-      else
-        msg = 'User was already a driver :/'
-      end
-    end
-    flash[:notice] = msg
-    redirect_back(fallback_location: root_path)
+    add_role(:driver)
   end
 
   def remove_dispatcher
-    if params[:user_id].present?
-      @user = User.find(params[:user_id])
-      @user.remove_role(:dispatcher, @ride_zone)
-    end
-    redirect_back(fallback_location: root_path, notice: 'Removed dispatcher!')
+    remove_role(:dispatcher)
   end
 
   def remove_driver
-    if params[:user_id].present?
-      @user = User.find(params[:user_id])
-      @user.remove_role(:driver, @ride_zone)
-    end
-    redirect_back(fallback_location: root_path, notice: 'Removed driver!')
+    remove_role(:driver)
   end
 
   private
+
+    def remove_role(role_type)
+      if params[:user_id].present?
+        @user = User.find(params[:user_id])
+        @user.remove_role(role_type, @ride_zone)
+      end
+      flash[:notice] = "Removed #{role_type}!"
+      redirect_back(fallback_location: root_path)
+    end
+
+    def add_role(role_type)
+      if params[:user_id].present?
+        @user = User.find(params[:user_id])
+        # unless @user.has_role?(role_type, @ride_zone)
+
+        if role_type == :driver
+          already_has_role = @user.driver_ride_zone_id.present?
+        elsif role_type == :dispatcher
+          already_has_role = @user.dispatcher_ride_zone_id.present?
+        end
+
+        unless already_has_role
+          @user.add_role(role_type, @ride_zone)
+          msg = "Added #{role_type.to_s}!"
+        else
+          msg = 'User was already a #{role_type} :/'
+        end
+      end
+      flash[:notice] = msg
+      redirect_back(fallback_location: root_path)
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_ride_zone
       @ride_zone = RideZone.find(params[:id])
