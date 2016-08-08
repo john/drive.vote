@@ -48,10 +48,20 @@ class Admin::TwilioController < Admin::AdminApplicationController
   def establish_user_conversation
     to_phone = PhonyRails.normalize_number(params['To'])
     from_phone = PhonyRails.normalize_number(params['From'])
-    @user = User.find_by_phone_number_normalized(from_phone)
-    if @user.nil?
-      @user = User.create!(name: '', user_type: 'rider', password: '12345678', phone_number: from_phone, phone_number_normalized: from_phone, email: "#{from_phone}@sms.org")
-      # todo: user role as passenger?
+    sms_name = User.sms_name(from_phone)
+    attrs = {
+        name: sms_name,
+        user_type: 'voter',
+        password: '12345678',
+        phone_number: from_phone,
+        phone_number_normalized: from_phone,
+        email: "#{Time.now.to_f}@not.adomain"
+    }
+    # create the user and rescue duplicate record error to find existing one
+    @user = begin
+      User.create!(attrs)
+    rescue ActiveRecord::RecordNotUnique
+      User.where(phone_number_normalized: from_phone, name: sms_name).first
     end
     @conversation = Conversation.where(user_id: @user.id).where.not(status: :closed).first
     @conversation ||= Conversation.create(user_id: @user.id, from_phone: from_phone, to_phone: to_phone, ride_zone: @ride_zone)

@@ -39,7 +39,8 @@ RSpec.describe Admin::TwilioController, type: :controller do
     end
 
     it 'reuses conversation' do
-      c = create :conversation, user: user, from_phone: from_number, ride_zone: ride_zone
+      post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
+      c = Conversation.last
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
       Conversation.count.should == 1
       Message.last.conversation_id.should == c.id

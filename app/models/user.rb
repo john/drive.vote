@@ -44,6 +44,14 @@ class User < ApplicationRecord
     [self.address1, self.address2, self.city, self.state, self.zip, self.country].compact.join(', ')
   end
 
+  def self.sms_name(phone_number)
+    "#{phone_number} via sms"
+  end
+
+  def has_sms_name?
+    self.name == User.sms_name(self.phone_number)
+  end
+
   def has_required_fields?
     !!(self.email? && self.name? && self.phone_number? && self.city? && self.state? && self.zip)
   end
