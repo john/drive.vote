@@ -27,9 +27,6 @@ class User < ApplicationRecord
 
   phony_normalize :phone_number, as: :phone_number_normalized, default_country_code: 'US'
 
-  # geocoded_by :full_street_address
-  # after_validation :geocode
-
   # google api key, should work for all enabled apis, including maps & civic info:
   # AIzaSyDefFnLJQKoz1OQGjaqaJPHMISVcnXZNPc
   # https://console.developers.google.com/apis/credentials/wizard?api=maps_backend&project=phonic-client-135123
@@ -37,6 +34,7 @@ class User < ApplicationRecord
   validates :phone_number_normalized, phony_plausible: true
 
   def is_admin?
+    #todo: make this rolify-based
     true
   end
 

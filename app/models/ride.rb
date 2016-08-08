@@ -16,23 +16,20 @@ class Ride < ApplicationRecord
 
   # returns true if driver was valid and cleared
   def clear_driver driver
-    waiting = Ride.statuses[:waiting_assignment]
-    safe_update = "update rides set driver_id = null, status = #{waiting} where id = #{self.id} and driver_id = #{driver.id}"
-    (ActiveRecord::Base.connection.exec_update(safe_update) == 1)
+    return false unless self.driver_id == driver.id
+    update_attributes(driver_id: nil, status: :waiting_assignment)
   end
 
   # returns true if driver owns this ride
   def pickup_by driver
-    picked_up = Ride.statuses[:picked_up]
-    safe_update = "update rides set status = #{picked_up} where id = #{self.id} and driver_id = #{driver.id}"
-    (ActiveRecord::Base.connection.exec_update(safe_update) == 1)
+    return false unless self.driver_id == driver.id
+    update_attributes(status: :picked_up)
   end
 
   # returns true if driver owns this ride
   def complete_by driver
-    complete = Ride.statuses[:complete]
-    safe_update = "update rides set status = #{complete} where id = #{self.id} and driver_id = #{driver.id}"
-    (ActiveRecord::Base.connection.exec_update(safe_update) == 1)
+    return false unless self.driver_id == driver.id
+    update_attributes(status: :complete)
   end
 
   # returns json suitable for exposing in the API

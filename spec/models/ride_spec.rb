@@ -19,46 +19,46 @@ RSpec.describe Ride, type: :model do
 
     it 'does not assign driver if already has one' do
       ride.assign_driver(driver).should be_truthy
-      ride.assign_driver(driver2).should be_falsey
+      ride.reload.assign_driver(driver2).should be_falsey
       ride.reload.driver_id.should == driver.id
       ride.status.should == 'driver_assigned'
     end
 
     it 'clears driver' do
       ride.assign_driver(driver).should be_truthy
-      ride.clear_driver(driver).should be_truthy
+      ride.reload.clear_driver(driver).should be_truthy
       ride.reload.driver_id.should be_nil
       ride.status.should == 'waiting_assignment'
     end
 
     it 'does not clear different driver' do
       ride.assign_driver(driver).should be_truthy
-      ride.clear_driver(driver2).should be_falsey
+      ride.reload.clear_driver(driver2).should be_falsey
       ride.reload.driver_id.should == driver.id
       ride.status.should == 'driver_assigned'
     end
 
     it 'picks up by driver' do
       ride.assign_driver(driver).should be_truthy
-      ride.pickup_by(driver).should be_truthy
+      ride.reload.pickup_by(driver).should be_truthy
       ride.reload.status.should == 'picked_up'
     end
 
     it 'does not pick up with different driver' do
       ride.assign_driver(driver).should be_truthy
-      ride.pickup_by(driver2).should be_falsey
+      ride.reload.pickup_by(driver2).should be_falsey
       ride.reload.status.should == 'driver_assigned'
     end
 
     it 'completes up by driver' do
       ride.assign_driver(driver).should be_truthy
-      ride.complete_by(driver).should be_truthy
+      ride.reload.complete_by(driver).should be_truthy
       ride.reload.status.should == 'complete'
     end
 
     it 'does not complete with different driver' do
       ride.assign_driver(driver).should be_truthy
-      ride.complete_by(driver2).should be_falsey
+      ride.reload.complete_by(driver2).should be_falsey
       ride.reload.status.should == 'driver_assigned'
     end
   end
