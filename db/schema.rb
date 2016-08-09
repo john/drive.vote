@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(version: 20160809032717) do
     t.string   "to_address"
     t.index ["driver_id"], name: "index_rides_on_driver_id", using: :btree
     t.index ["ride_zone_id"], name: "index_rides_on_ride_zone_id", using: :btree
+    t.index ["voter_id"], name: "index_rides_on_voter_id", using: :btree
   end
 
   create_table "roles", force: :cascade do |t|
