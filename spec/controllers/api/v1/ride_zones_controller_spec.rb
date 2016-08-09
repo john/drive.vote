@@ -107,11 +107,11 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
       Ride.first.name.should == 'foo'
     end
 
-    it 'does not create a ride with missing owner_id' do
+    it 'does not create a ride with missing voter_id' do
       expect {
           post :create_ride, params: {id: rz.id, ride: { name: 'foo' } }
       }.to change(Ride, :count).by(0)
-      JSON.parse(response.body)['error'].should include('owner_id')
+      JSON.parse(response.body)['error'].should include('voter')
     end
   end
 end
