@@ -96,13 +96,13 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
     let!(:voter) { create :voter_user }
 
     it 'is successful' do
-      post :create_ride, params: {id: rz.id, ride: { owner_id: voter.id, name: 'foo'} }
+      post :create_ride, params: {id: rz.id, ride: { voter_id: voter.id, name: 'foo'} }
       response.should be_successful
     end
 
     it 'creates a new ride for the ride zone' do
       expect {
-          post :create_ride, params: {id: rz.id, ride: { owner_id: voter.id, name: 'foo'} }
+          post :create_ride, params: {id: rz.id, ride: { voter_id: voter.id, name: 'foo'} }
       }.to change(Ride, :count).by(1)
       Ride.first.name.should == 'foo'
     end
