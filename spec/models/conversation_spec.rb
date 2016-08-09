@@ -1,7 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe Conversation, type: :model do
-  describe 'lifecycle' do
+
+  describe 'saving lifecycle' do
+    let(:user) { create :user, language:1, name: 'foo' }
+    it 'writes lifecycle to db' do
+      c = create :conversation, user: user
+      c.reload.lifecycle.should == 'need_origin'
+    end
+  end
+
+  describe 'lifecycle calculation' do
     it 'detects language' do
       c = create :conversation
       c.send(:calculated_lifecycle).should == Conversation.lifecycles[:need_language]

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160809032717) do
+ActiveRecord::Schema.define(version: 20160809142822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -142,6 +142,7 @@ ActiveRecord::Schema.define(version: 20160809032717) do
     t.datetime "updated_at",                                                          null: false
     t.integer  "language",                                            default: 0,     null: false
     t.boolean  "available",                                           default: false, null: false
+    t.datetime "location_updated_at"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["phone_number_normalized"], name: "index_users_on_phone_number_normalized", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
