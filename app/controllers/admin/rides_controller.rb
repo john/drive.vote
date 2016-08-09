@@ -46,4 +46,10 @@ class Admin::RidesController < Admin::AdminApplicationController
     @ride.destroy
     redirect_to rides_url, notice: 'Ride was successfully destroyed.'
   end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_ride
+      @ride = Ride.find(params[:id])
+    end
 end

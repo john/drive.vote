@@ -6,7 +6,7 @@ FactoryGirl.define do
     end
 
     name 'Bella Abzug'
-    sequence(:email) { |n| 'bella%04d@example.com' % n }
+    sequence(:email) { |n| "bella#{n}@example.com" }
     password '123456789'
     city 'New York'
     state 'NY'

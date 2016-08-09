@@ -6,7 +6,7 @@ RSpec.describe Admin::RidesController, type: :controller do
   # Ride. As you add validations to Ride, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    {owner_id: 1, name: 'foo', description: 'bar'}
+    {voter_id: 1, name: 'foo', description: 'bar'}
   }
 
   let(:invalid_attributes) {
@@ -28,7 +28,7 @@ RSpec.describe Admin::RidesController, type: :controller do
 
   describe "GET #index" do
     it "assigns all rides as @rides" do
-      ride = Ride.create! valid_attributes
+      ride = create :ride
       get :index, params: {}, session: valid_session
       expect(assigns(:rides)).to eq([ride])
     end

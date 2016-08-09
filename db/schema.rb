@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160807190024) do
+ActiveRecord::Schema.define(version: 20160809032717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 20160807190024) do
   end
 
   create_table "rides", force: :cascade do |t|
-    t.integer  "owner_id",                                              null: false
+    t.integer  "voter_id",                                              null: false
     t.integer  "ride_zone_id"
     t.string   "name",                                     default: "", null: false
     t.text     "description"
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(version: 20160807190024) do
     t.string   "to_address"
     t.index ["driver_id"], name: "index_rides_on_driver_id", using: :btree
     t.index ["ride_zone_id"], name: "index_rides_on_ride_zone_id", using: :btree
+    t.index ["voter_id"], name: "index_rides_on_voter_id", using: :btree
   end
 
   create_table "roles", force: :cascade do |t|
