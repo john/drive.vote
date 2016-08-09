@@ -4,9 +4,6 @@ RSpec.describe "admin/rides/index", type: :view do
   before(:each) do
     allow(view).to receive(:current_user).and_return( create(:user)  )
 
-    first_ride = create :ride
-    second_ride = create :ride
-
     assign(:rides, [create(:ride), create(:ride)])
   end
 
