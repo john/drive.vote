@@ -4,7 +4,7 @@ class Conversation < ApplicationRecord
   has_many :messages
   has_one :ride
 
-  before_commit :update_lifecycle
+  before_save :update_lifecycle
 
   enum status: { in_progress: 0, ride_created: 1, closed: 2 }
   enum lifecycle: { need_language: 100, need_name: 200, need_origin: 300, need_destination: 400, need_time: 500, info_complete: 1000 }
@@ -21,8 +21,7 @@ class Conversation < ApplicationRecord
 
   private
   def update_lifecycle
-    new_lc = calculated_lifecycle
-    update_attribute :lifecycle, new_lc if lifecycle != new_lc
+    self.lifecycle = calculated_lifecycle
   end
 
   def calculated_lifecycle

@@ -10,6 +10,7 @@ class User < ApplicationRecord
 
   enum language: { unknown: 0, english: 1, spanish: 2 }, _suffix: true
 
+  before_save :check_location_updated
   after_create :add_rolify_role
   after_create :send_welcome_email
 
@@ -39,7 +40,7 @@ class User < ApplicationRecord
   end
 
   def api_json
-    self.as_json(only: [:id, :name, :phone_number_normalized, :availability, :latitude, :longitude])
+    self.as_json(only: [:id, :name, :phone_number_normalized, :availability, :latitude, :longitude, :location_timestamp])
   end
 
   def driver_ride_zone_id
@@ -50,6 +51,10 @@ class User < ApplicationRecord
 
   def full_street_address
     [self.address1, self.address2, self.city, self.state, self.zip, self.country].compact.join(', ')
+  end
+
+  def location_timestamp
+    self.location_updated_at.try(:to_i)
   end
 
   def has_required_fields?
@@ -65,6 +70,12 @@ class User < ApplicationRecord
   def add_rolify_role
     if self.user_type.present?
       self.add_role self.user_type
+    end
+  end
+
+  def check_location_updated
+    if latitude_changed? || longitude_changed?
+      self.location_updated_at = Time.now
     end
   end
 
