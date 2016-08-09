@@ -3,8 +3,10 @@ class Ride < ApplicationRecord
 
   enum status: { incomplete_info: 0, scheduled: 1, waiting_assignment: 2, driver_assigned: 3, picked_up: 4, complete: 5 }
 
-  validates_presence_of :owner_id
   belongs_to :driver, class_name: 'User', foreign_key: :driver_id
+  belongs_to :voter, class_name: 'User', foreign_key: :voter_id
+
+  validates :voter, presence: true
 
   # returns true if assignment worked
   def assign_driver driver
@@ -34,7 +36,7 @@ class Ride < ApplicationRecord
 
   # returns json suitable for exposing in the API
   def api_json
-    self.as_json(except: [:created_at, :updated_at, :driver_id, :owner_id, :ride_zone_id])
+    self.as_json(except: [:created_at, :updated_at, :driver_id, :voter_id, :ride_zone_id])
   end
 
   # return up to limit Rides near the specified location

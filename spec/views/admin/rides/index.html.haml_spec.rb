@@ -3,20 +3,11 @@ require 'rails_helper'
 RSpec.describe "admin/rides/index", type: :view do
   before(:each) do
     allow(view).to receive(:current_user).and_return( create(:user)  )
-    assign(:rides, [
-      Ride.create!(
-        :owner_id => 1,
-        :name => "Name",
-        :description => "MyText",
-        :status => 0
-      ),
-      Ride.create!(
-        :owner_id => 1,
-        :name => "Name",
-        :description => "MyText",
-        :status => 0
-      )
-    ])
+
+    first_ride = create :ride
+    second_ride = create :ride
+
+    assign(:rides, [create(:ride), create(:ride)])
   end
 
   it "renders" do

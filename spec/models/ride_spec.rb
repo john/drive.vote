@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe Ride, type: :model do
 
   it { should belong_to(:ride_zone) }
-  it { should validate_presence_of(:owner_id) }
+  it { should belong_to(:voter) }
+  it { should validate_presence_of(:voter) }
 
   describe 'driver functions' do
     let(:rz) { create :ride_zone }
