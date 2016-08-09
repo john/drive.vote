@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::RideZonesController, :type => :controller, focus:true do
+RSpec.describe Api::V1::RideZonesController, :type => :controller do
   describe 'conversations' do
     let!(:notinrz) { create :conversation }
     let(:rz) { create :ride_zone }

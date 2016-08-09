@@ -4,7 +4,7 @@ RSpec.describe RideZone, type: :model do
 
   it { should have_many(:messages) }
 
-  it 'calculates stats', focus:true do
+  it 'calculates stats' do
     rz = create :ride_zone
     rz2 = create :ride_zone
     d1 = create :driver_user, available: true, ride_zone: rz

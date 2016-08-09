@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Admin::TwilioController, type: :controller do
+RSpec.describe Api::V1::TwilioController, type: :controller do
 
   let(:valid_attributes) {
     skip('')
@@ -62,7 +62,7 @@ RSpec.describe Admin::TwilioController, type: :controller do
       RideZone.stub(:find_by_phone_number) { nil }
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
       response.should be_successful  # we 200 back to Twilio
-      response.body.include?(Admin::TwilioController::CONFIG_ERROR_MSG).should be_truthy
+      response.body.include?(Api::V1::TwilioController::CONFIG_ERROR_MSG).should be_truthy
     end
   end
 

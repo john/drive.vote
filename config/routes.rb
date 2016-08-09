@@ -43,6 +43,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1, path: '1' do
+      post 'twilio/sms' => 'twilio#sms'
+
       resources :conversations, only: [:show] do
         member do
           post 'messages' => 'conversations#create_message'
@@ -73,9 +75,6 @@ Rails.application.routes.draw do
   match '/admin' => 'admin/admin#index', via: :get
   namespace :admin do
     match '/' => 'home#index', :via => :get
-
-    post 'twilio/voice' => 'twilio#voice'
-    post 'twilio/sms' => 'twilio#sms'
 
     resources :messages, only: [:show, :update]
     resources :rides

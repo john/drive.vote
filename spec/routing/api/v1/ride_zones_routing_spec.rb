@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::ConversationsController, :type => :routing do
-  describe 'routing', focus:true do
+  describe 'routing' do
 
     it 'routes to conversations' do
       expect(get: '/api/1/ride_zones/42/conversations').to route_to('api/v1/ride_zones#conversations', id: '42')

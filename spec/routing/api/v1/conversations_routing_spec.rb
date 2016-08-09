@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::ConversationsController, :type => :routing do
-  describe 'routing', focus:true do
+  describe 'routing' do
 
     it 'routes to show' do
       expect(get: '/api/1/conversations/42').to route_to('api/v1/conversations#show', id: '42')
