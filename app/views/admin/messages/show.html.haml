@@ -16,11 +16,6 @@
             Message:
           %td.info
             = @message.body
-        %tr
-          %td.field-name
-            Status:
-          %td.info
-
             = form_for [:admin, @message] do |f|
               - if @message.errors.any?
                 #error_explanation
@@ -28,7 +23,3 @@
                   %ul
                     - @message.errors.full_messages.each do |msg|
                       %li= msg
-
-
-
-            = @message.status

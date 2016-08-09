@@ -6,9 +6,6 @@ class ApplicationController < ActionController::Base
   # https://github.com/plataformatec/devise/pull/4033/files
   protect_from_forgery with: :exception, prepend: true
 
-  class ConfigurationError < StandardError
-  end
-
   before_action :set_locale
   before_action :configure_permitted_parameters, if: :devise_controller?
 

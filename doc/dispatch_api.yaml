@@ -1,0 +1,336 @@
+swagger: '2.0'
+info:
+  title: Drive the Vote Dispatch API
+  description: REST API for the dispatch UI
+  version: "0.0.5"
+# the domain of the service
+host: www.drive.vote
+# array of all schemes that your API supports
+schemes:
+  - https
+basePath: /api/1
+produces:
+  - application/json
+paths:
+  /ride_zone/RZID/conversations:
+    get:
+      summary: Gets all or some conversations for the ride zone RZID
+      tags:
+        - Conversations
+      description: |
+        Call this endpoint to get the conversations associated with ride_zone id RZID. With no
+        parameters, this returns all conversations that are not status=closed. You can specify
+        the status parameter to filter. These conversations do not have messages. To see messages
+        for a specific conversation, call /conversations/CONVID.
+      parameters:
+        - name: status
+          in: query
+          type: string
+          description: Can be in_progress, ride_created, or closed
+          required: false
+      responses:
+        200:
+          description: Requested conversations are returned
+          schema:
+            $ref: '#/definitions/ConversationsResponse'
+        404:
+          description: Ride zone RZID not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /ride_zone/RZID/rides:
+    get:
+      summary: Gets all or some rides for the ride zone RZID
+      tags:
+        - Rides
+      description: |
+        Call this endpoint to get the rides associated with ride_zone id RZID. With no
+        parameters, this returns all rides that are not status=complete. You can specify
+        the status parameter to filter.
+      parameters:
+        - name: status
+          in: query
+          type: string
+          description: |
+            Can be comma-separated list of any of incomplete_info, scheduled, waiting_assignment,
+            driver_assigned, picked_up, or complete
+          required: false
+      responses:
+        200:
+          description: Requested rides are returned
+          schema:
+            $ref: '#/definitions/RidesResponse'
+        404:
+          description: Ride zone RZID not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    post:
+      tags:
+        - Rides
+      summary: Creates a new ride in ride zone RZID
+      description: |
+        Call this endpoint to create a new ride. You do not need to include the id or any lat/long
+        parameters in the Ride JSON. Posted body is {'ride' : { attributes } }
+      parameters:
+        - name: ride
+          in: body
+          schema:
+            $ref: '#/definitions/Ride'
+      responses:
+        200:
+          description: OK response
+          schema:
+            $ref: '#/definitions/OKResponse'
+        400:
+          description: There was missing or invalid data
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        404:
+          description: Ride zone RZID not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /ride_zone/RZID/drivers:
+    get:
+      tags:
+        - Drivers
+      summary: Gets the drivers associated with the ride zone RZID
+      description: |
+        Call this endpoint to get a list of all drivers associated with the ride zone RZID.
+      responses:
+        200:
+          description: Requested drivers are returned
+          schema:
+            $ref: '#/definitions/DriversResponse'
+        404:
+          description: Ride zone RZID not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /conversations/CONVID:
+    get:
+      tags:
+        - Conversations
+      summary: Retreives a single conversation with messages for id CONVID
+      description: |
+        Call this endpoint to get a single conversation and all its messages
+      responses:
+        200:
+          description: OK response with conversation
+          schema:
+            $ref: '#/definitions/OKResponse'
+        404:
+          description: Conversation not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /conversations/CONVID/messages:
+    post:
+      tags:
+        - Conversations
+      summary: Creates a new message reply in a conversation
+      description: |
+        Call this endpoint to reply to a conversation. Post body should be JSON object like
+        { "message" : { "body" : "text of message" } }
+      parameters:
+        - name: body
+          in: body
+          schema:
+            $ref: '#/definitions/NewMessage'
+      responses:
+        200:
+          description: OK response
+          schema:
+            $ref: '#/definitions/OKResponse'
+        400:
+          description: There was missing or invalid data
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        404:
+          description: Conversation not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: Error processing the message
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        503:
+          description: Timeout determining if message was delivered
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+definitions:
+  ConversationsResponse:
+    type: object
+    properties:
+      response:
+        type: array
+        items:
+          $ref: '#/definitions/Conversation'
+  Conversation:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique id of the conversation
+      pickup_at:
+        type: integer
+        description: Time for the ride pickup, unix epoch
+      status:
+        type: string
+        description: |
+          Current status of the conversation. One of in_progress, ride_created, closed.
+      name:
+        type: string
+        description: Name of the voter needing a ride
+      from_phone:
+        type: string
+        description: Phone number originating the conversation
+      from_address:
+        type: string
+        description: The start address line
+      from_city:
+        type: string
+        description: The start city
+      to_address:
+        type: string
+        description: Address of the end of the ride
+      to_city:
+        type: string
+        description: The end city
+      messages:
+        type: array
+        description: Only returned for a single conversation
+        items:
+          $ref: '#/definitions/Message'
+  RidesResponse:
+    type: object
+    properties:
+      response:
+        type: array
+        items:
+          $ref: '#/definitions/Ride'
+  Ride:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique id of the ride
+      ride_zone_id:
+        type: integer
+        description: Unique id of the ride zone for this ride
+      conversation_id:
+        type: integer
+        description: Unique id of the conversation for this ride (can be null)
+      name:
+        type: string
+        description: Name of the voter
+      number_of_passengers:
+        type: integer
+      special_requests:
+        type: string
+        description: Any special requests from the voter (wheelchair, car seat, etc)
+      status:
+        type: string
+        description: |
+          Current status of the ride. One of waiting_assignment, driver_assigned, picked_up, complete.
+      from_address:
+        type: string
+        description: Address of the start of the ride
+      from_city:
+        type: string
+        description: City of the start of the ride
+      from_latitude:
+        type: number
+        format: double
+        description: The start latitude
+      from_longitude:
+        type: number
+        format: double
+        description: The start longitude
+      to_address:
+        type: string
+        description: Address of the end of the ride
+      to_city:
+        type: string
+        description: City of the end of the ride
+      to_latitude:
+        type: number
+        format: double
+        description: The end latitude
+      to_longitude:
+        type: number
+        format: double
+        description: The end latitude
+      pickup_at:
+        type: integer
+        description: Time for the ride pickup, unix epoch time
+  DriversResponse:
+    type: object
+    properties:
+      response:
+        type: array
+        items:
+          $ref: '#/definitions/Driver'
+  Driver:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique id of the driver
+      name:
+        type: string
+        description: Driver's name
+      phone:
+        type: string
+        description: Driver's phone number
+      availability:
+        type: boolean
+        description: True if driver is "on duty"
+      latitude:
+        type: number
+        format: float
+        description: Most recent latitude of driver's location
+      longitude:
+        type: number
+        format: float
+        description: Most recent longitude of driver's location
+      location_timestamp:
+        type: integer
+        description: Time of most recent location, unix epoch time
+  Message:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique id of the message
+      conversation_id:
+        type: integer
+        description: Unique id of the message's conversation
+      from_phone:
+        type: integer
+        description: Time for the ride pickup, unix epoch
+      is_from_voter:
+        type: boolean
+      created_at:
+        type: integer
+        description: Unix epoch time
+      body:
+        type: string
+        description: Text of the message
+  NewMessage:
+    type: object
+    properties:
+      message:
+        type: object
+        properties:
+          body:
+            type: string
+            description: The text of the message to send
+  OKResponse:
+    type: object
+    properties:
+      response:
+        type: string
+        description: Always 'ok'
+  ErrorResponse:
+    type: object
+    properties:
+      error:
+        type: string
+        description: Description of the problem

@@ -9,6 +9,16 @@ class Conversation < ApplicationRecord
   enum status: { in_progress: 0, ride_created: 1, closed: 2 }
   enum lifecycle: { need_language: 100, need_name: 200, need_origin: 300, need_destination: 400, need_time: 500, info_complete: 1000 }
 
+  def api_json(include_messages = false)
+    j = self.as_json(only: [:id, :pickup_at, :status, :name, :from_phone, :from_address, :from_city, :to_address, :to_city])
+    j['messages'] = self.messages.map(&:api_json) if include_messages
+    j
+  end
+
+  def self.active_statuses
+    Conversation.statuses.keys - ['closed']
+  end
+
   private
   def update_lifecycle
     new_lc = calculated_lifecycle
