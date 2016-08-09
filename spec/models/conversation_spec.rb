@@ -10,6 +10,19 @@ RSpec.describe Conversation, type: :model do
     end
   end
 
+  describe 'event generation' do
+    it 'sends new conversation event' do
+      expect_any_instance_of(RideZone).to receive(:event).with(:new_conversation, anything)
+      create :conversation
+    end
+
+    it 'sends conversation update event' do
+      c = create :conversation
+      expect_any_instance_of(RideZone).to receive(:event).with(:conversation_changed, anything)
+      c.update_attribute(:status, :closed)
+    end
+  end
+
   describe 'lifecycle calculation' do
     it 'detects language' do
       c = create :conversation

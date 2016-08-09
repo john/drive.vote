@@ -12,11 +12,11 @@
 
 Rails.application.configure do
   Rails.env = 'development'
-  
+
   # Websocket for messages
-  # config.action_cable.url = "ws://local.drive.vote:3000/cable"
-  # config.action_cable.allowed_request_origins = ['http://local.drive.vote:3000']
-  
+  config.action_cable.url = "ws://local.drive.vote:3000/cable"
+  config.action_cable.allowed_request_origins = ['http://local.drive.vote:3000']
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -45,7 +45,7 @@ Rails.application.configure do
   end
 
   config.active_job.queue_adapter = :sidekiq
-  
+
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_deliveries = true
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
@@ -57,7 +57,7 @@ Rails.application.configure do
 
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
-  
+
   # More info here:
   # http://weblog.rubyonrails.org/2015/1/16/This-week-in-Rails-tokens-migrations-method-source-and-more/
   config.active_record.time_zone_aware_types = [:datetime, :time]

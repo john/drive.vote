@@ -41,7 +41,7 @@ module Api::V1
       from_phone = PhonyRails.normalize_number(params['From'])
       @user = User.find_by_phone_number_normalized(from_phone)
       if @user.nil?
-        @user = User.create!(name: '', user_type: 'rider', password: '12345678', phone_number: from_phone, phone_number_normalized: from_phone, email: "#{from_phone}@example.com")
+        @user = User.create!(name: '', user_type: :voter, ride_zone: @ride_zone, password: '12345678', phone_number: from_phone, phone_number_normalized: from_phone, email: "#{from_phone}@example.com")
         # todo: user role as passenger?
       end
       @conversation = Conversation.where(user_id: @user.id).where.not(status: :closed).first

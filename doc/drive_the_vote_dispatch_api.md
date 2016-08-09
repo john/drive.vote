@@ -63,14 +63,14 @@ This event indicates an existing conversation has changed its status, lifecycle,
 This event indicates a new message has been attached to a conversation. The message could come from the voter or from a dispatcher.
 
 	{
-		"type" : "event",
 		"event_type" : "new_message",
 		"message" : {
 			"id" : unique_id_integer,
 			"conversation_id" : id_of_conversation_integer,
 			"from_phone" : "phone number originating the message",
 			"is_from_voter" : true | false,
-			"body" : "text of the SMS message"
+			"body" : "text of the SMS message",
+			"created_at" : integer_unix_epoch_time
 		}
 	}
 
@@ -116,35 +116,19 @@ This event indicates a new driver has been added to the ride zone.
 		"driver" : {
 			"id" : unique_id_integer,
 			"name" : "driver name",
-			"phone" : "phone number"
-		}
-	}
-
-##### Driver Availability Change
-This event indicates a driver's availability has changed - whether they are available "on duty" or not available "off duty". The driver's most recent location, if known, is included.
-
-	{
-		"event_type" : "driver_availability_changed",
-		"driver" : {
-			"id" : unique_id_integer,
-			"name" : "driver name",
 			"phone" : "phone number",
 			"available" : true | false,
 			"latitude" : decimal_number,
 			"longitude" : decimal_number,
-			"location_timestamp" : integer_unix_epoch_time
+			"location_timestamp" : integer_unix_epoch_time,
+			"active_ride" : nil_or_ride_object
 		}
 	}
 
-##### Driver Location Change
-This event indicates a driver's location has changed.
+##### Driver Changed
+This event indicates a driver's location, ride status, or availability has changed
 
 	{
-		"event_type" : "driver_location_changed",
-		"driver" : {
-			"id" : unique_id_integer,
-			"latitude" : decimal_number,
-			"longitude" : decimal_number,
-			"location_timestamp" : integer_unix_epoch_time
-		}
+		"event_type" : "driver_changed",
+		"driver" : *same as new_driver*
 	}

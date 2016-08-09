@@ -4,6 +4,9 @@ class Message < ApplicationRecord
 
   enum status: { unassigned: 0, inprogress: 1, closed: 2 }
 
+  after_create :notify_creation
+  around_save :notify_update
+
   # # scope by messagestatuses
   # scope :unassigned, -> { where(status: :unassigned) }
 
@@ -27,6 +30,7 @@ class Message < ApplicationRecord
       'id' => self.id,
       'conversation_id' => self.conversation_id,
       'from_phone' => self.from,
+      'to_phone' => self.to,
       'is_from_voter' => self.is_from_voter?,
       'body' => self.body,
       'created_at' => self.created_at.to_i,
@@ -35,5 +39,20 @@ class Message < ApplicationRecord
 
   def is_from_voter?
     self.conversation.to_phone == self.ride_zone.phone_number
+  end
+
+  def ride_zone
+    self.conversation.try(:ride_zone)
+  end
+
+  private
+  def notify_creation
+    self.ride_zone.event(:new_message, self) if self.ride_zone
+  end
+
+  def notify_update
+    was_new = new_record?
+    yield
+    self.ride_zone.event(:message_changed, self) if !was_new && self.ride_zone
   end
 end

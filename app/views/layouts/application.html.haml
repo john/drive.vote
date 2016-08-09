@@ -5,8 +5,8 @@
     %title 🚕 the Vote
     = csrf_meta_tags
 
-    -# if request.original_url.include?('messages')
-      // = action_cable_meta_tag
+    - if request.original_url.include?('dispatch')
+      = action_cable_meta_tag
 
     %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
     %meta{ name: "apple-mobile-web-app-capable", content: "yes" }

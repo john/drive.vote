@@ -18,3 +18,4 @@
 //= require turbolinks
 //= require addtocalendar
 //= require_tree .
+//= require_tree ./channels

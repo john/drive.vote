@@ -6,6 +6,43 @@ RSpec.describe Ride, type: :model do
   it { should belong_to(:voter) }
   it { should validate_presence_of(:voter) }
 
+  describe 'event generation' do
+    let!(:driver) { create :driver_user }
+
+    it 'sends new ride event' do
+      expect_any_instance_of(RideZone).to receive(:event).with(:new_ride, anything)
+      create :ride
+    end
+
+    it 'sends ride update event but not driver' do
+      r = create :ride
+      expect_any_instance_of(RideZone).to receive(:event).with(:ride_changed, anything)
+      RideZone.any_instance.should_not_receive(:event).with(:driver_changed, anything)
+      r.update_attribute(:pickup_at, Time.now)
+    end
+
+    it 'sends driver update event on status change' do
+      r = create :ride, driver: driver
+      expect_any_instance_of(RideZone).to receive(:event).with(:ride_changed, anything)
+      expect_any_instance_of(RideZone).to receive(:event).with(:driver_changed, anything, :driver)
+      r.update_attribute(:status, :complete)
+    end
+
+    it 'sends driver update event on driver clear' do
+      r = create :ride, driver: driver
+      expect_any_instance_of(RideZone).to receive(:event).with(:ride_changed, anything)
+      expect_any_instance_of(RideZone).to receive(:event).with(:driver_changed, anything, :driver)
+      r.clear_driver
+    end
+
+    it 'sends driver update event on driver assignment' do
+      r = create :ride
+      expect_any_instance_of(RideZone).to receive(:event).with(:ride_changed, anything)
+      expect_any_instance_of(RideZone).to receive(:event).with(:driver_changed, anything, :driver)
+      r.assign_driver(driver)
+    end
+  end
+
   describe 'driver functions' do
     let(:rz) { create :ride_zone }
     let(:ride) { create :ride, ride_zone: rz }
@@ -106,5 +143,10 @@ RSpec.describe Ride, type: :model do
         expect(ride.passenger_count).to eq(3)
       end
     end
+  end
+
+  it 'reports active' do
+    expect(create(:ride, status: :driver_assigned)).to be_active
+    expect(create(:ride, status: :scheduled)).to_not be_active
   end
 end
