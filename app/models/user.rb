@@ -65,7 +65,10 @@ class User < ApplicationRecord
   end
 
   def send_welcome_email
-    UserMailer.welcome_email(self).deliver_later
+    if self.roles_name.include? "rider"
+      UserMailer.welcome_email_rider(self).deliver_later
+    elsif self.roles_name.include? "driver"
+      UserMailer.welcome_email_driver(self).deliver_later
+    end
   end
-
 end
