@@ -52,9 +52,4 @@ class Admin::RidesController < Admin::AdminApplicationController
     def set_ride
       @ride = Ride.find(params[:id])
     end
-
-    # Only allow a trusted parameter "white list" through.
-    def ride_params
-      params.require(:ride).permit(:voter_id, :name, :description, :status)
-    end
 end
