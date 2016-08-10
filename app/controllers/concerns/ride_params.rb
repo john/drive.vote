@@ -10,6 +10,6 @@ module RideParams
 
   # Only allow a trusted parameter "white list" through.
   def ride_params
-    params.require(:ride).permit(:voter_id, :name, :description, :status)
+    params.require(:ride).permit(:voter_id, :driver_id, :ride_zone_id, :pickup_at, :name, :description, :status)
   end
 end

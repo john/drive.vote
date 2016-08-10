@@ -26,7 +26,7 @@ class Admin::RidesController < Admin::AdminApplicationController
     @ride = Ride.new(ride_params)
 
     if @ride.save
-      redirect_to @ride, notice: 'Ride was successfully created.'
+      redirect_to [:admin, @ride], notice: 'Ride was successfully created.'
     else
       render :new
     end
@@ -35,7 +35,7 @@ class Admin::RidesController < Admin::AdminApplicationController
   # PATCH/PUT /rides/1
   def update
     if @ride.update(ride_params)
-      redirect_to @ride, notice: 'Ride was successfully updated.'
+      redirect_to [:admin, @ride], notice: 'Ride was successfully updated.'
     else
       render :edit
     end
@@ -44,7 +44,7 @@ class Admin::RidesController < Admin::AdminApplicationController
   # DELETE /rides/1
   def destroy
     @ride.destroy
-    redirect_to rides_url, notice: 'Ride was successfully destroyed.'
+    redirect_to admin_rides_url, notice: 'Ride was successfully destroyed.'
   end
 
   private

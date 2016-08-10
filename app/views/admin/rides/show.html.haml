@@ -7,5 +7,20 @@
   %b Description:
   = @ride.description
 %p
+  %b Pickup Time:
+  = @ride.pickup_at ||= 'None Set'
+%p
+  %b Ride Zone:
+  = @ride.ride_zone.nil?  ? 'None Assigned' : @ride.ride_zone.name
+%p
+  %b Driver:
+  = @ride.driver.nil?  ? 'None Assigned' : @ride.driver.name
+%p
+  %b Voter:
+  = @ride.voter.nil? ? 'None Assigned' : @ride.voter.name
+%p
   %b Status:
-  = @ride.status
+  = @ride.status.nil? ? 'None Selected' : @ride.status
+
+%p
+  = link_to 'Back to Rides', admin_rides_url
