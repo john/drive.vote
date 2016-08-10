@@ -87,4 +87,24 @@ RSpec.describe Ride, type: :model do
       Ride.waiting_nearby(zone.id, 35, -122, 3, 0.1).should ==([])
     end
   end
+
+  context 'passengers' do
+    describe 'passenger_count' do
+      let(:rz) { create :ride_zone }
+      let(:ride) { create :ride, ride_zone: rz }
+
+      it 'should return a count, inclusive of Voter as passenger' do
+        # no additional passengers
+        ride.passenger_count.should eq(1)
+
+        # one additional passenger
+        ride.additional_passengers = 1
+        ride.passenger_count.should eq(2)
+
+        # two additional passenger
+        ride.additional_passengers = 2
+        ride.passenger_count.should eq(3)
+      end
+    end
+  end
 end

@@ -59,4 +59,9 @@ class Ride < ApplicationRecord
   def self.active_statuses
     [:waiting_assignment, :driver_assigned, :picked_up]
   end
+
+  def passenger_count
+    # always include Voter as a passenger
+    self.additional_passengers + 1
+  end
 end
