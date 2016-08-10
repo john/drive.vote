@@ -34,8 +34,6 @@
         %td= ride.voter.nil? ? 'None Assigned' : ride.voter.name
         %td= ride.additional_passengers
         %td= ride.status.nil? ? 'None Set' : ride.status
-        %td
-          -# = link_to 'Show', ride
+        %td= link_to 'Show', [:admin, ride]
         %td= link_to 'Edit', edit_admin_ride_path(ride)
-        %td
-          -#= link_to 'Destroy', ride, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td= link_to 'Destroy', [:admin, ride], :method => :delete, :data => { :confirm => 'Are you sure?' }
