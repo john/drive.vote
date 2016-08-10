@@ -1,7 +1,7 @@
 FactoryGirl.define do
 
   factory :user do
-    ignore do
+    transient do
       ride_zone nil
     end
 
