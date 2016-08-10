@@ -19,16 +19,20 @@
     = f.datetime_select :pickup_at
 
   .col-sm-8.field
+    = f.label :ride_zone
+    = f.select :ride_zone_id, RideZone.all.map {|ride_zone| [ride_zone.name.titleize, ride_zone.id]}, {prompt: 'None Assigned'}
+
+  .col-sm-8.field
     = f.label :driver
-    = f.select :driver_id, User.all.map {|user| [user.name.titleize,user.id]}, {prompt: 'None Assigned'}
+    = f.select :driver_id, User.all.map {|user| [user.name.titleize, user.id]}, {prompt: 'None Assigned'}
 
   .col-sm-8.field
     = f.label :voter
-    = f.select :voter_id, User.all.map {|user| [user.name.titleize,user.id]}, {prompt: 'None Assigned'}
+    = f.select :voter_id, User.all.map {|user| [user.name.titleize, user.id]}, {prompt: 'None Assigned'}
 
   .col-sm-8.field
     = f.label :status
-    = f.select :status, Ride.statuses.keys.map {|status| [status.titleize,status]}, {prompt: 'None Selected'}
+    = f.select :status, Ride.statuses.keys.map {|status| [status.titleize, status]}, {prompt: 'None Selected'}
 
   .col-sm-8.actions
     = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."

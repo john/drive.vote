@@ -13,6 +13,7 @@
       %th Name
       %th Description
       %th Pickup Time
+      %th Ride Zone
       %th Driver
       %th Voter
       %th Status
@@ -27,6 +28,7 @@
         %td= ride.name
         %td= ride.description
         %td= ride.pickup_at.nil? ? 'None Set' : ride.pickup_at
+        %td= ride.ride_zone.nil? ? 'None Set' : ride.ride_zone.name
         %td= ride.driver.nil? ? 'None Assigned' : ride.driver.name
         %td= ride.voter.nil? ? 'None Assigned' : ride.voter.name
         %td= ride.status.nil? ? 'None Set' : ride.status

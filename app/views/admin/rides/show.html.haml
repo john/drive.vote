@@ -10,6 +10,9 @@
   %b Pickup Time:
   = @ride.pickup_at ||= 'None Set'
 %p
+  %b Ride Zone:
+  = @ride.ride_zone.nil?  ? 'None Assigned' : @ride.ride_zone.name
+%p
   %b Driver:
   = @ride.driver.nil?  ? 'None Assigned' : @ride.driver.name
 %p
