@@ -31,6 +31,10 @@
     = f.select :voter_id, User.all.map {|user| [user.name.titleize, user.id]}, {prompt: 'None Assigned'}
 
   .col-sm-8.field
+    = f.label :additional_passengers
+    = f.select :additional_passengers, 0..5, {prompt: 'None Assigned'}
+
+  .col-sm-8.field
     = f.label :status
     = f.select :status, Ride.statuses.keys.map {|status| [status.titleize, status]}, {prompt: 'None Selected'}
 

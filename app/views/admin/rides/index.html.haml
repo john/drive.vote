@@ -16,6 +16,7 @@
       %th Ride Zone
       %th Driver
       %th Voter
+      %th Additional Passengers
       %th Status
       %th
       %th
@@ -31,6 +32,7 @@
         %td= ride.ride_zone.nil? ? 'None Set' : ride.ride_zone.name
         %td= ride.driver.nil? ? 'None Assigned' : ride.driver.name
         %td= ride.voter.nil? ? 'None Assigned' : ride.voter.name
+        %td= ride.additional_passengers
         %td= ride.status.nil? ? 'None Set' : ride.status
         %td
           -# = link_to 'Show', ride
