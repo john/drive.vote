@@ -12,6 +12,9 @@
       %th Ride
       %th Name
       %th Description
+      %th Pickup Time
+      %th Driver
+      %th Voter
       %th Status
       %th
       %th
@@ -23,7 +26,10 @@
         %td= ride.id
         %td= ride.name
         %td= ride.description
-        %td= ride.status
+        %td= ride.pickup_at.nil? ? 'None Set' : ride.pickup_at
+        %td= ride.driver.nil? ? 'None Assigned' : ride.driver.name
+        %td= ride.voter.nil? ? 'None Assigned' : ride.voter.name
+        %td= ride.status.nil? ? 'None Set' : ride.status
         %td
           -# = link_to 'Show', ride
         %td= link_to 'Edit', edit_admin_ride_path(ride)
