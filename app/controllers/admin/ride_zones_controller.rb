@@ -88,10 +88,13 @@ class Admin::RideZonesController < Admin::AdminApplicationController
         @user = User.find(params[:user_id])
         # unless @user.has_role?(role_type, @ride_zone)
 
+        # @user.has_role? isn't working here, not sure why. using ugly check for now.
         if role_type == :driver
-          already_has_role = @user.driver_ride_zone_id.present?
+          already_has_role = @user.driver_ride_zone_id.present? #@user.has_role?(:driver, @ride_zone)
         elsif role_type == :dispatcher
-          already_has_role = @user.dispatcher_ride_zone_id.present?
+          already_has_role = @user.dispatcher_ride_zone_id.present? #@user.has_role?(:dispatcher, @ride_zone)
+        else
+          already_has_role = false
         end
 
         unless already_has_role

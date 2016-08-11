@@ -51,7 +51,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
       ride_zone = create(:ride_zone)
 
       expect {
-        post :add_dispatcher, params: {id: ride_zone.to_param, user_id: user.to_param}, session: valid_session
+        post :add_dispatcher, params: {id: ride_zone.to_param, user_id: user.to_param}
       }.to change(ride_zone.dispatchers, :count).by(1)
     end
   end
@@ -63,7 +63,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
       user.add_role(:dispatcher, ride_zone)
 
       expect {
-        delete :remove_dispatcher, params: {id: ride_zone.to_param, user_id: user.to_param}, session: valid_session
+        delete :remove_dispatcher, params: {id: ride_zone.to_param, user_id: user.to_param}
       }.to change(ride_zone.dispatchers, :count).by(-1)
     end
   end
@@ -74,7 +74,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
       ride_zone = create(:ride_zone)
 
       expect {
-        post :add_driver, params: {id: ride_zone.to_param, user_id: user.to_param}, session: valid_session
+        post :add_driver, params: {id: ride_zone.to_param, user_id: user.to_param}
       }.to change(ride_zone.drivers, :count).by(1)
     end
 
@@ -86,7 +86,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
       user.add_role(:driver, ride_zone_1)
 
       expect {
-        post :add_driver, params: {id: ride_zone_2.to_param, user_id: user.to_param}, session: valid_session
+        post :add_driver, params: {id: ride_zone_2.to_param, user_id: user.to_param}
       }.to change(ride_zone_2.drivers, :count).by(0)
     end
   end
@@ -98,7 +98,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
       user.add_role(:driver, ride_zone)
 
       expect {
-        delete :remove_driver, params: {id: ride_zone.to_param, user_id: user.to_param}, session: valid_session
+        delete :remove_driver, params: {id: ride_zone.to_param, user_id: user.to_param}
       }.to change(ride_zone.drivers, :count).by(-1)
     end
   end
