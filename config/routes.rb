@@ -70,6 +70,7 @@ Rails.application.routes.draw do
   match '/confirm' => 'home#confirm', via: :get, as: :confirm
 
   match '/about' => 'home#about', via: :get, as: :about
+  match '/code_of_conduct' => 'home#code_of_conduct', via: :get, as: :code_of_conduct
   match '/terms_of_service' => 'home#terms_of_service', via: :get, as: :terms_of_service
   match '/privacy' => 'home#privacy', via: :get, as: :privacy
 

@@ -80,10 +80,10 @@
                 = link_to t(:sign_in), "/users/sign_in?locale=#{I18n.locale.to_s}"
             %li= link_to "Español", locale: 'es'
             %li= link_to "English", locale: 'en'
-            - if !user_signed_in?
-              %li.hidden-xs
-                %p.navbar-btn
-                  = link_to t(:sign_in), "/users/sign_in?locale=#{I18n.locale.to_s}", class: 'btn btn-default btn-xs', role: 'button', style: 'margin: 7px 0 0 10px;'
+            -# if !user_signed_in?
+              / %li.hidden-xs
+              /   %p.navbar-btn
+              /     = link_to t(:sign_in), "/users/sign_in?locale=#{I18n.locale.to_s}", class: 'btn btn-default btn-xs', role: 'button', style: 'margin: 7px 0 0 10px;'
 
             - if user_signed_in?
 

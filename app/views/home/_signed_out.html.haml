@@ -12,7 +12,7 @@
   %h3
     = t(:how_to_help)
   %p
-    = t(:how_to_help_copy)
+    = t(:how_to_help_copy).html_safe
 
   .volunteer
     = link_to new_user_registration_path(type: 'driver', locale: I18n.locale.to_s) do

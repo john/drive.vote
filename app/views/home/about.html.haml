@@ -3,17 +3,17 @@
 
 %h4{style: 'margin-top: 0;'}
   What is this?
-  
+
 %p
   %i
     Drive the Vote
-  matches people who need a ride to their polling place with free rides, and provides notifications and information about voting times and polling places. Anyone can use it.
-  
+  lets voters in supported areas request a free ride to their polling place by text. Anyone can use it.
+
 %h4
   Don't want to drive?
 %p
   Many states allow #{link_to 'early voting', 'https://www.vote.org/early-voting-calendar/', target: '_blank'} and/or #{link_to 'absentee ballots', 'https://www.vote.org/absentee-ballot/', target: '_blank'}. You may not need a ride at all :-)
-  
+
 %h4
   What if I'm not registered?
 %p
@@ -22,8 +22,8 @@
 %h4
   What are the rules?
 %p
-  Be kind. Accept and follow the #{link_to t(:terms_of_service), terms_of_service_path, target: '_blank'}. You can find our privacy policy #{link_to 'here', privacy_path}.
-  
+  Be kind, follow our #{link_to 'code of conduct', code_of_conduct_path, target: '_blank'}, and accept and follow the #{link_to t(:terms_of_service), terms_of_service_path, target: '_blank'}. You can find our privacy policy #{link_to 'here', privacy_path}.
+
   -#
     / %h4
     /   Is it safe?
@@ -34,11 +34,8 @@
 
 %h4
   Who made it?
-  -#
-    %i
-      Drive the Vote
-    was built by me, #{link_to 'John McGrath', 'http://fryolator.com', target: '_blank'} (#{link_to '@wordie', 'https://twitter.com/wordie', target: '_blank'}). It's a different codebase, but the design was pretty much lifted from #{link_to 'Ride With Bernie', 'https://ridewithbernie.com/#/', target: '_blank'}.
-Please send questions, comments, suggestions to #{mail_to 'john@drive.vote'}. Thanks!
+%p
+  Drive the Vote is a #{link_to 'DevProgress production', 'http://devprogress.us', target: '_blank'}. Please send questions, comments, suggestions to #{mail_to 'hello@drive.vote'}. Thanks!
 
 %br
 %br
