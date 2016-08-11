@@ -2,6 +2,7 @@ require 'rails_helper'
 
 
 RSpec.describe Admin::MessagesController, type: :controller do
+  login_admin
 
   # This should return the minimal set of attributes required to create a valid
   # RideZone. As you add validations to RideZone, be sure to
@@ -17,10 +18,6 @@ RSpec.describe Admin::MessagesController, type: :controller do
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # RideZonesController. Be sure to keep this updated too.
-  let(:valid_session) {
-    controller.stub(:signed_in?).and_return(true)
-    controller.stub(:require_admin_privileges).and_return(true)
-  }
 
 #   describe "GET #index" do
 #     it "assigns all ride_zones as @ride_zones" do

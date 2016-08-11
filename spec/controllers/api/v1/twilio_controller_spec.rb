@@ -25,44 +25,44 @@ RSpec.describe Api::V1::TwilioController, type: :controller do
 
     it 'creates user' do
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
-      User.last.phone_number.should == from_number
+      expect(User.last.phone_number).to eq(from_number)
     end
 
     it 'creates message' do
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
-      Message.last.body.should eq msg
+      expect(Message.last.body).to eq msg
     end
 
     it 'creates conversation' do
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
-      Conversation.last.from_phone.should eq from_number
+      expect(Conversation.last.from_phone).to eq from_number
     end
 
     it 'reuses conversation' do
       c = create :conversation, user: user, from_phone: from_number, ride_zone: ride_zone
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
-      Conversation.count.should == 1
-      Message.last.conversation_id.should == c.id
+      expect(Conversation.count).to eq(1)
+      expect(Message.last.conversation_id).to eq(c.id)
     end
 
     it 'does not reuse closed conversation' do
       c = create :conversation, user: user, from_phone: from_number, ride_zone: ride_zone, status: Conversation.statuses[:closed]
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
-      Conversation.count.should == 2
-      Message.last.conversation_id.should_not == c.id
+      expect(Conversation.count).to eq(2)
+      expect(Message.last.conversation_id).to_not eq(c.id)
     end
 
     it 'responds with bot response' do
-      ConversationBot.any_instance.should_receive(:response) { response_text }
+      expect_any_instance_of(ConversationBot).to receive(:response) { response_text }
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
-      response.body.include?(response_text).should be_truthy
+      expect(response.body.include?(response_text)).to be_truthy
     end
 
     it 'handles bad to phone' do
-      RideZone.stub(:find_by_phone_number) { nil }
+      allow(RideZone).to receive(:find_by_phone_number).and_return(nil)
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
-      response.should be_successful  # we 200 back to Twilio
-      response.body.include?(Api::V1::TwilioController::CONFIG_ERROR_MSG).should be_truthy
+      expect(response).to be_successful  # we 200 back to Twilio
+      expect(response.body.include?(Api::V1::TwilioController::CONFIG_ERROR_MSG)).to be_truthy
     end
   end
 

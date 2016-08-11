@@ -36,7 +36,7 @@ class Ride < ApplicationRecord
 
   # returns json suitable for exposing in the API
   def api_json
-    self.as_json(except: [:created_at, :updated_at, :driver_id, :voter_id, :ride_zone_id])
+    self.as_json(except: [:created_at, :updated_at])
   end
 
   # return up to limit Rides near the specified location

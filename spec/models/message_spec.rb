@@ -9,6 +9,6 @@ RSpec.describe Message, type: :model do
     rz = create :ride_zone
     convo = create :conversation, ride_zone: rz, to_phone: rz.phone_number
     msg = create :message, conversation: convo, ride_zone: rz
-    msg.is_from_voter?.should be_truthy
+    expect(msg.is_from_voter?).to be_truthy
   end
 end
