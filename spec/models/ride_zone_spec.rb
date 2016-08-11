@@ -20,6 +20,6 @@ RSpec.describe RideZone, type: :model do
         active_rides: 3,
         scheduled_rides: 1,
     }
-    rz.driving_stats.should == expected
+    expect(rz.driving_stats).to eq(expected)
   end
 end

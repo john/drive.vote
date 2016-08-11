@@ -10,12 +10,12 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller, focus:tru
 
     it 'is successful' do
       get :show, params: {id: convo.id}
-      response.should be_successful
+      expect(response).to be_successful
     end
 
     it 'returns conversation' do
       get :show, params: {id: convo.id}
-      JSON.parse(response.body)['response'].should == convo.api_json(true)
+      expect(JSON.parse(response.body)['response']).to eq(convo.api_json(true))
     end
   end
 
@@ -26,12 +26,12 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller, focus:tru
     let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid') }
 
     before :each do
-      TwilioService.stub(:send_message) { twilio_msg }
+      allow(TwilioService).to receive(:send_message).and_return(twilio_msg)
     end
 
     it 'is successful' do
       post :create_message, params: {id: convo.id, message: {body: body}}
-      response.should be_successful
+      expect(response).to be_successful
     end
 
     it 'calls twilio service' do
@@ -42,20 +42,20 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller, focus:tru
 
     it 'creates a message' do
       post :create_message, params: {id: convo.id, message: {body: body}}
-      Message.count.should == 1
-      Message.first.body.should == body
-      Message.first.conversation_id.should == convo.id
-      Message.first.ride_zone_id.should == rz.id
+      expect(Message.count).to eq(1)
+      expect(Message.first.body).to eq(body)
+      expect(Message.first.conversation_id).to eq(convo.id)
+      expect(Message.first.ride_zone_id).to eq(rz.id)
     end
 
     it 'rejects missing message param' do
       post :create_message, params: {id: convo.id, message: {}}
-      response.status.should == 400
+      expect(response.status).to eq(400)
     end
 
     it 'rejects missing conversation' do
       post :create_message, params: {id: 0, message: {body: body}}
-      response.status.should == 404
+      expect(response.status).to eq(404)
     end
   end
 end
