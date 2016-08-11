@@ -1,6 +1,6 @@
 class Admin::AdminApplicationController < ApplicationController
 
-  before_filter :require_admin_privileges
+  before_action :require_admin_privileges
 
   private
 
