@@ -22,7 +22,6 @@
         %li
           = dispatcher.name
 
-
 %h6
   Drivers
 
@@ -52,15 +51,10 @@
         %option
           = status[0]
 
-
-
   :javascript
     $('#conversation-status').change(function() {
       window.location = "/admin/ride_zones/#{@ride_zone.id}?status=" + $(this).val();
     });
-
-
-
 
 #conversations
   - if @conversations.present?

@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 RSpec.describe Admin::RideZonesController, type: :controller do
   login_admin
 
@@ -14,7 +13,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
   let(:invalid_attributes) {
     skip("Add a hash of attributes invalid for your model")
   }
-  
+
   describe "GET #index" do
     it "assigns all ride_zones as @ride_zones" do
       ride_zone = create(:ride_zone)
@@ -46,29 +45,61 @@ RSpec.describe Admin::RideZonesController, type: :controller do
     end
   end
 
-  describe "GET #add_dispatcher" do
-    it "does something" do
+  describe "POST #add_dispatcher" do
+    it "adds a dispatcher to a ride zone" do
       user = create(:user)
       ride_zone = create(:ride_zone)
 
-      # expect {
-      #         delete :destroy, params: {id: ride_zone.to_param}
-      #       }.to change(RideZone, :count).by(-1)
-
       expect {
-        get :add_dispatcher, params: {id: ride_zone.to_param, user_id: user.to_param}
+        post :add_dispatcher, params: {id: ride_zone.to_param, user_id: user.to_param}
       }.to change(ride_zone.dispatchers, :count).by(1)
     end
   end
 
-  describe "GET #add_driver" do
-    it "does something" do
+  describe "POST #remove_dispatcher" do
+    it "remove a dispatcher from a ride zone" do
+      user = create(:user)
+      ride_zone = create(:ride_zone)
+      user.add_role(:dispatcher, ride_zone)
+
+      expect {
+        delete :remove_dispatcher, params: {id: ride_zone.to_param, user_id: user.to_param}
+      }.to change(ride_zone.dispatchers, :count).by(-1)
+    end
+  end
+
+  describe "POST #add_driver" do
+    it "adds a driver to a ride zone" do
       user = create(:user)
       ride_zone = create(:ride_zone)
 
       expect {
-        get :add_driver, params: {id: ride_zone.to_param, user_id: user.to_param}
+        post :add_driver, params: {id: ride_zone.to_param, user_id: user.to_param}
       }.to change(ride_zone.drivers, :count).by(1)
+    end
+
+    it "only lets a user drive for one ride zone" do
+      user = create(:user)
+      ride_zone_1 = create(:ride_zone)
+      ride_zone_2 = create(:ride_zone, name: 'rz2', slug: 'rz2')
+
+      user.add_role(:driver, ride_zone_1)
+
+      expect {
+        post :add_driver, params: {id: ride_zone_2.to_param, user_id: user.to_param}
+      }.to change(ride_zone_2.drivers, :count).by(0)
+    end
+  end
+
+  describe "POST #remove_driver" do
+    it "remove a driver from a ride zone" do
+      user = create(:user)
+      ride_zone = create(:ride_zone)
+      user.add_role(:driver, ride_zone)
+
+      expect {
+        delete :remove_driver, params: {id: ride_zone.to_param, user_id: user.to_param}
+      }.to change(ride_zone.drivers, :count).by(-1)
     end
   end
 
