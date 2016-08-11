@@ -49,9 +49,6 @@ class UsersController < ApplicationController
   def edit
     # user_type is put in to the session in OmniauthCallbacksController
     @type = session['user_type']
-
-    # This key is tied to john@fnnny.com, needs the Google Places Web API enabled
-    @google_api_key = 'AIzaSyCp4DCD46mbNzHNld5EM6d1_COhIAb7RAk'
   end
 
   def confirm
@@ -94,7 +91,6 @@ class UsersController < ApplicationController
           end
         end
 
-
         # different notice if the user was just created
         notice = (is_new_user) ? 'Welcome to Drive the Vote!' : 'User was successfully updated.'
 
@@ -110,5 +106,4 @@ class UsersController < ApplicationController
       end
     end
   end
-
 end
