@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Map Wrapper</title>
+	<link rel="stylesheet" href="https://writ.cmcenroe.me/1.0.3/writ.min.css">
+    <style>
+      body {
+        width: 80%;
+        margin: 2em;
+      }
+      #gmap, #lmap {
+        height: 300px;
+        margin: 1em 0;
+      }
+    </style>
+</head>
+<body>
+    <h1>Simple Map Wrapper</h1>
+    <p>
+        Two maps generated with almost-identical code, showing a simple
+        wrapper for Google Maps or OpenStreetMap-based Leaflet.
+    </p>
+    <p>
+        Code for each looks approximately like this; view source for details:
+    </p>
+    <pre>
+new Map(document.getElementById('map'),
+        function(map) {
+          map.addMarker(37.770444, -122.434960, 'Hello World!', 'http://example.com');
+          map.addMarker(37.769079, -122.433674, 'Hello World!');
+          map.addMarker(37.771612, -122.426836);
+        },
+        {lat: 37.77073, lon: -122.43020, zoom: 16});
+</pre>
+    <p>
+        Defaults are mostly left uncustomized, except for default scrollwheel zoom, which
+        <a href="http://content.stamen.com/stamens-checklist-for-maps">should not be used in a non-fullscreen map</a>.
+    </p>
+    <div id="gmap"></div>
+    <div id="lmap"></div>
+    <script>
+    
+        // Wrapper for different kinds of maps. Currently supports
+        // OpenStreetMap via Leaflet with Stamen tiles, and Google Maps.
+        // To use Google, provide google_api_key in args parameter.
+        // Loaded map is passed to callback when ready for use.
+        function Map(element, callback, args)
+        {
+            this._gmap = null;
+            this._lmap = null;
+            
+            var view = {
+                lat: (args && args.lat || 37.77073),
+                lon: (args && args.lon || -122.43020),
+                zoom: (args && args.zoom || 16)
+                };
+
+            if(args && args.google_api_key) {
+                this._loadGoogleMap(element, view, callback, args.google_api_key);
+
+            } else {
+                this._loadLeafletMap(element, view, callback);
+            }
+        }
+        
+        Map.prototype = {
+        
+            // Add a marker with an optional text-only popup.
+            addMarker: function(lat, lon, name, href)
+            {
+                var content;
+                
+                if(href && name) {
+                    content = document.createElement('a');
+                    content.appendChild(document.createTextNode(name));
+                    content.href = href;
+                } else if(name) {
+                    content = document.createTextNode(name);
+                }
+            
+                if(this._gmap) {
+                    var gmap = this._gmap,
+                        gmarker = new google.maps.Marker({
+                            position: {lat: lat, lng: lon},
+                            map: gmap,
+                            title: name
+                        });
+                    
+                    if(content) {
+                        var infowindow = new google.maps.InfoWindow({content: content});
+                        gmarker.addListener('click', function() { infowindow.open(gmap, gmarker) });
+                    }
+
+                } else if(this._lmap) {
+                    var lmarker = L.marker([lat, lon]).addTo(this._lmap);
+                    
+                    if(content) {
+                        lmarker.bindPopup(content);
+                    }
+                }
+            },
+        
+            _loadGoogleMap: function(element, view, callback, api_key)
+            {
+                if(!window.google || !window.google.maps.Map)
+                {
+                    // Include script for Google Maps, see:
+                    // https://developers.google.com/maps/documentation/javascript/tutorial
+                    
+                    var script = document.createElement('script');
+                    script.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key='+api_key);
+                    document.head.appendChild(script);
+                }
+                
+                function awaitGoogleMap(map, element, view, callback)
+                {
+                    // Wait another 50msec if Google Maps is not loaded.
+                    if(!window.google || !window.google.maps.Map) {
+                        return window.setTimeout(awaitGoogleMap, 50, map, element, view, callback);
+                    }
+
+                    // Set default view, and turn off scrollwheel zoom.
+                    var opts = {
+                        center: {lat: view.lat, lng: view.lon},
+                        zoom: view.zoom,
+                        scrollwheel: false
+                        };
+
+                    map._gmap = new google.maps.Map(element, opts);
+                    callback(map);
+                }
+            
+                awaitGoogleMap(this, element, view, callback);
+            },
+            
+            _loadLeafletMap: function(element, view, callback)
+            {
+                if(!window.L || !window.L.map)
+                {
+                    // Include script and stylesheets for Leaflet, see:
+                    // http://leafletjs.com/examples/quick-start.html
+                    
+                    var script = document.createElement('script'),
+                        link = document.createElement('link');
+
+                    script.setAttribute('src', 'https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js');
+                    link.setAttribute('href', 'https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css');
+                    link.setAttribute('rel', 'stylesheet');
+
+                    document.head.appendChild(script);
+                    document.head.appendChild(link);
+                }
+                
+                function awaitLeaflet(map, element, view, callback)
+                {
+                    // Wait another 50msec if Leaflet is not loaded.
+                    if(!window.L || !window.L.map) {
+                        return window.setTimeout(awaitLeaflet, 50, map, element, view, callback);
+                    }
+
+                    // Set default view, and turn off scrollwheel zoom.
+                    var opts = {
+                        center: [view.lat, view.lon],
+                        zoom: view.zoom,
+                        scrollWheelZoom: false
+                        };
+
+                    map._lmap = L.map(element, opts);
+                
+                    // Add Stamen tile layer.
+                    L.tileLayer('http://tile.stamen.com/terrain/{z}/{x}/{y}@2x.png', {
+                        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
+                        maxZoom: 18
+                    }).addTo(map._lmap);
+                
+                    callback(map);
+                }
+            
+                awaitLeaflet(this, element, view, callback);
+            }
+            
+        };
+    
+        function on_loaded(map)
+        {
+            map.addMarker(37.770444, -122.434960, 'Hello World!', 'http://example.com');
+            map.addMarker(37.769079, -122.433674, 'Hello World!');
+            map.addMarker(37.771612, -122.426836);
+        }
+        
+        var gmap = new Map(document.getElementById('gmap'), on_loaded,
+                           {'google_api_key': 'AIzaSyDyJ3LTbJGAEIKjqYj3-gFDbAZ3BLo6sGo',
+                            lat: 37.77073, lon: -122.43020, zoom: 16});
+
+        var lmap = new Map(document.getElementById('lmap'), on_loaded,
+                           {lat: 37.77073, lon: -122.43020, zoom: 16});
+
+    </script>
+</body>
+</html>
