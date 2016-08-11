@@ -3,8 +3,6 @@ class UsersController < ApplicationController
 
   before_action :set_user, only: [:show, :edit, :update]
 
-  before_action :set_vars
-
   # GET /users/1
   # GET /users/1.json
   def show
@@ -107,11 +105,5 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-  private
-
-  def set_vars
-    @google_api_key = ENV['GOOGLE_API_KEY']
   end
 end
