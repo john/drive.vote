@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Admin::UsersController, type: :controller do
+  login_admin
 
   # This should return the minimal set of attributes required to create a valid
   # Ride. As you add validations to Ride, be sure to
@@ -16,14 +17,10 @@ RSpec.describe Admin::UsersController, type: :controller do
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # RidesController. Be sure to keep this updated too.
-  let(:valid_session) {
-    controller.stub(:signed_in?).and_return(true)
-    controller.stub(:require_admin_privileges).and_return(true)
-  }
 
   describe "GET index" do
     it "renders" do
-      get :index, params: {}, session: valid_session
+      get :index, params: {}
       # expect(assigns(:user)).to be_a_new(User)
     end
   end
@@ -41,7 +38,7 @@ RSpec.describe Admin::UsersController, type: :controller do
   describe "GET show" do
     it "assigns the requested user as @user" do
       user = User.create! valid_attributes
-      get :show, params: {:id => user.to_param}, session: valid_session
+      get :show, params: {:id => user.to_param}
       expect(assigns(:user)).to eq(user)
     end
   end
@@ -49,6 +46,7 @@ RSpec.describe Admin::UsersController, type: :controller do
   describe "DELETE destroy" do
     it "destroys the requested user" do
       skip
+      # user = User.create! valid_attributes
       # user = User.create! valid_attributes
       # expect {
       #   delete :destroy, {:id => user.to_param}, valid_session

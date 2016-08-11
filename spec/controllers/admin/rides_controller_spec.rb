@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Admin::RidesController, type: :controller do
+  login_admin
 
   # This should return the minimal set of attributes required to create a valid
   # Ride. As you add validations to Ride, be sure to
@@ -12,24 +13,11 @@ RSpec.describe Admin::RidesController, type: :controller do
   let(:invalid_attributes) {
     skip("Add a hash of attributes invalid for your model")
   }
-
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # RidesController. Be sure to keep this updated too.
-  let(:valid_session) {
-    controller.stub(:signed_in?).and_return(true)
-
-    # stub method is deprecated, but the 'allow' syntax isn't working, don't know why -jm
-    #allow(controller).to receive(:signed_in?).and_return(true)
-
-    controller.stub(:require_admin_privileges).and_return(true)
-    #allow(controller).to receive(:require_admin_privileges).and_return(true)
-  }
-
+  
   describe "GET #index" do
     it "assigns all rides as @rides" do
       ride = create :ride
-      get :index, params: {}, session: valid_session
+      get :index, params: {}
       expect(assigns(:rides)).to eq([ride])
     end
   end
@@ -37,14 +25,14 @@ RSpec.describe Admin::RidesController, type: :controller do
   # describe "GET #show" do
   #   it "assigns the requested ride as @ride" do
   #     ride = Ride.create! valid_attributes
-  #     get :show, params: {id: ride.to_param}, session: valid_session
+  #     get :show, params: {id: ride.to_param}
   #     expect(assigns(:ride)).to eq(ride)
   #   end
   # end
   #
   # describe "GET #new" do
   #   it "assigns a new ride as @ride" do
-  #     get :new, params: {}, session: valid_session
+  #     get :new, params: {}
   #     expect(assigns(:ride)).to be_a_new(Ride)
   #   end
   # end
@@ -52,7 +40,7 @@ RSpec.describe Admin::RidesController, type: :controller do
   # describe "GET #edit" do
   #   it "assigns the requested ride as @ride" do
   #     ride = Ride.create! valid_attributes
-  #     get :edit, params: {id: ride.to_param}, session: valid_session
+  #     get :edit, params: {id: ride.to_param}
   #     expect(assigns(:ride)).to eq(ride)
   #   end
   # end
@@ -61,30 +49,30 @@ RSpec.describe Admin::RidesController, type: :controller do
   #   context "with valid params" do
   #     it "creates a new Ride" do
   #       expect {
-  #         post :create, params: {ride: valid_attributes}, session: valid_session
+  #         post :create, params: {ride: valid_attributes}
   #       }.to change(Ride, :count).by(1)
   #     end
   #
   #     it "assigns a newly created ride as @ride" do
-  #       post :create, params: {ride: valid_attributes}, session: valid_session
+  #       post :create, params: {ride: valid_attributes}
   #       expect(assigns(:ride)).to be_a(Ride)
   #       expect(assigns(:ride)).to be_persisted
   #     end
   #
   #     it "redirects to the created ride" do
-  #       post :create, params: {ride: valid_attributes}, session: valid_session
+  #       post :create, params: {ride: valid_attributes}
   #       expect(response).to redirect_to(Ride.last)
   #     end
   #   end
   #
   #   context "with invalid params" do
   #     it "assigns a newly created but unsaved ride as @ride" do
-  #       post :create, params: {ride: invalid_attributes}, session: valid_session
+  #       post :create, params: {ride: invalid_attributes}
   #       expect(assigns(:ride)).to be_a_new(Ride)
   #     end
   #
   #     it "re-renders the 'new' template" do
-  #       post :create, params: {ride: invalid_attributes}, session: valid_session
+  #       post :create, params: {ride: invalid_attributes}
   #       expect(response).to render_template("new")
   #     end
   #   end
@@ -98,20 +86,20 @@ RSpec.describe Admin::RidesController, type: :controller do
   #
   #     it "updates the requested ride" do
   #       ride = Ride.create! valid_attributes
-  #       put :update, params: {id: ride.to_param, ride: new_attributes}, session: valid_session
+  #       put :update, params: {id: ride.to_param, ride: new_attributes}
   #       ride.reload
   #       skip("Add assertions for updated state")
   #     end
   #
   #     it "assigns the requested ride as @ride" do
   #       ride = Ride.create! valid_attributes
-  #       put :update, params: {id: ride.to_param, ride: valid_attributes}, session: valid_session
+  #       put :update, params: {id: ride.to_param, ride: valid_attributes}
   #       expect(assigns(:ride)).to eq(ride)
   #     end
   #
   #     it "redirects to the ride" do
   #       ride = Ride.create! valid_attributes
-  #       put :update, params: {id: ride.to_param, ride: valid_attributes}, session: valid_session
+  #       put :update, params: {id: ride.to_param, ride: valid_attributes}
   #       expect(response).to redirect_to(ride)
   #     end
   #   end
@@ -119,13 +107,13 @@ RSpec.describe Admin::RidesController, type: :controller do
   #   context "with invalid params" do
   #     it "assigns the ride as @ride" do
   #       ride = Ride.create! valid_attributes
-  #       put :update, params: {id: ride.to_param, ride: invalid_attributes}, session: valid_session
+  #       put :update, params: {id: ride.to_param, ride: invalid_attributes}
   #       expect(assigns(:ride)).to eq(ride)
   #     end
   #
   #     it "re-renders the 'edit' template" do
   #       ride = Ride.create! valid_attributes
-  #       put :update, params: {id: ride.to_param, ride: invalid_attributes}, session: valid_session
+  #       put :update, params: {id: ride.to_param, ride: invalid_attributes}
   #       expect(response).to render_template("edit")
   #     end
   #   end
@@ -135,13 +123,13 @@ RSpec.describe Admin::RidesController, type: :controller do
   #   it "destroys the requested ride" do
   #     ride = Ride.create! valid_attributes
   #     expect {
-  #       delete :destroy, params: {id: ride.to_param}, session: valid_session
+  #       delete :destroy, params: {id: ride.to_param}
   #     }.to change(Ride, :count).by(-1)
   #   end
   #
   #   it "redirects to the rides list" do
   #     ride = Ride.create! valid_attributes
-  #     delete :destroy, params: {id: ride.to_param}, session: valid_session
+  #     delete :destroy, params: {id: ride.to_param}
   #     expect(response).to redirect_to(rides_url)
   #   end
   # end
