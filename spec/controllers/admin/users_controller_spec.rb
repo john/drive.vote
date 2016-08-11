@@ -27,9 +27,10 @@ RSpec.describe Admin::UsersController, type: :controller do
 
   describe "GET #index" do
     it "assigns all users as @users" do
-      user = User.create! valid_attributes
-      get :index, params: {}, session: valid_session
-      expect(assigns(:users)).to eq([user])
+      User.create! valid_attributes # add a second user in addition to user logged in for testing
+      users = User.all
+      get :index, params: {}
+      expect(assigns(:users)).to match_array(users)
     end
   end
 

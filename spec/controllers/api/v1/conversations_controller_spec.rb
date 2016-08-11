@@ -36,7 +36,7 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller, focus:tru
 
     it 'calls twilio service' do
       args = {from: convo.to_phone, to: convo.from_phone, body: body}
-      TwilioService.should_receive(:send_message).with(args, Api::V1::ConversationsController::TWILIO_TIMEOUT)
+      expect(TwilioService).to receive(:send_message).with(args, Api::V1::ConversationsController::TWILIO_TIMEOUT)
       post :create_message, params: {id: convo.id, message: {body: body}}
     end
 
