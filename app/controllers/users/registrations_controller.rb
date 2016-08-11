@@ -9,9 +9,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     resource = build_resource({})
 
     if params[:type].present?
-      logger.debug "------------> type: #{params[:type]}"
       resource.user_type = params[:type]
-      logger.debug "------------> resource.user_type: #{self.resource.user_type}"
     end
 
     respond_with resource

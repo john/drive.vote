@@ -28,7 +28,7 @@ es:
   name: 'Nombre'
   save: 'Guardar'
   saving: 'Guardiendo'
-  
+
   drive_the_vote: 'Conduzca la Vota'
   home: 'Inicio'
   faq: 'Preguntas más frecuentes'
@@ -41,13 +41,20 @@ es:
   your_profile: 'Tu perfil'
   your_settings: 'Sus ajustes'
   short_description: |
-    organiza paseos gratuitos a las
-    urnas el día de las elecciones
-  election_is_on: 'La elección presidencial de 2016 es el'
-  election_date: 'martes, 8 de noviembre'
-  thats: 'Eso es '
-  days_away: 'días a partir de ahora'
+    organiza paseos gratuitos a las urnas el día de las elecciones
+  how_it_works: 'Cómo funciona'
+  how_it_works_copy: |
+    Los votantes enviar un texto para pedir un paseo, y conducir el voto los conecta con un conductor voluntario, que los recoge y los lleva a su lugar de votación.
+  how_to_help: 'Cómo ayudar'
+  how_to_help_copy: |
+    Si usted tiene un coche y puede estar en FL, OH, PA, Carolina del Norte, IM o GA, el día de la elección, voluntario para ser un conductor! Ayudar a conseguir que los votantes a las urnas el 8 de noviembre y asegurarse de que todo el mundo tiene un voto.
+
+# election_is_on: 'La elección presidencial de 2016 es el'
+# election_date: 'martes, 8 de noviembre'
+# thats: 'Eso es '
+# days_away: 'días a partir de ahora'
   will_drive: "Puedo manejar"
+  will_drive_signup_description: "Conducir para votar le enviará una confirmación después de su inscripción, y se ponga en contacto antes de la elección con más información."
   i_need_ride: "Necesito que me lleven"
   driver: "Conductor"
   rider: "Pasajero"
@@ -56,16 +63,17 @@ es:
   address: 'Dirección'
   city: 'Ciudad'
   state: 'Estado'
+  zip_where_can_drive: 'código postal donde se puede conducir'
   languages: 'Idiomas que hablas'
   around_what_time: 'En torno a qué hora'
   can_drive: 'se puede conducir'
   need_ride: 'usted necesita un paseo'
   agree_to: 'De acuerdo con'
-  
+
   need_more_info: 'Necesitamos un poco más de información para que coincida con un paseo'
   by_saving: 'Al guardar el está de acuerdo con los'
   terms_of_service: 'términos de servicio'
-  
+
   almost_done: 'Casi termino'
   just_sign_up: 'sólo tiene que registrarse'
   sign_in: "Iniciar sesión"
@@ -73,13 +81,12 @@ es:
   sign_out: 'Cerrar sesión'
   users: 'usuarios'
   complete_registration: 'Por favor completar su registro para que podamos encontrar una coincidencia'
-  
+
   will_contact: "¡Gracias! Cerca de la elección nos pondremos en contacto con usted para ayudarle a cabo."
   help_others: "Ayudar a otros a conducir el voto!"
   share_on_twitter: "Compartir en Twitter"
   share_on_facebook: "Compartir en Facebook"
-  
-  how_ridesharing_works: 'Cómo Viajes Compartidos Funciona'
+
   fill_out_profile: 'Crear un perfil'
   get_matched_to_drivers: "Consigue emparejado a los conductores"
   get_matched_to_passengers: "Consigue emparejado a los pasajeros"
@@ -87,8 +94,8 @@ es:
   get_matched: "Consigue emparejado con los conductores o pasajeros"
   confirm: "Confirmar con mensajes de texto / teléfono"
   got_it: "LO TENGO"
-  
-  
+
+
   # https://gist.github.com/jordigg/30fe17c6328d5deab9ec
   devise:
     confirmations:
