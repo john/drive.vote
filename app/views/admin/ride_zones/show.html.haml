@@ -1,7 +1,14 @@
-:css
-  .message { border-bottom: 1px solid #ccc; padding: 20px; }
-  .field-name { text-align: right; padding: 0 20px 0 0; color: #999; }
-  .info { text-align: right; padding: 0 0 0 0; color: #999; text-align: left; color: #222;}
+:javascript
+  function conn() {  }
+  function disconn() {  }
+  function r(data) {
+    var tbody = $('#event-table tbody');
+    var timestamp = new Date(data['timestamp'] * 1000);
+    var content = data[Object.keys(data)[2]];
+    var newRow = '<tr><td>' + timestamp.toLocaleString() + '</td><td>' + data['event_type'] + '</td><td>' + JSON.stringify(content) + '</td></tr>'
+    tbody.prepend(newRow)
+  }
+  createRideZoneChannel(#{@ride_zone.id}, conn, disconn, r);
 
 = render 'admin/nav', {active: 'ride_zones'}
 
@@ -58,26 +65,26 @@
 
 #conversations
   - if @conversations.present?
-    - @conversations.each do |conversation|
-      .conversation
-        %table
+    %table.admin
+      %thead
+        %th Started
+        %th From
+        %th Message Count
+        %th Status
+      %tbody
+        - @conversations.each do |conversation|
           %tr
-            %td.field-name
-              Started:
-            %td.info
-              = conversation.created_at.in_time_zone('Pacific Time (US & Canada)').strftime("%l:%M%P, %-m/%-d %Z")
-          %tr
-            %td.field-name
-              From:
-            %td.info
-              = conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')
-          %tr
-            %td.field-name
-              Number of messages
-            %td.info
-              = conversation.messages.count
-          %tr
-            %td.field-name
-              Status:
-            %td.info
-              = conversation.status
+            %td= conversation.created_at.in_time_zone('Pacific Time (US & Canada)').strftime("%l:%M%P, %-m/%-d %Z")
+            %td= conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')
+            %td= conversation.messages.count
+            %td= conversation.status
+
+#events
+%h6
+  Event Stream
+%table.admin{id: 'event-table'}
+  %thead
+    %th Time
+    %th Type
+    %th Data
+  %tbody
