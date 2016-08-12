@@ -146,7 +146,7 @@ ActiveRecord::Schema.define(version: 20160812064433) do
     t.boolean  "available",                                           default: false, null: false
     t.datetime "location_updated_at"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
-    t.index ["phone_number_normalized"], name: "index_users_on_phone_number_normalized", unique: true, using: :btree
+    t.index ["phone_number_normalized", "name"], name: "index_users_on_phone_number_normalized_and_name", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 

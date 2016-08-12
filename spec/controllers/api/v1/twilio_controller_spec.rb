@@ -39,7 +39,8 @@ RSpec.describe Api::V1::TwilioController, type: :controller do
     end
 
     it 'reuses conversation' do
-      c = create :conversation, user: user, from_phone: from_number, ride_zone: ride_zone
+      post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
+      c = Conversation.last
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
       expect(Conversation.count).to eq(1)
       expect(Message.last.conversation_id).to eq(c.id)
