@@ -24,8 +24,6 @@ Rails.application.routes.draw do
   # Serve websocket cable requests in-process
   mount ActionCable.server => '/cable'
 
-  resources :dispatch, only: [:index]
-
   resources :driving do
     collection do
       get 'demo' => 'driving#demo'

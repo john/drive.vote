@@ -31,6 +31,7 @@ class RideZone < ApplicationRecord
   def event(event_type, object, tag = nil)
     event = {
       event_type: event_type,
+      timestamp: Time.now.to_i,
       tag || object.class.name.downcase => object.send(:api_json)
     }
     ActionCable.server.broadcast "ride_zone_#{self.id}", event

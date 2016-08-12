@@ -37,7 +37,7 @@ class User < ApplicationRecord
   end
 
   def api_json
-    data = self.as_json(only: [:id, :name, :phone_number_normalized, :availability, :latitude, :longitude, :location_timestamp])
+    data = self.as_json(only: [:id, :name, :available, :latitude, :longitude], methods: [:phone, :location_timestamp])
     data.merge('active_ride' => self.active_ride.try(:api_json))
   end
 
@@ -70,6 +70,10 @@ class User < ApplicationRecord
 
   def has_sms_name?
     self.name == User.sms_name(self.phone_number)
+  end
+
+  def phone
+    self.phone_number_normalized.try(:phony_formatted, normalize: :US, spaces: '-')
   end
 
   def has_required_fields?
