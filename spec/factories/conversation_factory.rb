@@ -6,6 +6,10 @@ FactoryGirl.define do
     from_phone '+15105555555'
     to_phone '+14193860121'
 
+    factory :closed_conversation do
+      status :closed
+    end
+
     factory :complete_conversation do
       from_latitude 34.5
       from_longitude -122.6

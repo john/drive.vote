@@ -2,7 +2,7 @@ class Conversation < ApplicationRecord
   belongs_to :ride_zone
   belongs_to :user
   has_many :messages
-  has_one :ride
+  belongs_to :ride
 
   before_save :update_lifecycle
   after_create :notify_creation
