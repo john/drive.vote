@@ -17,7 +17,7 @@ RSpec.describe Ride, type: :model do
     it 'sends ride update event but not driver' do
       r = create :ride
       expect_any_instance_of(RideZone).to receive(:event).with(:ride_changed, anything)
-      RideZone.any_instance.should_not_receive(:event).with(:driver_changed, anything)
+      expect_any_instance_of(RideZone).to_not receive(:event).with(:driver_changed, anything)
       r.update_attribute(:pickup_at, Time.now)
     end
 
