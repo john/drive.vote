@@ -39,7 +39,7 @@ class Conversation < ApplicationRecord
   def calculated_lifecycle
     if user.unknown_language?
       lckey = :need_language
-    elsif user.name.blank?
+    elsif user.name.blank? || user.has_sms_name?
       lckey = :need_name
     elsif from_latitude.nil? || from_longitude.nil?
       lckey = :need_origin

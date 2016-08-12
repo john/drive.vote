@@ -64,6 +64,14 @@ class User < ApplicationRecord
     self.location_updated_at.try(:to_i)
   end
 
+  def self.sms_name(phone_number)
+    "#{phone_number} via sms"
+  end
+
+  def has_sms_name?
+    self.name == User.sms_name(self.phone_number)
+  end
+
   def has_required_fields?
     !!(self.email? && self.name? && self.phone_number? && self.city? && self.state? && self.zip)
   end
