@@ -49,7 +49,7 @@
       ga('send', 'pageview');
 
   %body
-    <div id="fb-root"></div>
+    #fb-root
     <script>(function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
@@ -58,59 +58,7 @@
     fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
 
-    %nav.navbar.navbar-default.navbar-static-top
-      .container
-        .navbar-header
-          %button.navbar-toggle.collapsed{:type=>"button", :'data-toggle'=>"collapse", :'data-target'=>"#navbar",  :'aria-expanded'=>"false", :'aria-controls'=>"navbar"}
-            %span.sr-only Toggle navigation
-            %span.icon-bar
-            %span.icon-bar
-            %span.icon-bar
-
-          %a.navbar-brand{href: root_path(locale: I18n.locale.to_s), style: 'font-family: "Times New Roman", Times, serif'}
-            %span.glyphicons.glyphicons-cars.inverse{'aria-hidden': "true", style: 'margin-top:-7px;'}
-
-            %i.hidden-xs
-              #{t(:drive_the_vote)}!
-
-        #navbar.collapse.navbar-collapse
-          %ul.nav.navbar-nav.navbar-right
-            - if !user_signed_in?
-              %li.visible-xs.hidden-sm.hidden-md.hidden-lg
-                = link_to t(:sign_in), "/users/sign_in?locale=#{I18n.locale.to_s}"
-            %li= link_to "Español", locale: 'es'
-            %li= link_to "English", locale: 'en'
-            -# if !user_signed_in?
-              / %li.hidden-xs
-              /   %p.navbar-btn
-              /     = link_to t(:sign_in), "/users/sign_in?locale=#{I18n.locale.to_s}", class: 'btn btn-default btn-xs', role: 'button', style: 'margin: 7px 0 0 10px;'
-
-            - if user_signed_in?
-
-              -# on larger screens, you want a dropdown
-              %li.dropdown.hidden-xs
-                %a.dropdown-toggle{href: "#", 'data-toggle': "dropdown", role: "button", 'aria-haspopup': "true", 'aria-expanded': "false"}
-                  %span.glyphicon.glyphicon-user.inverse{'aria-hidden': "true"}
-                  %span.caret.inverse
-                  %ul.dropdown-menu{"aria-labelledby": "dropdownMenu1"}
-                    -# %li= link_to t(:your_profile), current_user
-                    %li= link_to t(:your_settings), "javascript:alert('coming soon');"
-                    %li= link_to t(:sign_out), destroy_user_session_path, {method: :delete}
-                    - if current_user.has_role? :admin
-                      %li= link_to 'admin', admin_path, style: 'color: red;'
-
-              -# JANK, should be DRY'd
-              -# on smaller screens, when you've got a burger, you don't
-              -# %li.visible-xs.hidden-sm.hidden-md.hidden-lg
-              -#  = link_to t(:your_profile), current_user
-              %li.visible-xs.hidden-sm.hidden-md.hidden-lg
-                = link_to t(:your_settings), "javascript:alert('coming soon');"
-              %li.visible-xs.hidden-sm.hidden-md.hidden-lg
-                = link_to t(:sign_out), destroy_user_session_path, {method: :delete}
-              - if current_user.has_role? :admin
-                %li.visible-xs.hidden-sm.hidden-md.hidden-lg
-                  = link_to 'admin', admin_path, style: 'color: red;'
-
+    = render partial: 'nav'
 
     .container
       = yield

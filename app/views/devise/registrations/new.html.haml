@@ -1,8 +1,31 @@
-%h3{style: 'margin-top: 0'}
-  = t(:will_drive)
-%p
-  = t(:will_drive_signup_description)
+:css
+  #error_explanation {
+    float: none;
+    display: block;
+    margin-top: 100px;
+    color: #f00;
+    ul {
+      list-style: none;
+      margin: 0 0 18px 0;
+    }
+  }
 
+  h2 {
+    font-size: 22px;
+  }
+
+  .field_with_errors {
+    @extend .control-group;
+    @extend .error;
+   }
+
+.col-sm-8.field
+  %h3{style: 'margin-top: 0;'}
+    = t(:will_drive)
+  %p
+    = t(:will_drive_signup_description)
+
+%br
 = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
   = devise_error_messages!
 

@@ -33,7 +33,6 @@ en:
   home: 'Home'
   faq: 'faq'
   about: 'About'
-  coming_soon: 'Coming soon'
   click_here: 'Click here'
   to_be_notified: 'to be notified'
   learn_more: 'Learn more'
@@ -41,7 +40,7 @@ en:
   your_profile: 'Your profile'
   your_settings: 'Your settings'
   short_description: |
-    free rides to the polls on election day.
+    free rides to and from the polls on election day.
   how_it_works: 'How it Works'
   how_it_works_copy: |
     Voters send a text to request a ride, and Drive the Vote connects them with a volunteer driver, who picks them up and takes them to their polling place.
@@ -55,7 +54,7 @@ en:
 # thats: "That's"
 # days_away: 'days from now'
   will_drive: "Volunteer to Drive"
-  will_drive_signup_description: "Drive to Vote will send you a confirmation after you sign up, and contact you before the election with more information."
+  will_drive_signup_description: "Drive the Vote will send you a confirmation after you sign up, and contact you before the election with more information."
   i_need_ride: "Request a Ride"
   driver: 'Driver'
   rider: 'Rider'
@@ -83,7 +82,7 @@ en:
   users: 'users'
   complete_registration: 'Please complete your registration so we can find a match'
 
-  will_contact: "Thanks! Near the election we'll contact you to help out."
+  will_contact: "Thanks! Near the election we'll contact you with more details."
   help_others: "Help others Drive the Vote!"
   share_on_twitter: "Share on Twitter"
   share_on_facebook: "Share on Facebook"

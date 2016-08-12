@@ -1,12 +1,5 @@
 .row
-  - if user_signed_in?
-    = render partial: 'signed_in'
+  .col-sm-8.col-sm-offset-2.text-center
+    = render partial: 'signed_out'
 
-  - else
-    .col-sm-8.col-sm-offset-2.text-center
-      = render partial: 'signed_out'
-
-.navbar.navbar-default.navbar-fixed-bottom
-  .container
-    .col-sm-12.text-center
-      = link_to t(:learn_more), about_path(locale: I18n.locale.to_s), class: 'btn btn-xs btn-default', style: 'font-size: 12px;'
+  = render partial: 'application/learn_more'

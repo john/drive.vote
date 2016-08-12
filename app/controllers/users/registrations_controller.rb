@@ -3,7 +3,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
-
   # GET /resource/sign_up
   def new
     resource = build_resource({})
@@ -16,9 +15,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+
+    # validate if it's a swing state zip
+    #if swing_state_zip?( params[:zip] )
+      super
+      #else
+      #redirect_to new_user_registration_path, notice: "Sorry not a battleground zip code!"
+      #end
+  end
 
   # GET /resource/edit
   # def edit
@@ -44,7 +49,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
+
+  # When new users sign up, we don't want them automatically signed in
+  # http://stackoverflow.com/questions/18545306/dont-allow-sign-in-after-sign-up-in-devise
+  def sign_up(resource_name, resource)
+    true
+  end
+
+  # The path used after sign up.
+  def after_sign_up_path_for(resource)
+    # super(resource)
+    confirm_path
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_sign_up_params
@@ -54,11 +71,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params
   #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
-  # end
-
-  # The path used after sign up.
-  # def after_sign_up_path_for(resource)
-  #   super(resource)
   # end
 
   # The path used after sign up for inactive accounts.

@@ -4,7 +4,7 @@ class HomeController < ApplicationController
     @is_new_user = params['is_new_user'].present?
   end
 
-  def coming_soon
+  def confirm
   end
 
   def about

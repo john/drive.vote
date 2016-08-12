@@ -7,7 +7,7 @@ RSpec.describe Admin::UsersController, type: :controller do
   # Ride. As you add validations to Ride, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    {name: 'Joe Test User', email: 'foo@bar.com', password: '12345abcde', phone_number: '2073328709', zip: '94118'}
+    {name: 'Joe Test User', email: 'foo@bar.com', password: '12345abcde', phone_number: '2073328709', zip: ''}
   }
 
   let(:invalid_attributes) {
