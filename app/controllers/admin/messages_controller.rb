@@ -28,7 +28,7 @@ class Admin::MessagesController < Admin::AdminApplicationController
 
   def update
     if @message.update(message_params)
-      redirect_to @message, notice: 'Message was successfully updated.'
+      redirect_to [:admin, @message], notice: 'Message was successfully updated.'
     else
       render :edit
     end
@@ -36,7 +36,7 @@ class Admin::MessagesController < Admin::AdminApplicationController
 
   def destroy
     @message.destroy
-    redirect_to messages_url, notice: 'Message was successfully destroyed.'
+    redirect_to admin_messages_url, notice: 'Message was successfully destroyed.'
   end
 
   private
