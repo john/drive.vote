@@ -17,6 +17,7 @@ module RideParams
                                  :pickup_at,
                                  :name,
                                  :description,
+                                 :special_requests,
                                  :status)
   end
 end
