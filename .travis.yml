@@ -1,0 +1,8 @@
+language: ruby
+services:
+  - postgresql
+script:
+  - bundle exec rake db:test:prepare
+  - bundle exec rake
+notifications:
+  slack: devprogress:cgUQZSb0t5viIy06w8dgJMXh
