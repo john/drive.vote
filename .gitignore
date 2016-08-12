@@ -28,3 +28,6 @@
 
 # RubyMine
 .idea
+
+# Don't accidentally commit precompiled assets
+/public/assets
