@@ -1,0 +1,6 @@
+= render 'admin/nav', {active: 'conversations'}
+
+%h1
+  Conversations
+
+= render partial: 'admin/conversations/table', locals: {conversations: @conversations, include_show: true}

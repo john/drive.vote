@@ -77,8 +77,12 @@ Rails.application.routes.draw do
   namespace :admin do
     match '/' => 'home#index', :via => :get
 
-    resources :messages, only: [:show, :update]
     resources :rides
+    resources :conversations, only: [:index, :show] do
+      member do
+        post 'close' => 'conversations#close'
+      end
+    end
 
     resources :ride_zones, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
       member do

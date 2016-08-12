@@ -1,0 +1,38 @@
+// locals:
+//   conversations - a Conversation collection
+//   include_show - true/false display show control
+%table.admin
+  %thead
+    %tr
+      %th Id
+      %th RideZone
+      %th From
+      %th To
+      %th Status
+      %th Lifecycle
+      %th Pickup Time
+      %th Ride
+      %th
+      - if include_show
+        %th
+
+  %tbody
+    - conversations.each do |conversation|
+      %tr
+        %td= conversation.id
+        - if conversation.ride_zone
+          %td= link_to conversation.ride_zone.name, admin_ride_zone_path(conversation.ride_zone)
+        - else
+          %td None Set
+        %td= conversation.from_phone
+        %td= conversation.to_phone
+        %td= conversation.status.nil? ? 'None Set' : conversation.status
+        %td= conversation.lifecycle
+        %td= conversation.pickup_time.nil? ? 'None Set' : conversation.pickup_time.localtime.strftime('%m/%d %l:%M%P')
+        - if conversation.ride
+          %td= link_to conversation.ride.name, admin_ride_path(conversation.ride)
+        - else
+          %td Not yet
+        %td= link_to 'Close', close_admin_conversation_path(conversation), data: { confirm: 'Are you sure?' }, method: :POST
+        - if include_show
+          %td= link_to 'Show', admin_conversation_path(conversation)
