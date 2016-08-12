@@ -35,6 +35,10 @@
     = f.select :additional_passengers, 0..5, {prompt: 'None Assigned'}
 
   .col-sm-8.field
+    = f.label :special_requests
+    = f.text_area :special_requests, class: 'form-control'
+
+  .col-sm-8.field
     = f.label :status
     = f.select :status, Ride.statuses.keys.map {|status| [status.titleize, status]}, {prompt: 'None Selected'}
 
