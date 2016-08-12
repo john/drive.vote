@@ -27,9 +27,9 @@
     <pre>
 new Map(document.getElementById('map'),
         function(map) {
-          map.addMarker(37.770444, -122.434960, 'Hello World!', 'http://example.com');
-          map.addMarker(37.769079, -122.433674, 'Hello World!');
-          map.addMarker(37.771612, -122.426836);
+          map.addMarker(37.770444, -122.434960, map.icons.voter, 'Hello World!', 'http://example.com');
+          map.addMarker(37.769079, -122.433674, map.icons.poll,  'Hello World!');
+          map.addMarker(37.771612, -122.426836, map.icons.driver);
         },
         {lat: 37.77073, lon: -122.43020, zoom: 16});
 </pre>
@@ -66,8 +66,15 @@ new Map(document.getElementById('map'),
         
         Map.prototype = {
         
+            // built-in icon options.
+            icons: {
+                voter: {url: 'icon-voter.svg', w: 38, h: 57},
+                driver: {url: 'icon-driver.svg', w: 38, h: 57},
+                poll: {url: 'icon-poll.svg', w: 38, h: 57}
+            },
+        
             // Add a marker with an optional text-only popup.
-            addMarker: function(lat, lon, name, href)
+            addMarker: function(lat, lon, icon, name, href)
             {
                 var content;
                 
@@ -80,24 +87,43 @@ new Map(document.getElementById('map'),
                 }
             
                 if(this._gmap) {
-                    var gmap = this._gmap,
-                        gmarker = new google.maps.Marker({
-                            position: {lat: lat, lng: lon},
-                            map: gmap,
-                            title: name
-                        });
-                    
-                    if(content) {
-                        var infowindow = new google.maps.InfoWindow({content: content});
-                        gmarker.addListener('click', function() { infowindow.open(gmap, gmarker) });
-                    }
+                    this._addGoogleMarker(lat, lon, icon, content);
 
                 } else if(this._lmap) {
-                    var lmarker = L.marker([lat, lon]).addTo(this._lmap);
-                    
-                    if(content) {
-                        lmarker.bindPopup(content);
-                    }
+                    this._addLeafletMarker(lat, lon, icon, content);
+                }
+            },
+            
+            _addGoogleMarker: function(lat, lon, icon, content)
+            {
+                var gmap = this._gmap,
+                    icon = {url: icon.url,
+                            size: {width: icon.w, height: icon.h},
+                            anchor: {x: icon.w/2, y: icon.h},
+                            labelOrigin: {x: icon.w/2, y: 0}},
+                    gmarker = new google.maps.Marker({
+                        position: {lat: lat, lng: lon},
+                        icon: icon,
+                        map: gmap,
+                        title: name
+                    });
+                
+                if(content) {
+                    var infowindow = new google.maps.InfoWindow({content: content});
+                    gmarker.addListener('click', function() { infowindow.open(gmap, gmarker) });
+                }
+            },
+            
+            _addLeafletMarker: function(lat, lon, icon, content)
+            {
+                var icon = L.icon({iconUrl: icon.url,
+                                   iconSize: [icon.w, icon.h],
+                                   iconAnchor: [icon.w/2, icon.h],
+                                   popupAnchor: [0, -icon.h]}),
+                    lmarker = L.marker([lat, lon], {icon: icon}).addTo(this._lmap);
+                
+                if(content) {
+                    lmarker.bindPopup(content);
                 }
             },
         
@@ -184,9 +210,9 @@ new Map(document.getElementById('map'),
     
         function on_loaded(map)
         {
-            map.addMarker(37.770444, -122.434960, 'Hello World!', 'http://example.com');
-            map.addMarker(37.769079, -122.433674, 'Hello World!');
-            map.addMarker(37.771612, -122.426836);
+            map.addMarker(37.770444, -122.434960, map.icons.voter, 'Hello World!', 'http://example.com');
+            map.addMarker(37.769079, -122.433674, map.icons.poll, 'Hello World!');
+            map.addMarker(37.771612, -122.426836, map.icons.driver);
         }
         
         var gmap = new Map(document.getElementById('gmap'), on_loaded,
