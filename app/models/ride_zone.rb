@@ -25,4 +25,14 @@ class RideZone < ApplicationRecord
       scheduled_rides: Ride.where(ride_zone_id: self.id, status: :scheduled).count,
     }
   end
+
+  # call this to broadcast an event for this ride zone
+  # the object must respond to :api_json
+  def event(event_type, object, tag = nil)
+    event = {
+      event_type: event_type,
+      tag || object.class.name.downcase => object.send(:api_json)
+    }
+    ActionCable.server.broadcast "ride_zone_#{self.id}", event
+  end
 end

@@ -5,38 +5,53 @@ class Ride < ApplicationRecord
 
   belongs_to :driver, class_name: 'User', foreign_key: :driver_id
   belongs_to :voter, class_name: 'User', foreign_key: :voter_id
+  belongs_to :ride_zone
 
   validates :voter, presence: true
 
+  after_create :notify_creation
+  around_save :notify_update
+
   # returns true if assignment worked
   def assign_driver driver
-    # avoid multiple simultaneous ride updates by enforcing null driver_id check
-    assigned = Ride.statuses[:driver_assigned]
-    safe_update = "update rides set driver_id = #{driver.id}, status = #{assigned} where id = #{self.id} and driver_id is null"
-    (ActiveRecord::Base.connection.exec_update(safe_update) == 1)
+    self.with_lock do # reloads record
+      return false if self.driver_id
+      self.driver = driver
+      self.status = :driver_assigned
+      save!
+    end
+    true
   end
 
   # returns true if driver was valid and cleared
-  def clear_driver driver
-    return false unless self.driver_id == driver.id
-    update_attributes(driver_id: nil, status: :waiting_assignment)
+  def clear_driver driver = nil
+    return false if driver && self.driver_id != driver.id
+    self.driver = nil
+    self.status = :waiting_assignment
+    save!
   end
 
   # returns true if driver owns this ride
   def pickup_by driver
     return false unless self.driver_id == driver.id
-    update_attributes(status: :picked_up)
+    self.status = :picked_up
+    save!
   end
 
   # returns true if driver owns this ride
   def complete_by driver
     return false unless self.driver_id == driver.id
-    update_attributes(status: :complete)
+    self.status = :complete
+    save!
   end
 
   # returns json suitable for exposing in the API
   def api_json
     self.as_json(except: [:created_at, :updated_at])
+  end
+
+  def active?
+    Ride.active_statuses.include?(self.status.to_sym)
   end
 
   # return up to limit Rides near the specified location
@@ -63,5 +78,20 @@ class Ride < ApplicationRecord
   def passenger_count
     # always include Voter as a passenger
     self.additional_passengers + 1
+  end
+
+  private
+  def notify_creation
+    self.ride_zone.event(:new_ride, self) if self.ride_zone
+  end
+
+  def notify_update
+    was_new = new_record?
+    # note, if we offer a one-step reassign, this only notifies on the old driver
+    driver_to_notify = User.find_by_id(self.driver_id_was) || self.driver
+    notify_driver = driver_to_notify && (driver_id_changed? || status_changed?)
+    yield
+    self.ride_zone.event(:ride_changed, self) if !was_new && self.ride_zone
+    self.ride_zone.event(:driver_changed, driver_to_notify, :driver) if notify_driver && self.ride_zone
   end
 end

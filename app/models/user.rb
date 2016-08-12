@@ -13,6 +13,8 @@ class User < ApplicationRecord
   before_save :check_location_updated
   after_create :add_rolify_role
   after_create :send_welcome_email
+  after_create :notify_creation
+  around_save :notify_update
 
   # scope :admins, -> { where(user_type: :admin) }
   # scope :dispatchers, -> { where(user_type: :dispatcher) }
@@ -20,7 +22,7 @@ class User < ApplicationRecord
   # scope :riders, -> { where(user_type: :rider) }
 
   attr_accessor :city_state
-  attr_accessor :user_type
+  attr_accessor :user_type, :ride_zone # set transiently for user creation
   # attr_accessor :role_ids
 
   serialize :start_drive_time, Tod::TimeOfDay
@@ -40,7 +42,8 @@ class User < ApplicationRecord
   end
 
   def api_json
-    self.as_json(only: [:id, :name, :phone_number_normalized, :availability, :latitude, :longitude, :location_timestamp])
+    data = self.as_json(only: [:id, :name, :phone_number_normalized, :availability, :latitude, :longitude, :location_timestamp])
+    data.merge('active_ride' => self.active_ride.try(:api_json))
   end
 
   def driver_ride_zone_id
@@ -52,6 +55,10 @@ class User < ApplicationRecord
   def dispatcher_ride_zone_id
     dispatcher_role = self.roles.where(name: 'dispatcher').first
     dispatcher_role.try(:resource_id)
+  end
+
+  def active_ride
+    Ride.where(driver_id: self.id).or(Ride.where(voter_id: self.id)).where(status: Ride.active_statuses).first
   end
 
   def full_street_address
@@ -72,9 +79,21 @@ class User < ApplicationRecord
 
   private
 
+  def notify_creation
+    # these two attributes are only present on creation
+    self.ride_zone.event(:new_driver, self, :driver) if self.user_type == 'driver' && self.ride_zone
+  end
+
+  def notify_update
+    was_new = new_record?
+    yield
+    driver_rz = driver_ride_zone_id
+    RideZone.find(driver_rz).event(:driver_changed, self, :driver) if !was_new && driver_rz
+  end
+
   def add_rolify_role
     if self.user_type.present?
-      self.add_role self.user_type
+      self.add_role self.user_type, self.ride_zone
     end
   end
 

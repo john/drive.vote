@@ -22,8 +22,9 @@ Rails.application.routes.draw do
   # and the meta tag in application.html.haml
   # and lined in development.rb and production.rb
   # Serve websocket cable requests in-process
-  # mount ActionCable.server => '/cable'
+  mount ActionCable.server => '/cable'
 
+  resources :dispatch, only: [:index]
 
   resources :driving do
     collection do

@@ -5,6 +5,8 @@ class Conversation < ApplicationRecord
   has_one :ride
 
   before_save :update_lifecycle
+  after_create :notify_creation
+  around_save :notify_update
 
   enum status: { in_progress: 0, ride_created: 1, closed: 2 }
   enum lifecycle: { need_language: 100, need_name: 200, need_origin: 300, need_destination: 400, need_time: 500, info_complete: 1000 }
@@ -20,6 +22,16 @@ class Conversation < ApplicationRecord
   end
 
   private
+  def notify_creation
+    self.ride_zone.event(:new_conversation, self) if self.ride_zone
+  end
+
+  def notify_update
+    was_new = new_record?
+    yield
+    self.ride_zone.event(:conversation_changed, self) if !was_new && self.ride_zone
+  end
+
   def update_lifecycle
     self.lifecycle = calculated_lifecycle
   end
