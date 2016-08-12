@@ -31,6 +31,7 @@ gem 'turbolinks', '~> 5.x'
 gem 'twilio-ruby'
 gem 'uglifier', '>= 1.3.0'
 gem 'underscore-rails'
+gem 'zip-codes'
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.

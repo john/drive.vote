@@ -1,16 +1,20 @@
 .description
-  %b
+  %h1{style: 'text-align: center'}
     #{t(:drive_the_vote)}
-  = t(:short_description).gsub( /\n+/, "<br>" ).html_safe
-  
-  %br
+  %h2
+    = t(:short_description).gsub( /\n+/, "<br>" ).html_safe
+
+  %h3.how-it-works
+    = t(:how_it_works)
+  %p
+    = t(:how_it_works_copy)
+
+  %h3
+    = t(:how_to_help)
+  %p
+    = t(:how_to_help_copy).html_safe
 
   .volunteer
     = link_to new_user_registration_path(type: 'driver', locale: I18n.locale.to_s) do
       %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
         = t(:will_drive)
-
-  .request
-    = link_to new_user_registration_path(type: 'rider', locale: I18n.locale.to_s) do
-      %button.btn.btn-lg.btn-danger.btn-home{role: 'button'}
-        = t(:i_need_ride)

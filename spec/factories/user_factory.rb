@@ -5,11 +5,12 @@ FactoryGirl.define do
       ride_zone nil
     end
 
-    name 'Bella Abzug'
-    sequence(:email) { |n| "bella#{n}@example.com" }
+    name 'Jamie Farr'
+    sequence(:email) { |n| "james#{n}@example.com" }
     password '123456789'
-    city 'New York'
-    state 'NY'
+    city 'Toledo'
+    state 'Oh'
+    zip '43601'
 
     factory :admin_user do
       after(:create) do |admin_user, eval|

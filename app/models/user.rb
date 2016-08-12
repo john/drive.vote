@@ -16,14 +16,8 @@ class User < ApplicationRecord
   after_create :notify_creation
   around_save :notify_update
 
-  # scope :admins, -> { where(user_type: :admin) }
-  # scope :dispatchers, -> { where(user_type: :dispatcher) }
-  # scope :drivers, -> { where(user_type: :driver) }
-  # scope :riders, -> { where(user_type: :rider) }
-
   attr_accessor :city_state
   attr_accessor :user_type, :ride_zone # set transiently for user creation
-  # attr_accessor :role_ids
 
   serialize :start_drive_time, Tod::TimeOfDay
   serialize :end_drive_time, Tod::TimeOfDay
@@ -35,6 +29,7 @@ class User < ApplicationRecord
   # https://console.developers.google.com/apis/credentials/wizard?api=maps_backend&project=phonic-client-135123
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   validates :phone_number_normalized, phony_plausible: true
+  validate :permissible_zip
 
   def is_admin?
     #todo: make this rolify-based
@@ -77,7 +72,23 @@ class User < ApplicationRecord
     !has_required_fields?
   end
 
+
+
   private
+
+  def permissible_zip
+    if self.zip.blank?
+      true #no zip is allowed
+    else
+      if zip_hash = ZipCodes.identify( self.zip )
+        unless %w(fl oh pa nc mi ga).include?( zip_hash[:state_code].downcase )
+          errors.add(:zip, "isn't in a supported state.")
+        end
+      else
+        errors.add(:zip, "couldn't be parsed")
+      end
+    end
+  end
 
   def notify_creation
     # these two attributes are only present on creation

@@ -28,27 +28,33 @@ en:
   name: 'Name'
   save: 'Save'
   saving: 'Saving'
-  
+
   drive_the_vote: 'Drive the Vote'
   home: 'Home'
   faq: 'faq'
   about: 'About'
-  coming_soon: 'Coming soon'
   click_here: 'Click here'
   to_be_notified: 'to be notified'
   learn_more: 'Learn more'
   contact: 'Contact'
   your_profile: 'Your profile'
-  your_settings: 'Your settings'  
+  your_settings: 'Your settings'
   short_description: |
-    arranges free rides
-    to the polls on election day.
-  # home2: 'You can sign up as either a driver or a passenger--or just join the community to get information about where you polling place is, who your elected officials are, and whose running for office in your community.'
-  election_is_on: 'The 2016 Election is on'
-  election_date: 'Tuesday, November 8'
-  thats: "That's"
-  days_away: 'days from now'
+    free rides to and from the polls on election day.
+  how_it_works: 'How it Works'
+  how_it_works_copy: |
+    Voters send a text to request a ride, and Drive the Vote connects them with a volunteer driver, who picks them up and takes them to their polling place.
+  how_to_help: 'How to Help'
+  how_to_help_copy: |
+    If you have a car and can be in <b>Florida</b>, <b>Ohio</b>, <b>Pennsylvania</b>, <b>North Carolina</b>, <b>Michigan</b>, or <b>Georgia</b> on election day, volunteer to be a driver! Help get voters to the polls on November 8th and make sure everyone has a vote.
+
+# home2: 'You can sign up as either a driver or a passenger--or just join the community to get information about where you polling place is, who your elected officials are, and whose running for office in your community.'
+# election_is_on: 'The 2016 Election is on'
+# election_date: 'Tuesday, November 8'
+# thats: "That's"
+# days_away: 'days from now'
   will_drive: "Volunteer to Drive"
+  will_drive_signup_description: "Drive the Vote will send you a confirmation after you sign up, and contact you before the election with more information."
   i_need_ride: "Request a Ride"
   driver: 'Driver'
   rider: 'Rider'
@@ -57,16 +63,17 @@ en:
   address: 'Address'
   city: 'City'
   state: 'State'
+  zip_where_can_drive: 'Zip where you can drive'
   languages: 'Languages you speak'
   around_what_time: 'Around what time'
   can_drive: 'can you drive'
   need_ride: 'do you need a ride'
   agree_to: 'Agree to'
-  
+
   need_more_info: 'We need a little more info to match you with a ride'
   by_saving: 'By saving your are agreeing to the'
   terms_of_service: 'terms of service'
-  
+
   almost_done: 'Almost done'
   just_sign_up: 'just sign up'
   sign_in: "Sign in"
@@ -74,13 +81,12 @@ en:
   sign_out: 'Sign out'
   users: 'users'
   complete_registration: 'Please complete your registration so we can find a match'
-  
-  will_contact: "Thanks! Near the election we'll contact you to help out."
+
+  will_contact: "Thanks! Near the election we'll contact you with more details."
   help_others: "Help others Drive the Vote!"
   share_on_twitter: "Share on Twitter"
   share_on_facebook: "Share on Facebook"
-  
-  how_ridesharing_works: 'How Ridesharing Works'
+
   fill_out_profile: 'Fill out a quick profile'
   get_matched_to_drivers: "Get matched to drivers"
   get_matched_to_passengers: "Get matched to passengers"
