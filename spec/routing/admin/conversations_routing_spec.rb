@@ -9,5 +9,9 @@ RSpec.describe Admin::ConversationsController, type: :routing do
     it 'routes to #show' do
       expect(get: '/admin/conversations/1').to route_to('admin/conversations#show', id: '1')
     end
+
+    it 'routes to #close' do
+      expect(post: '/admin/conversations/1/close').to route_to('admin/conversations#close', id: '1')
+    end
   end
 end
