@@ -45,7 +45,7 @@ class Admin::RideZonesController < Admin::AdminApplicationController
 
   def update
     if @ride_zone.update(ride_zone_params)
-      redirect_to @ride_zone, notice: 'RideZone was successfully updated.'
+      redirect_to [:admin, @ride_zone], notice: 'RideZone was successfully updated.'
     else
       render :edit
     end
@@ -53,7 +53,7 @@ class Admin::RideZonesController < Admin::AdminApplicationController
 
   def destroy
     @ride_zone.destroy
-    redirect_to ride_zones_url, notice: 'RideZone was successfully destroyed.'
+    redirect_to admin_ride_zones_url, notice: 'RideZone was successfully destroyed.'
   end
 
   def add_dispatcher
