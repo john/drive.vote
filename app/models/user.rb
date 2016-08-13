@@ -8,7 +8,7 @@ class User < ApplicationRecord
 
   rolify
 
-  VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :rider]
+  VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
 
   enum language: { unknown: 0, english: 1, spanish: 2 }, _suffix: true
 

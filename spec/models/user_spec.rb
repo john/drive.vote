@@ -3,6 +3,15 @@ require 'rails_helper'
 RSpec.describe User, :type => :model do
 
   it { should validate_presence_of :email }
+  it { should validate_presence_of :email }
+  it { should validate_presence_of :email }
+
+  it "should allow no role" do
+    build(:user).should be_valid
+  end
+
+
+
 
   it 'returns driver ride zone' do
     rz = create :ride_zone
