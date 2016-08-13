@@ -5,8 +5,7 @@ class Admin::UsersController < Admin::AdminApplicationController
 
   def show
     @dispatch_zone = RideZone.with_role(:dispatcher, @user).first
-    @driving_zone = RideZone.with_role(:driver, @user).first # RideZone.find_roles(:driver, @user).first
-  end
+    @driving_zone = RideZone.with_role(:driver, @user).first
 
   def index
     @users = User.all
