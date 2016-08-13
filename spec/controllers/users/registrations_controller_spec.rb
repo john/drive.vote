@@ -23,14 +23,12 @@ RSpec.describe Users::RegistrationsController, type: :controller do
     it 'does not set role param if a disallowed role' do
       get :new, params: {type: 'admin'}
       user = assigns(:user)
-      #expect(user.user_type).to eq('driver')
       expect(response).to be_redirect
     end
 
     it 'does not set role param if a bogus role' do
       get :new, params: {type: 'bad_role'}
       user = assigns(:user)
-      #expect(user.user_type).to eq('driver')
       expect(response).to be_redirect
     end
   end
