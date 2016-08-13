@@ -19,12 +19,11 @@
     Admin?: <b>#{@user.has_role?(:admin)}</b>
 
 %p
-  Dispatcher for Zones:
+  Dispatcher for Zone:
   %ul
-    - if @dispatching_for.present?
-      - zones.each do |rz|
-        %li
-          = rz.name
+    - if @dispatch_zone.present?
+      %li
+        = @dispatch_zone.name
     - else
       %li
         %i
@@ -32,12 +31,11 @@
 
 
 %p
-  Driving for Zones:
+  Driving for Zone:
   %ul
-    - if @driving_for.present?
-      - zones.each do |rz|
-        %li
-          = rz.name
+    - if @driving_zone.present?
+      %li
+        = @driving_zone.name
     - else
       %li
         %i
