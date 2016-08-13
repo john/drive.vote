@@ -127,9 +127,10 @@ class User < ApplicationRecord
   end
 
   def send_welcome_email
-    if self.roles_name.include? "rider"
-      UserMailer.welcome_email_rider(self).deliver_later
-    elsif self.roles_name.include? "driver"
+    return if has_sms_name?
+    if self.has_role? 'voter', :any
+      UserMailer.welcome_email_voter(self).deliver_later
+    elsif self.has_role? 'driver', :any
       UserMailer.welcome_email_driver(self).deliver_later
     end
   end

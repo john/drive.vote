@@ -24,12 +24,12 @@ class UserMailer < ApplicationMailer
     mail(to: email_with_name, subject: 'Welcome to Drive the Vote, Driver!')
   end
 
-  def welcome_email_rider(user)
-    sendgrid_category "welcome_rider"
+  def welcome_email_voter(user)
+    sendgrid_category "welcome_voter"
     @user = user
 
     email_with_name = %("#{@user.name}" <#{@user.email}>)
-    mail(to: email_with_name, subject: 'Welcome to Drive the Vote, Rider!')
+    mail(to: email_with_name, subject: 'Welcome to Drive the Vote, Voter!')
   end
 
   def welcome_email_not_inlined(user)

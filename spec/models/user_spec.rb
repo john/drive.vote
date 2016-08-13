@@ -23,6 +23,25 @@ RSpec.describe User, :type => :model do
     expect(u.reload.location_updated_at).to_not be_nil
   end
 
+  describe 'enqueues email on creation' do
+    let(:dummy_mailer) { OpenStruct.new(deliver_later: nil) }
+
+    it 'sends voter email for web registration' do
+      expect(UserMailer).to receive(:welcome_email_voter) { dummy_mailer }
+      create :voter_user
+    end
+
+    it 'sends driver email for web registration' do
+      expect(UserMailer).to receive(:welcome_email_driver) { dummy_mailer }
+      create :driver_user
+    end
+
+    it 'does not send email for sms voter' do
+      expect(UserMailer).to_not receive(:welcome_email_voter)
+      create :sms_voter_user
+    end
+  end
+
   describe 'event generation' do
     let(:rz) { create :ride_zone }
 

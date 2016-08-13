@@ -1,10 +1,6 @@
 FactoryGirl.define do
 
   factory :user do
-    transient do
-      ride_zone nil
-    end
-
     name 'Jamie Farr'
     sequence(:email) { |n| "james#{n}@example.com" }
     password '123456789'
@@ -13,20 +9,19 @@ FactoryGirl.define do
     zip '43601'
 
     factory :admin_user do
-      after(:create) do |admin_user, eval|
-        admin_user.add_role(:admin, eval.ride_zone )
-      end
+      user_type :admin
     end
 
     factory :driver_user do
-      after(:create) do |driver_user, eval|
-        driver_user.add_role(:driver, eval.ride_zone )
-      end
+      user_type :driver
     end
 
     factory :voter_user do
-      after(:create) do |voter_user, eval|
-        voter_user.add_role(:voter, eval.ride_zone )
+      user_type :voter
+
+      factory :sms_voter_user do
+        phone_number '+15555551234'
+        name User.sms_name('+15555551234')
       end
     end
   end
