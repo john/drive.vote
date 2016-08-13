@@ -6,12 +6,13 @@ RSpec.describe User, :type => :model do
   it { should validate_presence_of :email }
   it { should validate_presence_of :email }
 
-  it "should allow no role" do
-    build(:user).should be_valid
+  it 'should allow no role' do
+    expect( build(:user) ).to be_valid
   end
 
-
-
+  it 'should only allow valid roles' do
+    expect( build(:user, user_type: 'bad_role') ).to_not be_valid
+  end
 
   it 'returns driver ride zone' do
     rz = create :ride_zone

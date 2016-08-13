@@ -4,6 +4,8 @@ class Admin::UsersController < Admin::AdminApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def show
+    @dispatching_for = RideZone.find_roles(:dispatcher, @user)
+    @driving_for = RideZone.find_roles(:driver, @user)
   end
 
   def index

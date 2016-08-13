@@ -93,7 +93,7 @@ class User < ApplicationRecord
   # user_type is used to hold the role before it's assigned. make sure it's legit.
   def permissible_user_type
     if self.user_type.present?
-      if VALID_ROLES.include?(self.user_type.to_sym)
+      if User::VALID_ROLES.include?(self.user_type.to_sym)
         true
       else
         errors.add(:role, "not allowed")
