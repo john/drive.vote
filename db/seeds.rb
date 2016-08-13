@@ -21,7 +21,7 @@ john = User.create!(
 )
 
 roles = Role.create( [{name: 'admin'}, {name: 'dispatcher'}, {name: 'driver'}, {name: 'rider'}] )
-roles.each { |role| john.grant( role.name.to_sym ) }
+john.add_role(:admin)
 
 if  Rails.env == "development"
 
@@ -32,7 +32,6 @@ if  Rails.env == "development"
       phone_number: '+14193860121'
     }
   ])
-
 
   ride_zones = RideZone.create!([
     {
@@ -49,7 +48,6 @@ if  Rails.env == "development"
     to_phone: '+14193860121',
     status: 0
   )
-
 
   messages = Message.create!([
     {
@@ -91,6 +89,5 @@ if  Rails.env == "development"
     city: 'San Francisco',
     state: 'CA'
   )
-  # roles.each { |role| test_john.grant( role.name.to_sym ) }
 
 end

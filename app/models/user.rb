@@ -8,6 +8,8 @@ class User < ApplicationRecord
 
   rolify
 
+  VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
+
   enum language: { unknown: 0, english: 1, spanish: 2 }, _suffix: true
 
   before_save :check_location_updated
@@ -29,6 +31,7 @@ class User < ApplicationRecord
   # https://console.developers.google.com/apis/credentials/wizard?api=maps_backend&project=phonic-client-135123
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   validates :phone_number_normalized, phony_plausible: true
+  validate :permissible_user_type
   validate :permissible_zip
 
   def is_admin?
@@ -85,8 +88,20 @@ class User < ApplicationRecord
   end
 
 
-
   private
+
+  # user_type is used to hold the role before it's assigned. make sure it's legit.
+  def permissible_user_type
+    if self.user_type.present?
+      if User::VALID_ROLES.include?(self.user_type.to_sym)
+        true
+      else
+        errors.add(:role, "not allowed")
+      end
+    else
+      true
+    end
+  end
 
   def permissible_zip
     if self.zip.blank?

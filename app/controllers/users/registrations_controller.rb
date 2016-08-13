@@ -8,9 +8,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
     resource = build_resource({})
 
     if params[:type].present?
-      resource.user_type = params[:type]
+      if params[:type] == 'unassigned_driver'
+        resource.user_type = params[:type]
+      else
+        redirect_to root_path and return
+      end
     end
-
     respond_with resource
   end
 
