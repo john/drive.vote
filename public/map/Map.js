@@ -31,10 +31,7 @@ function _url_prefix()
     for(var i = 0; i < document.scripts.length; i++)
     {
         var parts = document.scripts[i].src.split('/');
-
-        if(parts.pop() == 'Map.js') {
-            return parts.join('/');
-        }
+        if(parts.pop() == 'Map.js') { return parts.join('/') }
     }
     
     return '.';
@@ -42,12 +39,12 @@ function _url_prefix()
 
 // Built-in icon options.
 Map.icons = {
-    voter:   {w: 38, h: 57, url: [_url_prefix(), 'icon-voter.svg'].join('/')},
-    driver:  {w: 38, h: 57, url: [_url_prefix(), 'icon-driver.svg'].join('/')},
-    poll:    {w: 38, h: 57, url: [_url_prefix(), 'icon-poll.svg'].join('/')},
+    voter:   {w: 38, h: 57, url: _url_prefix() + '/icon-voter.svg'},
+    driver:  {w: 38, h: 57, url: _url_prefix() + '/icon-driver.svg'},
+    poll:    {w: 38, h: 57, url: _url_prefix() + '/icon-poll.svg'},
     
     // Used when no other icon is provided.
-    default: {w: 38, h: 57, url: [_url_prefix(), 'icon-default.svg'].join('/')}
+    default: {w: 38, h: 57, url: _url_prefix() + '/icon-default.svg'}
 };
 
 Map.prototype = {
