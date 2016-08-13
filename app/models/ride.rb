@@ -6,6 +6,7 @@ class Ride < ApplicationRecord
   belongs_to :driver, class_name: 'User', foreign_key: :driver_id
   belongs_to :voter, class_name: 'User', foreign_key: :voter_id
   belongs_to :ride_zone
+  has_one :conversation
 
   validates :voter, presence: true
 
@@ -47,7 +48,11 @@ class Ride < ApplicationRecord
 
   # returns json suitable for exposing in the API
   def api_json
-    self.as_json(except: [:created_at, :updated_at])
+    self.as_json(except: [:created_at, :updated_at], methods: [:conversation_id])
+  end
+
+  def conversation_id
+    self.conversation.try(:id)
   end
 
   def active?

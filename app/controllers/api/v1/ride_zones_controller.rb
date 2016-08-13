@@ -24,6 +24,7 @@ module Api::V1
       @ride = Ride.new(ride_params.merge(ride_zone_id: @ride_zone.id))
 
       if @ride.save
+        @ride.conversation = Conversation.find(params[:conversation_id]) if params[:conversation_id]
         render json: {response: @ride.api_json}
       else
         render json: {error: @ride.errors.messages.map {|k,v| "#{k} - #{v.join(',')}"}.join(' and ')}, status: 400

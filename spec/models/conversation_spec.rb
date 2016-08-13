@@ -23,6 +23,13 @@ RSpec.describe Conversation, type: :model do
     end
   end
 
+  it 'updates status on ride assignment' do
+    r = create :ride
+    c = create :conversation
+    r.conversation = c
+    expect(c.reload.status).to eq('ride_created')
+  end
+
   describe 'lifecycle calculation' do
     it 'detects language' do
       c = create :conversation

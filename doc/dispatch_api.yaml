@@ -72,6 +72,9 @@ paths:
         parameters in the Ride JSON. Posted body is {'ride' : { attributes } }
       parameters:
         - name: ride
+          description: |
+            Include a conversation_id to tie this ride to a conversation and move the
+            conversation status to ride_created
           in: body
           schema:
             $ref: '#/definitions/Ride'
