@@ -26,6 +26,7 @@ class Admin::RidesController < Admin::AdminApplicationController
     @ride = Ride.new(ride_params)
 
     if @ride.save
+      @ride.conversation = Conversation.find(params[:conversation_id]) if params[:conversation_id]
       redirect_to [:admin, @ride], notice: 'Ride was successfully created.'
     else
       render :new

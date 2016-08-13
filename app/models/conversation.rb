@@ -5,6 +5,7 @@ class Conversation < ApplicationRecord
   belongs_to :ride
 
   before_save :update_lifecycle
+  before_save :check_ride_attached
   after_create :notify_creation
   around_save :notify_update
 
@@ -30,6 +31,12 @@ class Conversation < ApplicationRecord
     was_new = new_record?
     yield
     self.ride_zone.event(:conversation_changed, self) if !was_new && self.ride_zone
+  end
+
+  def check_ride_attached
+    if ride_id_changed? && ride_id
+      self.status = :ride_created
+    end
   end
 
   def update_lifecycle
