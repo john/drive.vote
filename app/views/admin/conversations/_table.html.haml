@@ -4,10 +4,9 @@
 %table.admin
   %thead
     %tr
-      %th Id
       %th RideZone
-      %th From
-      %th To
+      %th Voter #
+      %th Zone #
       %th Status
       %th Lifecycle
       %th Pickup Time
@@ -19,7 +18,6 @@
   %tbody
     - conversations.each do |conversation|
       %tr
-        %td= conversation.id
         - if conversation.ride_zone
           %td= link_to conversation.ride_zone.name, admin_ride_zone_path(conversation.ride_zone)
         - else
@@ -33,6 +31,6 @@
           %td= link_to conversation.ride.name, admin_ride_path(conversation.ride)
         - else
           %td Not yet
-        %td= link_to 'Close', close_admin_conversation_path(conversation), data: { confirm: 'Are you sure?' }, method: :POST
+        %td= link_to 'Close', close_admin_conversation_path(conversation), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }, method: :POST
         - if include_show
           %td= link_to 'Show', admin_conversation_path(conversation)
