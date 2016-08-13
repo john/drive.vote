@@ -204,7 +204,10 @@ Map.prototype = {
             var opts = {
                 center: {lat: view.lat, lng: view.lon},
                 zoom: view.zoom,
-                scrollwheel: false
+                scrollwheel: false,
+                mapTypeControl: false,
+                streetViewControl: false,
+                zoomControlOptions: {position: google.maps.ControlPosition.TOP_RIGHT}
                 };
 
             map._gmap = new google.maps.Map(element, opts);
@@ -243,13 +246,15 @@ Map.prototype = {
             var opts = {
                 center: [view.lat, view.lon],
                 zoom: view.zoom,
-                scrollWheelZoom: false
+                scrollWheelZoom: false,
+                zoomControl: false
                 };
 
             map._lmap = L.map(element, opts);
+            L.control.zoom({position: 'topright'}).addTo(map._lmap);
         
             // Add Stamen tile layer.
-            L.tileLayer('http://tile.stamen.com/terrain/{z}/{x}/{y}@2x.png', {
+            L.tileLayer('http://tile.stamen.com/toner-lite/{z}/{x}/{y}@2x.png', {
                 attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.',
                 maxZoom: 18
             }).addTo(map._lmap);
