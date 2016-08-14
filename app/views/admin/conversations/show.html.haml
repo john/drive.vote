@@ -28,14 +28,10 @@
     - @conversation.messages.order('created_at asc').each do |message|
       %tr
         %td= message.created_at.localtime.strftime('%m/%d %l:%M%P')
-
         %td
-          - if message.from.phony_formatted == @conversation.from_phone.phony_formatted
-            Voter
-          - else
-            Dispatcher
-
-        %td= message.body
+          = message.is_from_voter? ? 'Voter' : 'Dispatcher'
+        %td
+          = message.body
 
 %h6
   Reply
