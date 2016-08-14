@@ -16,6 +16,10 @@ FactoryGirl.define do
       user_type :driver
     end
 
+    factory :unassigned_driver_user do
+      user_type :unassigned_driver
+    end
+
     factory :voter_user do
       user_type :voter
 

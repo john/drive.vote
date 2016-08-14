@@ -14,20 +14,8 @@ class User < ApplicationRecord
   # geocoded_by :full_address
   # after_create :geocode
 
-  def if_driver_remove_unassigned(role)
-    if self.is_a_driver?
-      self.remove_role(:unassigned_driver)
-    end
-  end
-
-  def make_unassigned(role)
-    unless self.is_a_driver?
-      self.add_role(:unassigned_driver)
-    end
-  end
-
   def is_a_driver?
-    RideZone.find_roles(nil, self).present?
+    RideZone.find_roles(:driver, self).present?
   end
 
   # TODO: when users & ridezones are geocoded
@@ -110,6 +98,18 @@ class User < ApplicationRecord
 
 
   private
+
+  def if_driver_remove_unassigned(role)
+    if self.is_a_driver?
+      self.remove_role(:unassigned_driver)
+    end
+  end
+
+  def make_unassigned(role)
+    unless self.is_a_driver?
+      self.add_role(:unassigned_driver)
+    end
+  end
 
   def full_address
     [self.address1, self.address2, self.city, self.state, self.zip, self.country].compact.join(', ')
