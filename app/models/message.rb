@@ -38,7 +38,7 @@ class Message < ApplicationRecord
   end
 
   def is_from_voter?
-    self.conversation.to_phone == self.ride_zone.phone_number
+    self.conversation.to_phone.phony_formatted == self.ride_zone.phone_number.phony_formatted
   end
 
   def ride_zone

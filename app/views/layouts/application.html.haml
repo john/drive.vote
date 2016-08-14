@@ -62,14 +62,6 @@
     .container
       = yield
 
-    - if notice.present? || alert.present?
-      :javascript
-        //<![CDATA[
-        humane.clickToClose = true;
-        humane.timeout = 3500;
-        //humane.waitForMove = true;
-        //humane.timeoutAfterMove = 1;
-        humane.notice( '#{notice}' );
-        //]]>
+  =raw humane_flash_messages
 
 %script{src: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js'}

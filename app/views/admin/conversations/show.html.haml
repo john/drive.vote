@@ -1,3 +1,6 @@
+:css
+  h4, h6 { margin-top: 30px; }
+
 :javascript
   function send_reply(url) {
     var args = {'message' : {'body': $('#body').val()}};
@@ -7,30 +10,32 @@
 
 = render 'admin/nav', {active: 'conversations'}
 
-%p#notice= notice
-
-%h4 Conversation
+%h4
+  Conversation #{@conversation.id}
 = render partial: 'admin/conversations/table', locals: {conversations: [@conversation], include_show: false}
-%p
-  = link_to 'Back to Conversations', admin_conversations_url
-%h4 Messages
+
+%h4
+  Messages
+
 %table.admin
   %thead
     %tr
       %th Time
-      %th From
-      %th To
+      %th Sent By
       %th Message
 
   %tbody
     - @conversation.messages.order('created_at asc').each do |message|
       %tr
         %td= message.created_at.localtime.strftime('%m/%d %l:%M%P')
-        %td= message.from
-        %td= message.to
-        %td= message.body
+        %td
+          = message.is_from_voter? ? 'Voter' : 'Dispatcher'
+        %td
+          = message.body
 
-%h5 Reply
+%h6
+  Reply
 = text_area_tag 'body', nil, rows: 3, cols: 60
+
 %p
-= button_tag 'Send', type: :submit, onclick: "javascript: send_reply('#{messages_api_v1_conversation_path(@conversation)}')"
+  = button_tag 'Send', type: :submit, class: 'btn btn-primary', disable_with: "Replying...", onclick: "javascript: send_reply('#{messages_api_v1_conversation_path(@conversation)}')"
