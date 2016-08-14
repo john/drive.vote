@@ -106,6 +106,8 @@ class User < ApplicationRecord
   def permissible_zip
     if self.zip.blank?
       true #no zip is allowed
+    elsif self.has_role? :admin
+      true # admins might live anywhere
     else
       if zip_hash = ZipCodes.identify( self.zip )
         unless %w(fl oh pa nc mi ga).include?( zip_hash[:state_code].downcase )

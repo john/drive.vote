@@ -2,7 +2,42 @@ require 'rails_helper'
 
 RSpec.describe User, :type => :model do
 
-  it { should validate_presence_of :email }
+  context 'validations' do
+    it { should validate_presence_of :email }
+
+    describe '#permissible_zip' do
+      let(:user) {create :user}
+      let(:admin_user) {create :admin_user}
+      before(:all) do
+        ZipCodes.load
+      end
+
+      it 'is not valid false if zipcode not in supported state' do
+        user.zip = 90026 # zip not in state on approved list
+        expect(user).to_not be_valid
+        expect(user.errors[:zip]).to include('isn\'t in a supported state.')
+      end
+
+      it 'is valid if zip in supported state' do
+        user.zip = 33101 # Miami, FL
+        expect(user).to be_valid
+      end
+
+      it 'is valid regardless of zipcode, if user is admin' do
+        admin_user.zip = 90026 # zip not in state on approved list
+        expect(admin_user).to be_valid
+
+        user.zip = 33101 # Miami, FL
+        expect(user).to be_valid
+      end
+
+      it 'is valid if zip is empty' do
+        user.zip = nil
+        expect(admin_user).to be_valid
+      end
+    end
+
+  end
 
   it 'should allow no role' do
     expect( build(:user) ).to be_valid
