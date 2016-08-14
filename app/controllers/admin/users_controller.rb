@@ -7,6 +7,7 @@ class Admin::UsersController < Admin::AdminApplicationController
   def show
     @dispatch_zone = RideZone.with_role(:dispatcher, @user).first
     @driving_zone = RideZone.with_role(:driver, @user).first
+  end
 
   def index
     @users = User.all
@@ -40,5 +41,4 @@ class Admin::UsersController < Admin::AdminApplicationController
       end
     end
   end
-
 end
