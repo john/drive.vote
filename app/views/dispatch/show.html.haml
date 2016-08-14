@@ -1,0 +1,36 @@
+:javascript
+  dispatchController.setup(#{@ride_zone.id})
+
+%h5= "Ride Zone #{@ride_zone.name}"
+.disp-server-status
+  Connecting
+
+%table
+  %tr
+    %td.col-lg-6
+      #dispatch-map
+        Map goes here
+    %td.col-lg-6
+      %table
+        %tr
+          %td.col-lg-6.disp-conv-area
+            %h6
+              Conversations
+              = button_tag 'Refresh', onclick: 'javascript: dispatchController.refreshConversations()', class: 'btn btn-default btn-xs'
+            %table.admin{id: 'conversations'}
+              %thead
+                %tr
+                  %th Voter Phone #
+                  %th Status
+                  %th Message Count
+                  %th
+
+        %tr
+          %td.col-lg-6.disp-ride-area
+            %h6 Rides
+            %table.admin{id: 'rides'}
+              %thead
+                %tr
+                  %th Voter
+                  %th Status
+                  %th Pickup Time

@@ -13,7 +13,8 @@
  *= require_tree .
  *= require_self
  *= require drive.vote
+ *= require dispatch
  *= require glyphicons
  *= require humane-rails/libnotify
- 
+
  */
