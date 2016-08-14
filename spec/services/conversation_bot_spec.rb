@@ -116,9 +116,13 @@ RSpec.describe ConversationBot do
       reply = create :message, conversation: convo, body: 'fake address'
       expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:too_many_addresses, locale: :en))
       expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:too_many_addresses, locale: :en))
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:too_many_addresses, locale: :en))
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
+      if type == :from
+        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:too_many_addresses, locale: :en))
+        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
+        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
+      else
+        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:when_do_you_want_pickup, locale: :en))
+      end
     end
 
     it 'should reject no results' do
@@ -126,9 +130,13 @@ RSpec.describe ConversationBot do
       reply = create :message, conversation: convo, body: 'fake address'
       expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:no_address_match, locale: :en))
       expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:no_address_match, locale: :en))
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:no_address_match, locale: :en))
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
+      if type == :from
+        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:no_address_match, locale: :en))
+        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
+        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
+      else
+        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:when_do_you_want_pickup, locale: :en))
+      end
     end
   end
 
@@ -171,7 +179,9 @@ RSpec.describe ConversationBot do
       expect(convo.from_confirmed).to be_falsey
     end
 
-    it_behaves_like 'handles bad geocoding' do end
+    it_behaves_like 'handles bad geocoding' do
+      let!(:type) { :from }
+    end
   end
 
   describe 'getting to confirmed destination' do
@@ -221,7 +231,9 @@ RSpec.describe ConversationBot do
       expect(convo.to_confirmed).to be_truthy
     end
 
-    it_behaves_like 'handles bad geocoding' do end
+    it_behaves_like 'handles bad geocoding' do
+      let!(:type) { :to }
+    end
   end
 
   describe 'getting to confirmed time' do

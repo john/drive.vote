@@ -234,20 +234,14 @@ class ConversationBot
 
   # Expects to be receiving an address in the message body
   def handle_location(from_or_to)
+    max_counter = (from_or_to == :from) ? 2 : 1
     case @bot_counter
-      when 0..2
+      when 0..max_counter
         if @body.blank?
-          @response = I18n.t(prompt, locale: @locale)
+          @response = I18n.t(:no_address_match, locale: @locale)
           return @bot_counter + 1
         elsif DONT_KNOW_FRAGMENTS.any? { |f| @body =~ f }
-          if from_or_to == :to
-            # not knowing destination is OK
-            @conversation.set_unknown_destination
-            @response = I18n.t(:when_do_you_want_pickup, locale: @locale)
-          else
-            stalled
-          end
-          return 0
+          return give_up_on_location(from_or_to)
         end
 
         results = Geocoder.search(@body + ' ' + @conversation.ride_zone.state)
@@ -268,7 +262,18 @@ class ConversationBot
         end
         return @bot_counter + 1
       else
-        stalled
+        give_up_on_location(from_or_to)
+    end
+  end
+
+  def give_up_on_location(from_or_to)
+    if from_or_to == :to
+      # not knowing destination is OK
+      @conversation.set_unknown_destination
+      @response = I18n.t(:when_do_you_want_pickup, locale: @locale)
+      0
+    else
+      stalled
     end
   end
 
