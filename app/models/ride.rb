@@ -14,6 +14,9 @@ class Ride < ApplicationRecord
 
   after_create :notify_creation
   around_save :notify_update
+  before_save :close_conversation
+
+  include HasAddress
 
   # create a new ride from the data in a conversation
   def self.create_from_conversation conversation
@@ -122,5 +125,9 @@ class Ride < ApplicationRecord
     yield
     self.ride_zone.event(:ride_changed, self) if !was_new && self.ride_zone
     self.ride_zone.event(:driver_changed, driver_to_notify, :driver) if notify_driver && self.ride_zone
+  end
+
+  def close_conversation
+    self.conversation.update_attribute(:status, 'closed') if self.conversation && status_changed? && status == 'complete'
   end
 end

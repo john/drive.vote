@@ -10,6 +10,7 @@ class Conversation < ApplicationRecord
   around_save :notify_update
 
   validate :phone_numbers_match_first_message
+  include HasAddress
 
   enum status: { sms_created: -1, in_progress: 0, ride_created: 1, closed: 2, help_needed: 3 }
   enum lifecycle: {
@@ -35,6 +36,11 @@ class Conversation < ApplicationRecord
 
   def username
     self.user.try(:name).to_s
+  end
+
+  def set_unknown_destination
+    self.to_address = UNKNOWN_ADDRESS
+    self.to_confirmed = true
   end
 
   def invert_ride_addresses(ride)
@@ -81,13 +87,15 @@ class Conversation < ApplicationRecord
       lckey = :created
     elsif user.name.blank? || user.has_sms_name?
       lckey = :have_language
-    elsif !ignore_prior_ride && user.recent_complete_ride && from_latitude.nil?
+    elsif !ignore_prior_ride && user.recent_complete_ride && !user.recent_complete_ride.has_unknown_destination? && from_latitude.nil?
       lckey = :have_prior_ride
     elsif from_latitude.nil? || from_longitude.nil?
       lckey = :have_name
     elsif !from_confirmed
       lckey = :have_origin
-    elsif to_latitude.nil? || to_longitude.nil?
+    elsif has_unknown_destination? && pickup_time.nil? && !time_confirmed
+      lckey = :have_confirmed_destination
+    elsif (to_latitude.nil? || to_longitude.nil?) && !has_unknown_destination?
       lckey = :have_confirmed_origin
     elsif !to_confirmed
       lckey = :have_destination

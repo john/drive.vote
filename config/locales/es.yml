@@ -101,8 +101,8 @@ es:
   bot_stalled: 'Alguien se pondrá en contacto en breve'
   what_is_pickup_location: 'Hola %{name}. ¿Dónde desea ser recogido - dirección y la ciudad?'
   too_many_addresses: 'Demasiados partidos! Por favor, responda todas las direcciones y ciudad específica.'
-  no_address_match: 'Dirección no encontrada. Por favor, responda todas las direcciones y ciudad específica.'
-  what_is_destination_location: '¿Dónde quieres ir - la dirección y la ciudad?'
+  no_address_match: 'Dirección no encontrada. Por favor, responda todas las direcciones y ciudad específica o responder "no sé"'
+  what_is_destination_location: '¿Dónde quieres ir - la dirección y la ciudad? Si no está seguro, responder "no sé"'
   are_you_going_from_to: "¡Dar una buena acogida! ¿Se va de %{from} al %{to}?"
   when_do_you_want_pickup: 'Qué cuando se desea ser recogido (HH:MM am/pm)?'
   confirm_address: 'Por favor confirmar la dirección es %{address}. Si/non?'

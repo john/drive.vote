@@ -119,6 +119,12 @@ RSpec.describe Conversation, type: :model do
         expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:have_prior_ride])
       end
 
+      it 'ignores existing ride to unknown destination' do
+        create :ride, {voter: user, status: :complete}.merge(ride_address_attrs).merge(to_address: Ride::UNKNOWN_ADDRESS)
+        c = create :conversation, user: user
+        expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:have_name])
+      end
+
       it 'detects existing ride has been copied' do
         r = create :ride, {voter: user, status: :complete}.merge(ride_address_attrs)
         c = create :conversation, user: user
@@ -134,6 +140,12 @@ RSpec.describe Conversation, type: :model do
       it 'detects confirmed origin' do
         c = create :conversation, user: user, from_latitude: 34.5, from_longitude: -122.6, from_confirmed: true
         expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:have_confirmed_origin])
+      end
+
+      it 'detects unknown destination' do
+        c = create :conversation, user: user, from_latitude: 34.5, from_longitude: -122.6, from_confirmed: true
+        c.set_unknown_destination
+        expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:have_confirmed_destination])
       end
 
       it 'detects destination exists' do
@@ -161,8 +173,28 @@ RSpec.describe Conversation, type: :model do
         expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:have_passengers])
       end
 
+      it 'detects time exists unknown dest' do
+        c = create :conversation, {user: user}.merge(full_address_attrs).merge(pickup_time: Time.now).merge(to_address: Conversation::UNKNOWN_ADDRESS)
+        expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:have_time])
+      end
+
+      it 'detects time confirmed unknown dest' do
+        c = create :conversation, {user: user}.merge(full_address_attrs).merge(pickup_time: Time.now, time_confirmed: true).merge(to_address: Conversation::UNKNOWN_ADDRESS)
+        expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:have_confirmed_time])
+      end
+
+      it 'detects passengers unknown dest' do
+        c = create :conversation, {user: user}.merge(full_address_attrs).merge(pickup_time: Time.now, time_confirmed: true, additional_passengers: 0).merge(to_address: Conversation::UNKNOWN_ADDRESS)
+        expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:have_passengers])
+      end
+
       it 'detects complete' do
         c = create :complete_conversation, user: user
+        expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:info_complete])
+      end
+
+      it 'detects complete unknown dest' do
+        c = create :complete_conversation, user: user, to_address: Conversation::UNKNOWN_ADDRESS
         expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:info_complete])
       end
     end

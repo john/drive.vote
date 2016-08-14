@@ -11,6 +11,8 @@ class ConversationBot
       4 => [/4/, /four/, /cuatro/]
   }.freeze
 
+  DONT_KNOW_FRAGMENTS = [/don't know/i, /no se/i, /no sé/i].freeze
+
   # accepts a conversation at a certain state and a new message that has arrived
   def initialize convo, message
     @conversation = convo
@@ -230,13 +232,24 @@ class ConversationBot
     0
   end
 
+  # Expects to be receiving an address in the message body
   def handle_location(from_or_to)
     case @bot_counter
       when 0..2
         if @body.blank?
           @response = I18n.t(prompt, locale: @locale)
           return @bot_counter + 1
+        elsif DONT_KNOW_FRAGMENTS.any? { |f| @body =~ f }
+          if from_or_to == :to
+            # not knowing destination is OK
+            @conversation.set_unknown_destination
+            @response = I18n.t(:when_do_you_want_pickup, locale: @locale)
+          else
+            stalled
+          end
+          return 0
         end
+
         results = Geocoder.search(@body + ' ' + @conversation.ride_zone.state)
         if results.count == 1
           result = results.first
