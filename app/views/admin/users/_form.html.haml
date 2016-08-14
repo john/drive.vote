@@ -1,4 +1,16 @@
-= form_for @user, :role => 'form', :html => {:class => 'form-horizontal'}  do |f|
+
+
+- if @user.errors.any?
+  #error_explanation
+    %h2
+      = pluralize(@user.errors.count, 'error')
+      prohibited this user from being saved:
+
+    %ul
+      - @user.errors.full_messages.each do |msg|
+        %li= msg
+
+= form_for [:admin, @user], :role => 'form', :html => {:class => 'form-horizontal'}  do |f|
 
   .col-sm-8.field
     %table{style: 'width: 170px;'}
@@ -6,12 +18,14 @@
         %td
           Roles
         %td
-          - Role.global.each do |role|
-            %label{style: 'display: block; margin: 0; padding: 0'}
-              = hidden_field_tag( role.name.to_sym, 0 )
-              = check_box_tag( role.name.to_sym, 1, @user.has_role?( role.name.to_sym ))
-              &nbsp;
-              = role.name
+          %ul
+            - Role.global.each do |role|
+              %li
+                %label{style: 'display: block; margin: 0; padding: 0'}
+                  = hidden_field_tag( role.name.to_sym, 0 )
+                  = check_box_tag( role.name, 1, @user.has_role?( role.name.to_sym ))
+                  &nbsp;
+                  = role.name.titleize
 
   .col-sm-8.field
     Available? &nbsp;
