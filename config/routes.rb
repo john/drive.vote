@@ -8,6 +8,14 @@ Rails.application.routes.draw do
     unlocks: 'users/unlocks'
   }
 
+  # https://blog.heroku.com/real_time_rails_implementing_websockets_in_rails_5_with_action_cable
+  # NOTE: to re-enable you also need to uncomment ./channels in application.js,
+  # and the code in /channels/messages.js
+  # and the meta tag in application.html.haml
+  # and lined in development.rb and production.rb
+  # Serve websocket cable requests in-process
+  mount ActionCable.server => '/cable'
+
   require 'sidekiq/web'
   Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
   authenticate :user do
@@ -16,13 +24,11 @@ Rails.application.routes.draw do
 
   root 'home#index'
 
-  # https://blog.heroku.com/real_time_rails_implementing_websockets_in_rails_5_with_action_cable
-  # NOTE: to re-enable you also need to uncomment ./channels in application.js,
-  # and the code in /channels/messages.js
-  # and the meta tag in application.html.haml
-  # and lined in development.rb and production.rb
-  # Serve websocket cable requests in-process
-  mount ActionCable.server => '/cable'
+  match '/confirm' => 'home#confirm', via: :get, as: :confirm
+  match '/about' => 'home#about', via: :get, as: :about
+  match '/code_of_conduct' => 'home#code_of_conduct', via: :get, as: :code_of_conduct
+  match '/terms_of_service' => 'home#terms_of_service', via: :get, as: :terms_of_service
+  match '/privacy' => 'home#privacy', via: :get, as: :privacy
 
   resources :driving do
     collection do
@@ -38,6 +44,10 @@ Rails.application.routes.draw do
       get 'waiting_rides' => 'driving#waiting_rides'
       get 'ridezone_stats' => 'driving#ridezone_stats'
     end
+  end
+
+  resources :users do #, only: [:show, :new, :create, :edit, :update]
+    get :confirm, on: :member
   end
 
   namespace :api do
@@ -61,38 +71,23 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users do #, only: [:show, :new, :create, :edit, :update]
-    get :confirm, on: :member
-  end
-
-  match '/confirm' => 'home#confirm', via: :get, as: :confirm
-
-  match '/about' => 'home#about', via: :get, as: :about
-  match '/code_of_conduct' => 'home#code_of_conduct', via: :get, as: :code_of_conduct
-  match '/terms_of_service' => 'home#terms_of_service', via: :get, as: :terms_of_service
-  match '/privacy' => 'home#privacy', via: :get, as: :privacy
-
   match '/admin' => 'admin/admin#index', via: :get
   namespace :admin do
-    match '/' => 'home#index', :via => :get
-
-    resources :rides
     resources :conversations, only: [:index, :show] do
       member do
         post 'close' => 'conversations#close'
       end
     end
-
+    resources :drivers, only: [:index]
+    resources :rides
     resources :ride_zones, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
       member do
         post 'add_dispatcher'
         post 'add_driver'
-
         delete 'remove_dispatcher'
         delete 'remove_driver'
       end
     end
-
     resources :users, only: [:show, :edit, :update, :index, :destroy]
   end
 

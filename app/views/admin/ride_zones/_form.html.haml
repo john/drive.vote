@@ -5,22 +5,26 @@
       %ul
         - @ride_zone.errors.full_messages.each do |msg|
           %li= msg
-    
+
   .col-sm-8.field
     = f.label :slug
     = f.text_field :slug, class: 'form-control'
-    
+
   .col-sm-8.field
     = f.label :name
     = f.text_field :name, class: 'form-control'
-    
+
   .col-sm-8.field
     = f.label t(:description), t(:description)
     = f.text_area :description, class: 'form-control'
-    
+
   .col-sm-8.field
     = f.label :phone_number
     = f.text_field :phone_number, class: 'form-control'
-    
+
+  .col-sm-8.field
+    = f.label :zip
+    = f.text_field :zip, class: 'form-control'
+
   .col-sm-8.actions
     = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."
