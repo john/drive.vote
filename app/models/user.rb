@@ -106,7 +106,7 @@ class User < ApplicationRecord
   end
 
   def make_unassigned(removed_role)
-    if !self.is_a_driver? && removed_role.name == 'driver'
+    if removed_role.name == 'driver'
       self.add_role(:unassigned_driver)
     end
   end
