@@ -86,7 +86,7 @@ var dispatchController = {
       });
   },
 
-  rideCells: function rideCells(r) {
+  rideCells: function (r) {
     return '<td>' + r.name + '</td>' +
       '<td>' + r.status + '</td>' +
       '<td>' + new Date(r.status_updated_at*1000).toTimeString() + '</td>' +
@@ -186,7 +186,9 @@ var dispatchController = {
 
   // Handle new driver creation
   newDriver: function (event) {
-    // todo: update map
+      var row = '<tr id="'+rowId+'">' + cells +'</tr>';
+      $(tableSelector).prepend(row);
+    }
   },
 
   // Handle driver update

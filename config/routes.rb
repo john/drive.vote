@@ -52,6 +52,8 @@ Rails.application.routes.draw do
     get :confirm, on: :member
   end
 
+  resources :dispatch, only: [:show, :index]
+
   namespace :api do
     namespace :v1, path: '1' do
       post 'twilio/sms' => 'twilio#sms'
