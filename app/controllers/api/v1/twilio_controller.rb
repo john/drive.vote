@@ -30,7 +30,14 @@ module Api::V1
       end
 
       message.save
-      render_twiml_message(ConversationBot.new(@conversation, message).response)
+      answer = ConversationBot.new(@conversation, message).response
+      answer_msg = Message.create(
+          ride_zone: @ride_zone,
+          conversation: @conversation,
+          to: message.from,
+          from: message.to,
+          body: answer)
+      render_twiml_message(answer)
     end
 
     private
@@ -59,10 +66,10 @@ module Api::V1
       @user = begin
         User.create!(attrs)
       rescue ActiveRecord::RecordNotUnique
-        User.where(phone_number_normalized: from_phone, name: sms_name).first
+        User.where(phone_number_normalized: from_phone).first
       end
       @conversation = Conversation.where(user_id: @user.id).where.not(status: :closed).first
-      @conversation ||= Conversation.create(user_id: @user.id, ride_zone: @ride_zone)
+      @conversation ||= Conversation.create(status: :sms_created, user_id: @user.id, ride_zone: @ride_zone)
     end
 
   end

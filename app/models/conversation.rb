@@ -4,20 +4,50 @@ class Conversation < ApplicationRecord
   has_many :messages
   belongs_to :ride
 
-  before_save :update_lifecycle
   before_save :check_ride_attached
+  before_save :update_status_and_lifecycle
   after_create :notify_creation
   around_save :notify_update
 
   validate :phone_numbers_match_first_message
 
-  enum status: { in_progress: 0, ride_created: 1, closed: 2 }
-  enum lifecycle: { need_language: 100, need_name: 200, need_origin: 300, need_destination: 400, need_time: 500, info_complete: 1000 }
+  enum status: { sms_created: -1, in_progress: 0, ride_created: 1, closed: 2, help_needed: 3 }
+  enum lifecycle: {
+    created: 0,
+    have_language: 100,
+    have_name: 200,
+    have_prior_ride: 250,
+    have_origin: 300,
+    have_confirmed_origin: 400,
+    have_destination: 500,
+    have_confirmed_destination: 600,
+    have_time: 700,
+    have_confirmed_time: 800,
+    have_passengers: 900,
+    info_complete: 1000,
+  }
 
   def api_json(include_messages = false)
     j = self.as_json(only: [:id, :pickup_at, :status, :name, :from_phone, :from_address, :from_city, :to_address, :to_city])
     j['messages'] = self.messages.map(&:api_json) if include_messages
     j
+  end
+
+  def username
+    self.user.try(:name).to_s
+  end
+
+  def invert_ride_addresses(ride)
+    self.from_address = ride.to_address
+    self.from_city = ride.to_city
+    self.from_latitude = ride.to_latitude
+    self.from_longitude = ride.to_longitude
+    self.to_address = ride.from_address
+    self.to_city = ride.from_city
+    self.to_latitude = ride.from_latitude
+    self.to_longitude = ride.from_longitude
+    self.from_confirmed = self.to_confirmed = true
+    save
   end
 
   def self.active_statuses
@@ -41,21 +71,34 @@ class Conversation < ApplicationRecord
     end
   end
 
-  def update_lifecycle
-    self.lifecycle = calculated_lifecycle
+  def update_status_and_lifecycle
+    self.status = :in_progress if self.status == 'sms_created' && !new_record?
+    self.lifecycle = calculated_lifecycle unless lifecycle_changed?
   end
 
   def calculated_lifecycle
     if user.unknown_language?
-      lckey = :need_language
+      lckey = :created
     elsif user.name.blank? || user.has_sms_name?
-      lckey = :need_name
+      lckey = :have_language
+    elsif !ignore_prior_ride && user.recent_complete_ride && from_latitude.nil?
+      lckey = :have_prior_ride
     elsif from_latitude.nil? || from_longitude.nil?
-      lckey = :need_origin
+      lckey = :have_name
+    elsif !from_confirmed
+      lckey = :have_origin
     elsif to_latitude.nil? || to_longitude.nil?
-      lckey = :need_destination
+      lckey = :have_confirmed_origin
+    elsif !to_confirmed
+      lckey = :have_destination
     elsif pickup_time.nil?
-      lckey = :need_time
+      lckey = :have_confirmed_destination
+    elsif !time_confirmed
+      lckey = :have_time
+    elsif additional_passengers.nil?
+      lckey = :have_confirmed_time
+    elsif special_requests.nil?
+      lckey = :have_passengers
     else
       lckey = :info_complete
     end

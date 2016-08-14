@@ -30,7 +30,7 @@ RSpec.describe Api::V1::TwilioController, type: :controller do
 
     it 'creates message' do
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
-      expect(Message.last.body).to eq msg
+      expect(Message.first.body).to eq msg
     end
 
     it 'creates conversation' do

@@ -94,3 +94,21 @@ en:
   get_matched_general: "Get matched to drivers or passengers"
   confirm: "Confirm with text messages/phone calls"
   got_it: "GOT IT"
+
+  what_is_your_name: 'Thanks! What is your name?'
+  name: 'name'
+  empty_need_name: "Sorry, I didn't get a response. What is your name?"
+  bot_stalled: 'Someone will contact you soon'
+  what_is_pickup_location: 'Hello %{name}. Where do you want to be picked up - address and city?'
+  too_many_addresses: 'Too many matches! Please reply with specific address and city.'
+  no_address_match: 'Address not found. Please reply with specific address and city.'
+  what_is_destination_location: 'Where do you want to go - address and city?'
+  are_you_going_from_to: 'Welcome back! Reply "help" at any time. Are you going from %{from} to %{to}?'
+  when_do_you_want_pickup: 'When do you want to be picked up (HH:MM am/pm)?'
+  confirm_address: 'Please confirm the address is %{address}. Yes/no?'
+  confirm_the_time: 'Please confirm pickup at %{time}. Yes/no?'
+  invalid_time: "That doesn't look like a good time or it's passed. Enter something like 4:30pm"
+  how_many_additional: 'How many additional people will be with you (0-4)?'
+  invalid_passengers: 'Please reply with number of additional passengers (0-4)'
+  any_special_requests: 'What are your special requests (like wheelchair, car seats)? Or reply none.'
+  thanks_wait_for_driver: 'Thank you! We will contact you before your ride.'
