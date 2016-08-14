@@ -6,7 +6,7 @@ module UserRoles
   def update_user_roles(params)
     # https://github.com/RolifyCommunity/rolify/issues/246
     # get just the global roles
-    Role.where(resource_id: nil, resource_type: nil).each do |role|
+    Role.global.each do |role|
       role_name = role.name.to_sym
       if params[role_name] == "1"
         @user.grant( role_name )
