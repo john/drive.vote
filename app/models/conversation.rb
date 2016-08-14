@@ -29,13 +29,17 @@ class Conversation < ApplicationRecord
   }
 
   def api_json(include_messages = false)
-    j = self.as_json(only: [:id, :pickup_at, :status, :name, :from_phone, :from_address, :from_city, :to_address, :to_city])
+    j = self.as_json(only: [:id, :pickup_at, :status, :name, :from_phone, :from_address, :from_city, :to_address, :to_city], methods: [:message_count])
     j['messages'] = self.messages.map(&:api_json) if include_messages
     j
   end
 
   def username
     self.user.try(:name).to_s
+  end
+
+  def message_count
+    self.messages.count
   end
 
   def set_unknown_destination

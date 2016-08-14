@@ -196,6 +196,9 @@ definitions:
       to_city:
         type: string
         description: The end city
+      message_count:
+        type: integer
+        description: Current count of messages for this conversation
       messages:
         type: array
         description: Only returned for a single conversation
@@ -305,6 +308,9 @@ definitions:
       conversation_id:
         type: integer
         description: Unique id of the message's conversation
+      conversation_message_count:
+        type: integer
+        description: Current count of conversation's messages
       from_phone:
         type: integer
         description: Time for the ride pickup, unix epoch

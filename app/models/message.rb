@@ -32,7 +32,8 @@ class Message < ApplicationRecord
   def api_json
     {
       'id' => self.id,
-      'conversation_id' => self.conversation_id,
+      'conversation_id' => self.conversation.id,
+      'conversation_message_count' => self.conversation.messages.count,
       'from_phone' => self.from,
       'to_phone' => self.to,
       'is_from_voter' => self.is_from_voter?,
