@@ -1,0 +1,29 @@
+= render 'admin/nav', {active: 'drivers'}
+
+%h1
+  Drivers
+  &nbsp;&nbsp;
+  %select
+    %option Unassigned
+    - if params[:all]
+      %option{selected: 'selected'} All
+    - else
+      %option All
+
+%table.admin
+  %thead
+    %tr
+      %th ID
+      %th Name
+      %th Email
+      %th Cell
+      %th Zip
+
+  %tbody
+    - @drivers.each do |driver|
+      %tr
+        %td= driver.id
+        %td= link_to driver.name, user_path(driver)
+        %td= driver.email
+        %td= driver.phone_number
+        %td= driver.zip

@@ -9,9 +9,9 @@
 %table.admin
   %thead
     %tr
-      %th Election
       %th Name
       %th Slug
+      %th Zip
       %th Description
       %th Phone number
       %th
@@ -22,6 +22,7 @@
       %tr
         %td= link_to ride_zone.name, admin_ride_zone_path(ride_zone)
         %td= ride_zone.slug
+        %td= ride_zone.zip
         %td= ride_zone.description
         %td= ride_zone.phone_number
         %td= link_to 'Edit', edit_admin_ride_zone_path(ride_zone)

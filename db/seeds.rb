@@ -29,7 +29,8 @@ if  Rails.env == "development"
     {
       slug: 'toledo_d_4',
       name: 'Toldedo, District 4',
-      phone_number: '+14193860121'
+      phone_number: '+14193860121',
+      zip: '43601'
     }
   ])
 
@@ -37,7 +38,8 @@ if  Rails.env == "development"
     {
       slug: 'tampa_fl',
       name: 'Tampa, FL',
-      phone_number: '+19993860121'
+      phone_number: '+19993860121',
+      zip: '33601'
     }
   ])
 
@@ -85,9 +87,8 @@ if  Rails.env == "development"
     phone_number_normalized: '+12073328709',
     image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
     locale: 'en',
-    address1: '330 Cabrillo St.',
-    city: 'San Francisco',
-    state: 'CA'
+    zip: '43606'
   )
+  test_john.add_role(:unassigned_driver)
 
 end

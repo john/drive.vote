@@ -1,12 +1,38 @@
 class User < ApplicationRecord
-  include HasPartyAffiliation
+
+  # TODO: when geocoding is enabled
+  # acts_as_mappable :lat_column_name => :latitude, :lng_column_name => :longitude
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  rolify
+  rolify after_add: :if_driver_remove_unassigned, after_remove: :make_unassigned
+
+  # TODO: Specs need to be mocked before this is enabled
+  # geocoded_by :full_address
+  # after_create :geocode
+
+  def if_driver_remove_unassigned(role)
+    if self.is_a_driver?
+      self.remove_role(:unassigned_driver)
+    end
+  end
+
+  def make_unassigned(role)
+    unless self.is_a_driver?
+      self.add_role(:unassigned_driver)
+    end
+  end
+
+  def is_a_driver?
+    RideZone.find_roles(nil, self).present?
+  end
+
+  # TODO: when users & ridezones are geocoded
+  # def nearby_ride_zones
+  # end
 
   VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
 
@@ -33,11 +59,6 @@ class User < ApplicationRecord
   validates :phone_number_normalized, phony_plausible: true
   validate :permissible_user_type
   validate :permissible_zip
-
-  def is_admin?
-    #todo: make this rolify-based
-    true
-  end
 
   def api_json
     data = self.as_json(only: [:id, :name, :available, :latitude, :longitude], methods: [:phone, :location_timestamp])
@@ -89,6 +110,10 @@ class User < ApplicationRecord
 
 
   private
+
+  def full_address
+    [self.address1, self.address2, self.city, self.state, self.zip, self.country].compact.join(', ')
+  end
 
   # user_type is used to hold the role before it's assigned. make sure it's legit.
   def permissible_user_type

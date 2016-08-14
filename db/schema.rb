@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160812064433) do
+ActiveRecord::Schema.define(version: 20160814071801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,7 +114,6 @@ ActiveRecord::Schema.define(version: 20160812064433) do
     t.integer  "agree_to_background_check"
     t.integer  "accepted_tos"
     t.integer  "email_list"
-    t.integer  "party_affiliation"
     t.string   "phone_number",                                        default: "",    null: false
     t.string   "phone_number_normalized"
     t.string   "image_url",                                           default: "",    null: false

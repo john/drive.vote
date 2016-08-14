@@ -6,6 +6,11 @@ class RideZone < ApplicationRecord
   has_many :rides
 
   validates_presence_of :name
+  validates_presence_of :zip
+
+  # TODO: Specs need to be mocked before this is enabled
+  # geocoded_by :zip
+  # after_create :geocode
 
   def drivers
     User.with_role(:driver, self)

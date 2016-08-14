@@ -9,8 +9,8 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   end
 
   def show
-    @dispatchers = @ride_zone.dispatchers #User.with_role(:dispatcher, @ride_zone)
-    @drivers = @ride_zone.drivers #User.with_role(:driver, @ride_zone)
+    @dispatchers = @ride_zone.dispatchers
+    @drivers = @ride_zone.drivers
 
     # TODO: @drivers_on_call = User.with_role(:driver, @ride_zone).on_call
     status = params[:status]
@@ -86,7 +86,6 @@ class Admin::RideZonesController < Admin::AdminApplicationController
     def add_role(role_type)
       if params[:user_id].present?
         @user = User.find(params[:user_id])
-        # unless @user.has_role?(role_type, @ride_zone)
 
         # @user.has_role? isn't working here, not sure why. using ugly check for now.
         if role_type == :driver
