@@ -115,6 +115,7 @@
 
   dispatchController.setup(#{@ride_zone.id})
 
+<<<<<<< 73243a310fe6ff01d35610421a7f38a8abd20483
   jQuery(document).ready(function($) {
     $(document).on("click", '.clickable', function(event) {
       $(".modal-body").modal();
@@ -138,3 +139,52 @@
   var gmap = new Map(document.getElementById('dispatch-map'), on_loaded,
                      {'google_api_key': 'AIzaSyDyJ3LTbJGAEIKjqYj3-gFDbAZ3BLo6sGo',
                       lat: #{@ride_zone.latitude}, lon: #{@ride_zone.longitude}, zoom: 13});
+=======
+%h5= "Ride Zone #{@ride_zone.name}"
+.disp-server-status
+  Connecting
+
+%table
+  %tr
+    %td.col-lg-6
+      #dispatch-map
+        Map goes here
+    %td.col-lg-6
+      %table
+        %tr
+          %td.col-lg-6.disp-conv-area
+            %h6
+              .conversations-title
+                Conversations
+              = button_tag 'Refresh', onclick: 'javascript: dispatchController.refreshConversations()', class: 'btn btn-default btn-xs'
+              = button_tag 'All', onclick: "javascript: dispatchController.showAllConversations(); $('.conversations-title').text('Conversations')", class: 'btn btn-default btn-xs'
+              = button_tag 'Need Help', onclick: "javascript: dispatchController.showStatusConversations('need_help'); $('.conversations-title').text('Need Help Conversations')", class: 'btn btn-default btn-xs'
+              = button_tag 'In Progress', onclick: "javascript: dispatchController.showStatusConversations('in_progress'); $('.conversations-title').text('In Progress Conversations')", class: 'btn btn-default btn-xs'
+              = button_tag 'Stale', onclick: "javascript: dispatchController.showStaleConversations(); $('.conversations-title').text('Stale Conversations')", class: 'btn btn-default btn-xs'
+            %table.admin{id: 'conversations'}
+              %thead
+                %tr
+                  %th Voter Phone #
+                  %th Status
+                  %th Status Updated
+                  %th Message Count
+                  %th
+
+        %tr
+          %td.col-lg-6.disp-ride-area
+            %h6
+              .rides-title
+                Rides
+              = button_tag 'Refresh', onclick: 'javascript: dispatchController.refreshRides()', class: 'btn btn-default btn-xs'
+              = button_tag 'All', onclick: "javascript: dispatchController.showAllRides(); $('.rides-title').text('Rides')", class: 'btn btn-default btn-xs'
+              = button_tag 'Waiting', onclick: "javascript: dispatchController.showStatusRides('waiting_assignment'); $('.rides-title').text('Waiting Rides')", class: 'btn btn-default btn-xs'
+              = button_tag 'Assigned', onclick: "javascript: dispatchController.showStatusRides('driver_assigned'); $('.rides-title').text('Assigned Rides')", class: 'btn btn-default btn-xs'
+              = button_tag 'Stale', onclick: "javascript: dispatchController.showStaleRides(); $('.rides-title').text('Stale Rides')", class: 'btn btn-default btn-xs'
+            %table.admin{id: 'rides'}
+              %thead
+                %tr
+                  %th Voter
+                  %th Status
+                  %th Status Updated
+                  %th Pickup Time
+>>>>>>> minor UI tweeks: change table title when filtered, add status updated column (w/ugly time format)
