@@ -25,26 +25,30 @@ function Map(element, callback, args)
     }
 }
 
-// Calculate URL prefix to reliably find icons.
-function _url_prefix()
-{
-    for(var i = 0; i < document.scripts.length; i++)
-    {
-        var parts = document.scripts[i].src.split('/');
-        if(parts.pop() == 'Map.js') { return parts.join('/') }
-    }
-
-    return '.';
-}
+// // Calculate URL prefix to reliably find icons.
+// function _url_prefix()
+// {
+//     for(var i = 0; i < document.scripts.length; i++)
+//     {
+//         var parts = document.scripts[i].src.split('/');
+//         if(parts.pop() == 'Map.js') { return parts.join('/') }
+//     }
+//
+//     return '.';
+// }
 
 // Built-in icon options.
 Map.icons = {
-    voter:   {w: 38, h: 57, url: _url_prefix() + '/icon-voter.svg'},
-    driver:  {w: 38, h: 57, url: _url_prefix() + '/icon-driver.svg'},
-    poll:    {w: 38, h: 57, url: _url_prefix() + '/icon-poll.svg'},
+    // voter:   {w: 38, h: 57, url: _url_prefix() + '/map/icon-voter.svg'},
+    // driver:  {w: 38, h: 57, url: _url_prefix() + '/map/icon-driver.svg'},
+    // poll:    {w: 38, h: 57, url: _url_prefix() + '/map/icon-poll.svg'},
+    voter:   {w: 38, h: 57, url: '/map/icon-voter.svg'},
+    driver:  {w: 38, h: 57, url: '/map/icon-driver.svg'},
+    poll:    {w: 38, h: 57, url: '/map/icon-poll.svg'},
 
     // Used when no other icon is provided.
-    default: {w: 38, h: 57, url: _url_prefix() + '/icon-default.svg'}
+    // default: {w: 38, h: 57, url: _url_prefix() + '/icon-default.svg'}
+    default: {w: 38, h: 57, url: '/map/icon-default.svg'}
 };
 
 Map.prototype = {

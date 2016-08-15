@@ -1,50 +1,85 @@
+:css
+  #dispatch-map { height: 300px; margin: 1em 0; }
+  h5 { margin-top: -10px; }
+  h6 { font-weight: bold; font-size: 23px; }
+  small { font-size: 11px; }
+  .filters { margin: -10px 0 10px 0; font-size: 12px; }
+  #conversations, #rides { font-size: 12px; }
+
 :javascript
   dispatchController.setup(#{@ride_zone.id})
 
-%h5= "Ride Zone #{@ride_zone.name}"
+.modal.fade.bs-example-modal-lg{"aria-labelledby" => "conversationModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog.modal-lg{:role => "document"}
+    .modal-content
+      .modal-header
+        %button.close{type: 'button', 'data-dismiss': 'modal', 'aria-label': 'Close'}
+          %span{'aria-hidden': 'true'} x
+        %h4#conversationModalLabel.modal-title
+          %span#conversationDetails{style: 'font-weight: normal; font-size: 14px;'}
+      .modal-body#messages
+
+%h5
+  =@ride_zone.name
+
 .disp-server-status
   Connecting
 
-%table
-  %tr
-    %td.col-lg-6
-      #dispatch-map
-        Map goes here
-    %td.col-lg-6
-      %table
-        %tr
-          %td.col-lg-6.disp-conv-area
-            %h6
-              .conversations-title
-                Conversations
-              = button_tag 'Refresh', onclick: 'javascript: dispatchController.refreshConversations()', class: 'btn btn-default btn-xs'
-              = button_tag 'All', onclick: "javascript: dispatchController.showAllConversations(); $('.conversations-title').text('Conversations')", class: 'btn btn-default btn-xs'
-              = button_tag 'Need Help', onclick: "javascript: dispatchController.showStatusConversations('need_help'); $('.conversations-title').text('Need Help Conversations')", class: 'btn btn-default btn-xs'
-              = button_tag 'In Progress', onclick: "javascript: dispatchController.showStatusConversations('in_progress'); $('.conversations-title').text('In Progress Conversations')", class: 'btn btn-default btn-xs'
-              = button_tag 'Stale', onclick: "javascript: dispatchController.showStaleConversations(); $('.conversations-title').text('Stale Conversations')", class: 'btn btn-default btn-xs'
-            %table.admin{id: 'conversations'}
-              %thead
-                %tr
-                  %th Voter Phone #
-                  %th Status
-                  %th Status Updated
-                  %th Message Count
-                  %th
+.col-md-6
+  #dispatch-map
 
-        %tr
-          %td.col-lg-6.disp-ride-area
-            %h6
-              .rides-title
-                Rides
-              = button_tag 'Refresh', onclick: 'javascript: dispatchController.refreshRides()', class: 'btn btn-default btn-xs'
-              = button_tag 'All', onclick: "javascript: dispatchController.showAllRides(); $('.rides-title').text('Rides')", class: 'btn btn-default btn-xs'
-              = button_tag 'Waiting', onclick: "javascript: dispatchController.showStatusRides('waiting_assignment'); $('.rides-title').text('Waiting Rides')", class: 'btn btn-default btn-xs'
-              = button_tag 'Assigned', onclick: "javascript: dispatchController.showStatusRides('driver_assigned'); $('.rides-title').text('Assigned Rides')", class: 'btn btn-default btn-xs'
-              = button_tag 'Stale', onclick: "javascript: dispatchController.showStaleRides(); $('.rides-title').text('Stale Rides')", class: 'btn btn-default btn-xs'
-            %table.admin{id: 'rides'}
-              %thead
-                %tr
-                  %th Voter
-                  %th Status
-                  %th Status Updated
-                  %th Pickup Time
+.col-md-3
+  %h6
+    Conversations &nbsp;
+    %small
+      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshConversations()', style: 'font-size: 13px;'
+
+  .btn-group.btn-group-xs.filters{role: 'group'}
+    = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllConversations()', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
+    = link_to 'Help', '#', onclick: 'javascript: dispatchController.showStatusConversations("need_help")', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
+    = link_to 'In Prog', '#', onclick: 'javascript: dispatchController.showStatusConversations("in_progress")', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
+    = link_to 'Stale', '#', onclick: 'javascript: dispatchController.showStaleConversations()', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
+
+  %table.admin{id: 'conversations'}
+    %thead
+      %tr
+        %th With
+        %th Status
+        %th Messages
+        %th
+
+.col-md-3
+  %h6
+    Rides &nbsp;
+    %small
+      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshRides()', style: 'font-size: 13px;'
+  .btn-group.btn-group-xs.filters{role: 'group'}
+    = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllRides()', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
+    = link_to 'Waiting', '#', onclick: 'javascript: dispatchController.showStatusRides("waiting_assignment")', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
+    = link_to 'Assigned', '#', onclick: 'javascript: dispatchController.showStatusRides("driver_assigned")', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
+    = link_to 'Stale', '#', onclick: 'javascript: dispatchController.showStaleRides()', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
+
+  %table.admin{id: 'rides'}
+    %thead
+      %tr
+        %th Voter
+        %th Status
+        %th Pickup Time
+
+:javascript
+  function on_loaded(map)
+  {
+      var m1 = map.addMarker(37.770444, -122.434960, Map.icons.voter, 'Hello World!', 'http://example.com');
+      var m2 = map.addMarker(37.769079, -122.433674, Map.icons.poll, 'Hello World!');
+      var m3 = map.addMarker(37.771612, -122.426836, Map.icons.driver);
+
+      window.setTimeout(function() {
+          map.updateMarker(m1, 37.770709, -122.435082, Map.icons.driver, 'Goodbye World!', 'http://example.com');
+          map.updateMarker(m2, 37.768962, -122.433387, Map.icons.voter,  'Goodbye World!');
+          map.updateMarker(m3, 37.771455, -122.428098, Map.icons.poll);
+          }, 3000);
+  }
+
+  var gmap = new Map(document.getElementById('dispatch-map'), on_loaded,
+                     {'google_api_key': 'AIzaSyDyJ3LTbJGAEIKjqYj3-gFDbAZ3BLo6sGo',
+                      lat: #{@ride_zone.latitude}, lon: #{@ride_zone.longitude}, zoom: 13});

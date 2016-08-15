@@ -63,7 +63,7 @@ es:
   address: 'Dirección'
   city: 'Ciudad'
   state: 'Estado'
-  zip_where_can_drive: 'código postal donde se puede conducir'
+  zip_where_can_drive: 'Código postal donde se puede conducir'
   languages: 'Idiomas que hablas'
   around_what_time: 'En torno a qué hora'
   can_drive: 'se puede conducir'

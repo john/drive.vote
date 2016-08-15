@@ -19,7 +19,13 @@ var dispatchController = {
       '<td class="'+statusClass+'">' + c.status + '</td>' +
       '<td>' + new Date(c.status_updated_at*1000).toTimeString() + '</td>' +
       '<td>' + c.message_count + '</td>' +
-        '<td><a onclick="javascript: alert(\'modal!\')">View</a></td>'
+        '<td><a data-toggle="modal" data-target=".bs-example-modal-lg" onclick="dispatchController.loadConversationMessages(' + c.id + ')");">View</a></td>'
+  },
+
+  loadConversationMessages: function (id) {
+    $('#conversationModalLabel').prepend('Conversation ' + id);
+    $('#conversationDetails').prepend('foo');
+    $('#messages').load('/admin/conversations/' + id + '/messages');
   },
 
   updateConversationTable: function (c, highlight) {

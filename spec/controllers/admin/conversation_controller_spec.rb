@@ -21,6 +21,13 @@ RSpec.describe Admin::ConversationsController, type: :controller do
     end
   end
 
+  describe 'GET #messages' do
+    it 'assigns the requested conversation as @conversation' do
+      get :messages, params: {id: convo.to_param}
+      expect(assigns(:conversation)).to eq(convo)
+    end
+  end
+
   describe 'POST #close' do
     it 'assigns the requested conversation as @conversation' do
       post :close, params: {id: convo.to_param}
