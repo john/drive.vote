@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20160816181854) do
     t.boolean  "from_confirmed"
     t.boolean  "to_confirmed"
     t.boolean  "time_confirmed"
+    t.datetime "status_updated_at"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -104,6 +105,7 @@ ActiveRecord::Schema.define(version: 20160816181854) do
     t.datetime "status_updated_at"
     t.string   "from_city"
     t.string   "to_city"
+    t.datetime "status_updated_at"
     t.index ["driver_id"], name: "index_rides_on_driver_id", using: :btree
     t.index ["ride_zone_id"], name: "index_rides_on_ride_zone_id", using: :btree
     t.index ["voter_id"], name: "index_rides_on_voter_id", using: :btree
