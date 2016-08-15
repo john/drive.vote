@@ -17,6 +17,7 @@ var dispatchController = {
     var statusClass = (c.status == 'help_needed') ? 'conv-alert' : 'conv-normal';
     return '<td>' + c.from_phone + '</td>' +
       '<td class="'+statusClass+'">' + c.status + '</td>' +
+      '<td>' + new Date(c.status_updated_at*1000).toTimeString() + '</td>' +
       '<td>' + c.message_count + '</td>' +
         '<td><a onclick="javascript: alert(\'modal!\')">View</a></td>'
   },
@@ -61,8 +62,9 @@ var dispatchController = {
 
   rideCells: function rideCells(r) {
     return '<td>' + r.name + '</td>' +
-      '<td>' + c.status + '</td>' +
-      '<td>' + c.pickup_at + '</td>'
+      '<td>' + r.status + '</td>' +
+      '<td>' + new Date(r.status_updated_at*1000).toTimeString() + '</td>' +
+      '<td>' + r.pickup_at + '</td>'
   },
 
   updateRideTable: function (r, highlight) {
@@ -117,7 +119,6 @@ var dispatchController = {
   },
 
   stale: function(data) {
-    console.log('stale ' + 1000*data.status_updated_at + ' vs ' + (new Date - 30*60*60*1000))
     return 1000*data.status_updated_at < (new Date - 30*60*1000)
   },
 
@@ -140,7 +141,6 @@ var dispatchController = {
 
   showOnlyRows: function (sel, filter) {
     $(sel).find('tr').each(function(i) {
-      console.log($(this));
       if (i == 0 || filter($(this)))
         $(this).show();
       else
