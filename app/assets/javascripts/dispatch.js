@@ -5,15 +5,15 @@
 
 var dispatchController = {
 
-  connected: function connected() {
+  connected: function () {
     $('.disp-server-status').text("Connected").toggleClass('disp-text-alert', false);
   },
 
-  disconnected: function disconnected() {
+  disconnected: function () {
     $('.disp-server-status').text("Disconnected").toggleClass('disp-text-alert', true);
   },
 
-  conversationCells: function conversationCells(c) {
+  conversationCells: function (c) {
     var statusClass = (c.status == 'help_needed') ? 'conv-alert' : 'conv-normal';
     return '<td>' + c.from_phone + '</td>' +
       '<td class="'+statusClass+'">' + c.status + '</td>' +
@@ -21,21 +21,21 @@ var dispatchController = {
         '<td><a onclick="javascript: alert(\'modal!\')">View</a></td>'
   },
 
-  updateConversationTable: function updateConversationTable(c, highlight) {
-    dispatchController.updateTable('#conversations', 'conv-row-' + c.id, dispatchController.conversationCells(c), highlight);
+  updateConversationTable: function (c, highlight) {
+    dispatchController.updateTable('#conversations', 'conv', c, dispatchController.conversationCells(c), highlight);
   },
 
   // Called for new conversation event
-  newConversation: function newConversation(event) {
+  newConversation: function (event) {
     dispatchController.updateConversationTable(event.conversation, true);
   },
 
   // Called when conversation changes
-  conversationChanged: function conversationChanged(event) {
+  conversationChanged: function (event) {
     dispatchController.updateConversationTable(event.conversation, true);
   },
 
-  refreshConversations: function refreshConversations() {
+  refreshConversations: function () {
     $.ajax('/api/1/ride_zones/' + dispatchController.rideZoneId + '/conversations', {
       success: function(data, status, xhr) {
         for (var i = 0; i < data.response.length; ++i) {
@@ -47,29 +47,41 @@ var dispatchController = {
     });
   },
 
+  showAllConversations: function () {
+    dispatchController.showAllRows('#conversations');
+  },
+
+  showStatusConversations: function (status) {
+    dispatchController.showOnlyRows('#conversations', function(r) { return r.data('objref').status == status });
+  },
+
+  showStaleConversations: function (status) {
+    dispatchController.showOnlyRows('#conversations', function(r) { return dispatchController.stale(r.data('objref')) });
+  },
+
   rideCells: function rideCells(r) {
     return '<td>' + r.name + '</td>' +
       '<td>' + c.status + '</td>' +
       '<td>' + c.pickup_at + '</td>'
   },
 
-  updateRideTable: function updateRideTable(r, highlight) {
-    dispatchController.updateTable('#rides', 'ride-row-' + r.id, dispatchController.rideCells(r), highlight);
+  updateRideTable: function (r, highlight) {
+    dispatchController.updateTable('#rides', 'ride', r, dispatchController.rideCells(r), highlight);
   },
 
   // Called when a new ride is created
-  newRide: function newRide(event) {
+  newRide: function (event) {
     dispatchController.updateRideTable(event.ride, true);
     // todo: update the map
   },
 
   // Called when ride changes
-  rideChanged: function rideChanged(event) {
+  rideChanged: function (event) {
     dispatchController.updateRideTable(event.ride, true);
     // todo: update the map
   },
 
-  refreshRides: function refreshRides() {
+  refreshRides: function () {
     $.ajax('/api/1/ride_zones/' + dispatchController.rideZoneId + '/rides', {
       success: function(data, status, xhr) {
         for (var i = 0; i < data.response.length; ++i) {
@@ -80,8 +92,38 @@ var dispatchController = {
     });
   },
 
-  updateTable: function updateTable(tableSelector, rowId, cells, highlight) {
-    var existing = $('#'+rowId);
+  showAllRides: function () {
+    dispatchController.showAllRows('#rides');
+  },
+
+  showStatusRides: function (status) {
+    dispatchController.showOnlyRows('#rides', function(r) { return r.data('objref').status == status });
+  },
+
+  showStaleRides: function (status) {
+    dispatchController.showOnlyRows('#rides', function(r) { return dispatchController.stale(r.data('objref')) });
+  },
+
+  refreshDrivers: function () {
+    $.ajax('/api/1/ride_zones/' + dispatchController.rideZoneId + '/drivers', {
+      success: function(data, status, xhr) {
+        for (var i = 0; i < data.response.length; ++i) {
+          var driver = data.response[i];
+          // todo: handle driver
+        }
+      },
+      error: function(xhr, status, err) { $('error_msg').text(xhr.responseText) }
+    });
+  },
+
+  stale: function(data) {
+    console.log('stale ' + 1000*data.status_updated_at + ' vs ' + (new Date - 30*60*60*1000))
+    return 1000*data.status_updated_at < (new Date - 30*60*1000)
+  },
+
+  updateTable: function (tableSelector, type, obj, cells, highlight) {
+    var rowId = type+'-row-'+obj.id;
+    var existing = $('#' + rowId);
     if (existing.length > 0) {
       existing.html(cells);
       if (highlight) { existing.effect("highlight", {}, 3000); }
@@ -89,24 +131,39 @@ var dispatchController = {
       var row = '<tr id="'+rowId+'">' + cells +'</tr>';
       $(tableSelector).prepend(row);
     }
+    $('#' + rowId).data('objref', obj);
+  },
+
+  showAllRows: function (sel) {
+    $(sel).find('tr').show();
+  },
+
+  showOnlyRows: function (sel, filter) {
+    $(sel).find('tr').each(function(i) {
+      console.log($(this));
+      if (i == 0 || filter($(this)))
+        $(this).show();
+      else
+        $(this).hide();
+    })
   },
 
   // Handle new driver creation
-  newDriver: function newDriver(event) {
+  newDriver: function (event) {
     // todo: update map
   },
 
   // Handle driver update
-  driverChanged: function driverChanged(event) {
+  driverChanged: function (event) {
     // todo: update map
   },
 
   // Handle new message
-  newMessage: function newMessage(event) {
+  newMessage: function (event) {
     // do we want to do anything?
   },
 
-  eventReceived: function eventReceived(event) {
+  eventReceived: function (event) {
     switch (event['event_type']) {
       case 'new_conversation':
         dispatchController.newConversation(event);
@@ -136,6 +193,7 @@ var dispatchController = {
     dispatchController.rideZoneId = rideZoneId;
     dispatchController.refreshConversations();
     dispatchController.refreshRides();
+    dispatchController.refreshDrivers();
     createRideZoneChannel(rideZoneId, dispatchController.connected, dispatchController.disconnected, dispatchController.eventReceived);
   }
 };

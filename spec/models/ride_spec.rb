@@ -160,4 +160,18 @@ RSpec.describe Ride, type: :model do
     ride.update_attribute(:status, :complete)
     expect(c.reload.status).to eq('closed')
   end
+
+  it 'updates status timestamp on create' do
+    r = create :ride
+    expect(r.reload.status_updated_at).to_not be_nil
+  end
+
+  it 'updates status timestamp on status change' do
+    r = Timecop.travel(1.hour.ago) do
+      create :ride
+    end
+    r.update_attribute(:status, :complete)
+    expect(Time.now - r.reload.status_updated_at).to be <(10)
+  end
+
 end

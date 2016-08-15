@@ -13,6 +13,7 @@ class Ride < ApplicationRecord
   validates :voter, presence: true
 
   after_create :notify_creation
+  before_save :note_status_update
   around_save :notify_update
   before_save :close_conversation_when_complete
 
@@ -75,7 +76,9 @@ class Ride < ApplicationRecord
 
   # returns json suitable for exposing in the API
   def api_json
-    self.as_json(except: [:created_at, :updated_at], methods: [:conversation_id])
+    j = self.as_json(except: [:created_at, :updated_at], methods: [:conversation_id])
+    j['status_updated_at'] = self.status_updated_at.to_i
+    j
   end
 
   def conversation_id
@@ -115,6 +118,10 @@ class Ride < ApplicationRecord
   private
   def notify_creation
     self.ride_zone.event(:new_ride, self) if self.ride_zone
+  end
+
+  def note_status_update
+    self.status_updated_at = Time.now if new_record? || self.status_changed?
   end
 
   def notify_update

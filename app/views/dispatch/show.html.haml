@@ -17,6 +17,10 @@
             %h6
               Conversations
               = button_tag 'Refresh', onclick: 'javascript: dispatchController.refreshConversations()', class: 'btn btn-default btn-xs'
+              = button_tag 'All', onclick: 'javascript: dispatchController.showAllConversations()', class: 'btn btn-default btn-xs'
+              = button_tag 'Need Help', onclick: 'javascript: dispatchController.showStatusConversations("need_help")', class: 'btn btn-default btn-xs'
+              = button_tag 'In Progress', onclick: 'javascript: dispatchController.showStatusConversations("in_progress")', class: 'btn btn-default btn-xs'
+              = button_tag 'Stale', onclick: 'javascript: dispatchController.showStaleConversations()', class: 'btn btn-default btn-xs'
             %table.admin{id: 'conversations'}
               %thead
                 %tr
@@ -27,7 +31,13 @@
 
         %tr
           %td.col-lg-6.disp-ride-area
-            %h6 Rides
+            %h6
+              Rides
+              = button_tag 'Refresh', onclick: 'javascript: dispatchController.refreshRides()', class: 'btn btn-default btn-xs'
+              = button_tag 'All', onclick: 'javascript: dispatchController.showAllRides()', class: 'btn btn-default btn-xs'
+              = button_tag 'Waiting', onclick: 'javascript: dispatchController.showStatusRides("waiting_assignment")', class: 'btn btn-default btn-xs'
+              = button_tag 'Assigned', onclick: 'javascript: dispatchController.showStatusRides("driver_assigned")', class: 'btn btn-default btn-xs'
+              = button_tag 'Stale', onclick: 'javascript: dispatchController.showStaleRides()', class: 'btn btn-default btn-xs'
             %table.admin{id: 'rides'}
               %thead
                 %tr

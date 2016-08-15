@@ -5,7 +5,10 @@ class Conversation < ApplicationRecord
   belongs_to :ride
 
   before_save :check_ride_attached
+
   before_save :update_status_and_lifecycle
+  before_save :note_status_update
+
   after_create :notify_creation
   around_save :notify_update
 
@@ -39,6 +42,8 @@ class Conversation < ApplicationRecord
       j['last_message_sent_by'] = last_msg.sent_by
       j['last_message_body'] = last_msg.body
     end
+    j['from_phone'] = self.from_phone.phony_formatted(normalize: :US, spaces: '-')
+    j['status_updated_at'] = self.status_updated_at.to_i
     j
   end
 
@@ -92,6 +97,10 @@ class Conversation < ApplicationRecord
   def update_status_and_lifecycle
     self.status = :in_progress if self.status == 'sms_created' && !new_record?
     self.lifecycle = calculated_lifecycle unless lifecycle_changed?
+  end
+
+  def note_status_update
+    self.status_updated_at = Time.now if new_record? || self.status_changed?
   end
 
   def calculated_lifecycle

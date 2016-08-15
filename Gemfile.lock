@@ -278,6 +278,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.5)
+    timecop (0.8.1)
     tod (2.1.0)
     tool (0.2.3)
     turbolinks (5.0.1)
@@ -342,6 +343,7 @@ DEPENDENCIES
   sinatra!
   spring
   spring-watcher-listen (~> 2.0.0)
+  timecop
   tod
   turbolinks (~> 5.x)
   twilio-ruby

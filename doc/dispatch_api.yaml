@@ -177,7 +177,10 @@ definitions:
       status:
         type: string
         description: |
-          Current status of the conversation. One of in_progress, ride_created, closed.
+          Current status of the conversation. One of in_progress, ride_created, help_needed, closed.
+      status_updated_at:
+        type: integer
+        description When the status was last updated, unix epoch time
       name:
         type: string
         description: Name of the voter needing a ride
@@ -248,6 +251,9 @@ definitions:
         type: string
         description: |
           Current status of the ride. One of waiting_assignment, driver_assigned, picked_up, complete.
+      status_updated_at:
+        type: integer
+        description When the status was last updated, unix epoch time
       from_address:
         type: string
         description: Address of the start of the ride
