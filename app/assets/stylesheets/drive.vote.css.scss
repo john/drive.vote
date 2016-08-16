@@ -1,3 +1,16 @@
+.loc-active {
+  margin-top: 7px;
+  font-weight: bold;
+  color: #34495e;
+  font-size: 12px;
+}
+.loc-inactive {
+  margin-top: 7px;
+  color: #aaa;
+  font-size: 12px;
+}
+
+
 form {
   .notify { margin-bottom: 4px; }
   .field, .actions { margin-top: 15px; }

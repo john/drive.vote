@@ -1,6 +1,8 @@
 %nav.navbar.navbar-default.navbar-static-top
   .container
-    .navbar-header
+
+
+    .navbar-header{style: 'margin-top: 10px;'}
       %button.navbar-toggle.collapsed{:type=>"button", :'data-toggle'=>"collapse", :'data-target'=>"#navbar",  :'aria-expanded'=>"false", :'aria-controls'=>"navbar"}
         %span.sr-only Toggle navigation
         %span.icon-bar
@@ -14,16 +16,13 @@
           #{t(:drive_the_vote)}!
 
     #navbar.collapse.navbar-collapse
-      %ul.nav.navbar-nav.navbar-right
-        - if !user_signed_in?
-          %li.visible-xs.hidden-sm.hidden-md.hidden-lg
-            = link_to t(:sign_in), "/users/sign_in?locale=#{I18n.locale.to_s}"
-        %li= link_to "Español", locale: 'es'
-        %li= link_to "English", locale: 'en'
-        -# if !user_signed_in?
-          / %li.hidden-xs
-          /   %p.navbar-btn
-          /     = link_to t(:sign_in), "/users/sign_in?locale=#{I18n.locale.to_s}", class: 'btn btn-default btn-xs', role: 'button', style: 'margin: 7px 0 0 10px;'
+      .pull-right{style: 'margin-top: 10px;'}
+        <a href="?locale=en" class="loc-#{(locale.to_s == 'en') ? 'active' : 'inactive'}">English</a>
+        &nbsp; &#183; &nbsp;
+        <a href="?locale=es" class="loc-#{(locale.to_s == 'es') ? 'active' : 'inactive'}">Español</a>
+
+        .btn.btn-info.btn-xs{style: 'margin: 5px 0 0 20px;'}
+          = link_to t(:learn_more), about_path(locale: I18n.locale.to_s), style: 'color: white;'
 
         - if user_signed_in? #&& @user.has_role?(:admin)
 

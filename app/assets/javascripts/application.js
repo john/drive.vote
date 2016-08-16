@@ -16,6 +16,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require addtocalendar
 //= require_tree .
 //= require_tree ./channels
