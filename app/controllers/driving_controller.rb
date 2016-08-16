@@ -3,6 +3,8 @@ class DrivingController < ApplicationController
   before_action :ensure_session
   before_action :update_location_from_params
 
+  skip_before_action :verify_authenticity_token
+
   OK_RESPONSE = {response: 'ok'}.freeze
   RIDES_LIMIT = 3
   RIDES_RADIUS = 10 # miles by default in Geokit
@@ -105,7 +107,7 @@ class DrivingController < ApplicationController
   end
 
   def ensure_session
-    render :nothing => true, :status => 401 unless current_user
+    render :nothing => true, :status => 401 && return unless current_user
     @driver_id = current_user.id
     @active_ride = Ride.where(driver_id: @driver_id).where.not(status: Ride.statuses[:complete]).first
   end
