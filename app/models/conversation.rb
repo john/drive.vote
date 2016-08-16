@@ -9,6 +9,8 @@ class Conversation < ApplicationRecord
   after_create :notify_creation
   around_save :notify_update
 
+  validate :phone_numbers_match_first_message
+
   enum status: { in_progress: 0, ride_created: 1, closed: 2 }
   enum lifecycle: { need_language: 100, need_name: 200, need_origin: 300, need_destination: 400, need_time: 500, info_complete: 1000 }
 
@@ -58,5 +60,17 @@ class Conversation < ApplicationRecord
       lckey = :info_complete
     end
     Conversation.lifecycles[lckey]
+  end
+
+  def phone_numbers_match_first_message
+    first_message = self.messages.order(:created_at).first
+    unless first_message.nil?
+      unless self.to_phone == first_message.to
+        errors.add(:to_phone, 'must match :to attribute of first Message')
+      end
+      unless self.from_phone == first_message.from
+        errors.add(:from_phone, 'must match :from attribute of first Message')
+      end
+    end
   end
 end

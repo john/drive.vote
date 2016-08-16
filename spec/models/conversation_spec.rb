@@ -2,6 +2,44 @@ require 'rails_helper'
 
 RSpec.describe Conversation, type: :model do
 
+  describe 'validations' do
+    describe 'phone_numbers_match_first_message' do
+      let(:convo) { create :conversation}
+
+      context 'Conversation has no messages' do
+        it 'should be valid' do
+          expect(convo.messages.count).to eq(0)
+          convo.to_phone = nil
+          convo.from_phone = nil
+          expect(convo).to be_valid
+          end
+      end
+
+      context 'Conversation has messages' do
+        context 'message to/from match' do
+          it 'should be valid' do
+            create :message, conversation: convo, to: convo.to_phone, from: convo.from_phone
+            create :message, conversation: convo, to: convo.to_phone, from: convo.from_phone
+
+            expect(convo).to be_valid
+          end
+        end
+      end
+
+      context 'message to/from do not match' do
+        it 'should be valid' do
+          create :message, conversation: convo, to: convo.to_phone, from: convo.from_phone
+          create :message, conversation: convo, to: convo.to_phone, from: convo.from_phone
+
+          convo.to_phone = '111-111-1111'
+          convo.from_phone ='222-222-2222'
+
+          expect(convo).to_not be_valid
+        end
+      end
+    end
+  end
+
   describe 'saving lifecycle' do
     let(:user) { create :user, language:1, name: 'foo' }
     it 'writes lifecycle to db' do

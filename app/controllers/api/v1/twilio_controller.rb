@@ -22,6 +22,13 @@ module Api::V1
       params.each do |param|
         message.public_send( "#{param.underscore}=", params[param] ) if message.respond_to? param.underscore
       end
+
+      if @conversation.messages.empty?
+        @conversation.to_phone = params['To']
+        @conversation.from_phone = params['From']
+        @conversation.save!
+      end
+
       message.save
       render_twiml_message(ConversationBot.new(@conversation, message).response)
     end
@@ -55,7 +62,7 @@ module Api::V1
         User.where(phone_number_normalized: from_phone, name: sms_name).first
       end
       @conversation = Conversation.where(user_id: @user.id).where.not(status: :closed).first
-      @conversation ||= Conversation.create(user_id: @user.id, from_phone: from_phone, to_phone: to_phone, ride_zone: @ride_zone)
+      @conversation ||= Conversation.create(user_id: @user.id, ride_zone: @ride_zone)
     end
 
   end

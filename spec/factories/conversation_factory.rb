@@ -2,9 +2,23 @@ FactoryGirl.define do
 
   factory :conversation do
     user
-    ride_zone {create :ride_zone, phone_number: '+14193860121'}
-    from_phone '+15105555555'
-    to_phone '+14193860121'
+
+    sequence(:to_phone) { |n| "213-111-111#{n}" }
+    ride_zone {create :ride_zone, phone_number: to_phone}
+
+    factory :conversation_with_messages do
+      transient do
+        messages_count 2
+      end
+
+      after(:create) do |conversation, evaluator|
+        create_list(:message,
+                    evaluator.messages_count,
+                    conversation: conversation,
+                    to: conversation.to_phone,
+                    from: conversation.from_phone)
+      end
+    end
 
     factory :closed_conversation do
       status :closed

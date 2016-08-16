@@ -5,6 +5,10 @@ class Message < ApplicationRecord
   enum status: { unassigned: 0, inprogress: 1, closed: 2 }
 
   after_create :notify_creation
+
+  validates :conversation, presence: true
+  validate :conversation_has_correct_phone_numbers
+
   around_save :notify_update
 
   # # scope by messagestatuses
@@ -38,7 +42,7 @@ class Message < ApplicationRecord
   end
 
   def is_from_voter?
-    self.conversation.to_phone.phony_formatted == self.ride_zone.phone_number.phony_formatted
+    self.conversation.to_phone.phony_formatted == self.to.phony_formatted
   end
 
   def ride_zone
@@ -48,6 +52,14 @@ class Message < ApplicationRecord
   private
   def notify_creation
     self.ride_zone.event(:new_message, self) if self.ride_zone
+  end
+
+  def conversation_has_correct_phone_numbers
+    if !self.conversation.nil? && self.conversation.messages.empty?
+      # we are first
+      errors.add(:to, 'must match Conversation :to_phone') unless self.to == self.conversation.to_phone
+      errors.add(:from, 'must match Conversation :from_phone') unless self.from == self.conversation.from_phone
+    end
   end
 
   def notify_update
