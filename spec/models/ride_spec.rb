@@ -149,4 +149,15 @@ RSpec.describe Ride, type: :model do
     expect(create(:ride, status: :driver_assigned)).to be_active
     expect(create(:ride, status: :scheduled)).to_not be_active
   end
+
+  it 'reports unknown destination' do
+    expect(create(:ride, to_address: Ride::UNKNOWN_ADDRESS).has_unknown_destination?).to be_truthy
+  end
+
+  it 'updates conversation to closed when ride complete' do
+    c = create :conversation_with_messages
+    ride = create :ride, conversation: c
+    ride.update_attribute(:status, :complete)
+    expect(c.reload.status).to eq('closed')
+  end
 end

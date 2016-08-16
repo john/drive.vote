@@ -17,7 +17,7 @@ class Message < ApplicationRecord
   # creates a new Message object that is a reply to a voter in a conversation
   def self.create_conversation_reply(conversation, twilio_msg)
     attrs = {
-      conversation_id: conversation.id,
+      conversation: conversation,
       ride_zone: conversation.ride_zone,
       from: conversation.to_phone,
       to: conversation.from_phone,
@@ -26,13 +26,17 @@ class Message < ApplicationRecord
       body: twilio_msg.body,
     }
     Message.create!(attrs)
+    # whenever a manual reply is sent to a conversation mark it so bot doesn't
+    # act on it any more
+    conversation.update_attribute(:status, :help_needed) if conversation.status == 'in_progress'
   end
 
   # reduced set of fields required for API
   def api_json
     {
       'id' => self.id,
-      'conversation_id' => self.conversation_id,
+      'conversation_id' => self.conversation.id,
+      'conversation_message_count' => self.conversation.messages.count,
       'from_phone' => self.from,
       'to_phone' => self.to,
       'is_from_voter' => self.is_from_voter?,

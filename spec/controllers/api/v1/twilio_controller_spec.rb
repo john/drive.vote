@@ -11,7 +11,7 @@ RSpec.describe Api::V1::TwilioController, type: :controller do
   }
 
   describe 'POST sms' do
-    let(:from_number) { '+12073328709' }
+    let(:from_number) { '+12073328710' }
     let(:to_number) { '+14193860121' }
     let(:msg) { 'I need a ride' }
     let(:response_text) { 'On our way!' }
@@ -30,7 +30,7 @@ RSpec.describe Api::V1::TwilioController, type: :controller do
 
     it 'creates message' do
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
-      expect(Message.last.body).to eq msg
+      expect(Message.first.body).to eq msg
     end
 
     it 'creates conversation' do
@@ -57,6 +57,14 @@ RSpec.describe Api::V1::TwilioController, type: :controller do
       expect_any_instance_of(ConversationBot).to receive(:response) { response_text }
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
       expect(response.body.include?(response_text)).to be_truthy
+    end
+
+    it 'does not respond if conversation is help_needed' do
+      post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
+      Conversation.last.update_attribute(:status, :help_needed)
+      expect_any_instance_of(ConversationBot).to_not receive(:response)
+      post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
+      expect(response.body).to be_empty
     end
 
     it 'handles bad to phone' do

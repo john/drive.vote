@@ -27,9 +27,14 @@ FactoryGirl.define do
     factory :complete_conversation do
       from_latitude 34.5
       from_longitude -122.6
+      from_confirmed true
       to_latitude 34.5
       to_longitude -122.6
+      to_confirmed true
       pickup_time Time.now
+      time_confirmed true
+      additional_passengers 0
+      special_requests 'None'
     end
   end
 

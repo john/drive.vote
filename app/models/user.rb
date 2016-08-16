@@ -24,8 +24,9 @@ class User < ApplicationRecord
 
   VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
   VALID_STATES = {'FL' => 'Florida', 'GA' => 'Georgia', 'NV' => 'Nevada', 'NC' => 'North Carolina', 'OH' => 'Ohio',  'PA' =>'Pennsylvania', 'WI' => 'Wisconsin'}
+  has_many :rides, foreign_key: :voter_id
 
-  enum language: { unknown: 0, english: 1, spanish: 2 }, _suffix: true
+  enum language: { unknown: 0, en: 1, es: 2 }, _suffix: true
 
   before_save :check_location_updated
   after_create :add_rolify_role
@@ -68,6 +69,10 @@ class User < ApplicationRecord
 
   def active_ride
     Ride.where(driver_id: self.id).or(Ride.where(voter_id: self.id)).where(status: Ride.active_statuses).first
+  end
+
+  def recent_complete_ride
+    self.rides.merge(Ride.completed).order('updated_at desc').first
   end
 
   def full_street_address

@@ -16,26 +16,33 @@ ActiveRecord::Schema.define(version: 20160816181854) do
   enable_extension "plpgsql"
 
   create_table "conversations", force: :cascade do |t|
-    t.integer  "ride_zone_id",                                          null: false
-    t.integer  "user_id",                                               null: false
-    t.string   "from_phone",                               default: "", null: false
-    t.string   "to_phone",                                 default: "", null: false
-    t.integer  "status",                                   default: 0,  null: false
-    t.integer  "lifecycle",                                default: 0,  null: false
-    t.string   "from_address",                             default: ""
-    t.string   "from_city",                                default: ""
-    t.string   "from_state",                               default: ""
-    t.decimal  "from_latitude",  precision: 15, scale: 10
-    t.decimal  "from_longitude", precision: 15, scale: 10
-    t.string   "to_address",                               default: ""
-    t.string   "to_city",                                  default: ""
-    t.string   "to_state",                                 default: ""
-    t.decimal  "to_latitude",    precision: 15, scale: 10
-    t.decimal  "to_longitude",   precision: 15, scale: 10
+    t.integer  "ride_zone_id",                                                 null: false
+    t.integer  "user_id",                                                      null: false
+    t.string   "from_phone",                                      default: "", null: false
+    t.string   "to_phone",                                        default: "", null: false
+    t.integer  "status",                                          default: 0,  null: false
+    t.integer  "lifecycle",                                       default: 0,  null: false
+    t.string   "from_address",                                    default: ""
+    t.string   "from_city",                                       default: ""
+    t.string   "from_state",                                      default: ""
+    t.decimal  "from_latitude",         precision: 15, scale: 10
+    t.decimal  "from_longitude",        precision: 15, scale: 10
+    t.string   "to_address",                                      default: ""
+    t.string   "to_city",                                         default: ""
+    t.string   "to_state",                                        default: ""
+    t.decimal  "to_latitude",           precision: 15, scale: 10
+    t.decimal  "to_longitude",          precision: 15, scale: 10
     t.datetime "pickup_time"
     t.integer  "ride_id"
-    t.datetime "created_at",                                            null: false
-    t.datetime "updated_at",                                            null: false
+    t.datetime "created_at",                                                   null: false
+    t.datetime "updated_at",                                                   null: false
+    t.text     "special_requests"
+    t.integer  "additional_passengers"
+    t.integer  "bot_counter",                                     default: 0
+    t.boolean  "ignore_prior_ride"
+    t.boolean  "from_confirmed"
+    t.boolean  "to_confirmed"
+    t.boolean  "time_confirmed"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -71,6 +78,7 @@ ActiveRecord::Schema.define(version: 20160816181854) do
     t.decimal  "longitude",    precision: 15, scale: 10
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
+    t.integer  "utc_offset"
     t.index ["phone_number"], name: "index_ride_zones_on_phone_number", unique: true, using: :btree
   end
 
@@ -92,6 +100,8 @@ ActiveRecord::Schema.define(version: 20160816181854) do
     t.string   "to_address"
     t.integer  "additional_passengers",                           default: 0
     t.text     "special_requests"
+    t.string   "from_city"
+    t.string   "to_city"
     t.index ["driver_id"], name: "index_rides_on_driver_id", using: :btree
     t.index ["ride_zone_id"], name: "index_rides_on_ride_zone_id", using: :btree
     t.index ["voter_id"], name: "index_rides_on_voter_id", using: :btree
@@ -145,7 +155,7 @@ ActiveRecord::Schema.define(version: 20160816181854) do
     t.boolean  "available",                                           default: false, null: false
     t.datetime "location_updated_at"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
-    t.index ["phone_number_normalized", "name"], name: "index_users_on_phone_number_normalized_and_name", unique: true, using: :btree
+    t.index ["phone_number_normalized"], name: "index_users_on_phone_number_normalized", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 

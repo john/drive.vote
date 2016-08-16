@@ -8,10 +8,37 @@ class Ride < ApplicationRecord
   belongs_to :ride_zone
   has_one :conversation
 
+  scope :completed, -> { where(status: :complete)}
+
   validates :voter, presence: true
 
   after_create :notify_creation
   around_save :notify_update
+  before_save :close_conversation_when_complete
+
+  include HasAddress
+
+  # create a new ride from the data in a conversation
+  def self.create_from_conversation conversation
+    attrs = {
+      voter_id: conversation.user_id,
+      name: conversation.username,
+      pickup_at: conversation.pickup_time,
+      status: :scheduled,
+      from_address: conversation.from_address,
+      from_city: conversation.from_city,
+      from_latitude: conversation.from_latitude,
+      from_longitude: conversation.from_longitude,
+      to_address: conversation.to_address,
+      to_city: conversation.to_city,
+      to_latitude: conversation.to_latitude,
+      to_longitude: conversation.to_longitude,
+      additional_passengers: conversation.additional_passengers,
+      special_requests: conversation.special_requests,
+      conversation: conversation,
+    }
+    Ride.create!(attrs)
+  end
 
   # returns true if assignment worked
   def assign_driver driver
@@ -98,5 +125,9 @@ class Ride < ApplicationRecord
     yield
     self.ride_zone.event(:ride_changed, self) if !was_new && self.ride_zone
     self.ride_zone.event(:driver_changed, driver_to_notify, :driver) if notify_driver && self.ride_zone
+  end
+
+  def close_conversation_when_complete
+    self.conversation.update_attribute(:status, 'closed') if self.conversation && status_changed? && status == 'complete'
   end
 end

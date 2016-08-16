@@ -95,6 +95,23 @@ es:
   confirm: "Confirmar con mensajes de texto / teléfono"
   got_it: "LO TENGO"
 
+  what_is_your_name: '¡Gracias! ¿Cuál es su nombre?'
+  name: 'nombre'
+  empty_need_name: 'Lo sentimos, por favor, responda con su nombre'
+  bot_stalled: 'Alguien se pondrá en contacto en breve'
+  what_is_pickup_location: 'Hola %{name}. ¿Dónde desea ser recogido - dirección y la ciudad?'
+  too_many_addresses: 'Demasiados partidos! Por favor, responda todas las direcciones y ciudad específica o responder "no sé" o "omitir"'
+  no_address_match: 'Dirección no encontrada. Por favor, responda todas las direcciones y ciudad específica o responder "no sé" o "omitir"'
+  what_is_destination_location: '¿Dónde quieres ir - la dirección y la ciudad? Si no está seguro, responder "no sé" o "omitir"'
+  are_you_going_from_to: "¡Dar una buena acogida! ¿Se va de %{from} al %{to}?"
+  when_do_you_want_pickup: 'Qué cuando se desea ser recogido (HH:MM am/pm)?'
+  confirm_address: 'Por favor confirmar la dirección es %{address}. Si/non?'
+  confirm_the_time: 'Por favor confirmar su recogida hoy a las %{time}. Si/non?'
+  invalid_time: "Eso no se ve como un buen momento. Introducir algo parecido 16:30."
+  how_many_additional: '¿Cuántas personas adicionales necesitan un paseo (0-4)?'
+  invalid_passengers: 'Por favor, responda con el número de pasajeros adicionales (0-4)'
+  any_special_requests: '¿Cuáles son sus peticiones especiales (como silla de ruedas, asientos de bebé)? O responder ninguno.'
+  thanks_wait_for_driver: '¡Gracias! Tenemos su información y pondremos en contacto con usted antes de su viaje.'
 
   # https://gist.github.com/jordigg/30fe17c6328d5deab9ec
   devise:
