@@ -44,16 +44,14 @@
     = f.telephone_field :phone_number, class: 'form-control', required: 'true'
 
   .col-sm-8.field
-    = f.label :city_state, "#{t(:city)} and #{t(:state)} *"
+
+    %label{for: 'user_city_state'}
+      %div
+        City and State*
+        %div{style: "line-height: 22px; margin-bottom: 0px;"}
+          %i
+            Where you want to volunteer. Enter a location in FL, OH, PA, NC, NV, WI, or GA.
     = f.text_field :city_state, class: 'form-control', required: 'true', autocomplete: :off
-
-  :javascript
-    function DisableAutoComplete() {
-      var thisForm = document.getElementById('user_city_state');
-      thisForm.setAttribute('autocomplete','off');
-    }
-
-    DisableAutoComplete();
 
     -# These hidden fields
     = f.hidden_field :city, :value => ''
