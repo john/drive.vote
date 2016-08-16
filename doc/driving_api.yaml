@@ -26,9 +26,9 @@ paths:
             $ref: '#/definitions/LocationData'
       responses:
         200:
-          description: OK response with interval
+          description: Status response
           schema:
-            $ref: '#/definitions/UpdateLocationResponse'
+            $ref: '#/definitions/DrivingStatusResponse'
   /driving/available:
     post:
       summary: Indicates the driver is available for rides
@@ -43,9 +43,9 @@ paths:
             $ref: '#/definitions/LocationData'
       responses:
         200:
-          description: ok response
+          description: Status response
           schema:
-            $ref: '#/definitions/OKResponse'
+            $ref: '#/definitions/DrivingStatusResponse'
   /driving/unavailable:
     post:
       summary: Indicates the driver is unavailable for rides
@@ -53,9 +53,9 @@ paths:
         Call this endpoint when the driver is 'off duty' and will not accept rides
       responses:
         200:
-          description: OK response
+          description: Status response
           schema:
-            $ref: '#/definitions/OKResponse'
+            $ref: '#/definitions/DrivingStatusResponse'
   /driving/status:
     get:
       summary: Gets the server's understanding of driver status
@@ -64,7 +64,7 @@ paths:
         in terms of availability and any active ride. Polling intervals are also included.
       responses:
         200:
-          description: OK response
+          description: Status response
           schema:
             $ref: '#/definitions/DrivingStatusResponse'
   /driving/accept_ride:
@@ -80,9 +80,9 @@ paths:
           required: true
       responses:
         200:
-          description: OK response means the driver got the ride
+          description: Status response will include the ride as active_ride if successful
           schema:
-            $ref: '#/definitions/OKResponse'
+            $ref: '#/definitions/DrivingStatusResponse'
         400:
           description: |
             The driver did not get the ride. Either the driver already has a ride or
@@ -103,9 +103,9 @@ paths:
           required: true
       responses:
         200:
-          description: OK response means the driver was released from the ride
+          description: Status response will have null active_ride if driver was released from the ride
           schema:
-            $ref: '#/definitions/OKResponse'
+            $ref: '#/definitions/DrivingStatusResponse'
         400:
           description: |
             The release did not succeed, probably because the driver was not assigned
@@ -125,9 +125,9 @@ paths:
           required: true
       responses:
         200:
-          description: OK response
+          description: Status response
           schema:
-            $ref: '#/definitions/OKResponse'
+            $ref: '#/definitions/DrivingStatusResponse'
         400:
           description: |
             The server does not think this driver owns this ride
@@ -146,9 +146,9 @@ paths:
           required: true
       responses:
         200:
-          description: OK response
+          description: Status response
           schema:
-            $ref: '#/definitions/OKResponse'
+            $ref: '#/definitions/DrivingStatusResponse'
         400:
           description: |
             The server does not think this driver owns this ride
@@ -261,21 +261,6 @@ definitions:
         type: number
         format: double
         description: The end latitude
-  UpdateLocationResponse:
-    type: object
-    properties:
-      response:
-        type: string
-        description: Text response
-      update_location_interval:
-        type: integer
-        description: Minimum time before next location update
-  OKResponse:
-    type: object
-    properties:
-      response:
-        type: string
-        description: Always 'ok'
   ErrorResponse:
     type: object
     properties:
