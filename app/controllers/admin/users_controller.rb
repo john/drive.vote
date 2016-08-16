@@ -13,17 +13,7 @@ class Admin::UsersController < Admin::AdminApplicationController
     @users = User.all
   end
 
-  def destroy
-    @user.destroy
-    redirect_to admin_users_url, notice: 'User was successfully destroyed.'
-  end
-
   def edit
-    # role_ids = []
-    # Role.all.each do |role|
-    #   role_ids << role.id if @user.has_role? role.name.to_sym
-    # end
-    # @user.role_ids = role_ids
   end
 
   # # PATCH/PUT /users/1
@@ -41,4 +31,5 @@ class Admin::UsersController < Admin::AdminApplicationController
       end
     end
   end
+
 end

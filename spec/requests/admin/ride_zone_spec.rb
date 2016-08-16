@@ -2,15 +2,6 @@ require 'rails_helper'
 
 RSpec.describe "RideZones", type: :request do
 
-  # include Warden::Test::Helpers
-  #
-  # # https://makandracards.com/makandra/37161-rspec-devise-how-to-sign-in-users-in-request-specs
-  # def sign_in(resource_or_scope, resource = nil)
-  #   resource ||= resource_or_scope
-  #   scope = Devise::Mapping.find_scope!(resource_or_scope)
-  #   login_as(resource, scope: scope)
-  # end
-
   describe "GET /admin/ride_zones" do
 
     it "redirects if you're not logged in" do

@@ -14,18 +14,7 @@ RSpec.describe Admin::UsersController, type: :controller do
     skip("Add a hash of attributes invalid for your model")
   }
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # RidesController. Be sure to keep this updated too.
-
   describe "GET index" do
-    it "renders" do
-      get :index, params: {}
-      # expect(assigns(:user)).to be_a_new(User)
-    end
-  end
-
-  describe "GET #index" do
     it "assigns all users as @users" do
       User.create! valid_attributes # add a second user in addition to user logged in for testing
       users = User.all
@@ -33,8 +22,6 @@ RSpec.describe Admin::UsersController, type: :controller do
       expect(assigns(:users)).to match_array(users)
     end
   end
-
-
 
   describe "GET show" do
     it "assigns the requested user as @user" do
@@ -44,25 +31,12 @@ RSpec.describe Admin::UsersController, type: :controller do
     end
   end
 
-  describe "DELETE destroy" do
-    it "destroys the requested user" do
-      skip
-      # user = User.create! valid_attributes
-      # user = User.create! valid_attributes
-      # expect {
-      #   delete :destroy, {:id => user.to_param}, valid_session
-      # }.to change(User, :count).by(-1)
-    end
-
-    it "redirects to the users list" do
-      skip
-      # user = User.create! valid_attributes
-      # delete :destroy, {:id => user.to_param}, valid_session
-      # expect(response).to redirect_to(users_url)
+  describe "GET edit" do
+    it "assigns the requested user as @user" do
+      user = User.create! valid_attributes
+      get :edit, params: {:id => user.to_param}
+      expect(assigns(:user)).to eq(user)
     end
   end
 
 end
-
-
-
