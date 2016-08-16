@@ -1,6 +1,7 @@
 %nav.navbar.navbar-default.navbar-static-top
   .container
-    .navbar-header
+
+    .navbar-header{style: 'margin-top: 10px;'}
       %button.navbar-toggle.collapsed{:type=>"button", :'data-toggle'=>"collapse", :'data-target'=>"#navbar",  :'aria-expanded'=>"false", :'aria-controls'=>"navbar"}
         %span.sr-only Toggle navigation
         %span.icon-bar
@@ -14,33 +15,31 @@
           #{t(:drive_the_vote)}!
 
     #navbar.collapse.navbar-collapse
-      %ul.nav.navbar-nav.navbar-right
-        - if !user_signed_in?
-          %li.visible-xs.hidden-sm.hidden-md.hidden-lg
-            = link_to t(:sign_in), "/users/sign_in?locale=#{I18n.locale.to_s}"
-        %li= link_to "Español", locale: 'es'
-        %li= link_to "English", locale: 'en'
-        -# if !user_signed_in?
-          / %li.hidden-xs
-          /   %p.navbar-btn
-          /     = link_to t(:sign_in), "/users/sign_in?locale=#{I18n.locale.to_s}", class: 'btn btn-default btn-xs', role: 'button', style: 'margin: 7px 0 0 10px;'
+      .pull-right{style: 'margin-top: 10px;'}
+        %a{href: '?locale=en', class: "loc-#{(locale.to_s == 'en') ? 'active' : 'inactive'}"}
+          English
 
-        - if user_signed_in? #&& @user.has_role?(:admin)
+        &nbsp; &#183; &nbsp;
+        <a href="?locale=es" class="loc-#{(locale.to_s == 'es') ? 'active' : 'inactive'}">Español</a>
 
-          -# on larger screens, you want a dropdown
-          %li.dropdown.hidden-xs
-            %a.dropdown-toggle{href: "#", 'data-toggle': "dropdown", role: "button", 'aria-haspopup': "true", 'aria-expanded': "false"}
-              %span.glyphicon.glyphicon-user.inverse{'aria-hidden': "true"}
-              %span.caret.inverse
-              %ul.dropdown-menu{"aria-labelledby": "dropdownMenu1"}
-                %li= link_to t(:sign_out), destroy_user_session_path, {method: :delete}
-                - if current_user.has_role? :admin
-                  %li= link_to 'admin', admin_path, style: 'color: red;'
+        .btn.btn-info.btn-xs{style: 'margin: 5px 0 0 20px;'}
+          = link_to t(:learn_more), about_path(locale: I18n.locale.to_s), style: 'color: white;'
 
-          -# JANK, should be DRY'd
-          -# on smaller screens, when you've got a burger, you don't
-          %li.visible-xs.hidden-sm.hidden-md.hidden-lg
-            = link_to t(:sign_out), destroy_user_session_path, {method: :delete}
-          - if current_user.has_role? :admin
-            %li.visible-xs.hidden-sm.hidden-md.hidden-lg
-              = link_to 'admin', admin_path, style: 'color: red;'
+        - if user_signed_in? && current_user.has_role?(:admin)
+
+          %button.btn.btn-default.btn-xs.dropdown-toggle{type: 'button', 'data-toggle': "dropdown", 'aria-haspopup': "true", 'aria-expanded': "false", style: 'margin: 5px 0 0 5px;'}
+            %span.glyphicon.glyphicon-user.inverse{'aria-hidden': "true"}
+            %span.caret.inverse
+
+          %ul.dropdown-menu{style: 'margin: -10px 20px 0 0;'}
+            %li= link_to t(:sign_out), destroy_user_session_path, {method: :delete}
+            - if current_user.has_role? :admin
+              %li= link_to 'admin', admin_path, style: 'color: red;'
+
+          / -# JANK, should be DRY'd
+          / -# on smaller screens, when you've got a burger, you don't
+          / %li.visible-xs.hidden-sm.hidden-md.hidden-lg
+          /   = link_to t(:sign_out), destroy_user_session_path, {method: :delete}
+          / - if current_user.has_role? :admin
+          /   %li.visible-xs.hidden-sm.hidden-md.hidden-lg
+          /     = link_to 'admin', admin_path, style: 'color: red;'

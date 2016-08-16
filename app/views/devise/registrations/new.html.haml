@@ -1,34 +1,19 @@
 :css
-  #error_explanation {
-    float: none;
-    display: block;
-    margin-top: 100px;
-    color: #f00;
-    ul {
-      list-style: none;
-      margin: 0 0 18px 0;
-    }
-  }
-
-  h2 {
-    font-size: 22px;
-  }
-
+  h2 { font-size: 22px; }
+  label { font-weight: bold; }
   .field_with_errors {
-    @extend .control-group;
+    @extend .control-group !optional;
     @extend .error;
    }
 
 .col-sm-8.field
   %h3{style: 'margin-top: 0;'}
     = t(:will_drive)
-  %p
+  %div{style: 'margin-bottom: 0;'}
     = t(:will_drive_signup_description)
 
-%br
-= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {autocomplete: "off"}) do |f|
   = devise_error_messages!
-
   = f.hidden_field :user_type
 
   .col-sm-8.field
@@ -44,8 +29,18 @@
     = f.telephone_field :phone_number, class: 'form-control', required: 'true'
 
   .col-sm-8.field
-    = f.label :zip, "#{t(:zip_where_can_drive)} *"
-    = f.text_field :zip, class: 'form-control', required: 'true'
+
+    %label{for: 'user_city_state'}
+      %div
+        City and State*
+        %div{style: "line-height: 22px; margin-bottom: 0px;"}
+          %i
+            Where you want to volunteer. Enter a location in #{User::VALID_STATES.map{|s| s[0]}.to_sentence(last_word_connector: ', or ')}.
+    = f.text_field :city_state, class: 'form-control', required: 'true', autocomplete: :off
+
+    -# These hidden fields
+    = f.hidden_field :city, :value => ''
+    = f.hidden_field :state, :value => ''
 
   .col-sm-8.field
     = f.label :password
@@ -55,17 +50,17 @@
     %br/
     = f.password_field :password, autocomplete: "off", class: 'form-control', required: 'true'
 
-  -#
-    / .field
-    /   = f.label :password_confirmation
-    /   %br/
-    /   = f.password_field :password_confirmation, autocomplete: "off"
-
   .col-sm-8.field
-    = f.submit t(:save), class: 'btn btn-primary', style: 'width: 100%; margin: 10px 0 0 0', disable_with: "#{t(:saving)}..."
+    = f.submit t(:volunteer_to_drive), class: 'btn btn-primary', style: 'width: 100%; margin: 10px 0 0 0', disable_with: "#{t(:saving)}..."
 
     .small{style: 'margin-top: -10px 0 0 0;'}
       By saving your are agreeing to the #{link_to t(:terms_of_service), terms_of_service_path, target: '_blank'}.
     %br
 
--# = render "devise/shared/links"
+- @google_api_key = 'AIzaSyDefFnLJQKoz1OQGjaqaJPHMISVcnXZNPc'
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=#{@google_api_key}"></script>
+%script{:src => 'https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/dist/typeahead.bundle.min.js'}
+%script{:src => 'https://cdnjs.cloudflare.com/ajax/libs/typeahead-addresspicker/0.1.4/typeahead-addresspicker.min.js'}
+
+:javascript
+  locationAutocomplete.attach();
