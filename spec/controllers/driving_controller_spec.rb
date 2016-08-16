@@ -29,7 +29,7 @@ RSpec.describe DrivingController, :type => :controller do
     it 'returns calculated interval' do
       allow(controller).to receive(:update_location_interval).and_return(42)
       post :update_location, params: car_location
-      expect(JSON.parse(response.body)['update_location_interval']).to eq(42)
+      expect(JSON.parse(response.body)['response']['update_location_interval']).to eq(42)
     end
   end
 

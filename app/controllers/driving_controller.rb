@@ -5,7 +5,6 @@ class DrivingController < ApplicationController
 
   skip_before_action :verify_authenticity_token
 
-  OK_RESPONSE = {response: 'ok'}.freeze
   RIDES_LIMIT = 3
   RIDES_RADIUS = 10 # miles by default in Geokit
   UPDATE_LOCATION_INTERVAL = 60 # seconds
@@ -16,27 +15,21 @@ class DrivingController < ApplicationController
 
   def update_location
     # work is done in before_action
-    render json: OK_RESPONSE.merge(update_location_interval: update_location_interval)
+    render json: {response: status_data}
   end
 
   def available
     current_user.update_attribute :available, true
-    render json: OK_RESPONSE
+    render json: {response: status_data}
   end
 
   def unavailable
     current_user.update_attribute :available, false
-    render json: OK_RESPONSE
+    render json: {response: status_data}
   end
 
   def status
-    data = {
-      available: current_user.available,
-      active_ride: @active_ride.try(:api_json),
-      waiting_rides_interval: waiting_rides_interval,
-      update_location_interval: update_location_interval
-    }
-    render json: {response: data}
+    render json: {response: status_data}
   end
 
   def accept_ride
@@ -100,7 +93,7 @@ class DrivingController < ApplicationController
   # this routine executes function and renders OK response or error
   def perform_update func, error_msg
     if func.call
-      render json: OK_RESPONSE
+      render json: {response: status_data}
     else
       render json: {error: error_msg}, status: 400
     end
@@ -122,4 +115,12 @@ class DrivingController < ApplicationController
     WAITING_RIDES_INTERVAL
   end
 
+  def status_data
+    {
+      available: current_user.available,
+      active_ride: @active_ride.try(:api_json),
+      waiting_rides_interval: waiting_rides_interval,
+      update_location_interval: update_location_interval
+    }
+  end
 end
