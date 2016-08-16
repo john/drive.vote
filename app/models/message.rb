@@ -17,7 +17,7 @@ class Message < ApplicationRecord
   # creates a new Message object that is a reply to a voter in a conversation
   def self.create_conversation_reply(conversation, twilio_msg)
     attrs = {
-      conversation_id: conversation.id,
+      conversation: conversation,
       ride_zone: conversation.ride_zone,
       from: conversation.to_phone,
       to: conversation.from_phone,
