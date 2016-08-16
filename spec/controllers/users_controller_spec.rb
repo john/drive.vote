@@ -39,7 +39,7 @@ RSpec.describe UsersController, :type => :controller do
 
       it "redirects to root" do
         post :create, params: {:user => invalid_attributes}
-        expect(response).to be_redirect
+        expect(response).to redirect_to(:root)
       end
     end
   end
