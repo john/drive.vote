@@ -14,7 +14,7 @@ class Ride < ApplicationRecord
 
   after_create :notify_creation
   around_save :notify_update
-  before_save :close_conversation
+  before_save :close_conversation_when_complete
 
   include HasAddress
 
@@ -127,7 +127,7 @@ class Ride < ApplicationRecord
     self.ride_zone.event(:driver_changed, driver_to_notify, :driver) if notify_driver && self.ride_zone
   end
 
-  def close_conversation
+  def close_conversation_when_complete
     self.conversation.update_attribute(:status, 'closed') if self.conversation && status_changed? && status == 'complete'
   end
 end

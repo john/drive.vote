@@ -7,6 +7,7 @@ FactoryGirl.define do
     city 'Toledo'
     state 'Oh'
     zip '43601'
+    sequence(:phone_number) { |n| "510-555-%04d" % n}
 
     factory :admin_user do
       user_type :admin

@@ -11,7 +11,7 @@ RSpec.describe Api::V1::TwilioController, type: :controller do
   }
 
   describe 'POST sms' do
-    let(:from_number) { '+12073328709' }
+    let(:from_number) { '+12073328710' }
     let(:to_number) { '+14193860121' }
     let(:msg) { 'I need a ride' }
     let(:response_text) { 'On our way!' }

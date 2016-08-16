@@ -4,14 +4,14 @@ class ConversationBot
   CALL_FOR_HELP = /\Ahelp|ayuda\z/i.freeze
 
   NUMBER_STRINGS = {
-      0 => [/0/, /zero/, /cero/],
+      0 => [/0/, /zero/, /none/, /cero/, /nada/],
       1 => [/1/, /one/, /uno/],
       2 => [/2/, /two/, /dos/],
       3 => [/3/, /three/, /tres/],
       4 => [/4/, /four/, /cuatro/]
   }.freeze
 
-  DONT_KNOW_FRAGMENTS = [/don't know/i, /no se/i, /no sé/i].freeze
+  DONT_KNOW_FRAGMENTS = [/don'*t know/i, /unsure/i, /dunno/i, /skip/i, /omitir/i, /seguro/i, /no se/i, /no sé/i].freeze
 
   # accepts a conversation at a certain state and a new message that has arrived
   def initialize convo, message
@@ -46,7 +46,7 @@ class ConversationBot
     # Look for: language
     case @bot_counter
       when 0
-        @response = 'Hi, thanks for contacting us for a ride! Reply "1" for English, Responder "2" para el español.'
+        @response = 'Hi, thanks for contacting us for a ride! This is an automated system. Reply "1" for English, Responder "2" para el español.'
         return 1
       when 1..2
         lang = if @body =~ /1/ || @body.downcase =~ /eng/
@@ -59,7 +59,7 @@ class ConversationBot
           @response = I18n.t(:what_is_your_name, locale: lang)
           return 0
         end
-        @response = 'Sorry I did not understand. Reply help/ayuda for assistance. Please reply with "1" for English. Responder "2" para el español.'
+        @response = 'Sorry I did not understand. Reply help/ayuda to reach a person. Please reply with "1" for English. Responder "2" para el español.'
         return @bot_counter + 1
       else
         @response = 'Someone will contact you soon - Alguien se pondrá en contacto en breve'
@@ -240,7 +240,7 @@ class ConversationBot
         if @body.blank?
           @response = I18n.t(:no_address_match, locale: @locale)
           return @bot_counter + 1
-        elsif DONT_KNOW_FRAGMENTS.any? { |f| @body =~ f }
+        elsif dont_know_answer
           return give_up_on_location(from_or_to)
         end
 
@@ -284,7 +284,13 @@ class ConversationBot
   end
 
   def positive_answer
-    @body.downcase =~ /y|si|sí/
+    @body.downcase =~ /y|right|correct|good|sure|cierto|bien|si|sí/
+  end
+
+  # we have some expressions for don't know, unsure but to avoid matching an
+  # address accidentally, make sure there are no digits in the answer too
+  def dont_know_answer
+    (@body =~ /[0-9]/).nil? && DONT_KNOW_FRAGMENTS.any? { |f| @body =~ f }
   end
 
   def numeric_answer
