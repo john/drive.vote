@@ -155,7 +155,7 @@ RSpec.describe Ride, type: :model do
   end
 
   it 'updates conversation to closed when ride complete' do
-    c = create :conversation
+    c = create :conversation_with_messages
     ride = create :ride, conversation: c
     ride.update_attribute(:status, :complete)
     expect(c.reload.status).to eq('closed')

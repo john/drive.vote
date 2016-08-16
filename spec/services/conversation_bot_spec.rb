@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ConversationBot do
-  let(:convo) { create :conversation }
+  let(:convo) { create :conversation_with_messages }
   let(:msg) { create :message, conversation: convo }
   let(:ride_address_attrs) {{from_address: 'from', from_city: 'fcity', from_latitude: 1, from_longitude: 2,
                              to_address: 'to', to_city: 'tcity', to_latitude: 3, to_longitude: 4}}
@@ -52,7 +52,7 @@ RSpec.describe ConversationBot do
 
   describe 'getting name' do
     let(:user) { create :user, language: :en, name: '' }
-    let(:convo) { create :conversation, user: user }
+    let(:convo) { create :conversation_with_messages, user: user }
 
     it 'should accept and update name' do
       reply = create :message, conversation: convo, body: 'george washington'
@@ -72,7 +72,7 @@ RSpec.describe ConversationBot do
 
   describe 'special case of new conversation registered user' do
     let(:user) { create :user, language: :en, name: 'george washington' }
-    let(:convo) { create :conversation, user: user, status: :sms_created }
+    let(:convo) { create :conversation_with_messages, user: user, status: :sms_created }
 
     it 'should ignore message and prompt for origin' do
       reply = create :message, conversation: convo, body: 'george washington'
@@ -85,7 +85,7 @@ RSpec.describe ConversationBot do
   describe 'prior complete ride' do
     let!(:user) { create :user, language: :en, name: 'foo bar' }
     let!(:ride) { create :ride, {voter: user, status: :complete}.merge(ride_address_attrs) }
-    let!(:convo) { create :conversation, user: user }
+    let!(:convo) { create :conversation_with_messages, user: user }
 
     before :each do
       reply = create :message, conversation: convo, body: 'can I get a ride back?'
@@ -142,7 +142,7 @@ RSpec.describe ConversationBot do
 
   describe 'getting to confirmed origin' do
     let(:user) { create :user, language: :en, name: 'foo' }
-    let(:convo) { create :conversation, user: user }
+    let(:convo) { create :conversation_with_messages, user: user }
     let(:good_geocode) { OpenStruct.new(formatted_address: 'formatted', street_address: 'main', city: 'city', geometry: {'location' => {'lat' => 1, 'lng' => 2}}) }
 
     before :each do
@@ -186,7 +186,7 @@ RSpec.describe ConversationBot do
 
   describe 'getting to confirmed destination' do
     let(:user) { create :user, language: :en, name: 'foo' }
-    let(:convo) { create :conversation, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true }
+    let(:convo) { create :conversation_with_messages, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true }
     let(:good_geocode) { OpenStruct.new(formatted_address: 'formatted to', street_address: 'mainto', city: 'cityto', geometry: {'location' => {'lat' => 3, 'lng' => 4}}) }
 
     before :each do
@@ -238,7 +238,7 @@ RSpec.describe ConversationBot do
 
   describe 'getting to confirmed time' do
     let(:user) { create :user, language: :en, name: 'foo' }
-    let(:convo) { create :conversation, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true }
+    let(:convo) { create :conversation_with_messages, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true }
 
     describe 'valid times' do
       let!(:voter_formatted) { Time.now.strftime('%l:%M %P') }
@@ -295,7 +295,7 @@ RSpec.describe ConversationBot do
 
   describe 'additional passengers' do
     let!(:user) { create :user, language: :en, name: 'foo' }
-    let!(:convo) { create :conversation, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true, pickup_time: Time.now, time_confirmed: true }
+    let!(:convo) { create :conversation_with_messages, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true, pickup_time: Time.now, time_confirmed: true }
 
     ConversationBot::NUMBER_STRINGS.each do |num, list|
       list.each do |regexp|
@@ -319,7 +319,7 @@ RSpec.describe ConversationBot do
 
   describe 'special requests' do
     let!(:user) { create :user, language: :en, name: 'foo' }
-    let!(:convo) { create :conversation, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true, pickup_time: Time.now, time_confirmed: true, additional_passengers:0 }
+    let!(:convo) { create :conversation_with_messages, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true, pickup_time: Time.now, time_confirmed: true, additional_passengers:0 }
 
     it 'should accept special requests' do
       reply = create :message, conversation: convo, body: 'wheelchair'
@@ -333,7 +333,7 @@ RSpec.describe ConversationBot do
 
   describe 'unexpected after all done' do
     let!(:user) { create :user, language: :en, name: 'foo' }
-    let!(:convo) { create :conversation, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true, pickup_time: Time.now, time_confirmed: true, additional_passengers:0, special_requests: 'none' }
+    let!(:convo) { create :conversation_with_messages, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true, pickup_time: Time.now, time_confirmed: true, additional_passengers:0, special_requests: 'none' }
 
     it 'should signal for help' do
       reply = create :message, conversation: convo, body: 'wait i made a mistake'

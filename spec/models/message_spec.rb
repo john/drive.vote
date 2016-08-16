@@ -47,13 +47,13 @@ RSpec.describe Message, type: :model do
     let(:twilio_msg) { OpenStruct.new(sid: 'sid', status: 'status', body: 'hello') }
 
     it 'should update the conversation' do
-      c = create :conversation, status: :in_progress
+      c = create :conversation_with_messages, status: :in_progress
       Message.create_conversation_reply(c, twilio_msg)
       expect(c.reload.status).to eq('help_needed')
     end
 
     it 'should not update if ride created' do
-      c = create :conversation, status: :ride_created
+      c = create :conversation_with_messages, status: :ride_created
       Message.create_conversation_reply(c, twilio_msg)
       expect(c.reload.status).to eq('ride_created')
     end
