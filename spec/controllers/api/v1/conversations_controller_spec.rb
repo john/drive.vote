@@ -4,9 +4,9 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
 
   describe 'get conversation' do
     let(:rz) { create :ride_zone }
-    let(:convo) { create :conversation, ride_zone: rz, to_phone: rz.phone_number }
-    let!(:msg1) { create :message, conversation: convo, ride_zone: rz }
-    let!(:msg2) { create :message, conversation: convo, ride_zone: rz }
+    let(:convo) { create :conversation_with_messages, ride_zone: rz}
+    let!(:msg1) { convo.messages.first }
+    let!(:msg2) { convo.messages.last }
 
     it 'is successful' do
       get :show, params: {id: convo.id}
@@ -21,7 +21,7 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
 
   describe 'create message' do
     let(:rz) { create :ride_zone }
-    let(:convo) { create :conversation, ride_zone: rz }
+    let(:convo) { create :conversation_with_messages, ride_zone: rz }
     let(:body) { 'hello' }
     let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid') }
 
@@ -41,11 +41,13 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
     end
 
     it 'creates a message' do
+      convo.valid? # let(...) are lazy loaded, so make sure convo object is ready
+      original_message_count = Message.count
       post :create_message, params: {id: convo.id, message: {body: body}}
-      expect(Message.count).to eq(1)
-      expect(Message.first.body).to eq(body)
-      expect(Message.first.conversation_id).to eq(convo.id)
-      expect(Message.first.ride_zone_id).to eq(rz.id)
+      expect(Message.count).to eq(original_message_count + 1)
+      expect(Message.last.body).to eq(body)
+      expect(Message.last.conversation_id).to eq(convo.id)
+      expect(Message.last.ride_zone_id).to eq(rz.id)
     end
 
     it 'rejects missing message param' do

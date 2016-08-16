@@ -1,10 +1,10 @@
 FactoryGirl.define do
 
   factory :ride_zone do
-    slug 'toledo_ohio_d_4'
-    name 'Toldedo, District 4'
+    sequence(:slug) { |n| "toledo_ohio_d_#{n}" }
+    sequence(:name) { |n| "Toldedo, District #{n}"  }
     zip '43601'
-    sequence(:phone_number) { |n| '867-%04d' % n }
+    sequence(:phone_number) { |n| "867-530#{n}" }
   end
 
 end
