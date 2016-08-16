@@ -16,8 +16,8 @@ var locationAutocomplete = {
     $(addressPicker).on('addresspicker:selected', function (event, result) {
       //alert('result.address(): ' + result.address());
       var city_state = result.address().split(',');
-      $('#user_city').val( city_state[0] );
-      $('#user_state').val( city_state[1] );
+      $('#user_city').val( city_state[0].trim() );
+      $('#user_state').val( city_state[1].trim() );
     });
   }
 

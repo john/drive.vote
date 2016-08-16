@@ -23,7 +23,7 @@ class User < ApplicationRecord
   # end
 
   VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
-  VALID_STATES = {'FL': 'Florida', 'GA': 'Georgia', 'NV': 'Nevada', 'NC': 'North Carolina', 'OH': 'Ohio',  'PA': 'Pennsylvania', 'WI': 'Wisconsin'}
+  VALID_STATES = {'FL' => 'Florida', 'GA' => 'Georgia', 'NV' => 'Nevada', 'NC' => 'North Carolina', 'OH' => 'Ohio',  'PA' =>'Pennsylvania', 'WI' => 'Wisconsin'}
 
   enum language: { unknown: 0, english: 1, spanish: 2 }, _suffix: true
 
@@ -137,7 +137,7 @@ class User < ApplicationRecord
       true # admins might live anywhere
     else
       if zip_hash = ZipCodes.identify( self.zip )
-        unless User::VALID_STATES.map{|s| s[0].to_s}.include?( zip_hash[:state_code].to_s.upcase )
+        unless User::VALID_STATES.keys.include?( zip_hash[:state_code].to_s.upcase )
           errors.add(:zip, "isn't in a supported state.")
         end
       else
@@ -152,7 +152,7 @@ class User < ApplicationRecord
     elsif self.state.blank?
       true # no state is allowed
     else
-      if User::VALID_STATES.map{|s| s[0].to_s}.include?( self.state.to_s.upcase )
+      if User::VALID_STATES.keys.include?( self.state.upcase.strip )
         true
       else
         errors.add(:state, "isn't a supported state.")

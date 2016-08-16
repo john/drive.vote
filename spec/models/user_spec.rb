@@ -11,19 +11,25 @@ RSpec.describe User, :type => :model do
 
       it 'is not valid if state is not supported' do
         user.zip = ''
-        user.state = 'CA'
+        user.state = 'XX'
         expect(user).to_not be_valid
         expect(user.errors[:state]).to include('isn\'t a supported state.')
       end
 
       it 'is valid if state is supported' do
         user.zip = ''
-        user.state = 'OH'
+        user.state = User::VALID_STATES.keys.first
+        expect(user).to be_valid
+      end
+
+      it 'is valid if state is supported, but has surrounding whitespace' do
+        user.zip = ''
+        user.state = "#{User::VALID_STATES.keys.first} "
         expect(user).to be_valid
       end
 
       it 'is valid regardless of state, if user is admin' do
-        admin_user.state = 'CA' # zip not in state on approved list
+        admin_user.state = 'XX' # zip not in state on approved list
         expect(admin_user).to be_valid
       end
 
