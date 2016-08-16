@@ -82,7 +82,7 @@ RSpec.describe UsersController, :type => :controller do
       it "redirect to the root path" do
         user = User.create! valid_attributes
         put :update, params: {:id => user.to_param, :user => invalid_attributes}
-        expect(response).to be_redirect(root_path)
+        expect(response).to redirect_to(root_path)
       end
     end
   end
