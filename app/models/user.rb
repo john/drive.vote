@@ -23,6 +23,7 @@ class User < ApplicationRecord
   # end
 
   VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
+  VALID_STATES = {'FL': 'Florida', 'GA': 'Georgia', 'NV': 'Nevada', 'NC': 'North Carolina', 'OH': 'Ohio',  'PA': 'Pennsylvania', 'WI': 'Wisconsin'}
 
   enum language: { unknown: 0, english: 1, spanish: 2 }, _suffix: true
 
@@ -47,6 +48,7 @@ class User < ApplicationRecord
   validates :phone_number_normalized, phony_plausible: true
   validate :permissible_user_type
   validate :permissible_zip
+  validate :permissible_state
 
   def api_json
     data = self.as_json(only: [:id, :name, :available, :latitude, :longitude], methods: [:phone, :location_timestamp])
@@ -135,11 +137,25 @@ class User < ApplicationRecord
       true # admins might live anywhere
     else
       if zip_hash = ZipCodes.identify( self.zip )
-        unless %w(fl oh pa nc mi ga).include?( zip_hash[:state_code].downcase )
+        unless User::VALID_STATES.map{|s| s[0].to_s}.include?( zip_hash[:state_code].to_s.upcase )
           errors.add(:zip, "isn't in a supported state.")
         end
       else
         errors.add(:zip, "couldn't be parsed")
+      end
+    end
+  end
+
+  def permissible_state
+    if self.has_role? :admin
+      true # admins might live anywhere
+    elsif self.state.blank?
+      true # no state is allowed
+    else
+      if User::VALID_STATES.map{|s| s[0].to_s}.include?( self.state.to_s.upcase )
+        true
+      else
+        errors.add(:state, "isn't a supported state.")
       end
     end
   end

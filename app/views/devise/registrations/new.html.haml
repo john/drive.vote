@@ -1,34 +1,19 @@
 :css
-  #error_explanation {
-    float: none;
-    display: block;
-    margin-top: 100px;
-    color: #f00;
-    ul {
-      list-style: none;
-      margin: 0 0 18px 0;
-    }
-  }
-
-  h2 {
-    font-size: 22px;
-  }
-
+  h2 { font-size: 22px; }
+  label { font-weight: bold; }
   .field_with_errors {
-    @extend .control-group;
+    @extend .control-group !optional;
     @extend .error;
    }
 
 .col-sm-8.field
   %h3{style: 'margin-top: 0;'}
     = t(:will_drive)
-  %p
+  %div{style: 'margin-bottom: 0;'}
     = t(:will_drive_signup_description)
 
-%br
 = form_for(resource, as: resource_name, url: registration_path(resource_name), html: {autocomplete: "off"}) do |f|
   = devise_error_messages!
-
   = f.hidden_field :user_type
 
   .col-sm-8.field
@@ -50,7 +35,7 @@
         City and State*
         %div{style: "line-height: 22px; margin-bottom: 0px;"}
           %i
-            Where you want to volunteer. Enter a location in FL, OH, PA, NC, NV, WI, or GA.
+            Where you want to volunteer. Enter a location in #{User::VALID_STATES.map{|s| s[0]}.to_sentence(last_word_connector: ', or ')}.
     = f.text_field :city_state, class: 'form-control', required: 'true', autocomplete: :off
 
     -# These hidden fields

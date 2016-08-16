@@ -12,7 +12,9 @@
   %h3
     = t(:how_to_help)
   %p
-    = t(:how_to_help_copy).html_safe
+    = t(:how_to_help_copy1)
+    = User::VALID_STATES.map{|s| "<b>#{s[1]}</b>"}.to_sentence(last_word_connector: ', or ').html_safe
+    = t(:how_to_help_copy2)
 
   .volunteer
     = link_to new_user_registration_path(type: 'unassigned_driver', locale: I18n.locale.to_s) do

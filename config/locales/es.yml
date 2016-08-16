@@ -46,8 +46,8 @@ es:
   how_it_works_copy: |
     Los votantes enviar un texto para pedir un paseo, y conducir el voto los conecta con un conductor voluntario, que los recoge y los lleva a su lugar de votación.
   how_to_help: 'Cómo ayudar'
-  how_to_help_copy: |
-    Si usted tiene un coche y puede estar en FL, OH, PA, NV, Carolina del Norte, WI o GA, el día de la elección, voluntario para ser un conductor! Ayudar a conseguir que los votantes a las urnas el 8 de noviembre y asegurarse de que todo el mundo tiene un voto.
+  how_to_help_copy1: 'Si usted tiene un coche y puede estar en'
+  how_to_help_copy2: 'el día de la elección, voluntario para ser un conductor! Ayudar a conseguir que los votantes a las urnas el 8 de noviembre y asegurarse de que todo el mundo tiene un voto.'
 
 # election_is_on: 'La elección presidencial de 2016 es el'
 # election_date: 'martes, 8 de noviembre'
