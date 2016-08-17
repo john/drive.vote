@@ -5,11 +5,16 @@
   small { font-size: 11px; }
   .filters { margin: -10px 0 10px 0; font-size: 12px; }
   #conversations, #rides { font-size: 12px; }
+  thead, th {
+    border: none !important;
+  }
+  tr.clickable { cursor: pointer; }
+  .btn-conv, .btn-ride {
+    padding-left: 14px !important;
+    padding-right: 14px;  !important
+  }
 
-:javascript
-  dispatchController.setup(#{@ride_zone.id})
-
-.modal.fade.bs-example-modal-lg{"aria-labelledby" => "conversationModalLabel", :role => "dialog", :tabindex => "-1"}
+.modal.fade.conversation-modal{"aria-labelledby" => "conversationModalLabel", :role => "dialog", :tabindex => "-1"}
   .modal-dialog.modal-lg{:role => "document"}
     .modal-content
       .modal-header
@@ -32,41 +37,59 @@
   %h6
     Conversations &nbsp;
     %small
-      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshConversations()', style: 'font-size: 13px;'
+      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshConversations()', style: 'font-size: 13px; color: #aaa'
 
   .btn-group.btn-group-xs.filters{role: 'group'}
-    = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllConversations()', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
-    = link_to 'Help', '#', onclick: 'javascript: dispatchController.showStatusConversations("need_help")', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
-    = link_to 'In Prog', '#', onclick: 'javascript: dispatchController.showStatusConversations("in_progress")', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
-    = link_to 'Stale', '#', onclick: 'javascript: dispatchController.showStaleConversations()', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
+    = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllConversations(); return false;', id: 'conv-all', class: 'btn btn-secondary btn-default btn-conv', style: 'background-color: #777;'
 
-  %table.admin{id: 'conversations'}
-    %thead
+    = link_to 'Help', '#', onclick: 'javascript: dispatchController.showStatusConversations("need_help"); return false;', id: 'conv-help', class: 'btn btn-secondary btn-default btn-conv'
+
+    = link_to 'In Prog', '#', onclick: 'javascript: dispatchController.showStatusConversations("in_progress"); return false;', id: 'conv-prog', class: 'btn btn-secondary btn-default btn-conv'
+
+    = link_to 'Stale', '#', onclick: 'javascript: dispatchController.showStaleConversations(); return false;', id: 'conv-stale', class: 'btn btn-secondary btn-default btn-conv'
+
+  %table.table.admin{id: 'conversations'}
+    %thead{style: 'border: none;'}
       %tr
         %th With
         %th Status
-        %th Messages
-        %th
+        %th Updated
+        %th Msgs
 
 .col-md-3
   %h6
     Rides &nbsp;
     %small
-      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshRides()', style: 'font-size: 13px;'
-  .btn-group.btn-group-xs.filters{role: 'group'}
-    = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllRides()', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
-    = link_to 'Waiting', '#', onclick: 'javascript: dispatchController.showStatusRides("waiting_assignment")', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
-    = link_to 'Assigned', '#', onclick: 'javascript: dispatchController.showStatusRides("driver_assigned")', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
-    = link_to 'Stale', '#', onclick: 'javascript: dispatchController.showStaleRides()', class: 'btn btn-secondary btn-default', style: 'padding-left: 14px; padding-right: 14px;'
+      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshRides()', style: 'font-size: 13px; color: #aaa'
 
-  %table.admin{id: 'rides'}
+  .btn-group.btn-group-xs.filters{role: 'group'}
+    = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllRides(); return false;', id: 'ride-all', class: 'btn btn-secondary btn-default btn-ride', style: 'background-color: #777;'
+
+    = link_to 'Waiting', '#', onclick: 'javascript: dispatchController.showStatusRides("waiting_assignment"); return false;', id: 'ride-waiting', class: 'btn btn-secondary btn-default btn-ride'
+
+    = link_to 'Assigned', '#', onclick: 'javascript: dispatchController.showStatusRides("driver_assigned"); return false;', id: 'ride-assigned', class: 'btn btn-secondary btn-default btn-ride'
+
+    = link_to 'Stale', '#', onclick: 'javascript: dispatchController.showStaleRides(); return false;', id: 'ride-stale', class: 'btn btn-secondary btn-default btn-ride'
+
+  %table.table.admin{id: 'rides'}
     %thead
       %tr
         %th Voter
         %th Status
-        %th Pickup Time
+        %th Updated
+        %th Pickup at
 
 :javascript
+
+  dispatchController.setup(#{@ride_zone.id})
+
+  jQuery(document).ready(function($) {
+    $(document).on("click", '.clickable', function(event) {
+      $(".conversation-modal").modal();
+      dispatchController.loadConversationMessages($(this).data("cid"));
+    });
+  });
+
   function on_loaded(map)
   {
       var m1 = map.addMarker(37.770444, -122.434960, Map.icons.voter, 'Hello World!', 'http://example.com');
