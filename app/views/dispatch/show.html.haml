@@ -5,6 +5,14 @@
   small { font-size: 11px; }
   .filters { margin: -10px 0 10px 0; font-size: 12px; }
   #conversations, #rides { font-size: 12px; }
+  thead, th {
+    border: none !important;
+  }
+  tr.clickable { cursor: pointer; }
+  .btn-conv, .btn-ride {
+    padding-left: 14px !important;
+    padding-right: 14px;  !important
+  }
 
   thead, th {
     border: none !important;
@@ -42,7 +50,6 @@
     background-color: #fff;
     border-radius: 8px;
   }
-
 
 .modal.fade.modal-body{"aria-labelledby" => "conversationModalLabel", :role => "dialog", :tabindex => "-1"}
   .modal-dialog.modal-lg{:role => "document"}
@@ -83,7 +90,6 @@
         %th With
         %th Status
         %th Updated
-
 
 .col-md-4
   %h6
