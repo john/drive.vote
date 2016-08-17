@@ -37,7 +37,7 @@
   %h6
     Conversations &nbsp;
     %small
-      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshConversations()', style: 'font-size: 13px; color: #aaa'
+      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshConversations(); return false;', style: 'font-size: 13px; color: #aaa'
 
   .btn-group.btn-group-xs.filters{role: 'group'}
     = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllConversations(); return false;', id: 'conv-all', class: 'btn btn-secondary btn-default btn-conv', style: 'background-color: #777;'
@@ -60,7 +60,7 @@
   %h6
     Rides &nbsp;
     %small
-      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshRides()', style: 'font-size: 13px; color: #aaa'
+      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshRides(); return false;', style: 'font-size: 13px; color: #aaa'
 
   .btn-group.btn-group-xs.filters{role: 'group'}
     = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllRides(); return false;', id: 'ride-all', class: 'btn btn-secondary btn-default btn-ride', style: 'background-color: #777;'
