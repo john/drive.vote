@@ -39,6 +39,7 @@ if  Rails.env == "development"
       zip: '33601'
     }
   ])
+  john.add_role(:dispatcher, ride_zones.first)
 
   conversation = Conversation.create!(
     ride_zone_id: ride_zones.first.id,
