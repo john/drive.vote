@@ -30,6 +30,8 @@ Rails.application.routes.draw do
   match '/terms_of_service' => 'home#terms_of_service', via: :get, as: :terms_of_service
   match '/privacy' => 'home#privacy', via: :get, as: :privacy
 
+  resources :dispatch, only: [:show, :index]
+
   resources :driving do
     collection do
       get 'demo' => 'driving#demo'
@@ -75,6 +77,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :conversations, only: [:index, :show] do
       member do
+        get 'messages' => 'conversations#messages'
         post 'close' => 'conversations#close'
       end
     end

@@ -9,7 +9,8 @@ gem 'geokit-rails'
 gem 'google-api-client'
 gem 'haml-rails'
 gem 'humane-rails'
-gem 'jquery-rails'
+gem 'jquery-rails', github: 'rails/jquery-rails'
+gem 'jquery-ui-rails'
 gem 'pg'
 gem 'phony_rails'
 gem 'puma'
@@ -52,4 +53,5 @@ group :test do
   gem 'factory_girl_rails', require: false
   gem 'shoulda-matchers'
   gem 'rails-controller-testing'
+  gem 'timecop'
 end

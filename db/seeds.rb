@@ -28,13 +28,10 @@ if  Rails.env == "development"
   ride_zones = RideZone.create!([
     {
       slug: 'toledo_d_4',
-      name: 'Toldedo, District 4',
+      name: 'Toledo, OH',
       phone_number: '+14193860121',
       zip: '43601'
-    }
-  ])
-
-  ride_zones = RideZone.create!([
+    },
     {
       slug: 'tampa_fl',
       name: 'Tampa, FL',

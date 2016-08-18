@@ -1,0 +1,105 @@
+:css
+  h5 { margin-top: -10px; }
+  h6 { font-weight: bold; font-size: 23px; }
+  small { font-size: 11px; }
+  .filters { margin: -10px 0 10px 0; font-size: 12px; }
+
+.modal.fade.modal-body{"aria-labelledby" => "conversationModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog.modal-lg{:role => "document"}
+    .modal-content
+      .modal-header
+        %button.close{type: 'button', 'data-dismiss': 'modal', 'aria-label': 'Close'}
+          %span{'aria-hidden': 'true'} x
+        %h4#conversationModalLabel.modal-title
+          %span#conversationDetails{style: 'font-weight: normal; font-size: 14px;'}
+
+      .modal-body
+        .container
+          .col-md-5
+            Conversation collection form
+          .col-md-3
+            #messages
+
+%h5
+  =@ride_zone.name
+
+-#
+  / .disp-server-status
+  /   Connecting
+
+.col-md-4
+  %h6
+    Conversations &nbsp;
+    %small
+      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshConversations(); return false;', style: 'font-size: 13px; color: #aaa'
+
+  .btn-group.btn-group-xs.filters{role: 'group'}
+    = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllConversations(); return false;', id: 'conv-all', class: 'btn btn-secondary btn-default btn-conv', style: 'background-color: #777;'
+
+    = link_to 'Help', '#', onclick: 'javascript: dispatchController.showStatusConversations("need_help"); return false;', id: 'conv-help', class: 'btn btn-secondary btn-default btn-conv'
+
+    = link_to 'In Prog', '#', onclick: 'javascript: dispatchController.showStatusConversations("in_progress"); return false;', id: 'conv-prog', class: 'btn btn-secondary btn-default btn-conv'
+
+    = link_to 'Stale', '#', onclick: 'javascript: dispatchController.showStaleConversations(); return false;', id: 'conv-stale', class: 'btn btn-secondary btn-default btn-conv'
+
+  %table.table.admin{id: 'conversations'}
+    %thead
+      %tr
+        %th Msgs
+        %th With
+        %th Status
+        %th Updated
+
+.col-md-4
+  %h6
+    Rides &nbsp;
+    %small
+      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshRides(); return false;', style: 'font-size: 13px; color: #aaa'
+
+  .btn-group.btn-group-xs.filters{role: 'group'}
+    = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllRides(); return false;', id: 'ride-all', class: 'btn btn-secondary btn-default btn-ride', style: 'background-color: #777;'
+
+    = link_to 'Waiting', '#', onclick: 'javascript: dispatchController.showStatusRides("waiting_assignment"); return false;', id: 'ride-waiting', class: 'btn btn-secondary btn-default btn-ride'
+
+    = link_to 'Assigned', '#', onclick: 'javascript: dispatchController.showStatusRides("driver_assigned"); return false;', id: 'ride-assigned', class: 'btn btn-secondary btn-default btn-ride'
+
+    = link_to 'Stale', '#', onclick: 'javascript: dispatchController.showStaleRides(); return false;', id: 'ride-stale', class: 'btn btn-secondary btn-default btn-ride'
+
+  %table.table.admin{id: 'rides'}
+    %thead
+      %tr
+        %th Voter
+        %th Status
+        %th Updated
+        %th Pickup at
+
+.col-md-4
+  #dispatch-map
+
+:javascript
+
+  dispatchController.setup(#{@ride_zone.id})
+
+  jQuery(document).ready(function($) {
+    $(document).on("click", '.clickable', function(event) {
+      $(".modal-body").modal();
+      dispatchController.loadConversationMessages($(this).data("cid"));
+    });
+  });
+
+  function on_loaded(map)
+  {
+      var m1 = map.addMarker(37.770444, -122.434960, Map.icons.voter, 'Hello World!', 'http://example.com');
+      var m2 = map.addMarker(37.769079, -122.433674, Map.icons.poll, 'Hello World!');
+      var m3 = map.addMarker(37.771612, -122.426836, Map.icons.driver);
+
+      window.setTimeout(function() {
+          map.updateMarker(m1, 37.770709, -122.435082, Map.icons.driver, 'Goodbye World!', 'http://example.com');
+          map.updateMarker(m2, 37.768962, -122.433387, Map.icons.voter,  'Goodbye World!');
+          map.updateMarker(m3, 37.771455, -122.428098, Map.icons.poll);
+          }, 3000);
+  }
+
+  var gmap = new Map(document.getElementById('dispatch-map'), on_loaded,
+                     {'google_api_key': 'AIzaSyDyJ3LTbJGAEIKjqYj3-gFDbAZ3BLo6sGo',
+                      lat: #{@ride_zone.latitude}, lon: #{@ride_zone.longitude}, zoom: 13});

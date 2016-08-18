@@ -93,6 +93,19 @@ RSpec.describe Conversation, type: :model do
     expect(c.to_longitude).to eq(2)
   end
 
+  it 'updates status timestamp on create' do
+    c = create :conversation
+    expect(c.reload.status_updated_at).to_not be_nil
+  end
+
+  it 'updates status timestamp on status change' do
+    c = Timecop.travel(1.hour.ago) do
+      create :conversation
+    end
+    c.update_attribute(:status, :closed)
+    expect(Time.now - c.reload.status_updated_at).to be <(10)
+  end
+
   describe 'lifecycle calculation' do
     it 'detects newly created' do
       c = create :conversation

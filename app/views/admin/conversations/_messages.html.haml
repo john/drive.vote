@@ -1,0 +1,15 @@
+.messages
+  - @conversation.messages.order('created_at asc').each do |message|
+    .message{style: "margin-top: -10px; text-align: #{(message.sent_by == 'Voter') ? 'left' : 'right'}"}
+      %div{style: 'size: 12px; margin-top: 5px; font-style: italic; color: #ccc'}
+        #{message.created_at.localtime.strftime('%l:%M%P')},
+        = message.sent_by
+      %div{style: 'margin:-5px 0 20px 0;'}
+        = message.body
+
+%h6
+  Reply
+= text_area_tag 'body', nil
+
+%p
+  = button_tag 'Send', type: :submit, class: 'btn btn-primary', disable_with: "Replying...", onclick: "javascript: dispatchController.sendReply('#{messages_api_v1_conversation_path(@conversation)}')"

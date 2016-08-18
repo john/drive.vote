@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20160816181854) do
     t.integer  "ride_id"
     t.datetime "created_at",                                                   null: false
     t.datetime "updated_at",                                                   null: false
+    t.datetime "status_updated_at"
     t.text     "special_requests"
     t.integer  "additional_passengers"
     t.integer  "bot_counter",                                     default: 0
@@ -100,6 +101,7 @@ ActiveRecord::Schema.define(version: 20160816181854) do
     t.string   "to_address"
     t.integer  "additional_passengers",                           default: 0
     t.text     "special_requests"
+    t.datetime "status_updated_at"
     t.string   "from_city"
     t.string   "to_city"
     t.index ["driver_id"], name: "index_rides_on_driver_id", using: :btree

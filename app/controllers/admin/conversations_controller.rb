@@ -1,6 +1,6 @@
 class Admin::ConversationsController < Admin::AdminApplicationController
 
-  before_action :set_conversation, only: [:show, :close]
+  before_action :set_conversation, only: [:show, :close, :messages]
 
   # GET /conversations
   def index
@@ -9,6 +9,11 @@ class Admin::ConversationsController < Admin::AdminApplicationController
 
   # GET /conversations/1
   def show
+  end
+
+  # GET /conversations/1/messages
+  def messages
+    render partial: 'messages'
   end
 
   # POST /conversations/1/close

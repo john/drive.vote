@@ -60,7 +60,7 @@ en:
   driver: 'Driver'
   rider: 'Rider'
   description: 'Description'
-  phone_number: 'Cell phone number'
+  phone_number: 'Cell phone'
   address: 'Address'
   city: 'City'
   state: 'state'

@@ -35,8 +35,8 @@ module Api::V1
       elsif sms.status.to_s != 'delivered'
         render json: {error: 'Timeout in delivery'}, status: 503
       else
-        Message.create_conversation_reply(@conversation, sms)
-        render json: {response: 'ok'}, status: 200
+        msg = Message.create_conversation_reply(@conversation, sms)
+        render json: {response: {message: {sent_at: I18n.localize(msg.created_at, format: '%-m/%-d  %l:%M%P'), body: "#{msg.body}" }}}, status: 200
       end
     end
 
