@@ -2,8 +2,6 @@ class DispatchController < ApplicationController
   # before_action :ensure_dispatcher
   before_action :ensure_ride_zone, only: [:show]
 
-  layout "fluid", only: [:show]
-
   # GET /dispatch
   def index
     @ride_zones = RideZone.all
@@ -11,6 +9,7 @@ class DispatchController < ApplicationController
 
   # GET /dispatch/ride_zone
   def show
+    @fluid = true
   end
 
   private
