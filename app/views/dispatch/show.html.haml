@@ -8,7 +8,7 @@
   .modal-dialog.modal-lg{:role => "document"}
     .modal-content
       .modal-header
-        %button.close{type: 'button', 'data-dismiss': 'modal', 'aria-label': 'Close'}
+        %button.close{type: 'button', 'data-dismiss': 'modal', 'aria-label': 'Close', onclick: "$('.modal-backdrop').remove();"}
           %span{'aria-hidden': 'true'} x
         %h4#conversationModalLabel.modal-title
           %span#conversationDetails{style: 'font-weight: normal; font-size: 14px;'}
