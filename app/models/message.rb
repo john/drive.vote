@@ -39,14 +39,20 @@ class Message < ApplicationRecord
       'conversation_message_count' => self.conversation.messages.count,
       'from_phone' => self.from,
       'to_phone' => self.to,
-      'is_from_voter' => self.is_from_voter?,
+      'sent_by' => self.sent_by,
       'body' => self.body,
       'created_at' => self.created_at.to_i,
     }
   end
 
-  def is_from_voter?
-    self.conversation.to_phone.phony_formatted == self.to.phony_formatted
+  def sent_by
+    if self.conversation.to_phone.phony_formatted == self.to.phony_formatted
+      'Voter'
+    elsif self.sms_status.blank?
+      'Bot'
+    else
+      'Staff'
+    end
   end
 
   def ride_zone

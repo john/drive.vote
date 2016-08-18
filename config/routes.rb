@@ -54,7 +54,7 @@ Rails.application.routes.draw do
     namespace :v1, path: '1' do
       post 'twilio/sms' => 'twilio#sms'
 
-      resources :conversations, only: [:show] do
+      resources :conversations, only: [:show, :update] do
         member do
           post 'messages' => 'conversations#create_message'
         end

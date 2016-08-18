@@ -29,7 +29,7 @@
       %tr
         %td= message.created_at.localtime.strftime('%m/%d %l:%M%P')
         %td
-          = message.is_from_voter? ? 'Voter' : 'Dispatcher'
+          = message.sent_by
         %td
           = message.body
 

@@ -1,5 +1,7 @@
 module Api::V1
   class ConversationsController < Api::ApplicationController
+    include ConversationParams
+
     TWILIO_TIMEOUT = 5 # seconds
 
     before_action :find_conversation
@@ -7,6 +9,20 @@ module Api::V1
 
     def show
       render json: {response: @conversation.api_json(true)}
+    end
+
+    def update
+      # caller is passing name as part of conversation hash but we need
+      # to make it safe for updating the user object
+      user_params = params.require(:conversation).permit(:name)
+      unless user_params[:name].blank?
+        @conversation.user.update_attribute(:name, user_params[:name])
+      end
+      if @conversation.update(conversation_params)
+        render json: {response: @conversation.reload.api_json(false)}
+      else
+        render json: {error: @conversation.errors}
+      end
     end
 
     def create_message

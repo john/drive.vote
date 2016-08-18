@@ -46,7 +46,11 @@ This event indicates a new conversation has been created in the subscribed ride 
 			"to_address" : "address line",
 			"to_city" : "city",
 			"pickup_at" : integer_unix_epoch_time,
-			"special_requests" : "any requests"
+			"special_requests" : "any requests",
+			"additional_passengers" : integer,
+			"last_message_time" : integer_unix_epoch_time,
+			"last_message_sent_by" : "Voter" | "Staff" | "Bot",
+			"last_message_body" : "message content"
 		}
 	}
 
@@ -68,7 +72,7 @@ This event indicates a new message has been attached to a conversation. The mess
 			"id" : unique_id_integer,
 			"conversation_id" : id_of_conversation_integer,
 			"from_phone" : "phone number originating the message",
-			"is_from_voter" : true | false,
+			"sent_by" : "Voter" | "Staff" | "Bot",
 			"body" : "text of the SMS message",
 			"created_at" : integer_unix_epoch_time
 		}
