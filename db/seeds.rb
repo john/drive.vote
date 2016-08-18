@@ -16,8 +16,8 @@ john = User.create!(
   image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
   locale: 'en',
   address1: '330 Cabrillo St.',
-  city: 'San Francisco',
-  state: 'CA'
+  city: 'Orlando',
+  state: 'FL'
 )
 
 roles = Role.create( [{name: 'admin'}, {name: 'dispatcher'}, {name: 'driver'}, {name: 'rider'}] )
