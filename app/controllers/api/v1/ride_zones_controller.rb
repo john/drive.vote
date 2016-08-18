@@ -7,7 +7,7 @@ module Api::V1
     def conversations
       # default to non-closed statuses or passed parameter
       status_list = no_status? ? Conversation.active_statuses : status_array
-      render json: {response: @ride_zone.conversations.where(status: status_list).map(&:api_json)}
+      render json: {response: @ride_zone.conversations.where(status: status_list).map{|c| c.api_json(true)}}
     end
 
     def drivers

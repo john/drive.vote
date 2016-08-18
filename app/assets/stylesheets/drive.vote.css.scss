@@ -34,9 +34,11 @@ form {
     td { padding: 5px 20px 5px 0;}
     th {
       font-weight: normal;
-      // border-bottom: 1px solid #ddd;
       margin-bottom: 10px;
       padding-right: 20px;
+    }
+    .msg {
+      width: 20px;
     }
 }
 

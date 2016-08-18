@@ -15,10 +15,10 @@ var dispatchController = {
 
   conversationCells: function (c) {
     var statusClass = (c.status == 'help_needed') ? 'conv-alert' : 'conv-normal';
-    return '<td>' + c.from_phone + '</td>' +
+    return '<td class="msg">' + ((c.message_count == null) ? '0' : c.message_count) + '</td>' +
+      '<td class="from">' + c.from_phone + '<br>' + c.messages[0].body + '</td>' +
       '<td class="'+statusClass+'">' + c.status.replace('in_progress', 'in prog') + '</td>' +
-      '<td>' + strftime('%l:%M%P', new Date(c.status_updated_at*1000)) + '</td>' +
-      '<td>' + ((c.message_count == null) ? '0' : c.message_count) + '</td>'
+      '<td class="updated">' + strftime('%l:%M%P', new Date(c.status_updated_at*1000)) + '</td>'
   },
 
   loadConversationMessages: function (id) {
@@ -75,10 +75,6 @@ var dispatchController = {
     $("#conv-stale").css( "background-color", "#777" );
   },
 
-
-
-
-
   sendReply: function(url) {
     // alert('this will send, but then it just reloads the page. it needs to insert the sent message into the DOM on this modal.');
     var args = {'message' : {'body': $('#body').val()}};
@@ -89,16 +85,6 @@ var dispatchController = {
         $(".messages").append("<tr><td>" + sent_at + "</td><td>?</td><td>" + bod + "</td></tr>");
       });
   },
-  // def api_json(include_messages = false)
-  //   j = self.as_json(only: [:id, :pickup_at, :status, :name, :from_address, :from_city, :to_address, :to_city])
-  //   j['messages'] = self.messages.map(&:api_json) if include_messages
-  //   j['from_phone'] = self.from_phone.phony_formatted(normalize: :US, spaces: '-')
-  //   j['status_updated_at'] = self.status_updated_at.to_i
-  //   j
-  // end
-
-
-
 
   rideCells: function rideCells(r) {
     return '<td>' + r.name + '</td>' +
