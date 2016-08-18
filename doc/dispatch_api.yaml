@@ -116,9 +116,29 @@ paths:
         Call this endpoint to get a single conversation and all its messages
       responses:
         200:
-          description: OK response with conversation
+          description: Returns conversation
           schema:
-            $ref: '#/definitions/OKResponse'
+            $ref: '#/definitions/ConversationResponse'
+        404:
+          description: Conversation not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+    put:
+      tags:
+        - Conversations
+      summary: Updates fields in a single conversation
+      description: |
+        Call this endpoint to update a single conversation with new data
+      parameters:
+        - name: conversation
+          in: body
+          schema:
+            $ref: '#/definitions/UpdateConversation'
+      responses:
+        200:
+          description: Returns conversation
+          schema:
+            $ref: '#/definitions/ConversationResponse'
         404:
           description: Conversation not found
           schema:
@@ -157,6 +177,35 @@ paths:
           description: Timeout determining if message was delivered
           schema:
             $ref: '#/definitions/ErrorResponse'
+  /places/search:
+    get:
+      tags:
+        - Places
+      summary: Retreives google places results for a place or address
+      description: |
+        Call this endpoint to do a google places search. The query parameter can
+        include a street address with city/state or it can be a place like a school
+        name or church name with a city/state.
+
+        The results will be an array of objects. The objects have the following
+        useful keys:
+
+        - 'name' - for places, full name like 'Cragmont Elementary School'
+        - 'types' - array of types like "street_address", "church", "school"
+        - 'formatted_address' - full address with state, zip, United States
+        - 'geometry' - {"location"=>{"lat"=>37.91784809999999, "lng"=>-122.2827213}
+      parameters:
+        - name: query
+          in: query
+          type: string
+          description: |
+            Street address or place name with city and state, e.g. "100 south main orlando fl"
+            or "first unitarian church orlando fl"
+          required: true
+      responses:
+        200:
+          description: |
+            Returns {'response' : array-of-results} or {'error' : 'message'}
 definitions:
   ConversationsResponse:
     type: object
@@ -165,6 +214,11 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Conversation'
+  ConversationResponse:
+    type: object
+    properties:
+      response:
+        $ref: '#/definitions/Conversation'
   Conversation:
     type: object
     properties:
@@ -180,7 +234,7 @@ definitions:
           Current status of the conversation. One of in_progress, ride_created, help_needed, closed.
       status_updated_at:
         type: integer
-        description When the status was last updated, unix epoch time
+        description: When the status was last updated, unix epoch time
       name:
         type: string
         description: Name of the voter needing a ride
@@ -193,12 +247,28 @@ definitions:
       from_city:
         type: string
         description: The start city
+      from_latitude:
+        type: number
+        format: double
+        description: The start latitude
+      from_longitude:
+        type: number
+        format: double
+        description: The start longitude
       to_address:
         type: string
         description: Address of the end of the ride
       to_city:
         type: string
         description: The end city
+      to_latitude:
+        type: number
+        format: double
+        description: The end latitude
+      to_longitude:
+        type: number
+        format: double
+        description: The end longitude
       additional_passengers:
         type: integer
       special_requests:
@@ -220,6 +290,47 @@ definitions:
         description: Only returned for a single conversation
         items:
           $ref: '#/definitions/Message'
+  UpdateConversation:
+    type: object
+    properties:
+      conversation:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Name of the voter needing a ride
+          from_address:
+            type: string
+            description: The start address line
+          from_city:
+            type: string
+            description: The start city
+          from_latitude:
+            type: number
+            format: double
+            description: The start latitude
+          from_longitude:
+            type: number
+            format: double
+            description: The start longitude
+          to_address:
+            type: string
+            description: Address of the end of the ride
+          to_city:
+            type: string
+            description: The end city
+          to_latitude:
+            type: number
+            format: double
+            description: The end latitude
+          to_longitude:
+            type: number
+            format: double
+            description: The end longitude
+          additional_passengers:
+            type: integer
+          special_requests:
+            type: string
   RidesResponse:
     type: object
     properties:
@@ -253,7 +364,7 @@ definitions:
           Current status of the ride. One of waiting_assignment, driver_assigned, picked_up, complete.
       status_updated_at:
         type: integer
-        description When the status was last updated, unix epoch time
+        description: When the status was last updated, unix epoch time
       from_address:
         type: string
         description: Address of the start of the ride
@@ -281,7 +392,7 @@ definitions:
       to_longitude:
         type: number
         format: double
-        description: The end latitude
+        description: The end longitude
       pickup_at:
         type: integer
         description: Time for the ride pickup, unix epoch time
