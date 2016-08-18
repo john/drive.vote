@@ -74,9 +74,21 @@ RSpec.describe Message, type: :model do
     end
   end
 
-  it 'reports is_from_voter' do
+  it 'reports sent by voter' do
     convo = create :conversation_with_messages
     msg = create :message, conversation: convo, to: convo.to_phone, from: convo.from_phone
-    expect(msg.is_from_voter?).to be_truthy
+    expect(msg.sent_by).to eq('Voter')
+  end
+
+  it 'reports sent by staff' do
+    convo = create :conversation_with_messages
+    msg = create :message, conversation: convo, from: convo.to_phone, to: convo.from_phone, sms_status: 'queued'
+    expect(msg.sent_by).to eq('Staff')
+  end
+
+  it 'reports sent by bot' do
+    convo = create :conversation_with_messages
+    msg = create :message, conversation: convo, from: convo.to_phone, to: convo.from_phone
+    expect(msg.sent_by).to eq('Bot')
   end
 end

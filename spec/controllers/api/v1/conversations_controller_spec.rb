@@ -19,6 +19,33 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
     end
   end
 
+  describe 'update conversation' do
+    let(:rz) { create :ride_zone }
+    let(:convo) { create :conversation_with_messages, ride_zone: rz}
+    let!(:msg1) { convo.messages.first }
+    let!(:msg2) { convo.messages.last }
+
+    it 'is successful' do
+      put :update, params: {id: convo.id, conversation: {from_address: 'foo'}}
+      expect(response).to be_successful
+    end
+
+    it 'updates conversation' do
+      put :update, params: {id: convo.id, conversation: {from_address: 'foo'}}
+      expect(convo.reload.from_address).to eq('foo')
+    end
+
+    it 'updates user name' do
+      put :update, params: {id: convo.id, conversation: {name: 'foo'}}
+      expect(convo.user.reload.name).to eq('foo')
+    end
+
+    it 'returns conversation' do
+      put :update, params: {id: convo.id, conversation: {from_address: 'foo'}}
+      expect(JSON.parse(response.body)['response']).to eq(convo.reload.api_json(false))
+    end
+  end
+
   describe 'create message' do
     let(:rz) { create :ride_zone }
     let(:convo) { create :conversation_with_messages, ride_zone: rz }

@@ -196,6 +196,19 @@ definitions:
       to_city:
         type: string
         description: The end city
+      additional_passengers:
+        type: integer
+      special_requests:
+        type: string
+      last_message_time:
+        type: integer
+        description: Last message in this conversation created, unix epoch time
+      last_message_sent_by:
+        type: string
+        description: Voter, Staff, or Bot
+      last_message_body:
+        type: string
+        description: Content of last message
       message_count:
         type: integer
         description: Current count of messages for this conversation
@@ -314,8 +327,9 @@ definitions:
       from_phone:
         type: integer
         description: Time for the ride pickup, unix epoch
-      is_from_voter:
-        type: boolean
+      sent_by:
+        type: string
+        description: Voter, Staff, or Bot
       created_at:
         type: integer
         description: Unix epoch time
