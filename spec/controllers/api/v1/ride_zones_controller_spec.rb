@@ -15,17 +15,17 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
 
     it 'returns active conversations' do
       get :conversations, params: {id: rz.id}
-      expect(JSON.parse(response.body)['response']).to match_array([c1.api_json, c2.api_json])
+      expect(JSON.parse(response.body)['response']).to match_array([c1.api_json(true), c2.api_json(true)])
     end
 
     it 'returns requested conversations' do
       get :conversations, params: {id: rz.id, status: :ride_created}
-      expect(JSON.parse(response.body)['response']).to match_array([c2.api_json])
+      expect(JSON.parse(response.body)['response']).to match_array([c2.api_json(true)])
     end
 
     it 'returns multitype requested conversations' do
       get :conversations, params: {id: rz.id, status: 'ride_created, closed'}
-      expect(JSON.parse(response.body)['response']).to match_array([c2.api_json, c3.api_json])
+      expect(JSON.parse(response.body)['response']).to match_array([c2.api_json(true), c3.api_json(true)])
     end
 
     it '404s for missing ride zone' do
