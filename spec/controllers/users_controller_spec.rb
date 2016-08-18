@@ -7,11 +7,11 @@ RSpec.describe UsersController, :type => :controller do
   # User. As you add validations to User, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    {name: 'Joe Test User', email: 'foo@bar.com', password: '12345abcde', phone_number: '2073328709', zip: ''}
+    {name: 'Joe Test User', email: 'foo@bar.com', password: '12345abcde', phone_number: '2073328710', zip: ''}
   }
 
   let(:invalid_attributes) {
-    {name: 'Joe Test User', password: '12345abcde', phone_number: '2073328709', zip: ''}
+    {name: 'Joe Test User', password: '12345abcde', phone_number: '2073328710', zip: ''}
   }
 
   describe "GET show" do
@@ -47,7 +47,7 @@ RSpec.describe UsersController, :type => :controller do
   describe "PUT update" do
     describe "with valid params" do
       let(:new_attributes) {
-        {name: '2Joe Test User2', email: 'foo@bar.com', password: '12345abcde', phone_number: '2073328709', zip: ''}
+        {name: '2Joe Test User2', email: 'foo@bar.com', password: '12345abcde', phone_number: '2073325555', zip: ''}
       }
 
       it "updates the requested user" do
