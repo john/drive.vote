@@ -16,6 +16,7 @@
       %th Phone number
       %th
       %th
+      %th
 
   %tbody
     - @ride_zones.each do |ride_zone|
@@ -25,5 +26,6 @@
         %td= ride_zone.zip
         %td= ride_zone.description
         %td= ride_zone.phone_number
+        %td= link_to 'Dispatch', dispatch_path(ride_zone), target: '_blank'
         %td= link_to 'Edit', edit_admin_ride_zone_path(ride_zone)
         %td= link_to 'Destroy', admin_ride_zone_path(ride_zone), :method => :delete, :data => { :confirm => 'Are you sure?' }

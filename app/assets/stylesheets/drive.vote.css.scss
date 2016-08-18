@@ -1,13 +1,12 @@
-.loc-active {
-  margin-top: 7px;
-  font-weight: bold;
-  color: #34495e;
-  font-size: 12px;
+// Errors when form validation fails
+
+p, div {
+  font-size: 15px;
 }
-.loc-inactive {
-  margin-top: 7px;
-  color: #aaa;
-  font-size: 12px;
+
+td {
+  vertical-align: top;
+  border: 0px solid gray;
 }
 
 #error_explanation {
@@ -21,6 +20,19 @@
   }
 }
 
+.locale-active {
+  margin-top: 7px;
+  font-weight: bold;
+  color: #34495e;
+  font-size: 12px;
+}
+
+.locale-inactive {
+  margin-top: 7px;
+  color: #aaa;
+  font-size: 12px;
+}
+
 form {
   .notify { margin-bottom: 4px; }
   .field, .actions { margin-top: 15px; }
@@ -30,25 +42,16 @@ form {
 }
 
 .admin {
-    small { margin-left: 30px; }
-    td { padding: 5px 20px 5px 0;}
-    th {
-      font-weight: normal;
-      margin-bottom: 10px;
-      padding-right: 20px;
-    }
-    .msg {
-      width: 20px;
-    }
-}
-
-p, div {
-  font-size: 15px;
-}
-
-td {
-  vertical-align: top;
-  border: 0px solid gray;
+  small { margin-left: 30px; }
+  td { padding: 5px 20px 5px 0;}
+  th {
+    font-weight: normal;
+    margin-bottom: 10px;
+    padding-right: 20px;
+  }
+  .msg {
+    width: 20px;
+  }
 }
 
 .admin-only {
@@ -100,3 +103,49 @@ td {
   margin: 10px 0 20px 0;
   font-size: 11px;
 }
+
+
+// Dispatch page:
+
+#dispatch-map { height: 200px; margin: 1em 0; }
+
+#conversations, #rides {
+  font-size: 12px;
+  thead, th {
+    border: none !important;
+  }
+  tr.clickable { cursor: pointer; }
+  .btn-conv, .btn-ride {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+}
+
+.modal .modal-body {
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.modal-body::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.modal-body::-webkit-scrollbar:vertical {
+  width: 11px;
+}
+
+.modal-body::-webkit-scrollbar:horizontal {
+  height: 11px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 2px solid white; /* should match background, can't be transparent */
+  background-color: rgba(0, 0, 0, .5);
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background-color: #fff;
+  border-radius: 8px;
+}
+;

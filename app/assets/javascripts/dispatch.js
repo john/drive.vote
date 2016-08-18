@@ -86,11 +86,7 @@ var dispatchController = {
       });
   },
 
-<<<<<<< 144663c7e6e599eeb680f78bdbbf60da37995c33
   rideCells: function (r) {
-=======
-  rideCells: function rideCells(r) {
->>>>>>> shift layout of dispatch page closer to ryan wires
     return '<td>' + r.name + '</td>' +
       '<td>' + r.status + '</td>' +
       '<td>' + new Date(r.status_updated_at*1000).toTimeString() + '</td>' +
@@ -190,12 +186,10 @@ var dispatchController = {
 
   // Handle new driver creation
   newDriver: function (event) {
-      var row = '<tr id="'+rowId+'">' + cells +'</tr>';
-      $(tableSelector).prepend(row);
-    }
+    var row = '<tr id="'+rowId+'">' + cells +'</tr>';
+    $(tableSelector).prepend(row);
   },
 
-  // Handle driver update
   driverChanged: function (event) {
     // todo: update map
   },
