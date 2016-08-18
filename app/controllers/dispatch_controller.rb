@@ -14,9 +14,6 @@ class DispatchController < ApplicationController
   end
 
   private
-  # def ensure_dispatcher
-  #   redirect_to root_path unless current_user && current_user.has_role?(:dispatcher)
-  # end
 
   def ensure_ride_zone
     @ride_zone = RideZone.find_by_id(params[:id])

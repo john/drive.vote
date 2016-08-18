@@ -25,9 +25,7 @@ class Message < ApplicationRecord
       sms_status: twilio_msg.status,
       body: twilio_msg.body,
     }
-    # Message.create!(attrs)
-    # whenever a manual reply is sent to a conversation mark it so bot doesn't
-    # act on it any more
+    # whenever a manual reply is sent to a conversation mark it so bot doesn't act on it any more
     conversation.update_attribute(:status, :help_needed) if conversation.status == 'in_progress'
     Message.create!(attrs)
   end
