@@ -32,7 +32,7 @@ class Conversation < ApplicationRecord
   }
 
   def api_json(include_messages = false)
-    fields = [:id, :pickup_at, :status, :name, :from_phone, :from_address, :from_city,
+    fields = [:id, :user_id, :pickup_at, :status, :name, :from_phone, :from_address, :from_city,
               :from_latitude, :from_longitude, :to_address, :to_city,
               :to_latitude, :to_longitude, :additional_passengers, :special_requests]
     j = self.as_json(only: fields, methods: [:message_count])
