@@ -7,6 +7,10 @@ RSpec.describe Api::V1::ConversationsController, :type => :routing do
       expect(get: '/api/1/ride_zones/42/conversations').to route_to('api/v1/ride_zones#conversations', id: '42')
     end
 
+    it 'routes to create conversation' do
+      expect(post: '/api/1/ride_zones/42/conversations').to route_to('api/v1/ride_zones#create_conversation', id: '42')
+    end
+
     it 'routes to drivers' do
       expect(get: '/api/1/ride_zones/42/drivers').to route_to('api/v1/ride_zones#drivers', id: '42')
     end

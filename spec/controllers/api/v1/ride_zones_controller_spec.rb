@@ -34,6 +34,45 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
     end
   end
 
+  describe 'create conversation' do
+    let(:rz) { create :ride_zone }
+    let(:user) { create :driver_user, ride_zone: rz }
+    let(:body) { 'can you go to south side?' }
+    let(:convo) { create :conversation }
+
+    before :each do
+      allow(Conversation).to receive(:create_from_staff).and_return(convo)
+    end
+
+    it 'is successful' do
+      post :create_conversation, params: {id: rz.id, user_id: user.id, body: body}
+      expect(response).to be_successful
+    end
+
+    it 'calls conversation model and responds with json' do
+      expect(Conversation).to receive(:create_from_staff).and_return(convo)
+      post :create_conversation, params: {id: rz.id, user_id: user.id, body: body}
+      expect(JSON.parse(response.body)['response']).to eq(convo.api_json)
+    end
+
+    it 'handles error from conversation' do
+      expect(Conversation).to receive(:create_from_staff).and_return('error')
+      post :create_conversation, params: {id: rz.id, user_id: user.id, body: body}
+      expect(response.status).to eq(408)
+      expect(JSON.parse(response.body)['error']).to eq('error')
+    end
+
+    it 'validates user id' do
+      post :create_conversation, params: {id: rz.id, user_id: 0}
+      expect(response.status).to eq(404)
+    end
+
+    it '404s for missing ride zone' do
+      get :create_conversation, params: {id: 0}
+      expect(response.status).to eq(404)
+    end
+  end
+
   describe 'drivers' do
     let!(:rz) { create :ride_zone }
     let!(:u1) { create :driver_user, ride_zone: rz }

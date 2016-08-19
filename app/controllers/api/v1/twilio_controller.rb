@@ -30,7 +30,7 @@ module Api::V1
       end
 
       message.save
-      return if @conversation.status == 'help_needed'
+      return if @conversation.status == 'help_needed' || @conversation.staff_initiated?
       answer = ConversationBot.new(@conversation, message).response
       answer_msg = Message.create(
           ride_zone: @ride_zone,
