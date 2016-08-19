@@ -81,6 +81,8 @@ Rails.application.routes.draw do
     resources :conversations, only: [:index, :show] do
       member do
         get 'messages' => 'conversations#messages'
+        get 'form' => 'conversations#form'
+        post 'update_attribute' => 'conversations#update_attribute'
         post 'close' => 'conversations#close'
       end
     end

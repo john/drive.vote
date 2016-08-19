@@ -30,10 +30,12 @@ DispatchController.prototype = {
     this.updateTable('#conversations', 'conv', c, this.conversationCells(c));
   },
 
+  loadConversationForm: function (id) {
+    $('#conversation-form').load('/admin/conversations/' + id + '/form');
+  },
+
   loadConversationMessages: function (id) {
-    $('#conversationModalLabel').html('Conversation ' + id);
-    $('#conversationDetails').prepend('foo');
-    $('#messages').load('/admin/conversations/' + id + '/messages');
+    $('#conversation-messages').load('/admin/conversations/' + id + '/messages');
   },
 
   showAllConversations: function () {

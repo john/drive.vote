@@ -107,17 +107,6 @@ class Admin::RideZonesController < Admin::AdminApplicationController
       redirect_back(fallback_location: root_path)
     end
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_ride_zone
-      @ride_zone = RideZone.find(params[:id])
-    end
-
-    def require_zone_privilege
-      unless user_signed_in? && ( current_user.has_role?(:admin) || current_user.has_role?(:dispatcher, @ride_zone) )
-        redirect_to '/404.html'
-      end
-    end
-
     # Only allow a trusted parameter "white list" through.
     def ride_zone_params
       params.require(:ride_zone).permit( :slug, :name, :description, :phone_number, :short_code,

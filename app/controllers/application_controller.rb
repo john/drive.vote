@@ -7,45 +7,31 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception, prepend: true
 
   before_action :set_locale
-
-
-
-  # before_action :configure_permitted_parameters, if: :devise_controller?
-  #
-  #   protected
-  #
-  #   def configure_permitted_parameters
-  #     devise_parameter_sanitizer.for(:sign_up) << :phone
-  #   end
-
-
-
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   def after_sign_in_path_for(resource)
     root_path
   end
 
+  protected
+
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
   end
 
-  def check_for_user_type(parms)
-    if parms.has_key?('type')
-      if parms['type'] == 'driver'
-        return 'driver'
-      elsif parms['type'] == 'rider'
-        return 'rider'
-      else
-        return nil
-      end
-    end
-  end
-
-  protected
-
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:user_type, :name, :email, :phone_number, :zip, :city, :state, :city_state])
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_ride_zone
+    @ride_zone = RideZone.find(params[:id])
+  end
+
+  def require_zone_privilege
+    unless user_signed_in? && ( current_user.has_role?(:admin) || current_user.has_role?(:dispatcher, @ride_zone) )
+      redirect_to '/404.html'
+    end
   end
 
 end

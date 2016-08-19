@@ -3,22 +3,28 @@
   h6 { font-weight: bold; font-size: 23px; }
   small { font-size: 11px; }
   .filters { margin: -10px 0 10px 0; font-size: 12px; }
+  .message { border-bottom: 1px solid #ccc; width: 90%; margin:5px; padding: 5px;  }
+  .msg-timestamp { font-style: italic; color: #777 }
+  .msg-body { margin:-5px 0 20px 0; }
 
 .modal.fade.modal-body{"aria-labelledby" => "conversationModalLabel", :role => "dialog", :tabindex => "-1"}
   .modal-dialog.modal-lg{:role => "document"}
     .modal-content
       .modal-header
-        %button.close{type: 'button', 'data-dismiss': 'modal', 'aria-label': 'Close', onclick: "$('.modal-backdrop').remove();"}
+        %button.close{type: 'button', 'data-dismiss': 'modal', 'aria-label': 'Close'}
           %span{'aria-hidden': 'true'} x
         %h4#conversationModalLabel.modal-title
           %span#conversationDetails{style: 'font-weight: normal; font-size: 14px;'}
 
       .modal-body
-        .container
-          .col-md-5
-            Conversation collection form
-          .col-md-3
-            #messages
+        %table{style: 'width: 850px; border: 0px solid red;'}
+          %tr
+            %td{style: 'width: 500px; border: 0px solid red;'}
+              #conversation-form
+                -# = render partial: 'conversation_form'
+
+            %td{style: 'width: 340px; border: 0px solid red;'}
+              #conversation-messages
 
 %h5
   =@ride_zone.name
@@ -83,6 +89,7 @@
   jQuery(document).ready(function($) {
     $(document).on("click", '.clickable', function(event) {
       $(".modal-body").modal();
+      dispatchController.loadConversationForm($(this).data("cid"));
       dispatchController.loadConversationMessages($(this).data("cid"));
     });
   });

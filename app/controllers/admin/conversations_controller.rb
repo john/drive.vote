@@ -1,22 +1,35 @@
 class Admin::ConversationsController < Admin::AdminApplicationController
 
-  before_action :set_conversation, only: [:show, :close, :messages]
+  before_action :set_conversation, only: [:show, :messages, :form, :update_attribute, :close]
 
-  # GET /conversations
+  # GET /admin/conversations
   def index
     @conversations = Conversation.where.not(status: :closed)
   end
 
-  # GET /conversations/1
+  # GET /admin/conversations/1
   def show
   end
 
-  # GET /conversations/1/messages
+  # GET /admin/conversations/1/messages
   def messages
     render partial: 'messages'
   end
 
-  # POST /conversations/1/close
+  # GET /admin/conversations/1/form
+  def form
+    render partial: 'form'
+  end
+
+  # POST /admin/conversations/1/update_attribute?attribute=tk
+  def update_attribute
+    if(params.has_key?(:attribute_name) && params.has_key?(:attribute_value))
+      @conversation.update_attribute( params[:attribute_name], params[:attribute_value] )
+    end
+    render partial: 'attribute_form', locals: {attribute: params[:attribute_name]}
+  end
+
+  # POST /admin/conversations/1/close
   def close
     @conversation.status = :closed
     @conversation.save!

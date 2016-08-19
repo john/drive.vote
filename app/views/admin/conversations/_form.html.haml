@@ -1,0 +1,9 @@
+:javascript
+  $('#conversationModalLabel').html( "#{@conversation.username}" );
+
+
+%div{style: 'font-weight: bold; margin-bottom: 10px;'}
+  Create a ride
+
+- ['from_address', 'from_city', 'to_address', 'to_city'].each do |attribute|
+  = render partial: 'attribute_form', locals: {attribute: attribute}

@@ -30,16 +30,19 @@ if  Rails.env == "development"
       slug: 'toledo_d_4',
       name: 'Toledo, OH',
       phone_number: '+14193860121',
-      zip: '43601'
+      zip: '43601',
+      latitude: '41.6639',
+      longitude: '-83.5552'
     },
     {
       slug: 'tampa_fl',
       name: 'Tampa, FL',
-      phone_number: '+19993860121',
-      zip: '33601'
+      phone_number: '+18133580421',
+      zip: '33601',
+      latitude: '27.9506',
+      longitude: '-82.4572'
     }
   ])
-  john.add_role(:dispatcher, ride_zones.first)
 
   conversation = Conversation.create!(
     ride_zone_id: ride_zones.first.id,
