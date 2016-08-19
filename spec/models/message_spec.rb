@@ -77,6 +77,7 @@ RSpec.describe Message, type: :model do
 
     it 'sends new message event' do
       expect_any_instance_of(RideZone).to receive(:event).with(:new_message, anything)
+      expect_any_instance_of(RideZone).to receive(:event).with(:conversation_changed, anything)
       create :message, conversation: convo
     end
 

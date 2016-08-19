@@ -97,6 +97,15 @@ Rails.application.routes.draw do
         delete 'remove_driver'
       end
     end
+    resources :simulations, only: [:index] do
+      collection do
+        post 'start_new' => 'simulations#start_new'
+      end
+      member do
+        post 'stop' => 'simulations#stop'
+        delete 'delete' => 'simulations#delete'
+      end
+    end
     resources :users, only: [:show, :edit, :update, :index, :destroy]
   end
 

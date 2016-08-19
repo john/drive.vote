@@ -1,0 +1,34 @@
+= render 'admin/nav', {active: 'simulations'}
+
+%h1
+  Simulations
+  - if Simulation.can_start_new?
+    &nbsp;
+    %small
+      = form_tag start_new_admin_simulations_url, method: :POST do
+        = select_tag "slug", options_from_collection_for_select(@simulation_defs, "slug", "name"), prompt: 'Which simulation?'
+        = button_tag 'Start New Simulation', class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }
+
+%table.admin
+  %thead
+    %tr
+      %th ID
+      %th Name
+      %th Status
+      %th Started
+      %th Approx Run Time
+      %th
+
+  %tbody
+    - @simulations.each do |sim|
+      %tr
+        %td= sim.id
+        %td= sim.name
+        %td= sim.status
+        %td= sim.created_at
+        %td= sim.run_time
+        %td
+          - if sim.active?
+            = link_to 'Stop', stop_admin_simulation_path(sim), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }, method: :POST
+          - elsif sim.status == 'completed'
+            = link_to 'Delete', delete_admin_simulation_path(sim), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }, method: :DELETE

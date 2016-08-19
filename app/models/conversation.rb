@@ -36,7 +36,9 @@ class Conversation < ApplicationRecord
     j = self.as_json(only: fields, methods: [:message_count])
     if include_messages
       j['messages'] = self.messages.map(&:api_json)
-    elsif last_msg = self.messages.last
+    end
+    last_msg = self.messages.last
+    if last_msg
       j['last_message_time'] = last_msg.created_at.to_i
       j['last_message_sent_by'] = last_msg.sent_by
       j['last_message_body'] = last_msg.body

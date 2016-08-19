@@ -120,6 +120,13 @@ ActiveRecord::Schema.define(version: 20160822050026) do
     t.index ["name"], name: "index_roles_on_name", using: :btree
   end
 
+  create_table "simulations", force: :cascade do |t|
+    t.integer  "status",     default: 0, null: false
+    t.string   "name",                   null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "name",                                                                null: false
     t.string   "email",                                               default: "",    null: false

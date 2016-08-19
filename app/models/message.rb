@@ -79,6 +79,7 @@ class Message < ApplicationRecord
   private
   def notify_creation
     self.ride_zone.event(:new_message, self) if self.ride_zone
+    self.ride_zone.event(:conversation_changed, self.conversation) if self.ride_zone
   end
 
   def conversation_has_correct_phone_numbers

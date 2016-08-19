@@ -1,0 +1,60 @@
+slug: 'hqdemo'
+name: "Brooklyn HQ Demo"
+user_identifier: "(hq)"
+ride_zone_name: 'Florida 5th CD'
+drivers:
+  -
+    events:
+      -
+        at: 2
+        type: move
+        lat: 28.533
+        lng: -81.406
+      -
+        at: 10
+        type: move
+        lat: 28.534
+        lng: -81.407
+  -
+    events:
+      -
+        at: 5
+        type: move
+        lat: 28.523
+        lng: -81.416
+      -
+        at: 10
+        type: move
+        lat: 28.524
+        lng: -81.417
+voters:
+  -
+    events:
+      -
+        at: 2
+        type: sms
+        body: "hi can i get a ride"
+      -
+        at: 8
+        type: sms
+        body: "1"
+      -
+        at: 14
+        type: sms
+        body: "<USERNAME>"
+      -
+        at: 20
+        type: sms
+        body: "700 ohio avenue orlando"
+      -
+        at: 27
+        type: sms
+        body: "yes"
+      -
+        at: 35
+        type: sms
+        body: "3099 Orange Center Blvd, Orlando"
+      -
+        at: 40
+        type: sms
+        body: "yes"

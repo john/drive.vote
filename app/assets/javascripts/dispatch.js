@@ -29,23 +29,13 @@ DispatchController.prototype = {
   conversationCells: function (c) {
     var statusClass = (c.status == 'help_needed') ? 'conv-alert' : 'conv-normal';
     return '<td class="msg">' + ((c.message_count == null) ? '0' : c.message_count) + '</td>' +
-      '<td class="from">' + c.from_phone + '<br>' + c.messages[0].body + '</td>' +
+      '<td class="from">' + c.from_phone + '<br>' + c.last_message_body + '</td>' +
       '<td class="'+statusClass+'">' + c.status.replace('_', ' ') + '</td>' +
       '<td class="updated">' + strftime('%l:%M%P', new Date(c.status_updated_at*1000)) + '</td>'
   },
 
   updateConversationTable: function (c) {
     this.updateTable('#conversations', 'conv', c, this.conversationCells(c));
-  },
-
-  loadConversationMessages: function (id) {
-    $('#conversation-messages').load('/admin/conversations/' + id + '/messages');
-  },
-
-  showAllConversations: function () {
-    this.showAllRows('#conversations');
-    $( ".btn-conv" ).css( "background-color", "#bdc3c7" );
-    $("#conv-all").css( "background-color", "#777" );
   },
 
   showAllConversations: function () {
