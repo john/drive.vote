@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Dispatch Map</title>
+	<link rel="stylesheet" href="https://writ.cmcenroe.me/1.0.3/writ.min.css">
+	<script src="Map.js"></script>
+    <style>
+      body {
+        width: 80%;
+        margin: 2em;
+      }
+      #gmap, #lmap {
+        height: 500px;
+        margin: 1em 0;
+      }
+    </style>
+</head>
+<body>
+    <h1>Dispatch Map</h1>
+    <div id="gmap"></div>
+    <p>
+        Sample dispatcher view with rides and drivers,
+        <a href="https://github.com/john/drive.vote/issues/80">described in issue #80</a>.
+    </p>
+    <script>
+
+        function on_loaded(map)
+        {
+            var m1 = map.addMarker(37.770444, -122.434960, Map.icons.voter, 'Hello World!', 'http://example.com');
+            var m2 = map.addMarker(37.769079, -122.433674, Map.icons.poll, 'Hello World!');
+            var m3 = map.addMarker(37.771612, -122.426836, Map.icons.driver);
+
+            window.setTimeout(function() {
+                map.updateMarker(m1, 37.770709, -122.435082, Map.icons.driver, 'Goodbye World!', 'http://example.com');
+                map.updateMarker(m2, 37.768962, -122.433387, Map.icons.voter,  'Goodbye World!');
+                map.updateMarker(m3, 37.771455, -122.428098, Map.icons.poll);
+                }, 3000);
+        }
+
+        var gmap = new Map(document.getElementById('gmap'), on_loaded,
+                           {'google_api_key': 'AIzaSyDyJ3LTbJGAEIKjqYj3-gFDbAZ3BLo6sGo',
+                            lat: 37.77073, lon: -122.43020, zoom: 16});
+
+    </script>
+</body>
+</html>
