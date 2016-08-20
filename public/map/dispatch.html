@@ -63,7 +63,7 @@
                 var id = obj.id.toString(),
                     lat = obj.from_latitude,
                     lon = obj.from_longitude,
-                    label = obj.from_address;
+                    label = obj.name;
             
                 if(this._rides[id] != undefined) {
                     // re-use the existing marker
@@ -80,16 +80,16 @@
         function on_loaded(map)
         {
             // Set a driver and two rides.
-            view.setDriver({id: 1234, latitude: 37.771612, longitude: -122.426836, name: 'Joe Blow'});
-            view.setRide({id: 2345, from_latitude: 37.770444, from_longitude: -122.434960, from_address: '~699 Waller Street'});
-            view.setRide({id: 3456, from_latitude: 37.769079, from_longitude: -122.433674, from_address: '~599 Duboce Avenue'});
+            view.setDriver({id: 1234, latitude: 37.771612, longitude: -122.426836, name: 'Joe Driver'});
+            view.setRide({id: 2345, from_latitude: 37.770444, from_longitude: -122.434960, name: 'Voter Jim'});
+            view.setRide({id: 3456, from_latitude: 37.769079, from_longitude: -122.433674, name: 'Voter Jane'});
 
             window.setTimeout(function() {
                 // Update the driver and both rides.
                 // Note how the first ride is part of the driver here.
-                view.setDriver({id: 1234, latitude: 37.771455, longitude: -122.428098, name: 'Joe Blow',
-                                active_ride: {id: 2345, from_latitude: 37.770709, from_longitude: -122.435082, from_address: '~699 Waller Street'}});
-                view.setRide({id: 3456, from_latitude: 37.768962, from_longitude: -122.433387, from_address: '~599 Duboce Avenue'});
+                view.setDriver({id: 1234, latitude: 37.771455, longitude: -122.428098, name: 'Joe Driver',
+                                active_ride: {id: 2345, from_latitude: 37.770709, from_longitude: -122.435082, name: 'Voter Jim'}});
+                view.setRide({id: 3456, from_latitude: 37.768962, from_longitude: -122.433387, name: 'Voter Jane'});
                 }, 3000);
         }
 
@@ -100,7 +100,7 @@
         var view = new DispatcherView(gmap);
         
         // This should fail, because the map is not yet expected to have been initialized.
-        view.setDriver({id: 7890, latitude: 37.771612, longitude: -122.426836, name: 'Earlybird Jim'});
+        view.setDriver({id: 7890, latitude: 37.771612, longitude: -122.426836, name: 'Joe Earlybird'});
 
     </script>
 </body>
