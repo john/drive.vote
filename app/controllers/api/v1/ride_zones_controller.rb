@@ -10,6 +10,21 @@ module Api::V1
       render json: {response: @ride_zone.conversations.where(status: status_list).map{|c| c.api_json(true)}}
     end
 
+    # This creates an outbound conversation from the staff to either a driver or voter
+    def create_conversation
+      user = User.find_by_id(params[:user_id])
+      if user
+        resp = Conversation.create_from_staff(@ride_zone, user, params[:body], TWILIO_TIMEOUT)
+        if resp.is_a?(Conversation)
+          render json: {response: resp.api_json}
+        else
+          render json: {error: resp}, status: :request_timeout # just call twilio errors timeouts
+        end
+      else
+        render json: {error: 'User not found'}, status: :not_found
+      end
+    end
+
     def drivers
       render json: {response: @ride_zone.drivers.map(&:api_json)}
     end
@@ -34,7 +49,7 @@ module Api::V1
     private
     def find_ride_zone
       @ride_zone = RideZone.find_by_id(params[:id])
-      render json: {error: 'RideZone not found'}, status:404 unless @ride_zone
+      render json: {error: 'RideZone not found'}, status: :not_found unless @ride_zone
     end
 
     def no_status?

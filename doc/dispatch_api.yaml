@@ -37,6 +37,39 @@ paths:
           description: Ride zone RZID not found
           schema:
             $ref: '#/definitions/ErrorResponse'
+    post:
+      summary: Starts a new conversation outbound from staff to a driver or voter
+      tags:
+        - Conversations
+      description: |
+        Call this endpoint to initiate a new conversation with a driver or voter
+      parameters:
+        - name: user_id
+          in: query
+          type: integer
+          description: |
+            This is the unique id of a driver or voter. The driver id is returned
+            as 'id' in the driver object. The voter id can be found as 'user_id' in
+            an existing conversation with a voter.
+          required: true
+        - name: body
+          in: query
+          type: string
+          description: The body of the message to send via SMS
+          required: true
+      responses:
+        200:
+          description: Newly created conversation is returned
+          schema:
+            $ref: '#/definitions/ConversationResponse'
+        404:
+          description: Ride zone RZID not found or user_id not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        408:
+          description: There was a problem sending the SMS
+          schema:
+            $ref: '#/definitions/ErrorResponse'
   /ride_zone/RZID/rides:
     get:
       summary: Gets all or some rides for the ride zone RZID
@@ -225,6 +258,9 @@ definitions:
       id:
         type: integer
         description: Unique id of the conversation
+      user_id:
+        type: integer
+        description: Unique id of the person (voter usually, sometimes driver) in the conversation
       pickup_at:
         type: integer
         description: Time for the ride pickup, unix epoch

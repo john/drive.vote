@@ -32,7 +32,7 @@ class Conversation < ApplicationRecord
   }
 
   def api_json(include_messages = false)
-    fields = [:id, :pickup_at, :status, :name, :from_phone, :from_address, :from_city,
+    fields = [:id, :user_id, :pickup_at, :status, :name, :from_phone, :from_address, :from_city,
               :from_latitude, :from_longitude, :to_address, :to_city,
               :to_latitude, :to_longitude, :additional_passengers, :special_requests]
     j = self.as_json(only: fields, methods: [:message_count])
@@ -48,12 +48,36 @@ class Conversation < ApplicationRecord
     j
   end
 
+  # create a new conversation initiated by staff
+  # returns conversation if successful otherwise an error message
+  def self.create_from_staff(ride_zone, user, body, timeout)
+    sms = TwilioService.send_message(
+        { from: ride_zone.phone_number, to: user.phone_number, body: body},
+        timeout
+    )
+    if sms.error_code
+      return "Communication error #{sms.error_code}"
+    elsif sms.status.to_s != 'delivered'
+      return 'Timeout in delivery'
+    end
+    c = Conversation.create(ride_zone: ride_zone, user: user, status: :in_progress,
+                            from_phone: ride_zone.phone_number, to_phone: user.phone_number)
+    msg = Message.create_start_of_conversation(c, sms)
+    c
+  end
+
   def username
     self.user.try(:name).to_s
   end
 
   def message_count
     self.messages.count
+  end
+
+  # a conversation is staff initiated if the "from" phone number matches
+  # the ride zone twilio-assigned number
+  def staff_initiated?
+    self.from_phone.phony_formatted == self.ride_zone.phone_number.phony_formatted
   end
 
   def set_unknown_destination

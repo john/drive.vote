@@ -30,6 +30,20 @@ class Message < ApplicationRecord
     Message.create!(attrs)
   end
 
+  # creates a new Message object that is the start of a staff-initiated conversation
+  def self.create_start_of_conversation(conversation, twilio_msg)
+    attrs = {
+        conversation: conversation,
+        ride_zone: conversation.ride_zone,
+        from: conversation.from_phone,
+        to: conversation.to_phone,
+        sms_sid: twilio_msg.sid,
+        sms_status: twilio_msg.status,
+        body: twilio_msg.body,
+    }
+    Message.create!(attrs)
+  end
+
   # reduced set of fields required for API
   def api_json
     {
@@ -45,10 +59,14 @@ class Message < ApplicationRecord
   end
 
   def sent_by
-    if self.conversation.to_phone.phony_formatted == self.to.phony_formatted
-      'Voter'
+    if self.to.phony_formatted == self.ride_zone.phone_number.phony_formatted
+      if self.conversation.user.has_role?(:driver, self.ride_zone)
+        'Driver'
+      else
+        'Voter'
+      end
     elsif self.sms_status.blank?
-      'Bot'
+      'Bot' # bot messages are replies to twilio and so don't have an sms_status
     else
       'Staff'
     end

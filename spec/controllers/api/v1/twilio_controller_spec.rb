@@ -67,6 +67,13 @@ RSpec.describe Api::V1::TwilioController, type: :controller do
       expect(response.body).to be_empty
     end
 
+    it 'does not respond if conversation is staff initiated' do
+      create :conversation, user: user, from_phone: to_number, to_phone: from_number # so staff => driver
+      expect_any_instance_of(ConversationBot).to_not receive(:response)
+      post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
+      expect(response.body).to be_empty
+    end
+
     it 'handles bad to phone' do
       allow(RideZone).to receive(:find_by_phone_number).and_return(nil)
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}

@@ -2,8 +2,6 @@ module Api::V1
   class ConversationsController < Api::ApplicationController
     include ConversationParams
 
-    TWILIO_TIMEOUT = 5 # seconds
-
     before_action :find_conversation
     before_action :ensure_message, only: :create_message
 

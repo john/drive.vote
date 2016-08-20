@@ -58,6 +58,37 @@ RSpec.describe Conversation, type: :model do
     end
   end
 
+  describe 'new conversation from staff' do
+    let(:rz) { create :ride_zone }
+    let(:user) { create :driver_user, ride_zone: rz }
+    let(:body) { 'can you go to south side?' }
+    let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid') }
+
+    before :each do
+      allow(TwilioService).to receive(:send_message).and_return(twilio_msg)
+    end
+
+    it 'calls twilio service' do
+      expect(TwilioService).to receive(:send_message).and_return(twilio_msg)
+      Conversation.create_from_staff(rz, user, body, 5)
+    end
+
+    it 'handles twilio error' do
+      expect(TwilioService).to receive(:send_message).and_return(OpenStruct.new(error_code: 123))
+      expect(Conversation.create_from_staff(rz, user, body, 5) =~ /Communication error/).to be_truthy
+      expect(Conversation.count).to eq(0)
+    end
+
+    it 'creates a conversation and message' do
+      Conversation.create_from_staff(rz, user, body, 5)
+      expect(Conversation.count).to eq(1)
+      expect(Conversation.last.staff_initiated?).to be_truthy
+      msg = Conversation.last.messages.last
+      expect(msg.sent_by).to eq('Staff')
+      expect(msg.body).to eq(body)
+    end
+  end
+
   describe 'event generation' do
     it 'sends new conversation event' do
       expect_any_instance_of(RideZone).to receive(:event).with(:new_conversation, anything)

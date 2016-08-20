@@ -66,6 +66,7 @@ Rails.application.routes.draw do
       resources :ride_zones do
         member do
           get 'conversations' => 'ride_zones#conversations'
+          post 'conversations' => 'ride_zones#create_conversation'
           get 'drivers' => 'ride_zones#drivers'
           get 'rides' => 'ride_zones#rides'
           post 'rides' => 'ride_zones#create_ride'
