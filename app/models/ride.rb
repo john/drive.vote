@@ -22,8 +22,8 @@ class Ride < ApplicationRecord
   # create a new ride from the data in a conversation
   def self.create_from_conversation conversation
     attrs = {
-      voter_id: conversation.user_id,
-      ride_zone_id: conversation.ride_zone_id,
+      ride_zone: conversation.ride_zone,
+      voter: conversation.user,
       name: conversation.username,
       pickup_at: conversation.pickup_time,
       status: :scheduled,

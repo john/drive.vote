@@ -1,7 +1,9 @@
+require 'sim_definition'
+
 class Simulation < ActiveRecord::Base
   RANDOM_NAMES = File.read(File.join(%W[#{Rails.root} data random_names.txt])).split("\n")
   SIM_FILES = Dir.glob(File.join(%W[#{Rails.root} data simulations *.yaml]))
-  SIM_DEFS = SIM_FILES.map {|f| SimDefinition.new(f)}
+  SIM_DEFS = SIM_FILES.map {|f| SimDefinition.new.load_file(f)}
 
   SLEEP_INTERVAL = 1
   DB_CHECK_INTERVAL = 2
@@ -9,7 +11,10 @@ class Simulation < ActiveRecord::Base
 
   USERNAME_BODY = '<USERNAME>'.freeze
 
-  enum status: { preparing: 0, running: 1, stopped: 2, completed: 3}
+  enum status: { preparing: 0, running: 1, stopped: 2, completed: 3, failed: 4}
+
+  attr_reader :events
+  attr_accessor :definition
 
   def self.find_named_sim_def(tag)
     SIM_DEFS.detect {|sim| sim.slug == tag || sim.name == tag}
@@ -18,12 +23,18 @@ class Simulation < ActiveRecord::Base
   def self.create_named_sim(slug)
     sim = find_named_sim_def(slug)
     return "Sim #{slug} not found" unless sim
+    self.create_from_def(sim)
+  end
+
+  def self.create_from_def(sim)
     return "Sim ride zone #{sim.ride_zone_name} not found" unless RideZone.find_by_name(sim.ride_zone_name)
-    Simulation.create!(name: sim.name)
+    s = Simulation.create!(name: sim.name)
+    s.definition = sim
+    s
   end
 
   def self.can_start_new?
-    Simulation.where.not(status: :completed).count == 0
+    Simulation.where.not(status: [:failed, :completed]).count == 0
   end
 
   def run_time
@@ -36,7 +47,6 @@ class Simulation < ActiveRecord::Base
 
   def play
     logger.info "Starting to play #{name} #{id}"
-    reset
     prepare
     run_timeline
   end
@@ -48,27 +58,36 @@ class Simulation < ActiveRecord::Base
 
   private
   def sim_def
-    @sim_def ||= Simulation.find_named_sim_def(self.name)
-  end
-
-  def reset
-    @events = []
-    self.status = :preparing
-    save
-    SIM_DEFS.each { |sim| clean_up(sim) }
+    @definition ||= Simulation.find_named_sim_def(self.name)
   end
 
   def prepare
+    self.status = :preparing
+    save
+    SIM_DEFS.each { |sim| clean_up(sim) }
     @ride_zone = RideZone.find_by_name(sim_def.ride_zone_name)
+    @events = []
     create_drivers
     create_voters
+    create_rides
   end
 
   def create_drivers
     sim_def.drivers.each_with_index do |driver, i|
       d = create_driver(i)
+      last_at = nil
       driver['events'].each do |event|
-        @events << [event['at'], event.merge(user: d)]
+        start, last_at = SimDefinition.calc_start(last_at, event['at'])
+        times = [start]
+        if event['repeat_count'] && event['repeat_time']
+          event['repeat_count'].times do |t|
+            times << (start + (t+1)*event['repeat_time'])
+          end
+        end
+        last_at = times.last
+        times.each do |t|
+          @events << [t, event.merge(user: d)]
+        end
       end
     end
   end
@@ -83,18 +102,33 @@ class Simulation < ActiveRecord::Base
   # voters are actually created by inbound sms's. we just assign their events
   # to a unique phone number
   def create_voters
-    @sim_def.voters.each_with_index do |voter, i|
+    sim_def.voters.each_with_index do |voter, i|
       phone = '+1510613%03d8' % i
+      last_at = nil
       voter['events'].each do |event|
         body = (event['body'] == USERNAME_BODY) ? next_random_name : event['body']
-        @events << [event['at'], event.merge(user_phone: phone, 'body' => body).compact]
+        start, last_at = SimDefinition.calc_start(last_at, event['at'])
+        @events << [start, event.merge(user_phone: phone, 'body' => body).compact]
       end
+    end
+  end
+
+  def create_rides
+    sim_def.rides.each_with_index do |ride, i|
+      voter = User.create!(name: next_random_name, user_type: :voter, ride_zone: @ride_zone,
+                   email: "simvoter#{i}@example.com", password: '123456789', city: @ride_zone.city,
+                   state: @ride_zone.state, zip: @ride_zone.zip,
+                   phone_number: '510-617-%03d7' % i )
+      offset = ride.delete('pickup_offset')
+      ride['pickup_at'] = offset_time(offset)
+      Ride.create!(ride.merge(voter: voter, ride_zone: @ride_zone, name: voter.name, status: :scheduled))
     end
   end
 
   def run_timeline
     update_attribute(:status, :running)
     timeline = @events.sort_by {|ev| ev[0]}
+    final_status = :completed
     Thread.new do
       begin
         start = Time.now
@@ -118,9 +152,10 @@ class Simulation < ActiveRecord::Base
           end
         end
       rescue =>e
+        final_status = :failed
         logger.warn "Whoops crash #{e.message} #{e.backtrace}"
       end
-      update_attribute(:status, :completed)
+      update_attribute(:status, final_status)
       logger.info "Ending simulator thread at #{Time.now}"
     end
   end
@@ -140,7 +175,16 @@ class Simulation < ActiveRecord::Base
     event[:user].update_attributes(latitude: event['lat'], longitude: event['lng'])
   end
 
+  def move_by(event)
+    event[:user].reload
+    lat, lng = event[:user].latitude, event[:user].longitude
+    event[:user].update_attributes(latitude: lat + event['lat'], longitude: lng + event['lng'])
+  end
+
   def sms(event)
+    if event['time_offset']
+      event['body'] = offset_time(event['time_offset']).strftime('%l:%M %P')
+    end
     params = ActionController::Parameters.new({'To' => @ride_zone.phone_number, 'From' => event[:user_phone], 'Body' => event['body']})
     TwilioService.new.process_inbound_sms(params)
   end
@@ -148,17 +192,15 @@ class Simulation < ActiveRecord::Base
   # clean up all records associated with a sim definition, starting
   # with the unique user identifier
   def clean_up(sim_def)
-    user_ids = User.where("name like '%#{sim_def.user_identifier}%'").pluck(:id)
-    conversation_ids = Conversation.where(user_id: user_ids).pluck(:id)
+    ride_zone = RideZone.find_by_name(sim_def.ride_zone_name)
+    return unless ride_zone
+    ride_zone.rides.destroy_all
+    ride_zone.messages.destroy_all
+    user_ids = ride_zone.conversations.pluck(:user_id).uniq
+    ride_zone.conversations.destroy_all
+    user_ids = user_ids | User.where("name like '%#{sim_def.user_identifier}%'").pluck(:id)
     UsersRoles.where(user_id: user_ids).delete_all
-    Ride.where(voter_id: user_ids).delete_all
-    Message.where(conversation_id: conversation_ids).delete_all
-    Conversation.where(id: conversation_ids).delete_all
     User.where(id: user_ids).delete_all
-  end
-
-  def at seconds_offset, &blk
-    (@events ||= []) << [seconds_offset, blk]
   end
 
   def next_random_name
@@ -167,10 +209,16 @@ class Simulation < ActiveRecord::Base
     while @used_names.include?(name)
       name = RANDOM_NAMES[rand(RANDOM_NAMES.length)]
     end
-    "#{name} #{@sim_def.user_identifier}"
+    "#{name} #{sim_def.user_identifier}"
   end
 
   def move_driver(driver, lat, lng)
     driver.update_attributes(latitude: lat, longitude: lng)
+  end
+
+  def offset_time(str)
+    val = str.to_s.to_i
+    val *= 60 if str.to_s =~ /min/i
+    Time.at(Time.now.to_i + val)
   end
 end

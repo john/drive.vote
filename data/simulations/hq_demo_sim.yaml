@@ -5,56 +5,34 @@ ride_zone_name: 'Florida 5th CD'
 drivers:
   -
     events:
-      -
-        at: 2
-        type: move
-        lat: 28.533
-        lng: -81.406
-      -
-        at: 10
-        type: move
-        lat: 28.534
-        lng: -81.407
+      - {at: 2, type: move, lat: 28.533, lng: -81.406 }
+      - {at: 10, type: move, lat: 28.534, lng: -81.407 }
   -
     events:
-      -
-        at: 5
-        type: move
-        lat: 28.523
-        lng: -81.416
-      -
-        at: 10
-        type: move
-        lat: 28.524
-        lng: -81.417
+      - {at: 5, type: move, lat: 28.523, lng: -81.416 }
+      - {at: 10, repeat_count: 10, repeat_time: 5, type: move_by, lat: 0.001, lng: 0}
+
 voters:
   -
     events:
-      -
-        at: 2
-        type: sms
-        body: "hi can i get a ride"
-      -
-        at: 8
-        type: sms
-        body: "1"
-      -
-        at: 14
-        type: sms
-        body: "<USERNAME>"
-      -
-        at: 20
-        type: sms
-        body: "700 ohio avenue orlando"
-      -
-        at: 27
-        type: sms
-        body: "yes"
-      -
-        at: 35
-        type: sms
-        body: "3099 Orange Center Blvd, Orlando"
-      -
-        at: 40
-        type: sms
-        body: "yes"
+      - {at: 10, type: sms, body: "hi can i get a ride"}
+      - {at: "+3", type: sms, body: "1"}
+      - {at: "+3", type: sms, body: "<USERNAME>"}
+      - {at: "+3", type: sms, body: "700 ohio avenue orlando"}
+      - {at: "+3", type: sms, body: "yes"}
+      - {at: "+3", type: sms, body: "3099 Orange Center Blvd, Orlando"}
+      - {at: "+3", type: sms, body: "yes"}
+      - {at: "+3", type: sms, time_offset: "15 minutes"}
+      - {at: "+3", type: sms, body: "yes"}
+      - {at: "+3", type: sms, body: "none"}
+      - {at: "+3", type: sms, body: "none"}
+
+rides:
+  -
+    pickup_offset: "10 minutes"
+    from_address: "624 Doby Avenue"
+    from_city: "orlando"
+    from_latitude: 28.534
+    from_longitude: -81.407
+    additional_passengers: 0
+    special_requests: none
