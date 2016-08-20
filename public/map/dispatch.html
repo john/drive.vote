@@ -28,6 +28,7 @@
         function DispatcherView(map)
         {
             this.map = map;
+            this._rides = {};
             this._drivers = {};
         }
         
@@ -39,15 +40,38 @@
                 var id = obj.id.toString(),
                     lat = obj.latitude,
                     lon = obj.longitude,
-                    name = obj.name;
+                    label = obj.name,
+                    ride = obj.active_ride;
             
                 if(this._drivers[id] != undefined) {
                     // re-use the existing marker
-                    this.map.updateMarker(this._drivers[id], lat, lon, Map.icons.driver, name);
+                    this.map.updateMarker(this._drivers[id], lat, lon, Map.icons.driver, label);
                 
                 } else {
                     // make a new marker
-                    this._drivers[id] = this.map.addMarker(lat, lon, Map.icons.driver, name);
+                    this._drivers[id] = this.map.addMarker(lat, lon, Map.icons.driver, label);
+                }
+                
+                if(ride != undefined) {
+                    this.setRide(ride);
+                }
+            },
+            
+            // https://github.com/john/drive.vote/blob/7ef10e17d/doc/drive_the_vote_dispatch_api.md#ride-events
+            setRide: function(obj)
+            {
+                var id = obj.id.toString(),
+                    lat = obj.from_latitude,
+                    lon = obj.from_longitude,
+                    label = obj.from_address;
+            
+                if(this._rides[id] != undefined) {
+                    // re-use the existing marker
+                    this.map.updateMarker(this._rides[id], lat, lon, Map.icons.voter, label);
+                
+                } else {
+                    // make a new marker
+                    this._rides[id] = this.map.addMarker(lat, lon, Map.icons.voter, label);
                 }
             }
         
@@ -55,16 +79,14 @@
 
         function on_loaded(map)
         {
-            var m1 = map.addMarker(37.770444, -122.434960, Map.icons.voter, 'Hello World!', 'http://example.com');
-            var m2 = map.addMarker(37.769079, -122.433674, Map.icons.poll, 'Hello World!');
-            
             view.setDriver({id: 1234, latitude: 37.771612, longitude: -122.426836, name: 'Joe Blow'});
+            view.setRide({id: 2345, from_latitude: 37.770444, from_longitude: -122.434960, from_address: '~699 Waller Street'});
+            view.setRide({id: 3456, from_latitude: 37.769079, from_longitude: -122.433674, from_address: '~599 Duboce Avenue'});
 
             window.setTimeout(function() {
-                map.updateMarker(m1, 37.770709, -122.435082, Map.icons.driver, 'Goodbye World!', 'http://example.com');
-                map.updateMarker(m2, 37.768962, -122.433387, Map.icons.voter,  'Goodbye World!');
-            
-                view.setDriver({id: 1234, latitude: 37.771455, longitude: -122.428098, name: 'Joe Blow'});
+                view.setDriver({id: 1234, latitude: 37.771455, longitude: -122.428098, name: 'Joe Blow',
+                                active_ride: {id: 2345, from_latitude: 37.770709, from_longitude: -122.435082, from_address: '~699 Waller Street'}});
+                view.setRide({id: 3456, from_latitude: 37.768962, from_longitude: -122.433387, from_address: '~599 Duboce Avenue'});
                 }, 3000);
         }
 
