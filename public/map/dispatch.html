@@ -41,15 +41,16 @@
                     lat = obj.latitude,
                     lon = obj.longitude,
                     label = obj.name,
-                    ride = obj.active_ride;
+                    ride = obj.active_ride,
+                    icon = (ride == undefined ? Map.icons.open_driver : Map.icons.assigned_driver);
             
                 if(this._drivers[id] != undefined) {
                     // re-use the existing marker
-                    this.map.updateMarker(this._drivers[id], lat, lon, Map.icons.driver, label);
+                    this.map.updateMarker(this._drivers[id], lat, lon, icon, label);
                 
                 } else {
                     // make a new marker
-                    this._drivers[id] = this.map.addMarker(lat, lon, Map.icons.driver, label);
+                    this._drivers[id] = this.map.addMarker(lat, lon, icon, label);
                 }
                 
                 if(ride != undefined) {
@@ -63,15 +64,16 @@
                 var id = obj.id.toString(),
                     lat = obj.from_latitude,
                     lon = obj.from_longitude,
-                    label = obj.name;
+                    label = obj.name,
+                    icon = (obj.status == 'driver_assigned' ? Map.icons.assigned_ride : Map.icons.open_ride);
             
                 if(this._rides[id] != undefined) {
                     // re-use the existing marker
-                    this.map.updateMarker(this._rides[id], lat, lon, Map.icons.voter, label);
+                    this.map.updateMarker(this._rides[id], lat, lon, icon, label);
                 
                 } else {
                     // make a new marker
-                    this._rides[id] = this.map.addMarker(lat, lon, Map.icons.voter, label);
+                    this._rides[id] = this.map.addMarker(lat, lon, icon, label);
                 }
             }
         
@@ -88,7 +90,7 @@
                 // Update the driver and both rides.
                 // Note how the first ride is part of the driver here.
                 view.setDriver({id: 1234, latitude: 37.771455, longitude: -122.428098, name: 'Joe Driver',
-                                active_ride: {id: 2345, from_latitude: 37.770709, from_longitude: -122.435082, name: 'Voter Jim'}});
+                                active_ride: {id: 2345, from_latitude: 37.770709, from_longitude: -122.435082, name: 'Voter Jim', status: 'driver_assigned'}});
                 view.setRide({id: 3456, from_latitude: 37.768962, from_longitude: -122.433387, name: 'Voter Jane'});
                 }, 3000);
         }

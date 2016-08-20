@@ -42,6 +42,10 @@ Map.icons = {
     voter:   {w: 38, h: 57, url: _url_prefix() + '/icon-voter.svg'},
     driver:  {w: 38, h: 57, url: _url_prefix() + '/icon-driver.svg'},
     poll:    {w: 38, h: 57, url: _url_prefix() + '/icon-poll.svg'},
+    open_driver: {w: 38, h: 57, url: _url_prefix() + '/icon-driver-open.svg'},
+    assigned_driver: {w: 38, h: 57, url: _url_prefix() + '/icon-driver-assigned.svg'},
+    open_ride: {w: 38, h: 57, url: _url_prefix() + '/icon-ride-open.svg'},
+    assigned_ride: {w: 38, h: 57, url: _url_prefix() + '/icon-ride-assigned.svg'},
 
     // Used when no other icon is provided.
     default: {w: 38, h: 57, url: _url_prefix() + '/icon-default.svg'}
