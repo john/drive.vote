@@ -71,6 +71,33 @@ RSpec.describe User, :type => :model do
 
   end
 
+  describe 'lifecycle hooks' do
+    describe 'after_validation geocode' do
+      let(:user) { create :user }
+      it 'should set lat/long on user create' do
+        expect(user.latitude).to_not be_nil
+        expect(user.longitude).to_not be_nil
+      end
+
+      it 'should not change set lat/long on user save' do
+        original_lat = user.latitude
+        original_long = user.longitude
+
+        user.address1 = '5001 Monroe St'
+        user.address2 = ''
+        user.city = 'Toledo'
+        user.state = 'OH'
+        user.zip = 43623
+
+        user.save!
+        user.reload
+
+        expect(user.latitude).to eq(original_lat)
+        expect(user.longitude).to eq(original_long)
+      end
+    end
+  end
+
   it 'should allow no role' do
     expect( build(:user) ).to be_valid
   end
@@ -118,9 +145,9 @@ RSpec.describe User, :type => :model do
 
   it 'updates location timestamp for lat change' do
     u = create :user
-    expect(u.reload.location_updated_at).to be_nil
+    original_location_updated_at = u.location_updated_at
     u.update_attribute :latitude, 34
-    expect(u.reload.location_updated_at).to_not be_nil
+    expect(u.reload.location_updated_at).to_not eq(original_location_updated_at)
   end
 
   it 'updates location timestamp for long change' do
