@@ -194,10 +194,10 @@ class Simulation < ActiveRecord::Base
   def clean_up(sim_def)
     ride_zone = RideZone.find_by_name(sim_def.ride_zone_name)
     return unless ride_zone
-    ride_zone.rides.destroy_all
-    ride_zone.messages.destroy_all
+    Ride.where(ride_zone: ride_zone).delete_all
+    Message.where(ride_zone: ride_zone).delete_all
     user_ids = ride_zone.conversations.pluck(:user_id).uniq
-    ride_zone.conversations.destroy_all
+    Conversation.where(ride_zone: ride_zone).delete_all
     user_ids = user_ids | User.where("name like '%#{sim_def.user_identifier}%'").pluck(:id)
     UsersRoles.where(user_id: user_ids).delete_all
     User.where(id: user_ids).delete_all

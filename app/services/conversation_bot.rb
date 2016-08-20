@@ -169,13 +169,13 @@ class ConversationBot
           # pretend the voter typed in their current time in their time zone
           # we need to create a fake time at the server for the strftime
           fake_server_time = Time.at(Time.now.to_i - server_to_ride_zone_offset)
-          pickup_time = Time.now
+          pickup_time = Time.now.change(sec:0, usec:0)
         else
           fake_server_time = Time.parse(@body) rescue nil
           # this is a local time where server is located, we need to adjust for ride zone time zone.
           pickup_time = Time.at(fake_server_time.to_i + server_to_ride_zone_offset) if fake_server_time
         end
-        if pickup_time && pickup_time >= 10.minutes.ago
+        if pickup_time && fake_server_time >= 10.minutes.ago
           @conversation.update_attribute(:pickup_time, pickup_time)
           # when echoing back to user we use server's local time which is how it was parsed
           @response = I18n.t(:confirm_the_time, locale: @locale, time: fake_server_time.strftime('%l:%M %P'))

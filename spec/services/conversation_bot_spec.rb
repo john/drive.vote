@@ -268,7 +268,7 @@ RSpec.describe ConversationBot do
           reply = create :message, conversation: convo, body: 'now'
           expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_the_time, locale: :en, time: Time.now.strftime('%l:%M %P')))
           expect(convo.reload.lifecycle).to eq('have_time')
-          expect(convo.pickup_time).to eq(Time.now)
+          expect(convo.pickup_time).to eq(Time.now.change(sec:0, usec:0))
         end
       end
 
@@ -285,7 +285,7 @@ RSpec.describe ConversationBot do
             reply = create :message, conversation: convo, body: 'now'
             expected = 3.hours.from_now.getlocal.strftime('%l:%M %P')
             expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_the_time, locale: :en, time: expected))
-            expect(convo.pickup_time).to eq(Time.now)
+            expect(convo.pickup_time).to eq(Time.now.change(sec:0, usec:0))
           end
         end
 
