@@ -98,6 +98,9 @@
                             lat: 37.77073, lon: -122.43020, zoom: 16});
 
         var view = new DispatcherView(gmap);
+        
+        // This should fail, because the map is not yet expected to have been initialized.
+        view.setDriver({id: 7890, latitude: 37.771612, longitude: -122.426836, name: 'Earlybird Jim'});
 
     </script>
 </body>

@@ -62,6 +62,9 @@ Map.prototype = {
 
         } else if(this._lmap) {
             marker = this._addLeafletMarker(lat, lon, _icon, content);
+        
+        } else {
+            throw "There's no place to put the marker yet";
         }
 
         // Return index of the marker as the ID
@@ -80,6 +83,9 @@ Map.prototype = {
 
         } else if(marker && this._lmap) {
             this._updateLeafletMarker(marker, lat, lon, _icon, content);
+        
+        } else {
+            throw "There's no place to update the marker yet";
         }
     },
 
