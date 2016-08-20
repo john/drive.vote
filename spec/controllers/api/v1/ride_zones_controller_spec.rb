@@ -88,7 +88,7 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
     it 'returns drivers for ride zone' do
       get :drivers, params: {id: rz.id}
       resp = JSON.parse(response.body)['response']
-      expect(resp).to match_array([u1.api_json, u2.api_json])
+      expect(resp).to match_array([u1.api_json.as_json, u2.api_json.as_json])
     end
 
     it '404s for missing ride zone' do
