@@ -43,7 +43,7 @@ DispatcherView.prototype = {
             lat = obj.from_latitude,
             lon = obj.from_longitude,
             label = obj.name,
-            due = obj.pickup_time - DispatcherView.very_soon
+            due = obj.pickup_time - DispatcherView.very_soon,
             now = (new Date()).getTime() / 1000,
             icon = Map.icons.open_ride;
         
