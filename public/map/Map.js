@@ -45,6 +45,7 @@ Map.icons = {
     open_driver: {w: 38, h: 57, url: _url_prefix() + '/icon-driver-open.svg'},
     assigned_driver: {w: 38, h: 57, url: _url_prefix() + '/icon-driver-assigned.svg'},
     open_ride: {w: 38, h: 57, url: _url_prefix() + '/icon-ride-open.svg'},
+    overdue_ride: {w: 38, h: 57, url: _url_prefix() + '/icon-ride-overdue.svg'},
     assigned_ride: {w: 38, h: 57, url: _url_prefix() + '/icon-ride-assigned.svg'},
 
     // Used when no other icon is provided.

@@ -8,18 +8,18 @@
              A19,19 0 0,1 38,19
              A65,65 0 0,1 19,57
              A65,65 0 0,1 0,19
-             " style="fill: #008800;"></path>
+             " style="fill: #990000;"></path>
     
     <text style="text-anchor: middle;
                  fill: black;
                  font-size: 30px;
                  font-family: Arial
-                 " x="19" y="34">😺</text>
+                 " x="19" y="34">😿</text>
 
     <text style="text-anchor: middle;
                  fill: white;
                  font-size: 7px;
                  font-family: Arial
-                 " x="19" y="37">assigned</text>
+                 " x="19" y="39">overdue</text>
 
 </svg>

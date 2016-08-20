@@ -32,6 +32,9 @@
             this._drivers = {};
         }
         
+        // 10 minutes is pretty tight.
+        DispatcherView.very_soon = 600; 
+        
         DispatcherView.prototype = {
         
             // https://github.com/john/drive.vote/blob/7ef10e17d/doc/drive_the_vote_dispatch_api.md#driver-events
@@ -42,7 +45,13 @@
                     lon = obj.longitude,
                     label = obj.name,
                     ride = obj.active_ride,
-                    icon = (ride == undefined ? Map.icons.open_driver : Map.icons.assigned_driver);
+                    icon = Map.icons.open_driver;
+                
+                if(ride != undefined) {
+                    // this driver has a ride assigned
+                    icon = Map.icons.assigned_driver;
+                    this.setRide(ride);
+                }
             
                 if(this._drivers[id] != undefined) {
                     // re-use the existing marker
@@ -51,10 +60,6 @@
                 } else {
                     // make a new marker
                     this._drivers[id] = this.map.addMarker(lat, lon, icon, label);
-                }
-                
-                if(ride != undefined) {
-                    this.setRide(ride);
                 }
             },
             
@@ -65,7 +70,18 @@
                     lat = obj.from_latitude,
                     lon = obj.from_longitude,
                     label = obj.name,
-                    icon = (obj.status == 'driver_assigned' ? Map.icons.assigned_ride : Map.icons.open_ride);
+                    due = obj.pickup_time - DispatcherView.very_soon
+                    now = (new Date()).getTime() / 1000,
+                    icon = Map.icons.open_ride;
+                
+                if(obj.status == 'waiting_assignment' && now > due) {
+                    // this ride is overdue for a driver
+                    icon = Map.icons.overdue_ride;
+
+                } else if(obj.status == 'driver_assigned') {
+                    // this ride has an assigned driver
+                    icon = Map.icons.assigned_ride;
+                }
             
                 if(this._rides[id] != undefined) {
                     // re-use the existing marker
@@ -81,17 +97,22 @@
 
         function on_loaded(map)
         {
+            // right now
+            var start = (new Date()).getTime() / 1000;
+
             // Set a driver and two rides.
             view.setDriver({id: 1234, latitude: 37.771612, longitude: -122.426836, name: 'Joe Driver'});
-            view.setRide({id: 2345, from_latitude: 37.770444, from_longitude: -122.434960, name: 'Voter Jim'});
-            view.setRide({id: 3456, from_latitude: 37.769079, from_longitude: -122.433674, name: 'Voter Jane'});
+            view.setRide({id: 2345, from_latitude: 37.770444, from_longitude: -122.434960, name: 'Voter Jim', status: 'waiting_assignment', pickup_time: start + 601});
+            view.setRide({id: 3456, from_latitude: 37.769079, from_longitude: -122.433674, name: 'Voter Jane', status: 'waiting_assignment', pickup_time: start + 601});
 
             window.setTimeout(function() {
                 // Update the driver and both rides.
                 // Note how the first ride is part of the driver here.
                 view.setDriver({id: 1234, latitude: 37.771455, longitude: -122.428098, name: 'Joe Driver',
-                                active_ride: {id: 2345, from_latitude: 37.770709, from_longitude: -122.435082, name: 'Voter Jim', status: 'driver_assigned'}});
-                view.setRide({id: 3456, from_latitude: 37.768962, from_longitude: -122.433387, name: 'Voter Jane'});
+                                active_ride: {id: 2345, from_latitude: 37.770709, from_longitude: -122.435082, name: 'Voter Jim', status: 'driver_assigned', pickup_time: start + 601}});
+                
+                // Jane's pickup time is in less than ten minutes, but she has no driver.
+                view.setRide({id: 3456, from_latitude: 37.768962, from_longitude: -122.433387, name: 'Voter Jane', status: 'waiting_assignment', pickup_time: start + 601});
                 }, 3000);
         }
 
