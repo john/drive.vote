@@ -24,23 +24,55 @@
         <a href="https://github.com/john/drive.vote/issues/80">described in issue #80</a>.
     </p>
     <script>
+    
+        function DispatcherView(map)
+        {
+            this.map = map;
+            this._drivers = {};
+        }
+        
+        DispatcherView.prototype = {
+        
+            // https://github.com/john/drive.vote/blob/7ef10e17d/doc/drive_the_vote_dispatch_api.md#driver-events
+            setDriver: function(obj)
+            {
+                var id = obj.id.toString(),
+                    lat = obj.latitude,
+                    lon = obj.longitude,
+                    name = obj.name;
+            
+                if(this._drivers[id] != undefined) {
+                    // re-use the existing marker
+                    this.map.updateMarker(this._drivers[id], lat, lon, Map.icons.driver, name);
+                
+                } else {
+                    // make a new marker
+                    this._drivers[id] = this.map.addMarker(lat, lon, Map.icons.driver, name);
+                }
+            }
+        
+        };
 
         function on_loaded(map)
         {
             var m1 = map.addMarker(37.770444, -122.434960, Map.icons.voter, 'Hello World!', 'http://example.com');
             var m2 = map.addMarker(37.769079, -122.433674, Map.icons.poll, 'Hello World!');
-            var m3 = map.addMarker(37.771612, -122.426836, Map.icons.driver);
+            
+            view.setDriver({id: 1234, latitude: 37.771612, longitude: -122.426836, name: 'Joe Blow'});
 
             window.setTimeout(function() {
                 map.updateMarker(m1, 37.770709, -122.435082, Map.icons.driver, 'Goodbye World!', 'http://example.com');
                 map.updateMarker(m2, 37.768962, -122.433387, Map.icons.voter,  'Goodbye World!');
-                map.updateMarker(m3, 37.771455, -122.428098, Map.icons.poll);
+            
+                view.setDriver({id: 1234, latitude: 37.771455, longitude: -122.428098, name: 'Joe Blow'});
                 }, 3000);
         }
 
         var gmap = new Map(document.getElementById('gmap'), on_loaded,
                            {'google_api_key': 'AIzaSyDyJ3LTbJGAEIKjqYj3-gFDbAZ3BLo6sGo',
                             lat: 37.77073, lon: -122.43020, zoom: 16});
+
+        var view = new DispatcherView(gmap);
 
     </script>
 </body>
