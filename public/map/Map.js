@@ -58,10 +58,10 @@ Map.prototype = {
             _icon = (icon || Map.icons.default);
 
         if(this._gmap) {
-            marker = this._addGoogleMarker(lat, lon, _icon, content);
+            marker = this._addGoogleMarker(lat, lon, _icon, name, content);
 
         } else if(this._lmap) {
-            marker = this._addLeafletMarker(lat, lon, _icon, content);
+            marker = this._addLeafletMarker(lat, lon, _icon, name, content);
         
         } else {
             throw "There's no place to put the marker yet";
@@ -79,17 +79,17 @@ Map.prototype = {
             _icon = (icon || Map.icons.default);
 
         if(marker && this._gmap) {
-            this._updateGoogleMarker(marker, lat, lon, _icon, content);
+            this._updateGoogleMarker(marker, lat, lon, _icon, name, content);
 
         } else if(marker && this._lmap) {
-            this._updateLeafletMarker(marker, lat, lon, _icon, content);
+            this._updateLeafletMarker(marker, lat, lon, _icon, name, content);
         
         } else {
             throw "There's no place to update the marker yet";
         }
     },
 
-    _prepareMarkerContent(name, href)
+    _prepareMarkerContent: function(name, href)
     {
         var content;
 
@@ -104,7 +104,7 @@ Map.prototype = {
         return content;
     },
 
-    _addGoogleMarker: function(lat, lon, icon, content)
+    _addGoogleMarker: function(lat, lon, icon, title, content)
     {
         var gmap = this._gmap,
             gicon = {url: icon.url,
@@ -115,7 +115,7 @@ Map.prototype = {
                 position: {lat: lat, lng: lon},
                 icon: gicon,
                 map: gmap,
-                title: name
+                title: title
             });
 
         if(content) {
@@ -129,13 +129,13 @@ Map.prototype = {
         return gmarker;
     },
 
-    _addLeafletMarker: function(lat, lon, icon, content)
+    _addLeafletMarker: function(lat, lon, icon, title, content)
     {
         var licon = L.icon({iconUrl: icon.url,
                             iconSize: [icon.w, icon.h],
                             iconAnchor: [icon.w/2, icon.h],
                             popupAnchor: [0, -icon.h]}),
-            lmarker = L.marker([lat, lon], {icon: licon}).addTo(this._lmap);
+            lmarker = L.marker([lat, lon], {icon: licon, title: title}).addTo(this._lmap);
 
         if(content) {
             lmarker.bindPopup(content);
@@ -144,7 +144,7 @@ Map.prototype = {
         return lmarker;
     },
 
-    _updateGoogleMarker: function(gmarker, lat, lon, icon, content)
+    _updateGoogleMarker: function(gmarker, lat, lon, icon, title, content)
     {
         var gmap = this._gmap,
             gicon = {url: icon.url,
@@ -166,11 +166,12 @@ Map.prototype = {
         }
 
         gmarker.setIcon(gicon);
+        gmarker.setTitle(title);
         gmarker.setPosition({lat: lat, lng: lon});
 
     },
 
-    _updateLeafletMarker: function(lmarker, lat, lon, icon, content)
+    _updateLeafletMarker: function(lmarker, lat, lon, icon, title, content)
     {
         var licon = L.icon({iconUrl: icon.url,
                             iconSize: [icon.w, icon.h],
@@ -182,6 +183,9 @@ Map.prototype = {
         lmarker.unbindPopup();
         lmarker.bindPopup(content);
         lmarker.update();
+
+        // ugly hack, may not work in the future.
+        lmarker._icon.title = title;
     },
 
     _loadGoogleMap: function(element, view, callback, api_key)
