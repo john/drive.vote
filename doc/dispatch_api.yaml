@@ -140,6 +140,33 @@ paths:
           description: Ride zone RZID not found
           schema:
             $ref: '#/definitions/ErrorResponse'
+  /ride_zone/assign_ride:
+    post:
+      tags:
+        - Drivers
+        - Rides
+      summary: Assigns the specified ride to the specified driver
+      description: |
+        Call this endpoint to assign a ride to a driver. It will override any existing
+        assignment, so use carefully. This enables the dispatcher to reassign a ride.
+      parameters:
+        - name: driver_id
+          type: integer
+          description: Unique id of the driver
+          in: query
+        - name: ride_id
+          type: integer
+          description: Unique id of the ride
+          in: query
+      responses:
+        200:
+          description: Driver information is returned
+          schema:
+            $ref: '#/definitions/DriverResponse'
+        404:
+          description: Ride zone, driver or ride not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
   /conversations/CONVID:
     get:
       tags:
@@ -439,6 +466,11 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Driver'
+  DriverResponse:
+    type: object
+    properties:
+      response:
+        $ref: '#/definitions/Driver'
   Driver:
     type: object
     properties:
