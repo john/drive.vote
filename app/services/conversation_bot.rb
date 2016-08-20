@@ -244,14 +244,19 @@ class ConversationBot
           return give_up_on_location(from_or_to)
         end
 
-        results = Geocoder.search(@body + ' ' + @conversation.ride_zone.state)
+        results = GooglePlaces.search(@body + ' ' + @conversation.ride_zone.state)
         if results.count == 1
           result = results.first
-          @conversation.send("#{from_or_to}_address=".to_sym, result.street_address)
-          @conversation.send("#{from_or_to}_city=".to_sym, result.city)
-          @conversation.send("#{from_or_to}_latitude=".to_sym, result.geometry['location']['lat'])
-          @conversation.send("#{from_or_to}_longitude=".to_sym, result.geometry['location']['lng'])
-          formatted = results.first.formatted_address.sub(/, USA/, '')
+          formatted = result['formatted_address'].sub(/, USA|, United States/, '')
+          st_zip_matcher = formatted.match(/, ([A-Z]{2}) ([0-9-]*)\z/)
+          city_matcher = formatted.match(/, (.*), ([A-Z]{2}) ([0-9-]*)\z/)
+          formatted = formatted.sub(/#{st_zip_matcher}/, '') if st_zip_matcher
+          @conversation.send("#{from_or_to}_address=".to_sym, formatted)
+          @conversation.send("#{from_or_to}_city=".to_sym, city_matcher[1]) if city_matcher
+          @conversation.send("#{from_or_to}_latitude=".to_sym, result['geometry']['location']['lat'])
+          @conversation.send("#{from_or_to}_longitude=".to_sym, result['geometry']['location']['lng'])
+          name = result['name']
+          formatted = "#{name} - #{formatted}" unless name.blank?
           @response = I18n.t(:confirm_address, locale: @locale, address: formatted)
           return 0
         end
