@@ -9,7 +9,7 @@ class RideZone < ApplicationRecord
   validates_presence_of :zip
 
   geocoded_by :zip
-  after_create :geocode
+  after_validation :geocode, if: ->(obj){ obj.zip.present? && obj.zip_changed? }
 
   def drivers
     User.with_role(:driver, self)

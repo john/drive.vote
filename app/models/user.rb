@@ -10,9 +10,8 @@ class User < ApplicationRecord
 
   rolify after_add: :if_driver_remove_unassigned, after_remove: :make_unassigned
 
-  # TODO: Specs need to be mocked before this is enabled
-  # geocoded_by :full_address
-  # after_create :geocode
+  geocoded_by :full_address
+  after_validation :geocode , if: ->(obj){ obj.new_record? }
 
   def is_a_driver?
     RideZone.find_roles(:driver, self).present?

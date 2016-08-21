@@ -1,0 +1,119 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=,%20,%20Toledo,%20Oh,%2094118,%20&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 20 Aug 2016 17:02:37 GMT
+      Expires:
+      - Sun, 21 Aug 2016 17:02:37 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '555'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Toledo",
+                       "short_name" : "Toledo",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Fayette",
+                       "short_name" : "Fayette",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Gorham Township",
+                       "short_name" : "Gorham Township",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Fulton County",
+                       "short_name" : "Fulton County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Ohio",
+                       "short_name" : "OH",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "43521",
+                       "short_name" : "43521",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Toledo, Fayette, OH 43521, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 41.6751766,
+                          "lng" : -84.327444
+                       },
+                       "southwest" : {
+                          "lat" : 41.6749014,
+                          "lng" : -84.330922
+                       }
+                    },
+                    "location" : {
+                       "lat" : 41.6749245,
+                       "lng" : -84.32863689999999
+                    },
+                    "location_type" : "GEOMETRIC_CENTER",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.67638798029149,
+                          "lng" : -84.327444
+                       },
+                       "southwest" : {
+                          "lat" : 41.6736900197085,
+                          "lng" : -84.330922
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "ChIJkSOGuEasPYgRhX-YbCOBaS4",
+                 "types" : [ "route" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 20 Aug 2016 17:02:37 GMT
+recorded_with: VCR 3.0.3

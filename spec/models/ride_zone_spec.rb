@@ -4,6 +4,30 @@ RSpec.describe RideZone, type: :model do
 
   it { should have_many(:messages) }
 
+
+  describe 'lifecycle hooks' do
+    describe 'after_validation geocode' do
+      let(:rz) { create :ride_zone }
+      it 'should set lat/long on ride_zone create' do
+        expect(rz.latitude).to_not be_nil
+        expect(rz.longitude).to_not be_nil
+      end
+
+      it 'should update lat/long on zip change and ride_zone save' do
+        original_lat = rz.latitude
+        original_long = rz.longitude
+
+        rz.zip = 43623
+
+        rz.save!
+        rz.reload
+
+        expect(rz.latitude).to_not eq(original_lat)
+        expect(rz.longitude).to_not eq(original_long)
+      end
+    end
+  end
+
   it 'calculates stats' do
     rz = create :ride_zone
     rz2 = create :ride_zone

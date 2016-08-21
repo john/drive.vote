@@ -5,6 +5,8 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'devise'
 require 'support/controller_macros.rb'
+require 'vcr'
+
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -32,6 +34,16 @@ Shoulda::Matchers.configure do |config|
     with.test_framework :rspec
     with.library :rails
   end
+end
+
+VCR.configure do |config|
+  config.cassette_library_dir = "spec/fixtures/vcr_cassettes"
+  config.hook_into :webmock # or :fakeweb
+
+  config.around_http_request(lambda { |req| req.uri =~ /maps.googleapis.com/ }) do |request|
+    VCR.use_cassette("googleapi_#{request.uri}", &request)
+  end
+
 end
 
 RSpec.configure do |config|
