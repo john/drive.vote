@@ -132,6 +132,8 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
     let!(:r_assigned) { create :assigned_ride, ride_zone: rz }
     let!(:r_picked_up) { create :picked_up_ride, ride_zone: rz }
     let!(:r_complete) { create :complete_ride, ride_zone: rz }
+    let!(:r_soon) { create :scheduled_ride, ride_zone: rz, pickup_at: 5.minutes.from_now }
+    let!(:r_later) { create :scheduled_ride, ride_zone: rz, pickup_at: 90.minutes.from_now }
     let(:rz2) { create :ride_zone }
     let!(:notinrz) { create :waiting_ride, ride_zone: rz2 }
 
@@ -143,7 +145,8 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
     it 'returns rides for ride zone' do
       get :rides, params: {id: rz.id}
       resp = JSON.parse(response.body)['response']
-      expect(resp).to match_array([r_waiting.api_json, r_assigned.api_json, r_picked_up.api_json])
+      expect(resp).to match_array([r_waiting.api_json.as_json, r_assigned.api_json.as_json,
+                                   r_picked_up.api_json.as_json, r_soon.api_json.as_json])
     end
 
     it 'returns multitype requested conversations' do

@@ -138,6 +138,9 @@ class Simulation < ActiveRecord::Base
         while timeline.length > 0 && !stopped
           next_time, next_event = timeline.first
           ActiveRecord::Base.connection_pool.with_connection do
+            Ride.where(ride_zone: @ride_zone, status: :scheduled).where('pickup_at < ?', 5.minutes.from_now).each do |ride|
+              ride.update_attribute(:status, :waiting_assignment)
+            end
             if Time.now - start >= next_time
               execute_event(next_event)
               timeline.shift
@@ -165,6 +168,7 @@ class Simulation < ActiveRecord::Base
   def execute_event(event)
     evtype = event['type'].to_sym
     if private_methods.include?(evtype)
+      logger.info "SIMULATOR executing #{event}"
       send(evtype, event)
     else
       logger.warn "Event type #{evtype} not found!"
@@ -179,6 +183,38 @@ class Simulation < ActiveRecord::Base
     event[:user].reload
     lat, lng = event[:user].latitude, event[:user].longitude
     event[:user].update_attributes(latitude: lat + event['lat'], longitude: lng + event['lng'])
+  end
+
+  def accept_nearest_ride(event)
+    u = event[:user].reload
+    if u.active_ride
+      logger.warn "SIMULATOR driver #{u.name} already has a ride"
+    else
+      rides = Ride.waiting_nearby(@ride_zone.id, u.latitude, u.longitude, 1, 50)
+      if rides.empty?
+        logger.warn "SIMULATOR driver #{u.name} no nearby rides"
+      else
+        rides.first.assign_driver(u)
+      end
+    end
+  end
+
+  def pickup_ride(event)
+    u = event[:user].reload
+    if u.active_ride
+      u.active_ride.pickup_by(u)
+    else
+      logger.warn "SIMULATOR driver #{u.name} has no ride"
+    end
+  end
+
+  def complete_ride(event)
+    u = event[:user].reload
+    if u.active_ride
+      u.active_ride.complete_by(u)
+    else
+      logger.warn "SIMULATOR driver #{u.name} has no ride"
+    end
   end
 
   def sms(event)

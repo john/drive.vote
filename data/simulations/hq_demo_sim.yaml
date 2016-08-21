@@ -6,11 +6,12 @@ drivers:
   -
     events:
       - {at: 2, type: move, lat: 28.533, lng: -81.406 }
-      - {at: 10, type: move, lat: 28.534, lng: -81.407 }
-  -
-    events:
-      - {at: 5, type: move, lat: 28.523, lng: -81.416 }
-      - {at: 10, repeat_count: 10, repeat_time: 5, type: move_by, lat: 0.001, lng: 0}
+      - {at: "+3", type: move, lat: 28.534, lng: -81.407 }
+      - {at: "+3", type: accept_nearest_ride}
+      - {at: "+3", type: move, lat: 28.538, lng: -81.409 }
+      - {at: "+3", type: pickup_ride}
+      - {at: "+3", type: move, lat: 28.540, lng: -81.410 }
+      - {at: "+3", type: complete_ride}
 
 voters:
   -
@@ -29,7 +30,7 @@ voters:
 
 rides:
   -
-    pickup_offset: "10 minutes"
+    pickup_offset: "-5 minutes"
     from_address: "624 Doby Avenue"
     from_city: "orlando"
     from_latitude: 28.534

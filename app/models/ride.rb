@@ -111,6 +111,10 @@ class Ride < ApplicationRecord
     [:waiting_assignment, :driver_assigned, :picked_up]
   end
 
+  def self.active_status_values
+    self.active_statuses.map {|s| Ride.statuses[s]}
+  end
+
   def passenger_count
     # always include Voter as a passenger
     self.additional_passengers + 1

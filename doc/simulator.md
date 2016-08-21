@@ -1,3 +1,4 @@
+
 ## Drive the Vote Simulator
 The simulator can be used to create demos and validation scripts. It creates some drivers,
 voters, and rides in a ride zone and then plays a series of events in a timeline.
@@ -58,7 +59,7 @@ user_identifier: "a small string like (sim) or (demo) to identify users created 
 
 The definition file can also define drivers, voters, and pre-existing rides.
 
-##### Drivers
+#### Drivers
 The only information needed about a driver is the series of events they will generate. Each
 event has a timestamp, in seconds, from the start of the simulation. The simulator will perform
 the event at approximately that time. 
@@ -66,6 +67,9 @@ the event at approximately that time.
 The driver events are:
 - move: requires ``lat`` and ``lng`` and updates the driver's location with those absolute values
 - move_by: requires ``lat`` and ``lng`` and shifts the driver's location with those relative values
+- accept_nearest_ride: accepts the nearest waiting ride
+- pickup_ride: marks the active ride as picked up
+- complete_ride: marks the active ride as complete
 
 Here is a single driver that will just fire one event, to move to a specific location 30 
 seconds into the simulation:
@@ -85,10 +89,10 @@ drivers:
     events:
       - {at: 60, type: move, lat: 28.533, lng: -81.406 }
       - {at: "+30", type: move_by, lat: 0.002, lng: 0}
-      - {at: "+60", type: move, lat: 0, lng: .003 }
+      - {at: "+60", type: move_by, lat: 0, lng: .003 }
 ```
 
-##### Voters
+#### Voters
 As with drivers, the only information needed for each voter is their event stream.
 
 The voter events are:
@@ -117,7 +121,7 @@ voters:
       - {at: "+3", type: sms, body: "none"}
 ```
 
-##### Rides
+#### Rides
 Pre-existing rides can be created as scheduled at the start of the simulation.
 
 Here are the fields that should be filled out for a scheduled ride:
