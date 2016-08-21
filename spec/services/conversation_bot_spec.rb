@@ -273,17 +273,19 @@ RSpec.describe ConversationBot do
       end
 
       describe 'time zones!' do
+        let(:zone_offset) { 2.minutes }
         before :each do
           # if test is run on California server, let's say the ride zone is on east coast
           # what should be echoed back for confirmation is 3 hours from California time
           # 1:15pm in CA => 4:15pm east coast for "now"
-          convo.ride_zone.update_attribute(:utc_offset, Time.now.utc_offset + 3*3600)
+          # to avoid crossing midnight when CI is testing, create a tiny offset of 2 minutes
+          convo.ride_zone.update_attribute(:utc_offset, Time.now.utc_offset + zone_offset)
         end
 
         it 'should deal with timezones and now' do
           Timecop.freeze do
             reply = create :message, conversation: convo, body: 'now'
-            expected = 3.hours.from_now.getlocal.strftime('%l:%M %P')
+            expected = zone_offset.from_now.getlocal.strftime('%l:%M %P')
             expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_the_time, locale: :en, time: expected))
             expect(convo.pickup_time).to eq(Time.now.change(sec:0, usec:0))
           end
@@ -291,7 +293,7 @@ RSpec.describe ConversationBot do
 
         it 'should deal with timezones and a time' do
           Timecop.freeze do
-            expected = 3.hours.from_now.getlocal.strftime('%l:%M %P') # east coast
+            expected = zone_offset.from_now.getlocal.strftime('%l:%M %P') # east coast
             reply = create :message, conversation: convo, body: expected
             expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_the_time, locale: :en, time: expected))
             expect(convo.pickup_time).to eq(Time.now.change(sec:0, usec:0))
