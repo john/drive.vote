@@ -112,7 +112,7 @@ RSpec.describe ConversationBot do
 
   shared_examples 'handles bad geocoding' do
     it 'should reject too many results' do
-      allow(Geocoder).to receive(:search).and_return([good_geocode, good_geocode])
+      allow(GooglePlaces).to receive(:search).and_return([good_geocode, good_geocode])
       reply = create :message, conversation: convo, body: 'fake address'
       expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:too_many_addresses, locale: :en))
       expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:too_many_addresses, locale: :en))
@@ -126,7 +126,7 @@ RSpec.describe ConversationBot do
     end
 
     it 'should reject no results' do
-      allow(Geocoder).to receive(:search).and_return([])
+      allow(GooglePlaces).to receive(:search).and_return([])
       reply = create :message, conversation: convo, body: 'fake address'
       expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:no_address_match, locale: :en))
       expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:no_address_match, locale: :en))
@@ -143,20 +143,26 @@ RSpec.describe ConversationBot do
   describe 'getting to confirmed origin' do
     let(:user) { create :user, language: :en, name: 'foo' }
     let(:convo) { create :conversation_with_messages, user: user }
-    let(:good_geocode) { OpenStruct.new(formatted_address: 'formatted', street_address: 'main', city: 'city', geometry: {'location' => {'lat' => 1, 'lng' => 2}}) }
+    let(:good_geocode) { {'formatted_address' => '100 Main, Cleveland, OH 21921, United States', 'geometry' => {'location' => {'lat' => 1, 'lng' => 2}} } }
 
     before :each do
-      allow(Geocoder).to receive(:search).and_return([good_geocode])
+      allow(GooglePlaces).to receive(:search).and_return([good_geocode])
     end
 
     it 'should accept valid address, update conversation, and confirm' do
       reply = create :message, conversation: convo, body: 'fake address'
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_address, locale: :en, address: 'formatted'))
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_address, locale: :en, address: '100 Main, Cleveland'))
       expect(convo.reload.lifecycle).to eq('have_origin')
-      expect(convo.from_address).to eq('main')
-      expect(convo.from_city).to eq('city')
+      expect(convo.from_address).to eq('100 Main, Cleveland')
+      expect(convo.from_city).to eq('Cleveland')
       expect(convo.from_latitude).to eq(1)
       expect(convo.from_longitude).to eq(2)
+    end
+
+    it 'should echo name if present' do
+      allow(GooglePlaces).to receive(:search).and_return([good_geocode.merge('name' => 'school')])
+      reply = create :message, conversation: convo, body: 'fake address'
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_address, locale: :en, address: 'school - 100 Main, Cleveland'))
     end
 
     it 'should confirm address' do
@@ -187,20 +193,26 @@ RSpec.describe ConversationBot do
   describe 'getting to confirmed destination' do
     let(:user) { create :user, language: :en, name: 'foo' }
     let(:convo) { create :conversation_with_messages, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true }
-    let(:good_geocode) { OpenStruct.new(formatted_address: 'formatted to', street_address: 'mainto', city: 'cityto', geometry: {'location' => {'lat' => 3, 'lng' => 4}}) }
+    let(:good_geocode) { {'formatted_address' => '100 Main, Cleveland, OH 21921, United States', 'geometry' => {'location' => {'lat' => 3, 'lng' => 4}} } }
 
     before :each do
-      allow(Geocoder).to receive(:search).and_return([good_geocode])
+      allow(GooglePlaces).to receive(:search).and_return([good_geocode])
     end
 
     it 'should accept valid address, update conversation, and confirm' do
       reply = create :message, conversation: convo, body: 'fake address'
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_address, locale: :en, address: 'formatted to'))
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_address, locale: :en, address: '100 Main, Cleveland'))
       expect(convo.reload.lifecycle).to eq('have_destination')
-      expect(convo.to_address).to eq('mainto')
-      expect(convo.to_city).to eq('cityto')
+      expect(convo.to_address).to eq('100 Main, Cleveland')
+      expect(convo.to_city).to eq('Cleveland')
       expect(convo.to_latitude).to eq(3)
       expect(convo.to_longitude).to eq(4)
+    end
+
+    it 'should echo name if present' do
+      allow(GooglePlaces).to receive(:search).and_return([good_geocode.merge('name' => 'school')])
+      reply = create :message, conversation: convo, body: 'fake address'
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_address, locale: :en, address: 'school - 100 Main, Cleveland'))
     end
 
     it 'should confirm address' do
