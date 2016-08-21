@@ -10,6 +10,14 @@ function DispatchController(rideZoneId, mapController) {
 
 DispatchController.prototype = {
 
+  addConversationClickHandlers: function() {
+    $(document).on("click", '.clickable', function() {
+      $(".modal-body").modal();
+      dispatchController.loadConversationForm($(this).data("cid"));
+      dispatchController.loadConversationMessages($(this).data("cid"));
+    });
+  },
+
   connected: function () {
     $('.disp-server-status').text("Connected").toggleClass('disp-text-alert', false);
   },
@@ -22,7 +30,7 @@ DispatchController.prototype = {
     var statusClass = (c.status == 'help_needed') ? 'conv-alert' : 'conv-normal';
     return '<td class="msg">' + ((c.message_count == null) ? '0' : c.message_count) + '</td>' +
       '<td class="from">' + c.from_phone + '<br>' + c.messages[0].body + '</td>' +
-      '<td class="'+statusClass+'">' + c.status.replace('in_progress', 'in prog') + '</td>' +
+      '<td class="'+statusClass+'">' + c.status.replace('_', ' ') + '</td>' +
       '<td class="updated">' + strftime('%l:%M%P', new Date(c.status_updated_at*1000)) + '</td>'
   },
 
@@ -63,7 +71,7 @@ DispatchController.prototype = {
 
   rideCells: function (r) {
     return '<td>' + r.name + '</td>' +
-      '<td>' + r.status + '</td>' +
+      '<td>' + r.status.replace('_', ' ') + '</td>' +
       '<td>' + new Date(r.status_updated_at*1000).toTimeString() + '</td>' +
       '<td>' + r.pickup_at + '</td>'
   },

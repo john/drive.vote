@@ -2,36 +2,34 @@
   h5 { margin-top: -10px; }
   h6 { font-weight: bold; font-size: 23px; }
   small { font-size: 11px; }
-  .filters { margin: -10px 0 10px 0; font-size: 12px; }
-  .message { border-bottom: 1px solid #ccc; width: 90%; margin:5px; padding: 5px;  }
-  .msg-timestamp { font-style: italic; color: #777 }
-  .msg-body { margin:-5px 0 20px 0; }
 
-.modal.fade.modal-body{"aria-labelledby" => "conversationModalLabel", :role => "dialog", :tabindex => "-1"}
+.modal.fade.modal-body#conv-modal{"aria-labelledby" => "conversationModalLabel", :role => "dialog", :tabindex => "-1"}
   .modal-dialog.modal-lg{:role => "document"}
     .modal-content
       .modal-header
         %button.close{type: 'button', 'data-dismiss': 'modal', 'aria-label': 'Close'}
           %span{'aria-hidden': 'true'} x
+        #msg-count.pull-right
+
         %h4#conversationModalLabel.modal-title
-          %span#conversationDetails{style: 'font-weight: normal; font-size: 14px;'}
 
       .modal-body
-        %table{style: 'width: 850px; border: 0px solid red;'}
+        %table{style: 'width: 850px;'}
           %tr
-            %td{style: 'width: 500px; border: 0px solid red;'}
+            %td{style: 'width: 500px;'}
               #conversation-form
                 -# = render partial: 'conversation_form'
 
-            %td{style: 'width: 340px; border: 0px solid red;'}
+            %td{style: 'width: 340px;'}
               #conversation-messages
 
 %h5
-  =@ride_zone.name
+  = @ride_zone.name
+  %small
+    = @ride_zone.phone_number.phony_formatted(normalize: :US, spaces: '-')
 
--#
-  / .disp-server-status
-  /   Connecting
+.disp-server-status
+  Connecting
 
 .col-md-4
   %h6
@@ -39,7 +37,7 @@
     %small
       = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshConversations(); return false;', style: 'font-size: 13px; color: #aaa'
 
-  .btn-group.btn-group-xs.filters{role: 'group'}
+  .btn-group.btn-group-xs.btn-filters{role: 'group'}
     = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllConversations(); return false;', id: 'conv-all', class: 'btn btn-secondary btn-default btn-conv', style: 'background-color: #777;'
 
     = link_to 'Help', '#', onclick: 'javascript: dispatchController.showStatusConversations("need_help"); return false;', id: 'conv-help', class: 'btn btn-secondary btn-default btn-conv'
@@ -62,7 +60,7 @@
     %small
       = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshRides(); return false;', style: 'font-size: 13px; color: #aaa'
 
-  .btn-group.btn-group-xs.filters{role: 'group'}
+  .btn-group.btn-group-xs.btn-filters{role: 'group'}
     = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllRides(); return false;', id: 'ride-all', class: 'btn btn-secondary btn-default btn-ride', style: 'background-color: #777;'
 
     = link_to 'Waiting', '#', onclick: 'javascript: dispatchController.showStatusRides("waiting_assignment"); return false;', id: 'ride-waiting', class: 'btn btn-secondary btn-default btn-ride'
@@ -89,10 +87,20 @@
   jQuery(document).ready(function($) {
     $(document).on("click", '.clickable', function(event) {
       $(".modal-body").modal();
-      dispatchController.loadConversationForm($(this).data("cid"));
       dispatchController.loadConversationMessages($(this).data("cid"));
     });
   });
+
+  // TODO: move this to dispatch.js
+  $('#conv-modal').on('loaded.bs.modal', function (e) {
+    var out = document.getElementById("messages");
+    // allow 1px inaccuracy by adding 1
+
+    var isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+    alert(isScrolledToBottom);
+    if(isScrolledToBottom)
+        out.scrollTop = out.scrollHeight - out.clientHeight;
+  })
 
   var gmap = new Map(document.getElementById('dispatch-map'), onMapLoaded,
                      {'google_api_key': 'AIzaSyDyJ3LTbJGAEIKjqYj3-gFDbAZ3BLo6sGo',

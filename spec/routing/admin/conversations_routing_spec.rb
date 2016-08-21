@@ -18,10 +18,6 @@ RSpec.describe Admin::ConversationsController, type: :routing do
       expect(get: '/admin/conversations/1/form').to route_to('admin/conversations#form', id: '1')
     end
 
-    it 'routes to #update_attribute' do
-      expect(post: '/admin/conversations/1/update_attribute').to route_to('admin/conversations#update_attribute', id: '1')
-    end
-
     it 'routes to #close' do
       expect(post: '/admin/conversations/1/close').to route_to('admin/conversations#close', id: '1')
     end

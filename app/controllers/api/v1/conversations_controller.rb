@@ -23,6 +23,19 @@ module Api::V1
       end
     end
 
+    # POST /admin/conversations/1/update_attribute?attribute=tk
+    def update_attribute
+      if(params.has_key?(:name) && params.has_key?(:value))
+        if @conversation.update_attribute( params[:name], params[:value] )
+          render json: {response: @conversation.reload.api_json(false)}
+        else
+          render json: {error: @conversation.errors}
+        end
+      else
+        render json: {error: 'missing params'}
+      end
+    end
+
     def create_message
       sms = TwilioService.send_message(
         { from: @conversation.to_phone, to: @conversation.from_phone, body: params[:message][:body]} ,
@@ -35,6 +48,19 @@ module Api::V1
       else
         msg = Message.create_conversation_reply(@conversation, sms)
         render json: {response: {message: {sent_at: I18n.localize(msg.created_at, format: '%-m/%-d  %l:%M%P'), body: "#{msg.body}" }}}, status: 200
+      end
+    end
+
+    def create_ride
+      if driver = User.find( params[:driver_id] )
+        if ride = Ride.create_from_conversation( @conversation )
+          ride.assign_driver( driver )
+          render json: {response: ride.reload.api_json}
+        else
+          render json: {error: "Could not create Ride from Conversation"}, status: 500
+        end
+      else
+        render json: {error: "Could not find driver"}, status: 500
       end
     end
 

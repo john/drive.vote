@@ -60,6 +60,8 @@ Rails.application.routes.draw do
       resources :conversations, only: [:show, :update] do
         member do
           post 'messages' => 'conversations#create_message'
+          post 'rides' => 'conversations#create_ride'
+          post 'update_attribute' => 'conversations#update_attribute'
         end
       end
 
@@ -82,7 +84,6 @@ Rails.application.routes.draw do
       member do
         get 'messages' => 'conversations#messages'
         get 'form' => 'conversations#form'
-        post 'update_attribute' => 'conversations#update_attribute'
         post 'close' => 'conversations#close'
       end
     end

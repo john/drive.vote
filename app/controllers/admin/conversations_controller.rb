@@ -18,15 +18,9 @@ class Admin::ConversationsController < Admin::AdminApplicationController
 
   # GET /admin/conversations/1/form
   def form
+    @zone_driver_count = User.with_role(:driver, @conversation.ride_zone).count
+    @available_drivers = User.with_role(:driver, @conversation.ride_zone).where(available: true)
     render partial: 'form'
-  end
-
-  # POST /admin/conversations/1/update_attribute?attribute=tk
-  def update_attribute
-    if(params.has_key?(:attribute_name) && params.has_key?(:attribute_value))
-      @conversation.update_attribute( params[:attribute_name], params[:attribute_value] )
-    end
-    render partial: 'attribute_form', locals: {attribute: params[:attribute_name]}
   end
 
   # POST /admin/conversations/1/close
