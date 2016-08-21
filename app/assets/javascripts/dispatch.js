@@ -18,14 +18,6 @@ DispatchController.prototype = {
     $('.disp-server-status').text("Disconnected").toggleClass('disp-text-alert', true);
   },
 
-  addConversationClickHandlers: function() {
-    $(document).on("click", '.clickable', function() {
-      $(".modal-body").modal();
-      dispatchController.loadConversationForm($(this).data("cid"));
-      dispatchController.loadConversationMessages($(this).data("cid"));
-    });
-  },
-
   loadConversationForm: function (id) {
     $('#conversation-form').load('/admin/conversations/' + id + '/form');
   },
