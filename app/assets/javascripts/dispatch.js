@@ -64,8 +64,8 @@ DispatchController.prototype = {
   rideCells: function (r) {
     return '<td>' + r.name + '</td>' +
       '<td>' + r.status + '</td>' +
-      '<td>' + new Date(r.status_updated_at*1000).toTimeString() + '</td>' +
-      '<td>' + r.pickup_at + '</td>'
+      '<td>' + strftime('%l:%M%P', new Date(r.status_updated_at*1000)) + '</td>' +
+      '<td>' + strftime('%l:%M%P', new Date(r.pickup_at*1000)) + '</td>'
   },
 
   updateRideTable: function (r) {
@@ -159,6 +159,7 @@ DispatchController.prototype = {
 
   refreshConversations: function () {
     var self = this;
+    $("#conversations > tbody").html("");
     $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/conversations', {
       success: function(data, status, xhr) {
         for (var i = 0; i < data.response.length; ++i) {
@@ -171,6 +172,8 @@ DispatchController.prototype = {
 
   refreshRides: function () {
     var self = this;
+    this._mapController.clearRideMarkers();
+    $("#rides > tbody").html("");
     $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/rides', {
       success: function(data, status, xhr) {
         for (var i = 0; i < data.response.length; ++i) {
@@ -183,6 +186,7 @@ DispatchController.prototype = {
 
   refreshDrivers: function () {
     var self = this;
+    this._mapController.clearDriverMarkers();
     $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/drivers', {
       success: function(data, status, xhr) {
         for (var i = 0; i < data.response.length; ++i) {

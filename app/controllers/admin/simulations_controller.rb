@@ -7,6 +7,16 @@ class Admin::SimulationsController < Admin::AdminApplicationController
     @simulation_defs = Simulation::SIM_DEFS
   end
 
+  def clear_all_data
+    if Simulation.can_start_new?
+      Simulation.clear_all_data
+      flash[:notice] = 'All simulation data cleared'
+    else
+      flash[:notice] = 'Simulation running - cannot clear'
+    end
+    redirect_to admin_simulations_path
+  end
+
   def start_new
     if Simulation.can_start_new?
       @simulation = Simulation.create_named_sim(params[:slug])

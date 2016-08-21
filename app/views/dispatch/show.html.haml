@@ -58,7 +58,7 @@
   %h6
     Rides &nbsp;
     %small
-      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshRides(); return false;', style: 'font-size: 13px; color: #aaa'
+      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshRides(); dispatchController.refreshDrivers(); return false;', style: 'font-size: 13px; color: #aaa'
 
   .btn-group.btn-group-xs.btn-filters{role: 'group'}
     = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllRides(); return false;', id: 'ride-all', class: 'btn btn-secondary btn-default btn-ride', style: 'background-color: #777;'

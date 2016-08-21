@@ -2,12 +2,16 @@
 
 %h1
   Simulations
-  - if Simulation.can_start_new?
-    &nbsp;
-    %small
+- if Simulation.can_start_new?
+  .row
+    .col-md-2
       = form_tag start_new_admin_simulations_url, method: :POST do
-        = select_tag "slug", options_from_collection_for_select(@simulation_defs, "slug", "name"), prompt: 'Which simulation?'
+        = select_tag "slug", options_from_collection_for_select(@simulation_defs, "slug", "name"), include_blank: false
+        %br
         = button_tag 'Start New Simulation', class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }
+    .col-md-2
+      = form_tag clear_all_data_admin_simulations_url, method: :POST do
+        = button_tag 'Clear All Sim Data', class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }
 
 %table.admin
   %thead

@@ -100,6 +100,7 @@ Rails.application.routes.draw do
     resources :simulations, only: [:index] do
       collection do
         post 'start_new' => 'simulations#start_new'
+        post 'clear_all_data' => 'simulations#clear_all_data'
       end
       member do
         post 'stop' => 'simulations#stop'

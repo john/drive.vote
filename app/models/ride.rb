@@ -77,7 +77,8 @@ class Ride < ApplicationRecord
 
   # returns json suitable for exposing in the API
   def api_json
-    j = self.as_json(except: [:created_at, :updated_at], methods: [:conversation_id])
+    j = self.as_json(except: [:pickup_at, :created_at, :updated_at], methods: [:conversation_id])
+    j['pickup_at'] = self.pickup_at.try(:to_i)
     j['status_updated_at'] = self.status_updated_at.to_i
     j
   end

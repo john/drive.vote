@@ -37,6 +37,14 @@ class Simulation < ActiveRecord::Base
     Simulation.where.not(status: [:failed, :completed]).count == 0
   end
 
+  def self.clear_all_data
+    # do not interrupt if anything is running
+    if self.can_start_new?
+      SIM_DEFS.each { |sim| Simulation.clean_up(sim) }
+      Simulation.delete_all
+    end
+  end
+
   def run_time
     sim_def.run_time
   end
@@ -64,7 +72,7 @@ class Simulation < ActiveRecord::Base
   def prepare
     self.status = :preparing
     save
-    SIM_DEFS.each { |sim| clean_up(sim) }
+    Simulation.clear_all_data
     @ride_zone = RideZone.find_by_name(sim_def.ride_zone_name)
     @events = []
     create_drivers
@@ -93,7 +101,7 @@ class Simulation < ActiveRecord::Base
   end
 
   def create_driver(i)
-    User.create!(name: next_random_name, user_type: :driver, ride_zone: @ride_zone,
+    User.create!(name: next_random_name, user_type: :driver, ride_zone: @ride_zone, available: true,
                     email: "simdriver#{i}@example.com", password: '123456789', city: @ride_zone.city,
                     state: @ride_zone.state, zip: @ride_zone.zip,
                     phone_number: '510-612-%03d7' % i )
@@ -227,7 +235,7 @@ class Simulation < ActiveRecord::Base
 
   # clean up all records associated with a sim definition, starting
   # with the unique user identifier
-  def clean_up(sim_def)
+  def self.clean_up(sim_def)
     ride_zone = RideZone.find_by_name(sim_def.ride_zone_name)
     return unless ride_zone
     Ride.where(ride_zone: ride_zone).delete_all
