@@ -102,12 +102,17 @@
         out.scrollTop = out.scrollHeight - out.clientHeight;
   })
 
+  // something's fucked with bootstrap, so make sure we clean up half-closed modals ourselves
+  $('#conv-modal').on('hidden.bs.modal', function () {
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
+  });
+
   var gmap = new Map(document.getElementById('dispatch-map'), onMapLoaded,
                      {'google_api_key': 'AIzaSyDyJ3LTbJGAEIKjqYj3-gFDbAZ3BLo6sGo',
                       lat: #{@ride_zone.latitude}, lon: #{@ride_zone.longitude}, zoom: 13});
 
   function onMapLoaded(map)
-  {
     dispatchMapController = new DispatchMapController(map);
     dispatchController = new DispatchController(#{@ride_zone.id}, dispatchMapController);
     dispatchController.init();
