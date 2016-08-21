@@ -3,7 +3,12 @@
 // app/assets/javascripts/dispatch.js
 "use strict";
 
-var dispatchController = {
+function DispatchController(rideZoneId, mapController) {
+  this._rideZoneId = rideZoneId;
+  this._mapController = mapController;
+}
+
+DispatchController.prototype = {
 
   connected: function () {
     $('.disp-server-status').text("Connected").toggleClass('disp-text-alert', false);
@@ -21,46 +26,24 @@ var dispatchController = {
       '<td class="updated">' + strftime('%l:%M%P', new Date(c.status_updated_at*1000)) + '</td>'
   },
 
+  updateConversationTable: function (c) {
+    this.updateTable('#conversations', 'conv', c, this.conversationCells(c));
+  },
+
   loadConversationMessages: function (id) {
     $('#conversationModalLabel').html('Conversation ' + id);
     $('#conversationDetails').prepend('foo');
     $('#messages').load('/admin/conversations/' + id + '/messages');
   },
 
-  updateConversationTable: function (c, highlight) {
-    dispatchController.updateTable('#conversations', 'conv', c, dispatchController.conversationCells(c), highlight);
-  },
-
-  // Called for new conversation event
-  newConversation: function (event) {
-    dispatchController.updateConversationTable(event.conversation, true);
-  },
-
-  // Called when conversation changes
-  conversationChanged: function (event) {
-    dispatchController.updateConversationTable(event.conversation, true);
-  },
-
-  refreshConversations: function () {
-    $.ajax('/api/1/ride_zones/' + dispatchController.rideZoneId + '/conversations', {
-      success: function(data, status, xhr) {
-        for (var i = 0; i < data.response.length; ++i) {
-          var convo = data.response[i];
-          dispatchController.updateConversationTable(convo, false);
-        }
-      },
-      error: function(xhr, status, err) { $('error_msg').text(xhr.responseText) }
-    });
-  },
-
   showAllConversations: function () {
-    dispatchController.showAllRows('#conversations');
+    this.showAllRows('#conversations');
     $( ".btn-conv" ).css( "background-color", "#bdc3c7" );
     $("#conv-all").css( "background-color", "#777" );
   },
 
   showStatusConversations: function (status) {
-    dispatchController.showOnlyRows('#conversations', function(r) { return r.data('objref').status == status });
+    this.showOnlyRows('#conversations', function(r) { return r.data('objref').status == status });
     $( ".btn-conv" ).css( "background-color", "#bdc3c7" );
     if (status == 'need_help') {
       $("#conv-help").css( "background-color", "#777" );
@@ -70,20 +53,10 @@ var dispatchController = {
   },
 
   showStaleConversations: function (status) {
-    dispatchController.showOnlyRows('#conversations', function(r) { return dispatchController.stale(r.data('objref')) });
+    var self = this;
+    this.showOnlyRows('#conversations', function(r) { return self.stale(r.data('objref')) });
     $( ".btn-conv" ).css( "background-color", "#bdc3c7" );
     $("#conv-stale").css( "background-color", "#777" );
-  },
-
-  sendReply: function(url) {
-    // alert('this will send, but then it just reloads the page. it needs to insert the sent message into the DOM on this modal.');
-    var args = {'message' : {'body': $('#body').val()}};
-    $.ajax(url, {type: 'POST', dataType: 'json', data: args, process_data: false, content_type: 'application/json'})
-      .success(function(res) {
-        var bod = res['response']['message']['body'];
-        var sent_at = res['response']['message']['sent_at'];
-        $(".messages").append("<tr><td>" + sent_at + "</td><td>?</td><td>" + bod + "</td></tr>");
-      });
   },
 
   rideCells: function (r) {
@@ -93,41 +66,18 @@ var dispatchController = {
       '<td>' + r.pickup_at + '</td>'
   },
 
-  updateRideTable: function (r, highlight) {
-    dispatchController.updateTable('#rides', 'ride', r, dispatchController.rideCells(r), highlight);
-  },
-
-  // Called when a new ride is created
-  newRide: function (event) {
-    dispatchController.updateRideTable(event.ride, true);
-    // todo: update the map
-  },
-
-  // Called when ride changes
-  rideChanged: function (event) {
-    dispatchController.updateRideTable(event.ride, true);
-    // todo: update the map
-  },
-
-  refreshRides: function () {
-    $.ajax('/api/1/ride_zones/' + dispatchController.rideZoneId + '/rides', {
-      success: function(data, status, xhr) {
-        for (var i = 0; i < data.response.length; ++i) {
-          dispatchController.updateRideTable(data.response[i], false);
-        }
-      },
-      error: function(xhr, status, err) { $('error_msg').text(xhr.responseText) }
-    });
+  updateRideTable: function (r) {
+    this.updateTable('#rides', 'ride', r, this.rideCells(r));
   },
 
   showAllRides: function () {
-    dispatchController.showAllRows('#rides');
+    this.showAllRows('#rides');
     $( ".btn-ride" ).css( "background-color", "#bdc3c7" );
     $("#ride-all").css( "background-color", "#777" );
   },
 
   showStatusRides: function (status) {
-    dispatchController.showOnlyRows('#rides', function(r) { return r.data('objref').status == status });
+    this.showOnlyRows('#rides', function(r) { return r.data('objref').status == status });
     $( ".btn-ride" ).css( "background-color", "#bdc3c7" );
     if (status == 'waiting_assignment') {
       $("#ride-waiting").css( "background-color", "#777" );
@@ -137,33 +87,22 @@ var dispatchController = {
   },
 
   showStaleRides: function (status) {
-    dispatchController.showOnlyRows('#rides', function(r) { return dispatchController.stale(r.data('objref')) });
+    var self = this;
+    this.showOnlyRows('#rides', function(r) { return self.stale(r.data('objref')) });
     $( ".btn-ride" ).css( "background-color", "#bdc3c7" );
     $("#ride-stale").css( "background-color", "#777" );
-  },
-
-  refreshDrivers: function () {
-    $.ajax('/api/1/ride_zones/' + dispatchController.rideZoneId + '/drivers', {
-      success: function(data, status, xhr) {
-        for (var i = 0; i < data.response.length; ++i) {
-          var driver = data.response[i];
-          // todo: handle driver
-        }
-      },
-      error: function(xhr, status, err) { $('error_msg').text(xhr.responseText) }
-    });
   },
 
   stale: function(data) {
     return 1000*data.status_updated_at < (new Date - 30*60*1000)
   },
 
-  updateTable: function (tableSelector, type, obj, cells, highlight) {
+  updateTable: function (tableSelector, type, obj, cells) {
     var rowId = type+'-row-'+obj.id;
     var existing = $('#' + rowId);
     if (existing.length > 0) {
       existing.html(cells);
-      if (highlight) { existing.effect("highlight", {}, 3000); }
+      existing.effect("highlight", {}, 1500);
     } else {
       var row = '<tr id="'+rowId+'" class="clickable" data-cid="'+obj.id+'">' + cells +'</tr>';
       $(tableSelector).prepend(row);
@@ -184,52 +123,104 @@ var dispatchController = {
     })
   },
 
-  // Handle new driver creation
-  newDriver: function (event) {
-    var row = '<tr id="'+rowId+'">' + cells +'</tr>';
-    $(tableSelector).prepend(row);
+  sendReply: function(url) {
+    // alert('this will send, but then it just reloads the page. it needs to insert the sent message into the DOM on this modal.');
+    var args = {'message' : {'body': $('#body').val()}};
+    $.ajax(url, {type: 'POST', dataType: 'json', data: args, process_data: false, content_type: 'application/json'})
+      .success(function(res) {
+        var bod = res['response']['message']['body'];
+        var sent_at = res['response']['message']['sent_at'];
+        $(".messages").append("<tr><td>" + sent_at + "</td><td>?</td><td>" + bod + "</td></tr>");
+      });
   },
 
-  driverChanged: function (event) {
-    // todo: update map
+  // Called for new conversation event or changed
+  processConversation: function (convo) {
+    this.updateConversationTable(convo);
+  },
+
+  // Called when a ride is created or changed
+  processRide: function (ride) {
+    this.updateRideTable(ride);
+    this._mapController.processRide(ride);
+  },
+
+  // Handle new driver creation or change
+  processDriver: function (driver) {
+    this._mapController.processDriver(driver);
   },
 
   // Handle new message
-  newMessage: function (event) {
+  processMessage: function (msg) {
     // do we want to do anything?
+  },
+
+  refreshConversations: function () {
+    var self = this;
+    $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/conversations', {
+      success: function(data, status, xhr) {
+        for (var i = 0; i < data.response.length; ++i) {
+          self.processConversation(data.response[i]);
+        }
+      },
+      error: function(xhr, status, err) { $('error_msg').text(xhr.responseText) }
+    });
+  },
+
+  refreshRides: function () {
+    var self = this;
+    $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/rides', {
+      success: function(data, status, xhr) {
+        for (var i = 0; i < data.response.length; ++i) {
+          self.processRide(data.response[i]);
+        }
+      },
+      error: function(xhr, status, err) { $('error_msg').text(xhr.responseText) }
+    });
+  },
+
+  refreshDrivers: function () {
+    var self = this;
+    $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/drivers', {
+      success: function(data, status, xhr) {
+        for (var i = 0; i < data.response.length; ++i) {
+          self.processDriver(data.response[i]);
+        }
+      },
+      error: function(xhr, status, err) { $('error_msg').text(xhr.responseText) }
+    });
   },
 
   eventReceived: function (event) {
     switch (event['event_type']) {
       case 'new_conversation':
-        dispatchController.newConversation(event);
+        this.processConversation(event.conversation);
         break;
       case 'conversation_changed':
-        dispatchController.conversationChanged(event);
+        this.processConversation(event.conversation);
         break;
       case 'new_ride':
-        dispatchController.newRide(event);
+        this.processRide(event.ride);
         break;
       case 'ride_changed':
-        dispatchController.rideChanged(event);
+        this.processRide(event.ride);
         break;
       case 'new_driver':
-        dispatchController.newDriver(event);
+        this.processDriver(event.driver);
         break;
       case 'driver_changed':
-        dispatchController.driverChanged(event);
+        this.processDriver(event.driver);
         break;
       case 'new_message':
-        dispatchController.newMessage(event);
+        this.processMessage(event.message);
         break;
     }
   },
 
-  setup: function(rideZoneId) {
-    dispatchController.rideZoneId = rideZoneId;
-    dispatchController.refreshConversations();
-    dispatchController.refreshRides();
-    dispatchController.refreshDrivers();
-    createRideZoneChannel(rideZoneId, dispatchController.connected, dispatchController.disconnected, dispatchController.eventReceived);
+  init: function() {
+    this.refreshConversations();
+    this.refreshRides();
+    this.refreshDrivers();
+    createRideZoneChannel(this._rideZoneId, this.connected.bind(this), this.disconnected.bind(this), this.eventReceived.bind(this));
   }
 };
