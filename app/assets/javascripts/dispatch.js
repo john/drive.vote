@@ -10,6 +10,14 @@ function DispatchController(rideZoneId, mapController) {
 
 DispatchController.prototype = {
 
+  connected: function () {
+    $('.disp-server-status').text("Connected").toggleClass('disp-text-alert', false);
+  },
+
+  disconnected: function () {
+    $('.disp-server-status').text("Disconnected").toggleClass('disp-text-alert', true);
+  },
+
   addConversationClickHandlers: function() {
     $(document).on("click", '.clickable', function() {
       $(".modal-body").modal();
@@ -18,12 +26,12 @@ DispatchController.prototype = {
     });
   },
 
-  connected: function () {
-    $('.disp-server-status').text("Connected").toggleClass('disp-text-alert', false);
+  loadConversationForm: function (id) {
+    $('#conversation-form').load('/admin/conversations/' + id + '/form');
   },
 
-  disconnected: function () {
-    $('.disp-server-status').text("Disconnected").toggleClass('disp-text-alert', true);
+  loadConversationMessages: function (id) {
+    $('#conversation-messages').load('/admin/conversations/' + id + '/messages');
   },
 
   conversationCells: function (c) {
@@ -52,6 +60,12 @@ DispatchController.prototype = {
     $("#conv-all").css( "background-color", "#777" );
   },
 
+  showAllConversations: function () {
+     this.showAllRows('#conversations');
+     $( ".btn-conv" ).css( "background-color", "#bdc3c7" );
+     $("#conv-all").css( "background-color", "#777" );
+   },
+
   showStatusConversations: function (status) {
     this.showOnlyRows('#conversations', function(r) { return r.data('objref').status == status });
     $( ".btn-conv" ).css( "background-color", "#bdc3c7" );
@@ -71,7 +85,7 @@ DispatchController.prototype = {
 
   rideCells: function (r) {
     return '<td>' + r.name + '</td>' +
-      '<td>' + r.status.replace('_', ' ') + '</td>' +
+      '<td>' + r.status + '</td>' +
       '<td>' + new Date(r.status_updated_at*1000).toTimeString() + '</td>' +
       '<td>' + r.pickup_at + '</td>'
   },
