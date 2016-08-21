@@ -29,6 +29,18 @@ module Api::V1
       render json: {response: @ride_zone.drivers.map(&:api_json)}
     end
 
+    def assign_ride
+      driver = User.find_by_id(params[:driver_id])
+      ride = Ride.find_by_id(params[:ride_id])
+      if driver && ride
+        ride.clear_driver if ride.driver
+        ride.assign_driver(driver)
+        render json: {response: driver.reload.api_json}
+      else
+        render json: {error: 'Driver or ride not found'}, status: :not_found
+      end
+    end
+
     def rides
       # default to active rides
       status_list = no_status? ? Ride.active_statuses : status_array

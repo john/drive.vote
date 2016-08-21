@@ -77,6 +77,7 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
     let!(:rz) { create :ride_zone }
     let!(:u1) { create :driver_user, ride_zone: rz }
     let!(:u2) { create :driver_user, ride_zone: rz }
+    let!(:ride) { create :ride, ride_zone: rz }
     let(:rz2) { create :ride_zone }
     let!(:notinrz) { create :driver_user, ride_zone: rz2 }
 
@@ -91,8 +92,35 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
       expect(resp).to match_array([u1.api_json.as_json, u2.api_json.as_json])
     end
 
+    it 'succeeds assigning rides to drivers' do
+      post :assign_ride, params: {id: rz.id, driver_id: u1.id, ride_id: ride.id}
+      expect(response).to be_successful
+    end
+
+    it 'assigns the ride to driver' do
+      post :assign_ride, params: {id: rz.id, driver_id: u1.id, ride_id: ride.id}
+      expect(u1.reload.active_ride).to_not be_nil
+    end
+
+    it 'removes if already assigned' do
+      ride.assign_driver(u2)
+      post :assign_ride, params: {id: rz.id, driver_id: u1.id, ride_id: ride.id}
+      expect(response).to be_successful
+      expect(ride.reload.driver).to eq(u1)
+    end
+
     it '404s for missing ride zone' do
       get :drivers, params: {id: 0}
+      expect(response.status).to eq(404)
+    end
+
+    it '404s for missing driver' do
+      post :assign_ride, params: {id: rz.id, driver_id: 0, ride_id: ride.id}
+      expect(response.status).to eq(404)
+    end
+
+    it '404s for missing ride' do
+      post :assign_ride, params: {id: rz.id, driver_id: u1.id, ride_id: 0}
       expect(response.status).to eq(404)
     end
   end
