@@ -10,6 +10,7 @@ class RideZone < ApplicationRecord
 
   geocoded_by :zip
   after_validation :geocode, if: ->(obj){ obj.zip.present? && obj.zip_changed? }
+  after_validation :set_utc_offset, if: ->(obj){ obj.latitude.present? && obj.latitude_changed? }
 
 
   def active_rides
@@ -53,5 +54,11 @@ class RideZone < ApplicationRecord
       tag || object.class.name.downcase => object.send(:api_json)
     }
     ActionCable.server.broadcast "ride_zone_#{self.id}", event
+  end
+
+  def set_utc_offset
+    return unless self.latitude && self.longitude
+    tz = Timezone.lookup(self.latitude, self.longitude) rescue nil
+    self.utc_offset = tz.utc_offset if tz
   end
 end

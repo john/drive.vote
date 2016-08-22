@@ -10,7 +10,6 @@
   %thead
     %tr
       %th Name
-      %th Slug
       %th Zip
       %th Description
       %th Phone number
@@ -22,7 +21,6 @@
     - @ride_zones.each do |ride_zone|
       %tr
         %td= link_to ride_zone.name, admin_ride_zone_path(ride_zone)
-        %td= ride_zone.slug
         %td= ride_zone.zip
         %td= ride_zone.description
         %td= ride_zone.phone_number

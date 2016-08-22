@@ -7,7 +7,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
   # RideZone. As you add validations to RideZone, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    { slug: 'toledo_ohio', name: 'Toledo, OH', zip: '43601', phone_number: '867-5309' }
+    { name: 'Toledo, OH', zip: '43601', phone_number: '867-5309' }
   }
 
   let(:invalid_attributes) {
@@ -81,7 +81,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
     it "only lets a user drive for one ride zone" do
       user = create(:user)
       ride_zone_1 = create(:ride_zone)
-      ride_zone_2 = create(:ride_zone, name: 'rz2', slug: 'rz2')
+      ride_zone_2 = create(:ride_zone, name: 'rz2')
 
       user.add_role(:driver, ride_zone_1)
 

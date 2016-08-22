@@ -27,6 +27,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'sendgrid'
 gem 'sidekiq'
 gem 'sinatra', github: 'sinatra/sinatra', :require => false # for sidekiq
+gem 'timezone'
 gem 'tod'
 gem 'turbolinks', '~> 5.x'
 gem 'twilio-ruby'

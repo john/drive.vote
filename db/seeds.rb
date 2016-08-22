@@ -25,7 +25,6 @@ john.add_role(:admin)
 
 if  Rails.env == "development"
 
-
   drivers = User.create!([
     {
       name: 'Deborah Driver',
@@ -47,6 +46,19 @@ if  Rails.env == "development"
       image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
       locale: 'en',
       zip: '43606'
+    }
+  ])
+
+  ride_zones = RideZone.create!([
+    {
+      name: 'Toledo, OH',
+      phone_number: '+14193860121',
+      zip: '43601'
+    },
+    {
+      name: 'Tampa, FL',
+      phone_number: '+19993860121',
+      zip: '33601'
     }
   ])
 

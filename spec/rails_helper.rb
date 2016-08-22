@@ -74,4 +74,10 @@ RSpec.configure do |config|
   # The different available types are documented in the features, such as in
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
+
+  # note we cannot rely on VCR for http calls to timezone b/c it adds a timestamp
+  # to every call
+  config.before :each do
+    allow(Timezone).to receive(:lookup).and_return(nil)
+  end
 end

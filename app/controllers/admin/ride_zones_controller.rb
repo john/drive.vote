@@ -109,7 +109,7 @@ class Admin::RideZonesController < Admin::AdminApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def ride_zone_params
-      params.require(:ride_zone).permit( :slug, :name, :description, :phone_number, :short_code,
+      params.require(:ride_zone).permit(:name, :description, :phone_number, :short_code,
     :city, :county, :state, :zip, :country, :latitude, :longitude )
     end
 
