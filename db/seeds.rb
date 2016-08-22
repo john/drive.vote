@@ -49,19 +49,6 @@ if  Rails.env == "development"
     }
   ])
 
-  ride_zones = RideZone.create!([
-    {
-      name: 'Toledo, OH',
-      phone_number: '+14193860121',
-      zip: '43601'
-    },
-    {
-      name: 'Tampa, FL',
-      phone_number: '+19993860121',
-      zip: '33601'
-    }
-  ])
-
   drivers[0].add_role(:unassigned_driver)
   drivers[1].add_role(:unassigned_driver)
 
