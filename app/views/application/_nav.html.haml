@@ -11,10 +11,7 @@
         %span.icon-bar
 
       %a.navbar-brand{href: root_path(locale: I18n.locale.to_s), style: 'font-family: "Times New Roman", Times, serif'}
-        %span.glyphicons.glyphicons-cars.inverse{'aria-hidden': "true", style: 'margin-top:-7px;'}
-
-        %i.hidden-xs
-          #{t(:drive_the_vote)}!
+        = image_tag("dtv_logo_120x83.png", id: 'logo')
 
     #navbar.collapse.navbar-collapse
       .pull-right{style: 'margin-top: 10px;'}
