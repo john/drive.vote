@@ -1,8 +1,6 @@
 :css
   h4, h6 { margin-top: 30px; }
 
-= render 'admin/nav', {active: 'conversations'}
-
 %h4
   Conversation #{@conversation.id}
 = render partial: 'admin/conversations/table', locals: {conversations: [@conversation], include_show: false}

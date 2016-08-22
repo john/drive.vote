@@ -18,11 +18,19 @@ DispatchController.prototype = {
     $('.disp-server-status').text("Disconnected").toggleClass('disp-text-alert', true);
   },
 
+  loadConversationForm: function (id) {
+    $('#conversation-form').load('/admin/conversations/' + id + '/form');
+  },
+
+  loadConversationMessages: function (id) {
+    $('#conversation-messages').load('/admin/conversations/' + id + '/messages');
+  },
+
   conversationCells: function (c) {
     var statusClass = (c.status == 'help_needed') ? 'conv-alert' : 'conv-normal';
     return '<td class="msg">' + ((c.message_count == null) ? '0' : c.message_count) + '</td>' +
       '<td class="from">' + c.from_phone + '<br>' + c.messages[0].body + '</td>' +
-      '<td class="'+statusClass+'">' + c.status.replace('in_progress', 'in prog') + '</td>' +
+      '<td class="'+statusClass+'">' + c.status.replace('_', ' ') + '</td>' +
       '<td class="updated">' + strftime('%l:%M%P', new Date(c.status_updated_at*1000)) + '</td>'
   },
 
@@ -31,9 +39,7 @@ DispatchController.prototype = {
   },
 
   loadConversationMessages: function (id) {
-    $('#conversationModalLabel').html('Conversation ' + id);
-    $('#conversationDetails').prepend('foo');
-    $('#messages').load('/admin/conversations/' + id + '/messages');
+    $('#conversation-messages').load('/admin/conversations/' + id + '/messages');
   },
 
   showAllConversations: function () {
@@ -41,6 +47,12 @@ DispatchController.prototype = {
     $( ".btn-conv" ).css( "background-color", "#bdc3c7" );
     $("#conv-all").css( "background-color", "#777" );
   },
+
+  showAllConversations: function () {
+     this.showAllRows('#conversations');
+     $( ".btn-conv" ).css( "background-color", "#bdc3c7" );
+     $("#conv-all").css( "background-color", "#777" );
+   },
 
   showStatusConversations: function (status) {
     this.showOnlyRows('#conversations', function(r) { return r.data('objref').status == status });

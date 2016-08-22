@@ -19,6 +19,16 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
     end
   end
 
+  describe 'POST #update_attribute' do
+    let!(:rz) { create :ride_zone }
+    let!(:convo) { create :conversation, ride_zone: rz }
+
+    it 'assigns the requested conversation as @conversation' do
+      get :update_attribute, params: {id: convo.to_param}
+      expect(assigns(:conversation)).to eq(convo)
+    end
+  end
+
   describe 'update conversation' do
     let(:rz) { create :ride_zone }
     let(:convo) { create :conversation_with_messages, ride_zone: rz}

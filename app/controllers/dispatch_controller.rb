@@ -1,6 +1,7 @@
 class DispatchController < ApplicationController
   # before_action :ensure_dispatcher
-  before_action :ensure_ride_zone, only: [:show]
+  before_action :set_ride_zone, only: [:show]
+  before_action :require_zone_privilege, only: [:show]
 
   # GET /dispatch
   def index
@@ -12,10 +13,4 @@ class DispatchController < ApplicationController
     @fluid = true
   end
 
-  private
-
-  def ensure_ride_zone
-    @ride_zone = RideZone.find_by_id(params[:id])
-    redirect_to root_path unless @ride_zone && current_user.has_role?(:dispatcher, @ride_zone)
-  end
 end

@@ -5,10 +5,8 @@ class Conversation < ApplicationRecord
   belongs_to :ride
 
   before_save :check_ride_attached
-
   before_save :update_status_and_lifecycle
   before_save :note_status_update
-
   after_create :notify_creation
   around_save :notify_update
 

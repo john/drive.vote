@@ -1,15 +1,24 @@
-.messages
+#messages
   - @conversation.messages.order('created_at asc').each do |message|
-    .message{style: "margin-top: -10px; text-align: #{(message.sent_by == 'Voter') ? 'left' : 'right'}"}
-      %div{style: 'size: 12px; margin-top: 5px; font-style: italic; color: #ccc'}
-        #{message.created_at.localtime.strftime('%l:%M%P')},
-        = message.sent_by
-      %div{style: 'margin:-5px 0 20px 0;'}
+    .message{style: "text-align: #{(message.sent_by == 'Voter') ? 'left' : 'right'}"}
+      -#.btn.btn-info.btn-xs
+      %div{style: 'margin-bottom: 5px;'}
+        %code
+          #{message.created_at.localtime.strftime('%l:%M%P')},
+          = message.sent_by
+      .msg-body
         = message.body
 
-%h6
-  Reply
-= text_area_tag 'body', nil
+.msg-reply
+  = text_area_tag 'body', nil
+  = button_tag 'Send', type: :submit, class: 'btn btn-primary btn-xs pull-right', disable_with: "Replying...", onclick: "javascript: dispatchController.sendReply('#{messages_api_v1_conversation_path(@conversation)}')"
 
-%p
-  = button_tag 'Send', type: :submit, class: 'btn btn-primary', disable_with: "Replying...", onclick: "javascript: dispatchController.sendReply('#{messages_api_v1_conversation_path(@conversation)}')"
+:javascript
+  // now that we have the conversation object, put the message count in the modal header
+  $('#msg-count').html( "#{pluralize( @conversation.messages.count, 'message' )}" );
+
+  // scroll the messages to the bottom, phone-style
+  $('#conv-modal').on('shown.bs.modal', function () {
+    var $cont = $('#messages');
+    $cont[0].scrollTop = $cont[0].scrollHeight;
+  });

@@ -11,8 +11,22 @@ class RideZone < ApplicationRecord
   geocoded_by :zip
   after_validation :geocode, if: ->(obj){ obj.zip.present? && obj.zip_changed? }
 
+
+  def active_rides
+    # convoluted because you have to get the enum integer. probably a more graceful way to do it.
+    self.rides.where("status IN (?)", Ride.active_statuses.map { |stat| Ride.statuses[stat] })
+  end
+
   def drivers
     User.with_role(:driver, self)
+  end
+
+  def unavailable_drivers
+    self.active_rides.map {|ar| ar.driver}
+  end
+
+  def available_drivers
+    User.with_role(:driver, self) - unavailable_drivers
   end
 
   def dispatchers

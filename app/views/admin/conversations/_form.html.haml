@@ -1,0 +1,83 @@
+%table
+  %tr
+    %td.conv-label
+      From address:
+    %td.conv-field
+      %a.to_from{href: '#', id:"from_address", 'data-type':"text", 'data-pk':"#{@conversation.id}", 'data-url':"#{update_attribute_api_v1_conversation_path(@conversation)}", 'data-title':"From address"}
+        #{@conversation.from_address}
+
+  %tr
+    %td.conv-label
+      From city:
+    %td.conv-field
+      %a.to_from{href: '#', id:"from_city", 'data-type':"text", 'data-pk':"#{@conversation.id}", 'data-url':"#{update_attribute_api_v1_conversation_path(@conversation)}", 'data-title':"From city"}
+        #{@conversation.from_city}
+
+  %tr
+    %td.conv-label
+      To address:
+    %td.conv-field
+      %a.to_from{href: '#', id:"to_address", 'data-type':"text", 'data-pk':"#{@conversation.id}", 'data-url':"#{update_attribute_api_v1_conversation_path(@conversation)}", 'data-title':"To address"}
+        #{@conversation.to_address}
+
+  %tr
+    %td.conv-label
+      To city:
+    %td.conv-field
+      %a.to_from{href: '#', id:"to_city", 'data-type':"text", 'data-pk':"#{@conversation.id}", 'data-url':"#{update_attribute_api_v1_conversation_path(@conversation)}", 'data-title':"To city"}
+        #{@conversation.to_city}
+
+
+  %tr
+    %td.conv-label
+      Driver:
+    %td.conv-field
+      - if @zone_driver_count == 0
+        %i
+          There are no drivers assigned to this zone.
+
+      - else
+        - if @available_drivers.present?
+          %select{id: 'driver_select'}
+            %option
+              Select driver:
+            - @available_drivers.each do |driver|
+              %option{value: driver.id}
+                = driver.name
+
+        - else
+          %i
+            None of the #{@zone_driver_count} drivers in this zone are currently available.
+
+
+%div{id: "#{@conversation.id}_ride_button", style: 'display: block;'}
+  = link_to 'Create Ride', '#', id: 'create_ride', class: 'btn btn-primary', style: 'margin-top: 30px;'
+
+
+:javascript
+
+  $(document).ready(function() {
+
+    $('#conversationModalLabel').html( "#{@conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')}" );
+
+    $('#from_address').editable({ mode: 'inline' });
+    $('#from_city').editable({ mode: 'inline'});
+    $('#to_address').editable({ mode: 'inline'});
+    $('#to_city').editable({ mode: 'inline'});
+
+    // move to dispatch.js
+    $( "#create_ride" ).click( function(e) {
+      var url = "#{rides_api_v1_conversation_path(@conversation.id)}?driver_id=" + $("#driver_select").val();
+      $.post( url, function() {
+         $('#conv-modal').modal('hide');
+         $('body').removeClass('modal-open');
+         $('.modal-backdrop').remove();
+
+         humane.log('A new ride was created! It should appear in the \'rides\' column, and on the map.', { waitForMove: true });
+        })
+        .fail(function() {
+          humane.log ('Something has gone horribly wrong.')
+        });
+      e.preventDefault();
+    });
+  });

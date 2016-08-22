@@ -1,22 +1,29 @@
 class Admin::ConversationsController < Admin::AdminApplicationController
 
-  before_action :set_conversation, only: [:show, :close, :messages]
+  before_action :set_conversation, only: [:show, :messages, :form, :update_attribute, :close]
 
-  # GET /conversations
+  # GET /admin/conversations
   def index
     @conversations = Conversation.where.not(status: :closed)
   end
 
-  # GET /conversations/1
+  # GET /admin/conversations/1
   def show
   end
 
-  # GET /conversations/1/messages
+  # GET /admin/conversations/1/messages
   def messages
     render partial: 'messages'
   end
 
-  # POST /conversations/1/close
+  # GET /admin/conversations/1/form
+  def form
+    @zone_driver_count = User.with_role(:driver, @conversation.ride_zone).count
+    @available_drivers = @conversation.ride_zone.available_drivers
+    render partial: 'form'
+  end
+
+  # POST /admin/conversations/1/close
   def close
     @conversation.status = :closed
     @conversation.save!

@@ -23,6 +23,7 @@ class Ride < ApplicationRecord
   def self.create_from_conversation conversation
     attrs = {
       voter_id: conversation.user_id,
+      ride_zone_id: conversation.ride_zone_id,
       name: conversation.username,
       pickup_at: conversation.pickup_time,
       status: :scheduled,
