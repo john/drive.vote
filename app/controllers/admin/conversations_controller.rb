@@ -19,7 +19,7 @@ class Admin::ConversationsController < Admin::AdminApplicationController
   # GET /admin/conversations/1/form
   def form
     @zone_driver_count = User.with_role(:driver, @conversation.ride_zone).count
-    @available_drivers = User.with_role(:driver, @conversation.ride_zone).where(available: true)
+    @available_drivers = @conversation.ride_zone.available_drivers
     render partial: 'form'
   end
 

@@ -23,7 +23,6 @@ module Api::V1
       end
     end
 
-    # POST /admin/conversations/1/update_attribute?attribute=tk
     def update_attribute
       if(params.has_key?(:name) && params.has_key?(:value))
         if @conversation.update_attribute( params[:name], params[:value] )

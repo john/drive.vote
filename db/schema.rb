@@ -104,7 +104,8 @@ ActiveRecord::Schema.define(version: 20160818222421) do
     t.string   "from_city"
     t.string   "to_city"
     t.datetime "status_updated_at"
-    t.string   "state",                                           default: "", null: false
+    t.string   "to_state",                                        default: "", null: false
+    t.string   "from_state",                                      default: "", null: false
     t.index ["driver_id"], name: "index_rides_on_driver_id", using: :btree
     t.index ["ride_zone_id"], name: "index_rides_on_ride_zone_id", using: :btree
     t.index ["voter_id"], name: "index_rides_on_voter_id", using: :btree

@@ -24,6 +24,13 @@ FactoryGirl.define do
       end
     end
 
+    factory :zoned_driver_user do
+      after(:create) do |user|
+        rz = create( :ride_zone )
+        user.add_role( :driver, rz)
+      end
+    end
+
     factory :unassigned_driver_user do
       user_type :unassigned_driver
     end

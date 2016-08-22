@@ -28,6 +28,29 @@ RSpec.describe RideZone, type: :model do
     end
   end
 
+  it 'active_rides returns active rides' do
+    rz = create :ride_zone
+    r = create :waiting_ride, ride_zone_id: rz.id
+
+    expect( rz.active_rides.first ).to eq(r)
+  end
+
+  it 'active_rides does not return inactive rides' do
+    rz = create :ride_zone
+    cr = create :complete_ride, ride_zone_id: rz.id
+
+    expect( rz.active_rides.first ).to be_nil
+  end
+
+  it 'returns unavailable_drivers' do
+    d = create :zoned_driver_user
+    rz = RideZone.with_role(:driver, d).first
+    cr = create :assigned_ride, ride_zone_id: rz.id, driver_id: d.id
+
+     expect( rz.unavailable_drivers.first ).to eq(d)
+  end
+
+
   it 'calculates stats' do
     rz = create :ride_zone
     rz2 = create :ride_zone
