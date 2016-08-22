@@ -288,6 +288,7 @@ GEM
     thread_safe (0.3.5)
     tilt (2.0.5)
     timecop (0.8.1)
+    timezone (1.1.1)
     tod (2.1.0)
     tool (0.2.3)
     turbolinks (5.0.1)
@@ -358,6 +359,7 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   timecop
+  timezone
   tod
   turbolinks (~> 5.x)
   twilio-ruby

@@ -25,7 +25,6 @@ john.add_role(:admin)
 
 if  Rails.env == "development"
 
-
   drivers = User.create!([
     {
       name: 'Deborah Driver',
