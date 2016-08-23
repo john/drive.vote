@@ -1,4 +1,4 @@
-// app/assets/javascripts/channels/ride_zone.js
+// app/assets/javascripts/channels/simulation.js
 
 //= require cable
 //= require_self

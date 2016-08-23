@@ -72,7 +72,7 @@ class Simulation < ActiveRecord::Base
   def prepare
     self.status = :preparing
     save
-    SIM_DEFS.each { |sim| Simulation.clean_up(sim) }
+    Simulation.clean_up(sim_def)
     @ride_zone = RideZone.find_by_name(sim_def.ride_zone_name)
     @events = []
     create_drivers
