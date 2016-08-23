@@ -10,6 +10,10 @@ class DrivingController < ApplicationController
   UPDATE_LOCATION_INTERVAL = 60 # seconds
   WAITING_RIDES_INTERVAL = 15 # seconds
 
+  def index
+    render :layout => false
+  end
+
   def demo
   end
 
