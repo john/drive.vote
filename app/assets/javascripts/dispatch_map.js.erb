@@ -25,26 +25,20 @@ function Map(element, callback, args)
   }
 }
 
-// Calculate URL prefix to reliably find icons.
-function _url_prefix()
-{
-  return '/assets';
-}
-
 // Built-in icon options.
 Map.icons = {
-  voter:   {w: 38, h: 57, url: _url_prefix() + '/icon-voter.svg'},
-  driver:  {w: 38, h: 57, url: _url_prefix() + '/icon-driver.svg'},
-  poll:    {w: 38, h: 57, url: _url_prefix() + '/icon-poll.svg'},
-  open_driver: {w: 38, h: 57, url: _url_prefix() + '/icon-driver-open.svg'},
-  assigned_driver: {w: 38, h: 57, url: _url_prefix() + '/icon-driver-assigned.svg'},
-  driving_driver: {w: 38, h: 57, url: _url_prefix() + '/icon-driver-driving.svg'},
-  waiting_ride: {w: 38, h: 57, url: _url_prefix() + '/icon-ride-waiting.svg'},
-  overdue_ride: {w: 38, h: 57, url: _url_prefix() + '/icon-ride-overdue.svg'},
-  assigned_ride: {w: 38, h: 57, url: _url_prefix() + '/icon-ride-assigned.svg'},
+  voter:   {w: 38, h: 57, url: "<%= asset_path('icon-voter.svg')%>"},
+  driver:  {w: 38, h: 57, url: "<%= asset_path('icon-driver.svg')%>"},
+  poll:    {w: 38, h: 57, url: "<%= asset_path('icon-poll.svg')%>"},
+  open_driver: {w: 38, h: 57, url: "<%= asset_path('icon-driver-open.svg')%>"},
+  assigned_driver: {w: 38, h: 57, url: "<%= asset_path('icon-driver-assigned.svg')%>"},
+  driving_driver: {w: 38, h: 57, url: "<%= asset_path('icon-driver-driving.svg')%>"},
+  waiting_ride: {w: 38, h: 57, url: "<%= asset_path('icon-ride-waiting.svg')%>"},
+  overdue_ride: {w: 38, h: 57, url: "<%= asset_path('icon-ride-overdue.svg')%>"},
+  assigned_ride: {w: 38, h: 57, url: "<%= asset_path('icon-ride-assigned.svg')%>"},
 
   // Used when no other icon is provided.
-  default: {w: 38, h: 57, url: _url_prefix() + '/icon-default.svg'}
+  default: {w: 38, h: 57, url: "<%= asset_path('/icon-default.svg')%>"}
 };
 
 Map.prototype = {
