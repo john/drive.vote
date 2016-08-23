@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     viewBox="0 0 38 57"
+>
+
+  <path d="M0,19
+             A19,19 0 0,1 19,0
+             A19,19 0 0,1 38,19
+             A65,65 0 0,1 19,57
+             A65,65 0 0,1 0,19
+             " style="fill: #ffcc44;"></path>
+
+  <text style="text-anchor: middle;
+                 fill: black;
+                 font-size: 30px;
+                 font-family: Arial
+                 " x="19" y="28">🚗</text>
+
+  <text style="text-anchor: middle;
+                 fill: black;
+                 font-size: 7px;
+                 font-family: Arial
+                 " x="19" y="35">driving</text>
+
+</svg>

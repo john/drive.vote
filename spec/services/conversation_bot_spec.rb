@@ -256,16 +256,49 @@ RSpec.describe ConversationBot do
       let!(:voter_formatted) { Time.now.strftime('%l:%M %P') }
       let!(:voter_time) { Time.parse(voter_formatted) }
 
-      before :each do
-        stub_const('ConversationBot::EARLIEST_HOUR', 0)
-        stub_const('ConversationBot::LATEST_HOUR', 23)
-      end
-
       it 'should accept valid time, update conversation, and confirm' do
         reply = create :message, conversation: convo, body: voter_formatted
         expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_the_time, locale: :en, time: voter_formatted))
         expect(convo.reload.lifecycle).to eq('have_time')
         expect(convo.pickup_time).to eq(voter_time)
+      end
+
+      it 'should accept now, update conversation, and confirm' do
+        Timecop.freeze do
+          reply = create :message, conversation: convo, body: 'now'
+          expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_the_time, locale: :en, time: Time.now.strftime('%l:%M %P')))
+          expect(convo.reload.lifecycle).to eq('have_time')
+          expect(convo.pickup_time).to eq(Time.now.change(sec:0, usec:0))
+        end
+      end
+
+      describe 'time zones!' do
+        let(:zone_offset) { 2.minutes }
+        before :each do
+          # if test is run on California server, let's say the ride zone is on east coast
+          # what should be echoed back for confirmation is 3 hours from California time
+          # 1:15pm in CA => 4:15pm east coast for "now"
+          # to avoid crossing midnight when CI is testing, create a tiny offset of 2 minutes
+          convo.ride_zone.update_attribute(:utc_offset, Time.now.utc_offset + zone_offset)
+        end
+
+        it 'should deal with timezones and now' do
+          Timecop.freeze do
+            reply = create :message, conversation: convo, body: 'now'
+            expected = zone_offset.from_now.getlocal.strftime('%l:%M %P')
+            expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_the_time, locale: :en, time: expected))
+            expect(convo.pickup_time).to eq(Time.now.change(sec:0, usec:0))
+          end
+        end
+
+        it 'should deal with timezones and a time' do
+          Timecop.freeze do
+            expected = zone_offset.from_now.getlocal.strftime('%l:%M %P') # east coast
+            reply = create :message, conversation: convo, body: expected
+            expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_the_time, locale: :en, time: expected))
+            expect(convo.pickup_time).to eq(Time.now.change(sec:0, usec:0))
+          end
+        end
       end
 
       it 'should confirm time' do

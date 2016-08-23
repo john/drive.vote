@@ -38,7 +38,8 @@ Map.icons = {
   poll:    {w: 38, h: 57, url: _url_prefix() + '/icon-poll.svg'},
   open_driver: {w: 38, h: 57, url: _url_prefix() + '/icon-driver-open.svg'},
   assigned_driver: {w: 38, h: 57, url: _url_prefix() + '/icon-driver-assigned.svg'},
-  open_ride: {w: 38, h: 57, url: _url_prefix() + '/icon-ride-open.svg'},
+  driving_driver: {w: 38, h: 57, url: _url_prefix() + '/icon-driver-driving.svg'},
+  waiting_ride: {w: 38, h: 57, url: _url_prefix() + '/icon-ride-waiting.svg'},
   overdue_ride: {w: 38, h: 57, url: _url_prefix() + '/icon-ride-overdue.svg'},
   assigned_ride: {w: 38, h: 57, url: _url_prefix() + '/icon-ride-assigned.svg'},
 
@@ -83,9 +84,22 @@ Map.prototype = {
     } else if(marker && this._lmap) {
       this._updateLeafletMarker(marker, lat, lon, _icon, name, content);
 
-    } else {
+    } else if(marker) {
       throw "There's no place to update the marker yet";
     }
+  },
+
+  // Remove an existing marker
+  removeMarker: function(id)
+  {
+    var marker = this._markers[id];
+
+    if (marker && this._gmap) {
+      marker.setMap(null);
+    }
+    // todo: leaflet remove
+
+    this._markers[id] = null;
   },
 
   _prepareMarkerContent: function(name, href)

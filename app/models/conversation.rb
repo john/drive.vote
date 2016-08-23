@@ -30,19 +30,22 @@ class Conversation < ApplicationRecord
   }
 
   def api_json(include_messages = false)
-    fields = [:id, :user_id, :pickup_at, :status, :name, :from_phone, :from_address, :from_city,
+    fields = [:id, :user_id, :pickup_at, :status, :lifecycle, :from_phone, :from_address, :from_city,
               :from_latitude, :from_longitude, :to_address, :to_city,
               :to_latitude, :to_longitude, :additional_passengers, :special_requests]
     j = self.as_json(only: fields, methods: [:message_count])
     if include_messages
       j['messages'] = self.messages.map(&:api_json)
-    elsif last_msg = self.messages.last
+    end
+    last_msg = self.messages.last
+    if last_msg
       j['last_message_time'] = last_msg.created_at.to_i
       j['last_message_sent_by'] = last_msg.sent_by
       j['last_message_body'] = last_msg.body
     end
     j['from_phone'] = self.from_phone.phony_formatted(normalize: :US, spaces: '-')
     j['status_updated_at'] = self.status_updated_at.to_i
+    j['name'] = username
     j
   end
 

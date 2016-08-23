@@ -9,7 +9,7 @@
              A65,65 0 0,1 19,57
              A65,65 0 0,1 0,19
              " style="fill: #ff9900;"></path>
-    
+
     <text style="text-anchor: middle;
                  fill: black;
                  font-size: 30px;
@@ -20,6 +20,6 @@
                  fill: black;
                  font-size: 7px;
                  font-family: Arial
-                 " x="19" y="39">open</text>
+                 " x="19" y="39">waiting</text>
 
 </svg>

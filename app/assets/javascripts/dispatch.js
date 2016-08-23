@@ -29,23 +29,13 @@ DispatchController.prototype = {
   conversationCells: function (c) {
     var statusClass = (c.status == 'help_needed') ? 'conv-alert' : 'conv-normal';
     return '<td class="msg">' + ((c.message_count == null) ? '0' : c.message_count) + '</td>' +
-      '<td class="from">' + c.from_phone + '<br>' + c.messages[0].body + '</td>' +
+      '<td class="from">' + c.from_phone + '<br>' + c.last_message_body + '</td>' +
       '<td class="'+statusClass+'">' + c.status.replace('_', ' ') + '</td>' +
       '<td class="updated">' + strftime('%l:%M%P', new Date(c.status_updated_at*1000)) + '</td>'
   },
 
   updateConversationTable: function (c) {
     this.updateTable('#conversations', 'conv', c, this.conversationCells(c));
-  },
-
-  loadConversationMessages: function (id) {
-    $('#conversation-messages').load('/admin/conversations/' + id + '/messages');
-  },
-
-  showAllConversations: function () {
-    this.showAllRows('#conversations');
-    $( ".btn-conv" ).css( "background-color", "#bdc3c7" );
-    $("#conv-all").css( "background-color", "#777" );
   },
 
   showAllConversations: function () {
@@ -74,8 +64,8 @@ DispatchController.prototype = {
   rideCells: function (r) {
     return '<td>' + r.name + '</td>' +
       '<td>' + r.status + '</td>' +
-      '<td>' + new Date(r.status_updated_at*1000).toTimeString() + '</td>' +
-      '<td>' + r.pickup_at + '</td>'
+      '<td>' + strftime('%l:%M%P', new Date(r.status_updated_at*1000)) + '</td>' +
+      '<td>' + strftime('%l:%M%P', new Date(r.pickup_at*1000)) + '</td>'
   },
 
   updateRideTable: function (r) {
@@ -169,6 +159,7 @@ DispatchController.prototype = {
 
   refreshConversations: function () {
     var self = this;
+    $("#conversations > tbody").html("");
     $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/conversations', {
       success: function(data, status, xhr) {
         for (var i = 0; i < data.response.length; ++i) {
@@ -181,6 +172,8 @@ DispatchController.prototype = {
 
   refreshRides: function () {
     var self = this;
+    this._mapController.clearRideMarkers();
+    $("#rides > tbody").html("");
     $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/rides', {
       success: function(data, status, xhr) {
         for (var i = 0; i < data.response.length; ++i) {
@@ -193,6 +186,7 @@ DispatchController.prototype = {
 
   refreshDrivers: function () {
     var self = this;
+    this._mapController.clearDriverMarkers();
     $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/drivers', {
       success: function(data, status, xhr) {
         for (var i = 0; i < data.response.length; ++i) {

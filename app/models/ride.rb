@@ -22,8 +22,8 @@ class Ride < ApplicationRecord
   # create a new ride from the data in a conversation
   def self.create_from_conversation conversation
     attrs = {
-      voter_id: conversation.user_id,
-      ride_zone_id: conversation.ride_zone_id,
+      ride_zone: conversation.ride_zone,
+      voter: conversation.user,
       name: conversation.username,
       pickup_at: conversation.pickup_time,
       status: :scheduled,
@@ -77,7 +77,8 @@ class Ride < ApplicationRecord
 
   # returns json suitable for exposing in the API
   def api_json
-    j = self.as_json(except: [:created_at, :updated_at], methods: [:conversation_id])
+    j = self.as_json(except: [:pickup_at, :created_at, :updated_at], methods: [:conversation_id])
+    j['pickup_at'] = self.pickup_at.try(:to_i)
     j['status_updated_at'] = self.status_updated_at.to_i
     j
   end
@@ -109,6 +110,10 @@ class Ride < ApplicationRecord
 
   def self.active_statuses
     [:waiting_assignment, :driver_assigned, :picked_up]
+  end
+
+  def self.active_status_values
+    self.active_statuses.map {|s| Ride.statuses[s]}
   end
 
   def passenger_count

@@ -160,22 +160,26 @@ class ConversationBot
     # Look for: time of day
     case @bot_counter
       when 0..1
-        offset = Time.now.utc_offset - @conversation.ride_zone.utc_offset
-        # try to bound time to avoid am/pm problems
-        result = if @body =~ NOW_TIME
-                   Time.at(Time.now.to_i + offset)
-                 else
-                   Time.parse(@body) rescue nil
-                 end
-        if result
-          # this is now a local time where server is located, we need to get to UTC
-          # then adjust for ride zone time zone. When displaying back, use the local parsed time
-          voter_time = Time.at(result.to_i + offset)
-          if voter_time.to_i >= Time.now.to_i - 10.minutes
-            @conversation.update_attribute(:pickup_time, voter_time)
-            @response = I18n.t(:confirm_the_time, locale: @locale, time: result.strftime('%l:%M %P'))
-            return 0
-          end
+        # when Time parses a time string like "4pm" it puts it in the current day and
+        # in the server's time zone. so there is some trickiness here to be able to
+        # store the right value in the database and echo back the right thing to the
+        # voter
+        server_to_ride_zone_offset = Time.now.utc_offset - @conversation.ride_zone.utc_offset
+        if @body =~ NOW_TIME
+          # pretend the voter typed in their current time in their time zone
+          # we need to create a fake time at the server for the strftime
+          fake_server_time = Time.at(Time.now.to_i - server_to_ride_zone_offset)
+          pickup_time = Time.now.change(sec:0, usec:0)
+        else
+          fake_server_time = Time.parse(@body) rescue nil
+          # this is a local time where server is located, we need to adjust for ride zone time zone.
+          pickup_time = Time.at(fake_server_time.to_i + server_to_ride_zone_offset) if fake_server_time
+        end
+        if pickup_time && fake_server_time >= 10.minutes.ago
+          @conversation.update_attribute(:pickup_time, pickup_time)
+          # when echoing back to user we use server's local time which is how it was parsed
+          @response = I18n.t(:confirm_the_time, locale: @locale, time: fake_server_time.strftime('%l:%M %P'))
+          return 0
         end
         @response = I18n.t(:invalid_time, locale: @locale)
         return @bot_counter + 1

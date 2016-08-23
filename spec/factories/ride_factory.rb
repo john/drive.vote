@@ -7,6 +7,10 @@ FactoryGirl.define do
     name "Doug's ride"
     description 'Needs to get to work before 9am'
 
+    factory :scheduled_ride do
+      status Ride.statuses[:scheduled]
+    end
+
     factory :waiting_ride do
       status Ride.statuses[:waiting_assignment]
     end

@@ -42,9 +42,15 @@ module Api::V1
     end
 
     def rides
-      # default to active rides
-      status_list = no_status? ? Ride.active_statuses : status_array
-      render json: {response: @ride_zone.rides.where(status: status_list).map(&:api_json)}
+      # default to active rides or those scheduled w/in 30 minutes
+      scope = Ride.where(ride_zone: @ride_zone)
+      if no_status?
+        scope = scope.where('(status in (?) or (status = ? and pickup_at < ?))',
+                            Ride.active_status_values, Ride.statuses[:scheduled], 30.minutes.from_now)
+      else
+        scope = scope.where(status: status_array)
+      end
+      render json: {response: scope.map(&:api_json)}
     end
 
     def create_ride
