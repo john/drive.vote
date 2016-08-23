@@ -72,7 +72,7 @@ class Simulation < ActiveRecord::Base
   def prepare
     self.status = :preparing
     save
-    Simulation.clear_all_data
+    SIM_DEFS.each { |sim| Simulation.clean_up(sim) }
     @ride_zone = RideZone.find_by_name(sim_def.ride_zone_name)
     @events = []
     create_drivers
@@ -128,7 +128,7 @@ class Simulation < ActiveRecord::Base
                    state: @ride_zone.state, zip: @ride_zone.zip,
                    phone_number: '510-617-%03d7' % i )
       offset = ride.delete('pickup_offset')
-      ride['pickup_at'] = offset_time(offset)
+      _, ride['pickup_at'] = TimeZoneUtils.fake_server_time_and_origin_time(offset, @ride_zone.utc_offset)
       Ride.create!(ride.merge(voter: voter, ride_zone: @ride_zone, name: voter.name, status: :scheduled))
     end
   end
@@ -149,8 +149,10 @@ class Simulation < ActiveRecord::Base
             Ride.where(ride_zone: @ride_zone, status: :scheduled).where('pickup_at < ?', 5.minutes.from_now).each do |ride|
               ride.update_attribute(:status, :waiting_assignment)
             end
-            if Time.now - start >= next_time
+            runtime = Time.now - start
+            if runtime >= next_time
               execute_event(next_event)
+              ActionCable.server.broadcast 'simulation', {type: 'event', id: self.id, name: "@#{runtime.to_i}: #{next_event['type']}"}
               timeline.shift
             else
               sleep SLEEP_INTERVAL
@@ -168,6 +170,7 @@ class Simulation < ActiveRecord::Base
       end
       update_attribute(:status, final_status)
       logger.info "Ending simulator thread at #{Time.now}"
+      ActionCable.server.broadcast 'simulation', {type: 'complete', id: self.id}
     end
   end
 
@@ -227,7 +230,8 @@ class Simulation < ActiveRecord::Base
 
   def sms(event)
     if event['time_offset']
-      event['body'] = offset_time(event['time_offset']).strftime('%l:%M %P')
+      fake_server_time, _ = TimeZoneUtils.fake_server_time_and_origin_time(event['time_offset'], @ride_zone.utc_offset)
+      event['body'] = fake_server_time.strftime('%l:%M %P')
     end
     params = ActionController::Parameters.new({'To' => @ride_zone.phone_number, 'From' => event[:user_phone], 'Body' => event['body']})
     TwilioService.new.process_inbound_sms(params)
@@ -258,11 +262,5 @@ class Simulation < ActiveRecord::Base
 
   def move_driver(driver, lat, lng)
     driver.update_attributes(latitude: lat, longitude: lng)
-  end
-
-  def offset_time(str)
-    val = str.to_s.to_i
-    val *= 60 if str.to_s =~ /min/i
-    Time.at(Time.now.to_i + val)
   end
 end
