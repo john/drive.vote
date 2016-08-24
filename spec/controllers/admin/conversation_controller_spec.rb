@@ -28,10 +28,23 @@ RSpec.describe Admin::ConversationsController, type: :controller do
     end
   end
 
-  describe 'GET #form' do
+  describe 'GET #ride_pane' do
     it 'assigns the requested conversation as @conversation' do
-      get :form, params: {id: convo.to_param}
+      get :ride_pane, params: {id: convo.to_param}
       expect(assigns(:conversation)).to eq(convo)
+    end
+
+    it 'renders ride_form partial if convo does not have a ride' do
+      get :ride_pane, params: {id: convo.to_param}
+      expect(response).to render_template(partial: '_ride_form')
+    end
+
+    it 'renders ride_info partial if convo has a ride' do
+      ride = create :ride
+      convo.ride = ride
+      convo.save
+      get :ride_pane, params: {id: convo.to_param}
+      expect(response).to render_template(partial: '_ride_info')
     end
   end
 

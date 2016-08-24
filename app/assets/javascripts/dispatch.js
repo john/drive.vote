@@ -18,12 +18,43 @@ DispatchController.prototype = {
     $('.disp-server-status').text("Disconnected").toggleClass('disp-text-alert', true);
   },
 
-  loadConversationForm: function (id) {
-    $('#conversation-form').load('/admin/conversations/' + id + '/form');
+  loadRidePane: function (id, action='create') {
+    var url = '/admin/conversations/' + id + '/ride_pane';
+    if(action=='edit') {
+      url += '?edit=true'
+    }
+    $('#conversation-form').load( url );
   },
 
   loadConversationMessages: function (id) {
     $('#conversation-messages').load('/admin/conversations/' + id + '/messages');
+  },
+
+  attachRideClick: function (id, el, action='create') {
+    $( "#create_or_edit_ride" ).click( function(e) {
+
+      if((action=='edit') && (el == '#driver_select')) {
+        // just change the driver, on the ride object
+        var url = '/api/1/rides/' + id + '/update_attribute?name=driver_id&value=' + $(el).val();
+        var msg = ''
+      } else {
+        // this copies everything over from the conversation
+        var url = '/api/1/conversations/' + id + '/rides?driver_id=' + $(el).val();
+        var msg = 'A new ride was created! It should appear in the \'rides\' column, and on the map.'
+      }
+
+      $.post( url, function() {
+         $('#conv-modal').modal('hide');
+         $('body').removeClass('modal-open');
+         $('.modal-backdrop').remove();
+
+         humane.log(msg, { waitForMove: true });
+        })
+        .fail(function() {
+          humane.log ('Something has gone horribly wrong.')
+        });
+      e.preventDefault();
+    });
   },
 
   conversationCells: function (c) {

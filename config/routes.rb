@@ -65,6 +65,12 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :rides, only: [:update_attribute] do
+        member do
+          post 'update_attribute' => 'rides#update_attribute'
+        end
+      end
+
       resources :ride_zones do
         member do
           get 'conversations' => 'ride_zones#conversations'
@@ -83,7 +89,7 @@ Rails.application.routes.draw do
     resources :conversations, only: [:index, :show] do
       member do
         get 'messages' => 'conversations#messages'
-        get 'form' => 'conversations#form'
+        get 'ride_pane' => 'conversations#ride_pane'
         post 'close' => 'conversations#close'
       end
     end

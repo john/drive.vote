@@ -1,0 +1,53 @@
+%table
+  %tr
+    %td.conv-label
+      Ride created:
+    %td.conv-field
+      #{time_ago_in_words(@conversation.ride.created_at)} ago
+
+  %tr
+    %td.conv-label
+      From address:
+    %td.conv-field
+      = @conversation.ride.from_address
+
+  %tr
+    %td.conv-label
+      From city:
+    %td.conv-field
+      = @conversation.ride.from_city
+
+  %tr
+    %td.conv-label
+      To address:
+    %td.conv-field
+      = @conversation.ride.to_address
+
+  %tr
+    %td.conv-label
+      To city:
+    %td.conv-field
+      = @conversation.ride.to_city
+
+  %tr
+    %td.conv-label
+      Driver:
+    %td.conv-field
+      - if @conversation.ride.driver.present?
+        = @conversation.ride.driver.try(:name)
+      - else
+        %i
+          unassigned
+
+  %tr
+    %td.conv-label
+      = link_to 'Edit Ride', '#', id: 'edit_ride', class: 'btn btn-default btn-xs', style: 'margin-top: 20px;'
+    %td.conv-field
+
+:javascript
+  $(document).ready(function() {
+    $( "#edit_ride" ).click( function(e) {
+      dispatchController.loadRidePane( "#{@conversation.id}", 'edit' );
+      e.preventDefault();
+    });
+  });
