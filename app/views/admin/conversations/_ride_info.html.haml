@@ -33,7 +33,11 @@
     %td.conv-label
       Driver:
     %td.conv-field
-      = @conversation.ride.driver.name
+      - if @conversation.ride.driver.present?
+        = @conversation.ride.driver.try(:name)
+      - else
+        %i
+          unassigned
 
   %tr
     %td.conv-label

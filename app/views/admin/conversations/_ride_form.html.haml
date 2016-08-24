@@ -41,7 +41,11 @@
       %td.conv-label
         Currrent Driver:
       %td.conv-field
-        = @obj.send(:driver).name
+        - if driver = @obj.send(:driver)
+          = driver.try(:name)
+        - else
+          %i
+            Unassigned
 
   %tr
     %td.conv-label
@@ -55,8 +59,12 @@
           %select{id: 'driver_select'}
             %option
               Select driver:
-            %option{value: @conversation.ride.driver.id}
-              = @conversation.ride.driver.name
+
+            - if driver = @obj.send(:driver)
+              - if driver_name = driver.try(:name)
+                %option{value: driver.id}
+                  = driver_name
+
             - @available_drivers.each do |driver|
               %option{value: driver.id}
                 = driver.name
