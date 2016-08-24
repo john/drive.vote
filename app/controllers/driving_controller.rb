@@ -11,7 +11,11 @@ class DrivingController < ApplicationController
   WAITING_RIDES_INTERVAL = 15 # seconds
 
   def index
-    render :layout => false
+    unless current_user
+      redirect_to "/users/sign_in" and return
+    else
+      render :layout => false
+    end
   end
 
   def demo
