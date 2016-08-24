@@ -18,7 +18,10 @@ DispatchController.prototype = {
     $('.disp-server-status').text("Disconnected").toggleClass('disp-text-alert', true);
   },
 
-  loadRidePane: function (id, action='create') {
+  loadRidePane: function (id, action) {
+    if (action === undefined) {
+      action = 'create';
+    }
     var url = '/admin/conversations/' + id + '/ride_pane';
     if(action=='edit') {
       url += '?edit=true'
@@ -30,7 +33,10 @@ DispatchController.prototype = {
     $('#conversation-messages').load('/admin/conversations/' + id + '/messages');
   },
 
-  attachRideClick: function (id, el, action='create') {
+  attachRideClick: function (id, el, action) {
+    if (action === undefined) {
+      action = 'create';
+    }
     $( "#create_or_edit_ride" ).click( function(e) {
 
       if((action=='edit') && (el == '#driver_select')) {
