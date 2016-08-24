@@ -10,6 +10,14 @@ class DrivingController < ApplicationController
   UPDATE_LOCATION_INTERVAL = 60 # seconds
   WAITING_RIDES_INTERVAL = 15 # seconds
 
+  def index
+    unless current_user
+      redirect_to "/users/sign_in" and return
+    else
+      render :layout => false
+    end
+  end
+
   def demo
   end
 
