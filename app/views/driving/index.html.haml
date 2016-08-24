@@ -12,13 +12,9 @@
     %link{href: "https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css", rel: "stylesheet"}
     %link{href: "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css", rel: "stylesheet"}
     %link{href: "http://drive-vote-driver.herokuapp.com/static/css/main.css", rel: "stylesheet"}
-
   %body
 
   %div{:id=> "root"}
   
-  -# Local dev
-    %script{src: 'http://localhost:3001/static/js/bundle.js'}
-
-  -# Production
+  -# Production build of the driver app, see: https://github.com/mcamis/drive.vote.driver
   %script{src: 'https://drive-vote-driver.herokuapp.com/static/js/main.js'}
