@@ -16,4 +16,8 @@
   %body
 
   %div{:id=> "root"}
-  %script{src: 'http://localhost:3001/static/js/bundle.js'}
+  -# Local dev
+    %script{src: 'http://localhost:3001/static/js/bundle.js'}
+
+  -# Production
+  %script{src: 'https://drive-vote-driver.herokuapp.com/static/js/main.js'}
