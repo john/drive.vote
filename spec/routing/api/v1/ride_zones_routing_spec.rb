@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::ConversationsController, :type => :routing do
+RSpec.describe Api::V1::RideZonesController, :type => :routing do
   describe 'routing' do
 
     it 'routes to conversations' do

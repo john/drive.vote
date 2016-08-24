@@ -42,6 +42,8 @@ en:
   your_settings: 'Your settings'
   short_description: |
     free rides to and from the polls on election day.
+  long_description: |
+    Drive the Vote connects voters who need free rides with volunteer drivers. Voters text a local number to request a ride, and a driver arrives to take them to their voting place.
   how_it_works: 'How it Works'
   how_it_works_copy: |
     Voters send a text to request a ride, and Drive the Vote connects them with a volunteer driver, who picks them up and takes them to their polling place.

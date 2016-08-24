@@ -14,7 +14,8 @@
   = button_tag 'Send', type: :submit, class: 'btn btn-primary btn-xs pull-right', disable_with: "Replying...", onclick: "javascript: dispatchController.sendReply('#{messages_api_v1_conversation_path(@conversation)}')"
 
 :javascript
-  // now that we have the conversation object, put the message count in the modal header
+  // now that we have the conversation object, populate the modal header
+  $('#conversationModalLabel').html( "#{@conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')}" );
   $('#msg-count').html( "#{pluralize( @conversation.messages.count, 'message' )}" );
 
   // scroll the messages to the bottom, phone-style

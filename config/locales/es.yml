@@ -30,7 +30,7 @@ es:
   volunteer_to_drive: 'Voluntario para conducir'
   saving: 'Guardiendo'
 
-  drive_the_vote: 'Conduzca la Vota'
+  drive_the_vote: 'Conduzca el voto'
   home: 'Inicio'
   faq: 'Preguntas más frecuentes'
   about: '¿Quiénes somos?'
@@ -42,6 +42,8 @@ es:
   your_settings: 'Sus ajustes'
   short_description: |
     paseos gratuitos a las urnas el día de las elecciones
+  long_description: |
+    Impulsar el voto conecta los votantes que necesitan los viajes con los conductores voluntarios . Los votantes de texto a un número local para solicitar un paseo , y un conductor llega a llevarlos a su lugar de votación.
   how_it_works: 'Cómo funciona'
   how_it_works_copy: |
     Los votantes enviar un texto para pedir un paseo, y conducir el voto los conecta con un conductor voluntario, que los recoge y los lleva a su lugar de votación.

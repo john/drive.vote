@@ -1,6 +1,6 @@
 class Admin::ConversationsController < Admin::AdminApplicationController
 
-  before_action :set_conversation, only: [:show, :messages, :form, :update_attribute, :close]
+  before_action :set_conversation, only: [:show, :messages, :ride_pane, :update_attribute, :close]
 
   # GET /admin/conversations
   def index
@@ -17,10 +17,24 @@ class Admin::ConversationsController < Admin::AdminApplicationController
   end
 
   # GET /admin/conversations/1/form
-  def form
+  def ride_pane
     @zone_driver_count = User.with_role(:driver, @conversation.ride_zone).count
     @available_drivers = @conversation.ride_zone.available_drivers
-    render partial: 'form'
+
+    if @conversation.ride.present?
+      if params[:edit].blank?
+        render partial: 'ride_info' # show ride info
+      else
+        @action =  'Edit'
+        @obj = @conversation.ride
+        render partial: 'ride_form'
+      end
+
+    elsif @conversation.ride.blank? # create ride
+      @action =  'Create'
+      @obj = @conversation
+      render partial: 'ride_form'
+    end
   end
 
   # POST /admin/conversations/1/close
