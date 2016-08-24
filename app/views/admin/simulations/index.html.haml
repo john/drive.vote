@@ -21,6 +21,7 @@
       %th Status
       %th Started
       %th Approx Run Time
+      %th Event
       %th
 
   %tbody
@@ -29,10 +30,22 @@
         %td= sim.id
         %td= sim.name
         %td= sim.status
-        %td= sim.created_at
+        %td= sim.created_at.localtime.strftime('%l:%M %P')
         %td= sim.run_time
+        %td.sim_latest_event{id: "sim-event-#{sim.id}"}
         %td
           - if sim.active?
             = link_to 'Stop', stop_admin_simulation_path(sim), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }, method: :POST
           - elsif sim.status == 'completed'
             = link_to 'Delete', delete_admin_simulation_path(sim), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }, method: :DELETE
+
+:javascript
+  createSimulationChannel(simEvent)
+
+  function simEvent(data) {
+    if (data.type == 'complete') {
+      location.reload(true)
+    } else if (data.type == 'event') {
+      jQuery('#sim-event-'+data.id).text(data.name)
+    }
+  }

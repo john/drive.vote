@@ -29,7 +29,7 @@ DispatchController.prototype = {
   conversationCells: function (c) {
     var statusClass = (c.status == 'help_needed') ? 'conv-alert' : 'conv-normal';
     return '<td class="msg">' + ((c.message_count == null) ? '0' : c.message_count) + '</td>' +
-      '<td class="from">' + c.from_phone + '<br>' + c.last_message_body + '</td>' +
+      '<td class="from">' + c.from_phone + ' ' + c.name + '<br>' + c.last_message_body + '</td>' +
       '<td class="'+statusClass+'">' + c.status.replace('_', ' ') + '</td>' +
       '<td class="updated">' + strftime('%l:%M%P', new Date(c.status_updated_at*1000)) + '</td>'
   },
@@ -104,7 +104,7 @@ DispatchController.prototype = {
     var existing = $('#' + rowId);
     if (existing.length > 0) {
       existing.html(cells);
-      existing.effect("highlight", {}, 1500);
+      existing.effect("highlight", {}, 100);
     } else {
       var row = '<tr id="'+rowId+'" class="clickable" data-cid="'+obj.id+'">' + cells +'</tr>';
       $(tableSelector).prepend(row);
