@@ -6,6 +6,7 @@
 function DispatchController(rideZoneId, mapController) {
   this._rideZoneId = rideZoneId;
   this._mapController = mapController;
+  this._activeConversationId = undefined;
 }
 
 DispatchController.prototype = {
@@ -27,6 +28,7 @@ DispatchController.prototype = {
       url += '?edit=true'
     }
     $('#conversation-form').load( url );
+    this._activeConversationId = id;
   },
 
   loadConversationMessages: function (id) {
