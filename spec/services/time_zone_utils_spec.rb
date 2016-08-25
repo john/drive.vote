@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe TimeZoneUtils do
-  let!(:tz_offset) { 1.minute }
+  let!(:tz_offset) { 12.hours }
   let!(:utc_offset) { Time.now.utc_offset + tz_offset }
 
   around :each do |example|

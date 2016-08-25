@@ -165,7 +165,7 @@ class ConversationBot
         # store the right value in the database and echo back the right thing to the
         # voter
         fake_server_time, pickup_time = TimeZoneUtils.fake_server_time_and_origin_time(@body, @conversation.ride_zone.utc_offset)
-        if pickup_time && fake_server_time >= 10.minutes.ago
+        if pickup_time && pickup_time.to_i >= 10.minutes.ago.to_i
           @conversation.update_attribute(:pickup_time, pickup_time)
           # when echoing back to user we use server's local time which is how it was parsed
           @response = I18n.t(:confirm_the_time, locale: @locale, time: fake_server_time.strftime('%l:%M %P'))
@@ -250,7 +250,7 @@ class ConversationBot
           @conversation.send("#{from_or_to}_latitude=".to_sym, result['geometry']['location']['lat'])
           @conversation.send("#{from_or_to}_longitude=".to_sym, result['geometry']['location']['lng'])
           name = result['name']
-          formatted = "#{name} - #{formatted}" unless name.blank?
+          formatted = "#{name} - #{formatted}" unless name.blank? || formatted.include?(name)
           @response = I18n.t(:confirm_address, locale: @locale, address: formatted)
           return 0
         end
