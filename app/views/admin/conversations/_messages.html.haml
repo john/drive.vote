@@ -1,4 +1,4 @@
-#messages
+.messages
   - @conversation.messages.order('created_at asc').each do |message|
     .message{style: "text-align: #{(message.sent_by == 'Voter') ? 'left' : 'right'}"}
       -#.btn.btn-info.btn-xs
@@ -20,6 +20,6 @@
 
   // scroll the messages to the bottom, phone-style
   $('#conv-modal').on('shown.bs.modal', function () {
-    var $cont = $('#messages');
+    var $cont = $('.messages');
     $cont[0].scrollTop = $cont[0].scrollHeight;
   });

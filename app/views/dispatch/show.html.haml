@@ -94,17 +94,6 @@
       dispatchController.loadConversationMessages($(this).data("cid"));
     });
 
-    // TODO: move this to dispatch.js
-    $('#conv-modal').on('loaded.bs.modal', function (e) {
-      var out = document.getElementById("messages");
-      // allow 1px inaccuracy by adding 1
-
-      var isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
-      alert(isScrolledToBottom);
-      if(isScrolledToBottom)
-          out.scrollTop = out.scrollHeight - out.clientHeight;
-    })
-
     // something's fucked with bootstrap, so make sure we clean up half-closed modals ourselves
     $('#conv-modal').on('hidden.bs.modal', function () {
       $('body').removeClass('modal-open');
