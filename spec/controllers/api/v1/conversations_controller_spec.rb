@@ -52,7 +52,7 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
 
     it 'returns conversation' do
       put :update, params: {id: convo.id, conversation: {from_address: 'foo'}}
-      expect(JSON.parse(response.body)['response']).to eq(convo.reload.api_json(false))
+      expect(JSON.parse(response.body)['response']).to eq(convo.reload.api_json(false).as_json)
     end
   end
 

@@ -45,18 +45,21 @@ RSpec.describe Conversation, type: :model do
     end
   end
 
-  describe 'saving status and lifecycle' do
-    let(:user) { create :user, language:1, name: 'foo' }
+  describe 'lifecycle hooks' do
 
-    it 'writes lifecycle to db' do
-      c = create :conversation, user: user
-      expect(c.reload.lifecycle).to eq('have_name')
-    end
+    describe 'saving status' do
+      let(:user) { create :user, language:1, name: 'foo' }
 
-    it 'auto updates status' do
-      c = create :conversation, user: user, status: :sms_created
-      c.reload.update_attribute(:additional_passengers, 2)
-      expect(c.reload.status).to eq('in_progress')
+      it 'writes lifecycle to db' do
+        c = create :conversation, user: user
+        expect(c.reload.lifecycle).to eq('have_name')
+      end
+
+      it 'auto updates status' do
+        c = create :conversation, user: user, status: :sms_created
+        c.reload.update_attribute(:additional_passengers, 2)
+        expect(c.reload.status).to eq('in_progress')
+      end
     end
   end
 
