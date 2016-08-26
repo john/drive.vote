@@ -38,8 +38,8 @@ DispatchController.prototype = {
 
   loadConversationMessages: function (id) {
     $('#conversation-messages').load('/admin/conversations/' + id + '/messages', function( response, status, xhr ) {
-      var $cont = $('.messages');
-      $cont[0].scrollTop = $cont[0].scrollHeight;
+      var cont = $('.messages');
+      cont[0].scrollTop = cont[0].scrollHeight;
     });
   },
 
