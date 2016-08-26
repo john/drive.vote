@@ -18,7 +18,12 @@ class TimeZoneUtils
     end
     unless fake_server_time
       fake_server_time = Time.parse(human_input) rescue nil
-      origin_time = Time.at(fake_server_time.to_i + server_to_origin_offset) if fake_server_time
+      if fake_server_time
+        origin_time = Time.at(fake_server_time.to_i + server_to_origin_offset)
+        if origin_time.day < fake_server_time.day
+          origin_time += 1.day
+        end
+      end
     end
     return fake_server_time, origin_time
   end

@@ -6,6 +6,7 @@
 function DispatchController(rideZoneId, mapController) {
   this._rideZoneId = rideZoneId;
   this._mapController = mapController;
+  this._activeConversationId = undefined;
 }
 
 DispatchController.prototype = {
@@ -19,18 +20,27 @@ DispatchController.prototype = {
   },
 
   loadRidePane: function (id, action) {
+    var sameConvo = (id === this._activeConversationId);
+    this._activeConversationId = id;
     if (action === undefined) {
       action = 'create';
     }
     var url = '/admin/conversations/' + id + '/ride_pane';
     if(action=='edit') {
-      url += '?edit=true'
+      url += '?edit=true';
     }
-    $('#conversation-form').load( url );
+    $('#conversation-form').load( url, function( response, status, xhr ) {
+      if (!sameConvo) {
+        $('#body').val('');
+      }
+    });
   },
 
   loadConversationMessages: function (id) {
-    $('#conversation-messages').load('/admin/conversations/' + id + '/messages');
+    $('#conversation-messages').load('/admin/conversations/' + id + '/messages', function( response, status, xhr ) {
+      var cont = $('.messages');
+      cont[0].scrollTop = cont[0].scrollHeight;
+    });
   },
 
   attachRideClick: function (id, el, action) {
@@ -141,7 +151,7 @@ DispatchController.prototype = {
     var existing = $('#' + rowId);
     if (existing.length > 0) {
       existing.html(cells);
-      existing.effect("highlight", {}, 100);
+      //existing.effect("highlight", {}, 100);
     } else {
       var row = '<tr id="'+rowId+'" class="clickable" data-cid="'+obj.id+'">' + cells +'</tr>';
       $(tableSelector).prepend(row);
@@ -162,15 +172,15 @@ DispatchController.prototype = {
     })
   },
 
-  sendReply: function(url) {
+  setReplyUrl: function(url) {
+    this._replyUrl = url;
+  },
+
+  sendReply: function() {
     // alert('this will send, but then it just reloads the page. it needs to insert the sent message into the DOM on this modal.');
     var args = {'message' : {'body': $('#body').val()}};
-    $.ajax(url, {type: 'POST', dataType: 'json', data: args, process_data: false, content_type: 'application/json'})
-      .success(function(res) {
-        var bod = res['response']['message']['body'];
-        var sent_at = res['response']['message']['sent_at'];
-        $(".messages").append("<tr><td>" + sent_at + "</td><td>?</td><td>" + bod + "</td></tr>");
-      });
+    $.ajax(this._replyUrl, {type: 'POST', dataType: 'json', data: args, process_data: false, content_type: 'application/json'});
+    $('#body').val('')
   },
 
   // Called for new conversation event or changed
@@ -191,7 +201,9 @@ DispatchController.prototype = {
 
   // Handle new message
   processMessage: function (msg) {
-    // do we want to do anything?
+    if (msg.conversation_id == this._activeConversationId) {
+      this.loadConversationMessages(this._activeConversationId);
+    }
   },
 
   refreshConversations: function () {

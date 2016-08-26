@@ -68,7 +68,11 @@ class Conversation < ApplicationRecord
   end
 
   def username
-    self.user.try(:name).to_s
+    if self.user && !self.user.has_sms_name?
+      self.user.name
+    else
+      ''
+    end
   end
 
   def message_count

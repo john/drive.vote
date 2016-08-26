@@ -26,6 +26,11 @@
             %td{style: 'width: 340px;'}
               #conversation-messages
 
+              .msg-reply
+                = text_area_tag 'body', nil
+                = button_tag 'Send', type: :submit, class: 'btn btn-primary btn-xs pull-right', disable_with: "Replying...", onclick: "javascript: dispatchController.sendReply(); return false;"
+
+
 %h5
   = @ride_zone.name
   %small
