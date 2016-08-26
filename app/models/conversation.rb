@@ -12,6 +12,7 @@ class Conversation < ApplicationRecord
 
   validate :phone_numbers_match_first_message
   include HasAddress
+  include ToFromAddressable
 
   enum status: { sms_created: -1, in_progress: 0, ride_created: 1, closed: 2, help_needed: 3 }
   enum lifecycle: {

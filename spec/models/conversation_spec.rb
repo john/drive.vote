@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Conversation, type: :model do
+  it_behaves_like 'to_from_addressable'
+
   let(:ride_address_attrs) {{from_address: 'from', from_city: 'fcity', from_latitude: 1, from_longitude: 2,
                              to_address: 'to', to_city: 'tcity', to_latitude: 3, to_longitude: 4}}
   let(:full_address_attrs) { {from_latitude: 34.5, from_longitude: -122.6, from_confirmed: true, to_latitude: 34.5, to_longitude: -122.6, to_confirmed: true} }

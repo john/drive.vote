@@ -18,6 +18,7 @@ class Ride < ApplicationRecord
   before_save :close_conversation_when_complete
 
   include HasAddress
+  include ToFromAddressable
 
   # create a new ride from the data in a conversation
   def self.create_from_conversation conversation
