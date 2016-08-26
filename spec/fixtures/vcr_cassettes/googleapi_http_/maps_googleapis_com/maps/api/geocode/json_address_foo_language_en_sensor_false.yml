@@ -1,0 +1,98 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=foo&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Fri, 26 Aug 2016 03:01:59 GMT
+      Expires:
+      - Sat, 27 Aug 2016 03:01:59 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '449'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Foo",
+                       "short_name" : "Foo",
+                       "types" : [ "colloquial_area", "political" ]
+                    },
+                    {
+                       "long_name" : "Sarganserland",
+                       "short_name" : "Sarganserland",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Sankt Gallen",
+                       "short_name" : "SG",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "Switzerland",
+                       "short_name" : "CH",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "7326",
+                       "short_name" : "7326",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Foo, 7326, Switzerland",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 46.9445136,
+                       "lng" : 9.2614097
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 46.9521307,
+                          "lng" : 9.277417099999999
+                       },
+                       "southwest" : {
+                          "lat" : 46.9368954,
+                          "lng" : 9.2454023
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJqUE0dT3XhEcRFsjmZgQl1o8",
+                 "types" : [ "colloquial_area", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Fri, 26 Aug 2016 03:02:00 GMT
+recorded_with: VCR 3.0.3

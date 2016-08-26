@@ -1,0 +1,114 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=from,%20fcity&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 24 Aug 2016 20:19:15 GMT
+      Expires:
+      - Thu, 25 Aug 2016 20:19:15 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '563'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Atlanta from the Ashes",
+                       "short_name" : "Atlanta from the Ashes",
+                       "types" : [ "premise" ]
+                    },
+                    {
+                       "long_name" : "Peachtree Street Northeast",
+                       "short_name" : "Peachtree St NE",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Downtown",
+                       "short_name" : "Downtown",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "Atlanta",
+                       "short_name" : "Atlanta",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Fulton County",
+                       "short_name" : "Fulton County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Georgia",
+                       "short_name" : "GA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "30303",
+                       "short_name" : "30303",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Atlanta from the Ashes, Peachtree St NE, Atlanta, GA 30303, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 33.7546448,
+                       "lng" : -84.389268
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 33.7559937802915,
+                          "lng" : -84.38791901970849
+                       },
+                       "southwest" : {
+                          "lat" : 33.7532958197085,
+                          "lng" : -84.3906169802915
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "ChIJM9s97IYD9YgRcEQWalFEYPg",
+                 "types" : [ "premise" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Wed, 24 Aug 2016 20:19:15 GMT
+recorded_with: VCR 3.0.3
