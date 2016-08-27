@@ -1,37 +1,7 @@
-= render partial: 'dispatch/modal'
-
 = render partial: 'dispatch/nav'
 
-/ .disp-server-status
-/   Connecting
-
-.row
-  .col-md-7
-
-    .dispatch-filters
-      = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllConversations(); return false;', id: 'conv-all'
-      &nbsp; · &nbsp;
-
-      = link_to 'Needs Help', '#', onclick: 'javascript: dispatchController.showStatusConversations("need_help"); return false;', id: 'conv-help'
-      &nbsp; · &nbsp;
-
-      = link_to 'In Progress', '#', onclick: 'javascript: dispatchController.showStatusConversations("in_progress"); return false;', id: 'conv-prog'
-      &nbsp; · &nbsp;
-
-      = link_to 'Stale', '#', onclick: 'javascript: dispatchController.showStaleConversations(); return false;', id: 'conv-stale'
-
-
-    %table.table.admin{id: 'conversations'}
-      %thead
-        %tr
-          %th
-          %th Voter
-          %th Last message
-          %th Status
-          %th Desired pickup
-
-  .col-md-5{style: 'margin-top: 15px;'}
-    #dispatch-map
+.col-md-12{style: 'margin-top: -5px;'}
+  #dispatch-map
 
 :javascript
   var dispatchMapController;

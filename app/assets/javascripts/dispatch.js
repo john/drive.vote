@@ -75,10 +75,12 @@ DispatchController.prototype = {
 
   conversationCells: function (c) {
     var statusClass = (c.status == 'help_needed') ? 'conv-alert' : 'conv-normal';
-    return '<td class="msg">' + ((c.message_count == null) ? '0' : c.message_count) + '</td>' +
-      '<td class="from">' + c.from_phone + ' ' + c.name + '<br>' + c.last_message_body + '</td>' +
+    return '<td> </td>' +
+      '<td class="from">' + c.from_phone + '<br>' + c.name + '</td>' +
+      '<td><div class="sm pull-right">+' + (c.message_count-1) + ' more</div><span class="sm">tk min ago:</span><br>' + c.last_message_body + '</td>' +
       '<td class="'+statusClass+'">' + c.status.replace('_', ' ') + '</td>' +
-      '<td class="updated">' + strftime('%l:%M%P', new Date(c.status_updated_at*1000)) + '</td>'
+      '<td class="updated">tk</td>'
+//      '<td class="updated">' + strftime('%l:%M%P', new Date(c.status_updated_at*1000)) + '</td>'
   },
 
   updateConversationTable: function (c) {

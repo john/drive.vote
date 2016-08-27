@@ -1,0 +1,7 @@
+= render partial: 'dispatch/nav'
+
+.col-md-12
+  %ul
+    - @ride_zone.drivers.each do |driver|
+      %li
+        = driver.name

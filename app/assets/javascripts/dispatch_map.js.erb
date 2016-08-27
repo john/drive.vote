@@ -114,13 +114,13 @@ Map.prototype = {
   _addGoogleMarker: function(lat, lon, icon, title, content)
   {
     var gmap = this._gmap,
-      gicon = {url: icon.url,
-        size: {width: icon.w, height: icon.h},
-        anchor: {x: icon.w/2, y: icon.h},
-        labelOrigin: {x: icon.w/2, y: 0}},
+      // gicon = {url: icon.url,
+      //   size: {width: icon.w, height: icon.h},
+      //   anchor: {x: icon.w/2, y: icon.h},
+      //   labelOrigin: {x: icon.w/2, y: 0}},
       gmarker = new google.maps.Marker({
         position: {lat: lat, lng: lon},
-        icon: gicon,
+        //icon: gicon,
         map: gmap,
         title: title
       });

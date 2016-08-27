@@ -1,0 +1,16 @@
+%h3.dispatch
+  = @ride_zone.name
+
+  %span.dispatch-links
+    = @ride_zone.phone_number.phony_formatted(normalize: :US, spaces: '-')
+    &nbsp; · &nbsp;
+
+    = (action_name == 'show') ? "<b>Dashboard</b>".html_safe : link_to('Dashboard', dispatch_path(@ride_zone))
+    &nbsp; · &nbsp;
+
+    = (action_name == 'drivers') ? "<b>Drivers</b> (#)".html_safe : link_to('Drivers (#)', drivers_dispatch_path(@ride_zone))
+    &nbsp; · &nbsp;
+
+    = (action_name == 'map') ? "<b>Large Map</b>".html_safe : link_to('Large map', map_dispatch_path(@ride_zone))
+    &nbsp; · &nbsp;
+    Poll finder
