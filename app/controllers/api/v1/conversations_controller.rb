@@ -38,7 +38,7 @@ module Api::V1
     def create_message
       sms = TwilioService.send_message(
         { from: @conversation.to_phone, to: @conversation.from_phone, body: params[:message][:body]} ,
-        TWILIO_TIMEOUT
+        Rails.configuration.twilio_timeout
       )
       if sms.error_code
         render json: {error: "Communication error #{sms.error_code}"}, status: 500

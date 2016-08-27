@@ -1,0 +1,90 @@
+class RidesController < ApplicationController
+  include RideParams
+  before_action :set_ride, only: [:edit, :update]
+  before_action :set_ride_zone
+  around_action :set_time_zone
+
+  def new
+    @locale = params[:locale]
+    @ride = Ride.new
+    @ride.pickup_at = @ride_zone.current_time
+  end
+
+  def create
+    @locale = params[:locale] || :en
+
+    # check for existing voter
+    normalized = PhonyRails.normalize_number(params[:ride][:phone_number], default_country_code: 'US')
+    user = User.find_by_phone_number_normalized(normalized)
+    user ||= User.find_by_email(params[:ride][:email])
+    if user
+      existing = Ride.where(voter_id: user.id).where.not(status: 'complete').first
+      if existing
+        @ride = existing
+        @ride.email = user.email
+        @ride.phone_number = user.phone_number
+        I18n.locale = user.locale = @locale
+        render :edit
+        return
+      end
+    end
+
+    # create user if not found
+    unless user
+      user_params = params.require(:ride).permit(:phone_number, :email, :name)
+      puts user_params.inspect
+      attrs = {
+          name: user_params[:name],
+          phone_number: user_params[:phone_number],
+          ride_zone: @ride_zone,
+          email: user_params[:email],
+          password: '12345678',
+          locale: @locale,
+      }
+      user = User.create!(attrs)
+    end
+
+    rp = ride_params
+    @ride = Ride.new(rp)
+    @ride.ride_zone = @ride_zone
+    @ride.voter = user
+    @ride.status = :scheduled
+    if @ride.save
+      Conversation.create_from_staff(@ride_zone, user, thanks_msg, Rails.configuration.twilio_timeout,
+                                     {status: :ride_created, ride: @ride})
+      render :success
+    else
+      render :new
+    end
+  end
+
+  def edit
+    I18n.locale = @ride.voter.locale
+    @ride_zone = @ride.ride_zone
+  end
+
+  def update
+    I18n.locale = @ride.voter.locale
+    if @ride.update(ride_params)
+      render :success
+      @ride.conversation.send_from_staff(thanks_msg, Rails.configuration.twilio_timeout)
+    else
+      render :edit
+    end
+  end
+
+  private
+  def thanks_msg
+    I18n.t(:thanks_for_requesting, locale: @ride.voter.locale, time: @ride.pickup_at.strftime('%m/%d %l:%M %P'))
+  end
+
+  def set_ride_zone
+    @ride_zone = @ride.ride_zone if @ride
+    @ride_zone ||= RideZone.find_by_id(params[:ride_zone_id]) || RideZone.find_by_slug(params[:ride_zone_id])
+    render :need_area unless @ride_zone
+  end
+
+  def set_time_zone(&block)
+    Time.use_zone(@ride_zone.time_zone, &block) if @ride_zone
+  end
+end

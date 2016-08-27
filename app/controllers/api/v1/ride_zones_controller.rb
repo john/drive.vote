@@ -14,7 +14,7 @@ module Api::V1
     def create_conversation
       user = User.find_by_id(params[:user_id])
       if user
-        resp = Conversation.create_from_staff(@ride_zone, user, params[:body], TWILIO_TIMEOUT)
+        resp = Conversation.create_from_staff(@ride_zone, user, params[:body], Rails.configuration.twilio_timeout)
         if resp.is_a?(Conversation)
           render json: {response: resp.api_json}
         else

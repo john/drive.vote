@@ -30,8 +30,8 @@ class Message < ApplicationRecord
     Message.create!(attrs)
   end
 
-  # creates a new Message object that is the start of a staff-initiated conversation
-  def self.create_start_of_conversation(conversation, twilio_msg)
+  # creates a new Message object that is a staff-initiated conversation
+  def self.create_from_staff(conversation, twilio_msg)
     attrs = {
         conversation: conversation,
         ride_zone: conversation.ride_zone,

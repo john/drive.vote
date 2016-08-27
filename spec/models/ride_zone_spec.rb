@@ -15,9 +15,9 @@ RSpec.describe RideZone, type: :model do
         expect(rz.longitude).to_not be_nil
       end
 
-      it 'should set utc offset' do
-        expect(Timezone).to receive(:lookup).and_return(OpenStruct.new(utc_offset: 999))
-        expect(rz.utc_offset).to eq(999)
+      it 'should set time zone' do
+        expect(Timezone).to receive(:lookup).and_return(OpenStruct.new(name: 'Hawaii'))
+        expect(rz.time_zone).to eq('Hawaii')
       end
 
       it 'should update lat/long on zip change and ride_zone save' do
@@ -34,11 +34,10 @@ RSpec.describe RideZone, type: :model do
       end
 
       it 'should update time zone on zip change' do
-        expect(Timezone).to receive(:lookup).and_return(OpenStruct.new(utc_offset: 999))
-        original_utc_offset = rz.utc_offset
+        expect(Timezone).to receive(:lookup).and_return(OpenStruct.new(name: 'Hawaii'))
         rz.zip = 94111
         rz.save!
-        expect(rz.reload.utc_offset).to eq(999)
+        expect(rz.reload.time_zone).to eq('Hawaii')
       end
     end
   end

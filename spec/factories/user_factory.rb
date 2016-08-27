@@ -37,6 +37,7 @@ FactoryGirl.define do
 
     factory :voter_user do
       user_type :voter
+      locale :en
 
       factory :sms_voter_user do
         phone_number '+15555551234'

@@ -1,0 +1,28 @@
+%h3= t(:thank_you)
+
+%h5= t(:request_saved)
+%br
+
+.row
+  .col-sm-3
+    = t(:pickup_location)
+  .col-sm-5
+    = "#{@ride.from_address}, #{@ride.from_city}"
+.row
+  .col-sm-3
+    = t(:pickup_time)
+  .col-sm-5
+    = @ride.pickup_at.strftime('%m/%d %l:%M %P')
+.row
+  .col-sm-3
+    = t(:additional_passengers)
+  .col-sm-5
+    = @ride.additional_passengers
+.row
+  .col-sm-3
+    = t(:special_requests_label)
+  .col-sm-5
+    = @ride.special_requests
+%br
+= link_to t(:click_here), edit_ride_path(@ride)
+= t(:to_change_request)

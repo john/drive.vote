@@ -11,6 +11,10 @@
     = f.text_field :name, class: 'form-control'
 
   .col-sm-8.field
+    = f.label :slug
+    = f.text_field :slug, class: 'form-control'
+
+  .col-sm-8.field
     = f.label t(:description), t(:description)
     = f.text_area :description, class: 'form-control'
 

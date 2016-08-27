@@ -60,14 +60,14 @@ class TwilioService
 
   # Find the ride zone based on the 'to' phone number
   def establish_ride_zone(params)
-    to_phone = PhonyRails.normalize_number(params['To'])
+    to_phone = PhonyRails.normalize_number(params['To'], default_country_code: 'US')
     @ride_zone = RideZone.find_by_phone_number(to_phone)
     raise ConfigurationError.new(CONFIG_ERROR_MSG) unless @ride_zone
   end
 
   # Find the user and any existing conversation, or create them as needed
   def establish_user_conversation(params)
-    from_phone = PhonyRails.normalize_number(params['From'])
+    from_phone = PhonyRails.normalize_number(params['From'], default_country_code: 'US')
     sms_name = User.sms_name(from_phone)
     attrs = {
         name: sms_name,

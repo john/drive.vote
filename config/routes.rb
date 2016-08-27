@@ -53,6 +53,9 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'get_a_ride/:ride_zone_id' => 'rides#new'
+  resources :rides, only: [:create, :edit, :update]
+
   resources :users do
     get :confirm, on: :member
   end

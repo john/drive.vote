@@ -17,6 +17,8 @@ class Ride < ApplicationRecord
   around_save :notify_update
   before_save :close_conversation_when_complete
 
+  attr_accessor :phone_number, :email # for ride + voter creation
+
   include HasAddress
 
   # create a new ride from the data in a conversation

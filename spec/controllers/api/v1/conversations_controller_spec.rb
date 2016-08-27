@@ -73,7 +73,7 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
 
     it 'calls twilio service' do
       args = {from: convo.to_phone, to: convo.from_phone, body: body}
-      expect(TwilioService).to receive(:send_message).with(args, Api::V1::ConversationsController::TWILIO_TIMEOUT)
+      expect(TwilioService).to receive(:send_message).with(args, Rails.configuration.twilio_timeout)
       post :create_message, params: {id: convo.id, message: {body: body}}
     end
 

@@ -14,6 +14,8 @@ module RideParams
                                  :driver_id,
                                  :ride_zone_id,
                                  :additional_passengers,
+                                 :from_address,
+                                 :from_city,
                                  :pickup_at,
                                  :name,
                                  :description,
