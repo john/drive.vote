@@ -2,6 +2,7 @@
 = form_for @ride do |f|
   = hidden_field_tag(:ride_zone_id, @ride_zone.id)
   = hidden_field_tag(:locale, @locale || 'en')
+  = hidden_field_tag(:user_id, @user.try(:id))
   - if @ride.errors.any?
     #error_explanation
       %h2= t(:problem_saving_ride)
@@ -9,10 +10,14 @@
         - @ride.errors.full_messages.each do |msg|
           %li= msg
 
-  - unless rescheduling
+  - if !rescheduling && !@user
     .col-sm-8.field
       = f.label t(:voter_name)
       = f.text_field :name, class: 'form-control'
+
+    .col-sm-8.field
+      = f.label t(:voter_password)
+      = f.password_field :password, class: 'form-control'
 
     .col-sm-8.field
       = f.label t(:mobile_phone_number)

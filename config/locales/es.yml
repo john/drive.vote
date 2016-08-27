@@ -116,8 +116,10 @@ es:
   thanks_wait_for_driver: '¡Gracias! Tenemos su información y pondremos en contacto con usted antes de su viaje.'
 
   # voter form
-  thanks_requesting: 'Thank you for requesting a ride to the polls (es)!'
+  thanks_requesting: 'Thank you for requesting a ride to or from the polls (es)!'
+  sign_in_to_edit: 'Please sign in to change your existing ride request (es)'
   voter_name: 'What is your name (es)?'
+  voter_password: 'Enter a password (at least 8 characters)'
   mobile_phone_number: 'What is your mobile/cell phone number (es)?'
   where_to_be_picked_up: 'Where do you want to be picked up (es)?'
   city_for_pickup: 'What city is that in (es)?'
@@ -133,7 +135,7 @@ es:
   pickup_time: 'Pickup time (es)'
   additional_passengers: 'Additional passengers (es):'
   special_requests_label: 'Special requests (es):'
-  to_change_request: 'to change your request (es)'
+  to_change_request: 'to change your request (sign in with password required)(es)'
 
   # https://gist.github.com/jordigg/30fe17c6328d5deab9ec
   devise:

@@ -66,6 +66,11 @@ class User < ApplicationRecord
     dispatcher_role.try(:resource_id)
   end
 
+  def voter_ride_zone_id
+    voter_role = self.roles.where(name: 'voter').first
+    voter_role.try(:resource_id)
+  end
+
   def active_ride
     Ride.where(driver_id: self.id).or(Ride.where(voter_id: self.id)).where(status: Ride.active_statuses).first
   end

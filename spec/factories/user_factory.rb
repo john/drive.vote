@@ -39,6 +39,11 @@ FactoryGirl.define do
       user_type :voter
       locale :en
 
+      after(:create) do |user|
+        rz = create( :ride_zone )
+        user.add_role( :voter, rz)
+      end
+
       factory :sms_voter_user do
         phone_number '+15555551234'
         name User.sms_name('+15555551234')

@@ -12,9 +12,18 @@ RSpec.describe RidesController, type: :controller do
 
   describe 'GET #edit' do
     it 'assigns the requested ride as @ride' do
-      ride = create(:ride)
+      user = create :voter_user
+      sign_in user
+      ride = create :ride, voter: user, ride_zone: user.ride_zone
       get :edit, params: {id: ride.to_param}
       expect(assigns(:ride)).to eq(ride)
+    end
+
+    it 'redirects if not signed in' do
+      user = create :voter_user
+      ride = create :ride, voter: user, ride_zone: user.ride_zone
+      get :edit, params: {id: ride.to_param}
+      expect(response).to redirect_to('/users/sign_in')
     end
   end
 end

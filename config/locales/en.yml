@@ -116,8 +116,10 @@ en:
   thanks_wait_for_driver: 'Thank you! We have your info and will contact you before your ride.'
 
   # voter form
-  thanks_requesting: 'Thank you for requesting a ride to the polls!'
+  thanks_requesting: 'Thank you for requesting a ride to or from the polls!'
+  sign_in_to_edit: 'Please sign in to change your existing ride request'
   voter_name: 'What is your name?'
+  voter_password: 'Enter a password (at least 8 characters)'
   mobile_phone_number: 'What is your mobile/cell phone number?'
   where_to_be_picked_up: 'Where do you want to be picked up?'
   city_for_pickup: 'What city is that in?'
@@ -134,4 +136,4 @@ en:
   pickup_time: 'Pickup time:'
   additional_passengers: 'Additional passengers:'
   special_requests_label: 'Special requests:'
-  to_change_request: 'to change your request'
+  to_change_request: 'to change your request (sign in with password required)'

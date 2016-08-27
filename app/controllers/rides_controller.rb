@@ -1,5 +1,8 @@
+require 'securerandom'
+
 class RidesController < ApplicationController
   include RideParams
+  before_action :require_session, only: [:edit, :update]
   before_action :set_ride, only: [:edit, :update]
   before_action :set_ride_zone
   around_action :set_time_zone
@@ -8,6 +11,7 @@ class RidesController < ApplicationController
     @locale = params[:locale]
     @ride = Ride.new
     @ride.pickup_at = @ride_zone.current_time
+    @user = current_user
   end
 
   def create
@@ -15,32 +19,31 @@ class RidesController < ApplicationController
 
     # check for existing voter
     normalized = PhonyRails.normalize_number(params[:ride][:phone_number], default_country_code: 'US')
-    user = User.find_by_phone_number_normalized(normalized)
+    user = User.find_by_id(params[:user_id]) if params[:user_id]
+    user ||= User.find_by_phone_number_normalized(normalized)
     user ||= User.find_by_email(params[:ride][:email])
     if user
       existing = Ride.where(voter_id: user.id).where.not(status: 'complete').first
       if existing
-        @ride = existing
-        @ride.email = user.email
-        @ride.phone_number = user.phone_number
-        I18n.locale = user.locale = @locale
-        render :edit
+        flash[:notify] = t(:sign_in_to_edit)
+        redirect_to '/users/sign_in?locale=' + user.locale
         return
       end
     end
 
     # create user if not found
     unless user
-      user_params = params.require(:ride).permit(:phone_number, :email, :name)
-      puts user_params.inspect
+      user_params = params.require(:ride).permit(:phone_number, :email, :name, :password)
       attrs = {
           name: user_params[:name],
           phone_number: user_params[:phone_number],
           ride_zone: @ride_zone,
           email: user_params[:email],
-          password: '12345678',
+          password: user_params[:password] || SecureRandom.hex(8),
           locale: @locale,
+          user_type: :voter,
       }
+      # todo: better error handling
       user = User.create!(attrs)
     end
 
@@ -76,6 +79,10 @@ class RidesController < ApplicationController
   private
   def thanks_msg
     I18n.t(:thanks_for_requesting, locale: @ride.voter.locale, time: @ride.pickup_at.strftime('%m/%d %l:%M %P'))
+  end
+
+  def require_session
+    redirect_to '/users/sign_in' unless user_signed_in?
   end
 
   def set_ride_zone
