@@ -1,6 +1,6 @@
 //= require jquery-ui
-
 // app/assets/javascripts/dispatch.js
+"use strict";
 
 function DispatchController(rideZoneId, mapController) {
   this._rideZoneId = rideZoneId;

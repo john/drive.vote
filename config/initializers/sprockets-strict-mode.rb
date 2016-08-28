@@ -1,1 +1,0 @@
-Rails.application.assets.register_postprocessor('application/javascript', Sprockets::StrictMode)
