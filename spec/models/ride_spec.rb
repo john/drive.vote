@@ -8,38 +8,47 @@ RSpec.describe Ride, type: :model do
 
   describe 'event generation' do
     let!(:driver) { create :driver_user }
+    let!(:new_driver) { create :driver_user }
+    let!(:convo) { create :conversation_with_messages }
 
-    it 'sends new ride event' do
-      expect_any_instance_of(RideZone).to receive(:event).with(:new_ride, anything)
-      create :ride
+    it 'sends conversation event on new ride' do
+      expect_any_instance_of(RideZone).to receive(:event).with(:conversation_changed, anything)
+      create :ride, conversation: convo, ride_zone: convo.ride_zone
     end
 
-    it 'sends ride update event but not driver' do
-      r = create :ride
-      expect_any_instance_of(RideZone).to receive(:event).with(:ride_changed, anything)
+    it 'sends conversation update event but not driver' do
+      r = create :ride, conversation: convo
+      expect_any_instance_of(RideZone).to receive(:event).with(:conversation_changed, anything)
       expect_any_instance_of(RideZone).to_not receive(:event).with(:driver_changed, anything)
       r.update_attribute(:pickup_at, Time.now)
     end
 
     it 'sends driver update event on status change' do
-      r = create :ride, driver: driver
-      expect_any_instance_of(RideZone).to receive(:event).with(:ride_changed, anything)
+      r = create :ride, driver: driver, conversation: convo, ride_zone: convo.ride_zone
+      expect_any_instance_of(RideZone).to receive(:event).with(:conversation_changed, anything)
       expect_any_instance_of(RideZone).to receive(:event).with(:driver_changed, anything, :driver)
-      r.update_attribute(:status, :complete)
+      r.update_attribute(:status, :picked_up)
     end
 
     it 'sends driver update event on driver clear' do
-      r = create :ride, driver: driver
-      expect_any_instance_of(RideZone).to receive(:event).with(:ride_changed, anything)
+      r = create :ride, driver: driver, conversation: convo
+      expect_any_instance_of(RideZone).to receive(:event).with(:conversation_changed, anything)
       expect_any_instance_of(RideZone).to receive(:event).with(:driver_changed, anything, :driver)
       r.clear_driver
     end
 
     it 'sends driver update event on driver assignment' do
-      r = create :ride
-      expect_any_instance_of(RideZone).to receive(:event).with(:ride_changed, anything)
+      r = create :ride, conversation: convo
+      expect_any_instance_of(RideZone).to receive(:event).with(:conversation_changed, anything)
       expect_any_instance_of(RideZone).to receive(:event).with(:driver_changed, anything, :driver)
       r.assign_driver(driver)
+    end
+
+    it 'sends driver update event on driver reassignment' do
+      r = create :ride, conversation: convo, driver: driver
+      expect_any_instance_of(RideZone).to receive(:event).with(:conversation_changed, anything)
+      expect_any_instance_of(RideZone).to receive(:event).twice.with(:driver_changed, anything, :driver)
+      r.reassign_driver(new_driver)
     end
   end
 

@@ -54,7 +54,23 @@ This event indicates a new conversation has been created in the subscribed ride 
 			"additional_passengers" : integer,
 			"last_message_time" : integer_unix_epoch_time,
 			"last_message_sent_by" : "Voter" | "Staff" | "Bot",
-			"last_message_body" : "message content"
+			"last_message_body" : "message content",
+			"ride" : {
+                "id" : unique_id_integer,
+                "ride_zone_id" : unique_ride_zone_id_integer,
+                "status" : ""incomplete_info, scheduled, waiting_assignment, driver_assigned, picked_up, or complete""
+                "conversation_id" : id_of_conversation_integer,
+                "name" : "voter name",
+                "from_address" : "address",
+                "from_latitude" : decimal,
+                "from_longitude" : decimal,
+                "to_address" : "address",
+                "to_latitude" : decimal,
+                "to_longitude" : decimal,
+                "num_passengers" : integer,
+                "pickup_time" : integer_unix_epoch_time,
+                "special_requests" : "any requests from voter, e.g. wheelchair, car seat"
+            }
 		}
 	}
 
@@ -81,39 +97,6 @@ This event indicates a new message has been attached to a conversation. The mess
 			"created_at" : integer_unix_epoch_time
 		}
 	}
-
-#### Ride Events
-##### New Ride
-This event indicates a new ride has been created in the ride zone. Rides are only created when the origin, destination, and pickup time are known.
-
-	{
-		"event_type" : "new_ride",
-		"ride" : {
-			"id" : unique_id_integer,
-			"ride_zone_id" : unique_ride_zone_id_integer,
-			"status" : ""incomplete_info, scheduled, waiting_assignment, driver_assigned, picked_up, or complete""
-			"conversation_id" : id_of_conversation_integer,
-			"name" : "voter name",
-			"from_address" : "address",
-			"from_latitude" : decimal,
-			"from_longitude" : decimal,
-			"to_address" : "address",
-			"to_latitude" : decimal,
-			"to_longitude" : decimal,
-			"num_passengers" : integer,
-			"pickup_time" : integer_unix_epoch_time,
-			"special_requests" : "any requests from voter, e.g. wheelchair, car seat"
-		}
-	}
-
-##### Ride Changed
-This event indicates that a ride has changed status or its information has changed.
-
-	{
-		"event_type" : "ride_changed",
-		"ride" : *same as new_ride*
-	}
-
 
 #### Driver Events
 ##### New Driver
