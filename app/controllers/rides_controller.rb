@@ -19,20 +19,24 @@ class RidesController < ApplicationController
 
     # check for existing voter
     normalized = PhonyRails.normalize_number(params[:ride][:phone_number], default_country_code: 'US')
-    user = User.find_by_id(params[:user_id]) if params[:user_id]
-    user ||= User.find_by_phone_number_normalized(normalized)
-    user ||= User.find_by_email(params[:ride][:email])
-    if user
-      existing = Ride.where(voter_id: user.id).where.not(status: 'complete').first
+    @user = User.find_by_id(params[:user_id]) if params[:user_id]
+    @user ||= User.find_by_phone_number_normalized(normalized)
+    @user ||= User.find_by_email(params[:ride][:email])
+    if @user
+      existing = @user.open_ride
       if existing
+        # after sign-in voters are redirected to edit their existing open ride
         flash[:notify] = t(:sign_in_to_edit)
-        redirect_to '/users/sign_in?locale=' + user.locale
+        redirect_to '/users/sign_in?locale=' + @user.locale
         return
       end
     end
 
     # create user if not found
-    unless user
+    rp = ride_params
+    @ride = Ride.new(rp)
+    @ride.ride_zone = @ride_zone
+    unless @user
       user_params = params.require(:ride).permit(:phone_number, :email, :name, :password)
       attrs = {
           name: user_params[:name],
@@ -44,17 +48,19 @@ class RidesController < ApplicationController
           user_type: :voter,
       }
       # todo: better error handling
-      user = User.create!(attrs)
+      @user = User.create(attrs)
+      if @user.errors.any?
+        render :new
+        return
+      end
     end
 
-    rp = ride_params
-    @ride = Ride.new(rp)
-    @ride.ride_zone = @ride_zone
-    @ride.voter = user
+    @ride.voter = @user
     @ride.status = :scheduled
     if @ride.save
-      Conversation.create_from_staff(@ride_zone, user, thanks_msg, Rails.configuration.twilio_timeout,
+      Conversation.create_from_staff(@ride_zone, @user, thanks_msg, Rails.configuration.twilio_timeout,
                                      {status: :ride_created, ride: @ride})
+      UserMailer.welcome_email_voter_ride(@user, @ride).deliver_later
       render :success
     else
       render :new
@@ -71,6 +77,7 @@ class RidesController < ApplicationController
     if @ride.update(ride_params)
       render :success
       @ride.conversation.send_from_staff(thanks_msg, Rails.configuration.twilio_timeout)
+      UserMailer.welcome_email_voter_ride(@ride.voter, @ride).deliver_later
     else
       render :edit
     end

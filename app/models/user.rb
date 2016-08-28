@@ -75,6 +75,10 @@ class User < ApplicationRecord
     Ride.where(driver_id: self.id).or(Ride.where(voter_id: self.id)).where(status: Ride.active_statuses).first
   end
 
+  def open_ride
+    Ride.where(driver_id: self.id).or(Ride.where(voter_id: self.id)).where.not(status: :complete).first
+  end
+
   def recent_complete_ride
     self.rides.merge(Ride.completed).order('updated_at desc').first
   end
@@ -195,9 +199,7 @@ class User < ApplicationRecord
 
   def send_welcome_email
     return if has_sms_name?
-    if self.has_role? 'voter', :any
-      UserMailer.welcome_email_voter(self).deliver_later
-    elsif self.has_role? 'driver', :any
+    if self.has_role? 'driver', :any
       UserMailer.welcome_email_driver(self).deliver_later
     end
   end

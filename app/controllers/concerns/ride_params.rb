@@ -18,6 +18,8 @@ module RideParams
                                  :from_city,
                                  :pickup_at,
                                  :name,
+                                 :phone_number, # this is a pass-thru to user
+                                 :email, # this is a pass-thru to user
                                  :description,
                                  :special_requests,
                                  :status)

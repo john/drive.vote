@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if resource.has_role?(:voter, :any)
-      existing = Ride.where(voter_id: resource.id).where.not(status: 'complete').first
+      existing = resource.open_ride
       return edit_ride_path(existing) if existing
       return "/get_a_ride/#{resource.voter_ride_zone_id}"
     end

@@ -159,11 +159,6 @@ RSpec.describe User, :type => :model do
   describe 'enqueues email on creation' do
     let(:dummy_mailer) { OpenStruct.new(deliver_later: nil) }
 
-    it 'sends voter email for web registration' do
-      expect(UserMailer).to receive(:welcome_email_voter) { dummy_mailer }
-      create :voter_user
-    end
-
     it 'sends driver email for web registration' do
       expect(UserMailer).to receive(:welcome_email_driver) { dummy_mailer }
       create :driver_user

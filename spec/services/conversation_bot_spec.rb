@@ -253,7 +253,7 @@ RSpec.describe ConversationBot do
     let(:convo) { create :conversation_with_messages, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true }
     let(:voter_time) { Time.use_zone(convo.ride_zone.time_zone) do 10.minutes.from_now.change(sec:0, usec:0); end }
     let(:voter_formatted) { voter_time.strftime('%l:%M %P')}
-    let(:past_voter_time) { Time.use_zone(convo.ride_zone.time_zone) do 1.hour.ago.change(sec:0, usec:0); end }
+    let(:past_voter_time) { Time.use_zone(convo.ride_zone.time_zone) do 1.hours.ago.change(sec:0, usec:0); end }
     let(:past_voter_formatted) { past_voter_time.strftime('%l:%M %P')}
 
     describe 'valid times' do
