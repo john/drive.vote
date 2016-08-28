@@ -44,9 +44,9 @@ class Ride < ApplicationRecord
   end
 
   # returns true if assignment worked
-  def assign_driver driver
+  def assign_driver driver, allow_reassign = false
     self.with_lock do # reloads record
-      return false if self.driver_id
+      return false if self.driver_id && !allow_reassign
       self.driver = driver
       self.status = :driver_assigned
       save!
@@ -56,12 +56,7 @@ class Ride < ApplicationRecord
 
   # returns true if assignment worked
   def reassign_driver driver
-    self.with_lock do # reloads record
-      self.driver = driver
-      self.status = :driver_assigned
-      save!
-    end
-    true
+    assign_driver(driver, true)
   end
 
   # returns true if driver was valid and cleared

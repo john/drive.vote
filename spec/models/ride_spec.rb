@@ -71,6 +71,12 @@ RSpec.describe Ride, type: :model do
       expect(ride.status).to eq('driver_assigned')
     end
 
+    it 'allows reassign driver' do
+      expect(ride.assign_driver(driver)).to be_truthy
+      expect(ride.reload.reassign_driver(driver2)).to be_truthy
+      expect(ride.reload.driver_id).to eq(driver2.id)
+    end
+
     it 'clears driver' do
       expect(ride.assign_driver(driver)).to be_truthy
       expect(ride.reload.clear_driver(driver)).to be_truthy
