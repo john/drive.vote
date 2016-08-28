@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   match '/terms_of_service' => 'home#terms_of_service', via: :get, as: :terms_of_service
   match '/privacy' => 'home#privacy', via: :get, as: :privacy
 
-  resources :dispatch, only: [:show, :drivers, :map] do
+  resources :dispatch, only: [:show] do
     member do
       get 'drivers' => 'dispatch#drivers'
       get 'map' => 'dispatch#map'
@@ -53,7 +53,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :users do #, only: [:show, :new, :create, :edit, :update]
+  resources :users do
     get :confirm, on: :member
   end
 
