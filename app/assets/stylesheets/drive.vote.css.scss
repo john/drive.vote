@@ -112,7 +112,37 @@ form {
 
 // Dispatch page:
 
+
+h3.dispatch { margin: 0 0 0 10px; }
+
+.dispatch-filters {
+  font-weight: normal;
+  font-size: 13px;
+  padding: 4px 10px;
+  background-color: #ddd;
+  margin: 30px 0;
+}
+.dispatch-links {
+  font-size: 14px;
+  font-weight: normal;
+  margin-left: 20px;
+  color: #444;
+}
+#conversations {
+  .nav {
+    float:right;
+    color: #ccc;
+    font-size: 12px;
+  }
+  .sm {
+    color: #ccc;
+    font-size: 12px;
+  }
+}
+
 #dispatch-map { height: 500px; margin: 1em 0; }
+
+#dispatch-map-lg { margin: 1em 0; }
 
 #conversations, #rides {
   font-size: 12px;

@@ -37,7 +37,7 @@ class Conversation < ApplicationRecord
     if include_messages
       j['messages'] = self.messages.map(&:api_json)
     end
-    last_msg = self.messages.last
+    last_msg = self.messages.order('created_at ASC').last
     if last_msg
       j['last_message_time'] = last_msg.created_at.to_i
       j['last_message_sent_by'] = last_msg.sent_by

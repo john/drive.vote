@@ -1,96 +1,40 @@
-:css
-  h5 { margin-top: -10px; }
-  h6 { font-weight: bold; font-size: 23px; }
-  small { font-size: 11px; }
+= render partial: 'dispatch/modal'
 
-.modal.fade.modal-body#conv-modal{"aria-labelledby" => "conversationModalLabel", :role => "dialog", :tabindex => "-1"}
-  .modal-dialog.modal-lg{:role => "document"}
-    .modal-content
-      .modal-header
-        %button.close{type: 'button', 'data-dismiss': 'modal', 'aria-label': 'Close'}
-          %span{'aria-hidden': 'true'} x
-        #msg-count.pull-right
+= render partial: 'dispatch/nav'
 
-        %h4#conversationModalLabel.modal-title
+/ .disp-server-status
+/   Connecting
 
-      .modal-body
-        %table{style: 'width: 850px;'}
-          %tr
-            %td{style: 'width: 500px;'}
-              - if @ride
-                #ride_info
+.row
+  .col-md-7
 
-              - else
-                #conversation-form
+    .dispatch-filters
+      = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllConversations(); return false;', id: 'conv-all'
+      &nbsp; · &nbsp;
 
-            %td{style: 'width: 340px;'}
-              #conversation-messages
+      = link_to 'Needs Help', '#', onclick: 'javascript: dispatchController.showStatusConversations("need_help"); return false;', id: 'conv-help'
+      &nbsp; · &nbsp;
 
-              .msg-reply
-                = text_area_tag 'body', nil
-                = button_tag 'Send', type: :submit, class: 'btn btn-primary btn-xs pull-right', disable_with: "Replying...", onclick: "javascript: dispatchController.sendReply(); return false;"
+      = link_to 'In Progress', '#', onclick: 'javascript: dispatchController.showStatusConversations("in_progress"); return false;', id: 'conv-prog'
+      &nbsp; · &nbsp;
 
+      = link_to 'Stale', '#', onclick: 'javascript: dispatchController.showStaleConversations(); return false;', id: 'conv-stale'
 
-%h5
-  = @ride_zone.name
-  %small
-    = @ride_zone.phone_number.phony_formatted(normalize: :US, spaces: '-')
+    %table.table.admin{id: 'conversations'}
+      %thead
+        %tr
+          %th
+          %th Voter
+          %th Last message
+          %th Status
+          %th Desired pickup
 
-.disp-server-status
-  Connecting
-
-.col-md-4
-  %h6
-    Conversations &nbsp;
-    %small
-      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshConversations(); return false;', style: 'font-size: 13px; color: #aaa'
-
-  .btn-group.btn-group-xs.btn-filters{role: 'group'}
-    = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllConversations(); return false;', id: 'conv-all', class: 'btn btn-secondary btn-default btn-conv', style: 'background-color: #777;'
-
-    = link_to 'Help', '#', onclick: 'javascript: dispatchController.showStatusConversations("need_help"); return false;', id: 'conv-help', class: 'btn btn-secondary btn-default btn-conv'
-
-    = link_to 'In Prog', '#', onclick: 'javascript: dispatchController.showStatusConversations("in_progress"); return false;', id: 'conv-prog', class: 'btn btn-secondary btn-default btn-conv'
-
-    = link_to 'Stale', '#', onclick: 'javascript: dispatchController.showStaleConversations(); return false;', id: 'conv-stale', class: 'btn btn-secondary btn-default btn-conv'
-
-  %table.table.admin{id: 'conversations'}
-    %thead
-      %tr
-        %th Msgs
-        %th With
-        %th Status
-        %th Updated
-
-.col-md-4
-  %h6
-    Rides &nbsp;
-    %small
-      = link_to 'Refresh', '#', onclick: 'javascript: dispatchController.refreshRides(); dispatchController.refreshDrivers(); return false;', style: 'font-size: 13px; color: #aaa'
-
-  .btn-group.btn-group-xs.btn-filters{role: 'group'}
-    = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllRides(); return false;', id: 'ride-all', class: 'btn btn-secondary btn-default btn-ride', style: 'background-color: #777;'
-
-    = link_to 'Waiting', '#', onclick: 'javascript: dispatchController.showStatusRides("waiting_assignment"); return false;', id: 'ride-waiting', class: 'btn btn-secondary btn-default btn-ride'
-
-    = link_to 'Assigned', '#', onclick: 'javascript: dispatchController.showStatusRides("driver_assigned"); return false;', id: 'ride-assigned', class: 'btn btn-secondary btn-default btn-ride'
-
-    = link_to 'Stale', '#', onclick: 'javascript: dispatchController.showStaleRides(); return false;', id: 'ride-stale', class: 'btn btn-secondary btn-default btn-ride'
-
-  %table.table.admin{id: 'rides'}
-    %thead
-      %tr
-        %th Voter
-        %th Status
-        %th Updated
-        %th Pickup at
-
-.col-md-4
-  #dispatch-map
+  .col-md-5{style: 'margin-top: 15px;'}
+    #dispatch-map
 
 :javascript
-  var dispatchMapController;
-  var dispatchController;
+
+  #{render partial: 'dispatch/init.js'}
 
   jQuery(document).ready(function($) {
     $(document).on("click", '.clickable', function(event) {
@@ -106,12 +50,3 @@
     });
   });
 
-  var gmap = new Map(document.getElementById('dispatch-map'), onMapLoaded,
-                     {'google_api_key': 'AIzaSyDyJ3LTbJGAEIKjqYj3-gFDbAZ3BLo6sGo',
-                      lat: #{@ride_zone.latitude}, lon: #{@ride_zone.longitude}, zoom: 13});
-
-  function onMapLoaded(map) {
-    dispatchMapController = new DispatchMapController(map);
-    dispatchController = new DispatchController(#{@ride_zone.id}, dispatchMapController);
-    dispatchController.init();
-  }
