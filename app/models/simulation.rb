@@ -128,7 +128,7 @@ class Simulation < ActiveRecord::Base
                    state: @ride_zone.state, zip: @ride_zone.zip,
                    phone_number: '510-617-%03d7' % i )
       offset = ride.delete('pickup_offset')
-      _, ride['pickup_at'] = TimeZoneUtils.fake_server_time_and_origin_time(offset, @ride_zone.utc_offset)
+      ride['pickup_at'] = TimeZoneUtils.origin_time(offset, @ride_zone.time_zone)
       Ride.create!(ride.merge(voter: voter, ride_zone: @ride_zone, name: voter.name, status: :scheduled))
     end
   end
@@ -230,8 +230,8 @@ class Simulation < ActiveRecord::Base
 
   def sms(event)
     if event['time_offset']
-      fake_server_time, _ = TimeZoneUtils.fake_server_time_and_origin_time(event['time_offset'], @ride_zone.utc_offset)
-      event['body'] = fake_server_time.strftime('%l:%M %P')
+      voter_time = TimeZoneUtils.origin_time(event['time_offset'], @ride_zone.time_zone)
+      event['body'] = voter_time.strftime('%l:%M %P')
     end
     params = ActionController::Parameters.new({'To' => @ride_zone.phone_number, 'From' => event[:user_phone], 'Body' => event['body']})
     TwilioService.new.process_inbound_sms(params)

@@ -1,0 +1,55 @@
+// expects local 'rescheduling' if this is a ride edit
+= form_for @ride do |f|
+  = hidden_field_tag(:ride_zone_id, @ride_zone.id)
+  = hidden_field_tag(:locale, @locale || 'en')
+  = hidden_field_tag(:user_id, @user.try(:id))
+  - if @ride.errors.any? || (@user && @user.errors.any?)
+    #error_explanation
+      %h5= t(:problem_saving_ride)
+      %ul
+        - @ride.errors.full_messages.each do |msg|
+          %li= msg
+        - if @user
+          - @user.errors.full_messages.each do |msg|
+            %li= msg
+
+  - if !rescheduling && (!@user || @user.new_record?)
+    .col-sm-8.field
+      = f.label t(:voter_name)
+      = f.text_field :name, class: 'form-control', required: true
+
+    .col-sm-8.field
+      = f.label t(:voter_password)
+      = f.password_field :password, class: 'form-control', required: true
+
+    .col-sm-8.field
+      = f.label t(:mobile_phone_number)
+      = f.text_field :phone_number, class: 'form-control', required: true
+
+    .col-sm-8.field
+      = f.label t(:email_address)
+      = f.text_field :email, class: 'form-control', required: true
+
+  .col-sm-8.field
+    = f.label t(:where_to_be_picked_up)
+    = f.text_field :from_address, class: 'form-control', required: true
+
+  .col-sm-8.field
+    = f.label t(:city_for_pickup)
+    = f.text_field :from_city, class: 'form-control', required: true
+
+  .col-sm-8.field
+    = f.label t(:pickup_time)
+    = f.datetime_select :pickup_at
+
+  .col-sm-8.field
+    = f.label t(:how_many_additional)
+    = f.select :additional_passengers, 0..5, {prompt: 'None Assigned'}
+
+  .col-sm-8.field
+    = f.label t(:special_requests)
+    = f.text_area :special_requests, class: 'form-control'
+
+  .col-sm-8.actions
+    = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."
+

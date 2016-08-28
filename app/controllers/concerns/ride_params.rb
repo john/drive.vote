@@ -14,8 +14,12 @@ module RideParams
                                  :driver_id,
                                  :ride_zone_id,
                                  :additional_passengers,
+                                 :from_address,
+                                 :from_city,
                                  :pickup_at,
                                  :name,
+                                 :phone_number, # this is a pass-thru to user
+                                 :email, # this is a pass-thru to user
                                  :description,
                                  :special_requests,
                                  :status)

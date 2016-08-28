@@ -96,4 +96,14 @@ Rails.application.configure do
   # More info here:
   # http://weblog.rubyonrails.org/2015/1/16/This-week-in-Rails-tokens-migrations-method-source-and-more/
   config.active_record.time_zone_aware_types = [:datetime, :time]
+
+  config.action_mailer.smtp_settings = {
+      :user_name => ENV['SEND_GRID_USER_NAME'],
+      :password => ENV['SEND_GRID_PASSWORD'],
+      :domain => 'drive.vote',
+      :address => 'smtp.sendgrid.net',
+      :port => 587,
+      :authentication => :plain,
+      :enable_starttls_auto => true
+  }
 end

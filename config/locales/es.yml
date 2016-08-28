@@ -115,6 +115,28 @@ es:
   any_special_requests: '¿Cuáles son sus peticiones especiales (como silla de ruedas, asientos de bebé)? O responder ninguno.'
   thanks_wait_for_driver: '¡Gracias! Tenemos su información y pondremos en contacto con usted antes de su viaje.'
 
+  # voter form
+  thanks_requesting: 'Thank you for requesting a ride to or from the polls (es)!'
+  sign_in_to_edit: 'Please sign in to change your existing ride request (es)'
+  voter_name: 'What is your name (es)?'
+  voter_password: 'Enter a password (at least 8 characters)'
+  mobile_phone_number: 'What is your mobile/cell phone number (es)?'
+  where_to_be_picked_up: 'Where do you want to be picked up (es)?'
+  city_for_pickup: 'What city is that in (es)?'
+  pickup_time: 'What time do you want to be picked up (es)?'
+  special_requests: 'Any special requests (wheelchair, child seats) (es)?'
+  problem_saving_ride: 'There was a problem saving your information (es)'
+  found_active_request: 'We found an active request - rescheduling (es)'
+  email_address: 'What is your email address (es)?'
+  request_saved: 'We have saved your ride request with the details below (es):'
+  thank_you: 'Gracias!'
+  thanks_for_requesting: 'Thank you for requesting a ride at %{time}. Text this number with questions. (es)'
+  pickup_location: 'Pickup location (es):'
+  pickup_time: 'Pickup time (es)'
+  additional_passengers: 'Additional passengers (es):'
+  special_requests_label: 'Special requests (es):'
+  to_change_request: 'to change your request (sign in with password required)(es)'
+
   # https://gist.github.com/jordigg/30fe17c6328d5deab9ec
   devise:
     confirmations:
@@ -172,3 +194,9 @@ es:
       not_saved:
         one: "1 error impidió que este %{resource} fuese guardado:"
         other: "%{count} errores impidieron que este %{resource} fuese guardado:"
+
+  date:
+      order:
+        - :day
+        - :month
+        - :year

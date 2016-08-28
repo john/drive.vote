@@ -29,5 +29,7 @@ module DriveVote
 
     config.action_mailer.preview_path = "spec/mailers/previews"
 
+    config.twilio_timeout = 5 # seconds
+
   end
 end

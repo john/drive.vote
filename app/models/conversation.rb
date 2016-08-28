@@ -46,12 +46,29 @@ class Conversation < ApplicationRecord
     j['from_phone'] = self.from_phone.phony_formatted(normalize: :US, spaces: '-')
     j['status_updated_at'] = self.status_updated_at.to_i
     j['name'] = username
+    j['ride'] = ride.api_json if ride
     j
+  end
+
+  # send a new SMS from staff on this conversation. returns the Message
+  def send_from_staff(body, timeout)
+    sms = Conversation.send_staff_sms(ride_zone, user, body, timeout)
+    return sms if sms.is_a?(String)
+    Message.create_from_staff(self, sms)
   end
 
   # create a new conversation initiated by staff
   # returns conversation if successful otherwise an error message
-  def self.create_from_staff(ride_zone, user, body, timeout)
+  def self.create_from_staff(ride_zone, user, body, timeout, attrs = {})
+    sms = send_staff_sms(ride_zone, user, body, timeout)
+    return sms if sms.is_a?(String)
+    c = Conversation.create({ride_zone: ride_zone, user: user, from_phone: ride_zone.phone_number,
+                            to_phone: user.phone_number, status: :in_progress}.merge(attrs))
+    msg = Message.create_from_staff(c, sms)
+    c
+  end
+
+  def self.send_staff_sms(ride_zone, user, body, timeout)
     sms = TwilioService.send_message(
         { from: ride_zone.phone_number, to: user.phone_number, body: body},
         timeout
@@ -61,10 +78,7 @@ class Conversation < ApplicationRecord
     elsif sms.status.to_s != 'delivered'
       return 'Timeout in delivery'
     end
-    c = Conversation.create(ride_zone: ride_zone, user: user, status: :in_progress,
-                            from_phone: ride_zone.phone_number, to_phone: user.phone_number)
-    msg = Message.create_start_of_conversation(c, sms)
-    c
+    sms
   end
 
   def username

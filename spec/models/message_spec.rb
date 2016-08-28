@@ -66,7 +66,7 @@ RSpec.describe Message, type: :model do
     let(:convo) { create :conversation, user: user, ride_zone: ride_zone }
 
     it 'should create the message' do
-      msg = Message.create_start_of_conversation(convo, twilio_msg)
+      msg = Message.create_from_staff(convo, twilio_msg)
       expect(msg.body).to eq('hello')
       expect(msg.sent_by).to eq('Staff')
     end

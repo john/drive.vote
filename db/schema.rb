@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160822050026) do
+ActiveRecord::Schema.define(version: 20160827001312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,8 +78,10 @@ ActiveRecord::Schema.define(version: 20160822050026) do
     t.decimal  "longitude",    precision: 15, scale: 10
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
-    t.integer  "utc_offset"
+    t.string   "slug"
+    t.string   "time_zone"
     t.index ["phone_number"], name: "index_ride_zones_on_phone_number", unique: true, using: :btree
+    t.index ["slug"], name: "index_ride_zones_on_slug", unique: true, using: :btree
   end
 
   create_table "rides", force: :cascade do |t|

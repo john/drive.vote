@@ -164,11 +164,11 @@ class ConversationBot
         # in the server's time zone. so there is some trickiness here to be able to
         # store the right value in the database and echo back the right thing to the
         # voter
-        fake_server_time, pickup_time = TimeZoneUtils.fake_server_time_and_origin_time(@body, @conversation.ride_zone.utc_offset)
-        if pickup_time && pickup_time.to_i >= 10.minutes.ago.to_i
+        pickup_time = TimeZoneUtils.origin_time(@body, @conversation.ride_zone.time_zone)
+        if pickup_time && pickup_time > @conversation.ride_zone.current_time - 10.minutes
           @conversation.update_attribute(:pickup_time, pickup_time)
           # when echoing back to user we use server's local time which is how it was parsed
-          @response = I18n.t(:confirm_the_time, locale: @locale, time: fake_server_time.strftime('%l:%M %P'))
+          @response = I18n.t(:confirm_the_time, locale: @locale, time: pickup_time.strftime('%l:%M %P'))
           return 0
         end
         @response = I18n.t(:invalid_time, locale: @locale)
