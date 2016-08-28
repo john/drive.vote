@@ -54,6 +54,8 @@ Rails.application.routes.draw do
   end
 
   get 'get_a_ride/:ride_zone_id' => 'rides#new'
+  get 'conseguir_un_paseo/:ride_zone_id' => 'rides#new'
+
   resources :rides, only: [:create, :edit, :update]
 
   resources :users do

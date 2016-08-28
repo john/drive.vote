@@ -13,6 +13,8 @@ class ApplicationController < ActionController::Base
     if resource.has_role?(:voter, :any)
       existing = resource.open_ride
       return edit_ride_path(existing) if existing
+
+      # TODO: handle es path
       return "/get_a_ride/#{resource.voter_ride_zone_id}"
     end
     root_path
@@ -21,7 +23,13 @@ class ApplicationController < ActionController::Base
   protected
 
   def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
+    if request.path.include?('conseguir_un_paseo')
+      I18n.locale = 'es'
+    elsif params[:locale].present?
+      I18n.locale = params[:locale]
+    else
+      I18n.locale = I18n.default_locale
+    end
   end
 
   def configure_permitted_parameters
