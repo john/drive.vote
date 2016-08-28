@@ -7,6 +7,8 @@ class RideZone < ApplicationRecord
 
   validates_presence_of :name
   validates_presence_of :zip
+  validates_presence_of :slug
+  validates_uniqueness_of :slug
 
   geocoded_by :zip
   after_validation :geocode, if: ->(obj){ obj.zip.present? && obj.zip_changed? }

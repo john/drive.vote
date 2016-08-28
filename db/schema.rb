@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(version: 20160827001312) do
     t.string   "slug"
     t.string   "time_zone"
     t.index ["phone_number"], name: "index_ride_zones_on_phone_number", unique: true, using: :btree
-    t.index ["slug"], name: "index_ride_zones_on_slug", using: :btree
+    t.index ["slug"], name: "index_ride_zones_on_slug", unique: true, using: :btree
   end
 
   create_table "rides", force: :cascade do |t|

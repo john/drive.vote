@@ -97,7 +97,7 @@ Rails.application.configure do
   # http://weblog.rubyonrails.org/2015/1/16/This-week-in-Rails-tokens-migrations-method-source-and-more/
   config.active_record.time_zone_aware_types = [:datetime, :time]
 
-  ActionMailer::Base.smtp_settings = {
+  config.action_mailer.smtp_settings = {
       :user_name => ENV['SEND_GRID_USER_NAME'],
       :password => ENV['SEND_GRID_PASSWORD'],
       :domain => 'drive.vote',

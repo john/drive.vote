@@ -8,11 +8,11 @@
 
   .col-sm-8.field
     = f.label :name
-    = f.text_field :name, class: 'form-control'
+    = f.text_field :name, class: 'form-control', required: true
 
   .col-sm-8.field
     = f.label :slug
-    = f.text_field :slug, class: 'form-control'
+    = f.text_field :slug, class: 'form-control', required: true
 
   .col-sm-8.field
     = f.label t(:description), t(:description)
@@ -20,11 +20,11 @@
 
   .col-sm-8.field
     = f.label :phone_number
-    = f.text_field :phone_number, class: 'form-control'
+    = f.text_field :phone_number, class: 'form-control', required: true
 
   .col-sm-8.field
     = f.label :zip
-    = f.text_field :zip, class: 'form-control'
+    = f.text_field :zip, class: 'form-control', required: true
 
   .col-sm-8.actions
     = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."
