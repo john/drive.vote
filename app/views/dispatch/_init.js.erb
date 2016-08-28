@@ -1,0 +1,12 @@
+var dispatchMapController;
+var dispatchController;
+
+var gmap = new Map(document.getElementById('dispatch-map'), onMapLoaded,
+                   {'google_api_key': 'AIzaSyDyJ3LTbJGAEIKjqYj3-gFDbAZ3BLo6sGo',
+                    lat: <%= @ride_zone.latitude %>, lon: <%= @ride_zone.longitude %>, zoom: 13});
+
+function onMapLoaded(map) {
+  dispatchMapController = new DispatchMapController(map);
+  dispatchController = new DispatchController(<%= @ride_zone.id %>, dispatchMapController);
+  dispatchController.init();
+}
