@@ -7,6 +7,17 @@ function DispatchController(rideZoneId, mapController) {
   this._rideZoneId = rideZoneId;
   this._mapController = mapController;
   this._activeConversationId = undefined;
+  this._statusStrings = {
+    messaging: 'Messaging', help_needed: 'Help Needed', scheduled: 'Scheduled',
+    waiting_assignment: 'Waiting for Assignment', assignment_overdue: 'Assignment Overdue',
+    waiting_pickup: 'Waiting for Pickup', pickup_overdue: 'Pickup Overdue',
+    driving: 'Driving', complete: 'Complete'
+  };
+  this._statusClasses = [];
+  for (var status in this._statusStrings) {
+    this._statusClasses.push('conv-status-' + status)
+  }
+  this._statusStyles = {}
 }
 
 DispatchController.prototype = {
@@ -73,13 +84,47 @@ DispatchController.prototype = {
     });
   },
 
-  conversationCells: function (c) {
-    var statusClass = (c.status == 'help_needed') ? 'conv-alert' : 'conv-normal';
+  conversationStatus: function (c) {
+    var ride = c.ride,
+        desired_time = (ride !== undefined && ride !== null) ? new Date(ride.pickup_at*1000) : null,
+        last_msg_time = new Date(c.last_message_time * 1000),
+        now = Date.now(),
+        status = c.status;
+    if (ride !== undefined && ride !== null) {
+      switch (ride.status) {
+        case 'complete':
+          return 'complete';
+        case 'picked_up':
+          return 'driving';
+        case 'driver_assigned':
+          if (now - desired_time > 15 * 60 * 1000)
+            return 'pickup_overdue';
+          return 'waiting_pickup';
+        case 'waiting_assignment':
+          if (now - desired_time < 10 * 60 * 1000)
+            return 'assignment_overdue';
+          return 'waiting_assignment';
+        default:
+          return 'scheduled';
+      }
+    }
+    switch(status) {
+      case 'help_needed':
+        return 'help_needed';
+      case 'closed':
+        return 'complete';
+    }
+    if (c.message_count == 0 || now - last_msg_time > 20*60*1000)
+      return 'help_needed'
+    return 'messaging';
+  },
+
+  conversationCells: function (c, status) {
     var timestamp = (c.last_message_time === undefined) ? '' : new Date(c.last_message_time*1000).toISOString();
     var pickup = (c.ride === undefined) ? '' : new Date(c.ride.pickup_at*1000).toISOString();
     var ride_icon = (c.status == 'ride_created') ? '🚕' : '';
 
-    return '<td>' + ride_icon + '</td>' +
+    var cells = '<td>' + ride_icon + '</td>' +
       '<td class="from">' + c.from_phone + '<br>' + c.name + '</td>' +
       '<td>' +
         '<div class="sm pull-right">+' + (c.message_count-1) + ' earlier</div>' +
@@ -87,65 +132,70 @@ DispatchController.prototype = {
           '<time class="timeago" datetime="' + timestamp + '">' + timestamp + '</time>' +
         '</span>' +
         '<br>' + c.last_message_body + '</td>' +
-      '<td class="'+statusClass+'">' + c.status.replace('_', ' ') + '</td>' +
-      '<td><time class="timeago" datetime="' + pickup + '">' + pickup + '</time> </td>'
+      '<td>' + this._statusStrings[status]+ '</td>';
+    if (status == 'complete' || status == 'driving') {
+      cells = cells + '<td></td>';
+    } else {
+      cells = cells + '<td><time class="timeago" datetime="' + pickup + '">' + pickup + '</time> </td>';
+    }
+    return cells
   },
 
   updateConversationTable: function (c) {
-    this.updateTable('#conversations', 'conv', c, this.conversationCells(c));
-  },
+    var status = this.conversationStatus(c),
+        rowId = 'conv-row-'+c.id,
+        existing = $('#' + rowId),
+        cells = this.conversationCells(c, status);
 
-  showAllConversations: function () {
-     this.showAllRows('#conversations');
-     $( ".btn-conv" ).css( "background-color", "#bdc3c7" );
-     $("#conv-all").css( "background-color", "#777" );
-   },
-
-  showStatusConversations: function (status) {
-    this.showOnlyRows('#conversations', function(r) { return r.data('objref').status == status });
-    $( ".btn-conv" ).css( "background-color", "#bdc3c7" );
-    if (status == 'need_help') {
-      $("#conv-help").css( "background-color", "#777" );
-    } else if (status == 'in_progress') {
-      $("#conv-prog").css( "background-color", "#777" );
-    }
-  },
-
-  showStaleConversations: function (status) {
-    var self = this;
-    this.showOnlyRows('#conversations', function(r) { return self.stale(r.data('objref')) });
-    $( ".btn-conv" ).css( "background-color", "#bdc3c7" );
-    $("#conv-stale").css( "background-color", "#777" );
-  },
-
-  stale: function(data) {
-    return 1000*data.status_updated_at < (new Date - 30*60*1000)
-  },
-
-  updateTable: function (tableSelector, type, obj, cells) {
-    var rowId = type+'-row-'+obj.id;
-    var existing = $('#' + rowId);
     if (existing.length > 0) {
       existing.html(cells);
-      //existing.effect("highlight", {}, 100);
+      this.setRowStatus(existing, status)
     } else {
-      var row = '<tr id="'+rowId+'" class="clickable" data-cid="'+obj.id+'">' + cells +'</tr>';
-      $(tableSelector).prepend(row);
+      var classes = "conv-row clickable conv-status-" + status,
+          row = '<tr id="'+rowId+'" class="'+classes+'" data-cid="'+c.id+'">' + cells +'</tr>';
+      $('#conversations').prepend(row);
     }
-    $('#' + rowId).data('objref', obj);
+    $('#' + rowId).data('objref', c);
     $("time.timeago").timeago()
   },
 
-  showAllRows: function (sel) {
-    $(sel).find('tr').show();
+  showConversationsWithStatuses: function (statusList) {
+    var toShow = (statusList == '*') ? Object.keys(this._statusStrings) : statusList.split(' '),
+        all = Object.keys(this._statusStrings);
+    for (var i = 0; i < all.length; ++i) {
+      var status = all[i],
+          style = this._statusStyles[status];
+      if (style !== null && style !== undefined) {
+        if (toShow.indexOf(status) == -1) {
+          style.visibility = 'hidden';
+          style.display = 'none';
+        } else {
+          style.visibility = 'visible';
+          style.display = '';
+        }
+      } else
+        console.log("ERROR: style " + all[i] + " NOT FOUND");
+    }
   },
 
-  showOnlyRows: function (sel, filter) {
-    $(sel).find('tr').each(function(i) {
-      if (i == 0 || filter($(this)))
-        $(this).show();
-      else
-        $(this).hide();
+  setRowStatus: function(row, rowStatus) {
+    var statusClass = 'conv-status-' + rowStatus,
+        classes = this._statusClasses.slice(0),
+        index = classes.indexOf(statusClass);
+
+    row.addClass(statusClass);
+    classes.splice(index, 1);
+    console.log('removing classes='+classes.join(' '));
+    row.removeClass(classes.join(' '));
+  },
+
+  refreshStatuses: function() {
+    var self = this;
+    $('.conv-row').each(function() {
+      var status = self.conversationStatus($(this).data('objref'));
+      if (!$(this).hasClass('conv-status-'+status)) {
+        self.updateConversationTable($(this).data('objref'));
+      }
     })
   },
 
@@ -229,9 +279,10 @@ DispatchController.prototype = {
   },
 
   init: function() {
+    var statuses = Object.keys(this._statusStrings)
+    this._statusStyles = getStyleRules('.conv-status-', statuses);
     this.refreshConversations();
     this.refreshDrivers();
     createRideZoneChannel(this._rideZoneId, this.connected.bind(this), this.disconnected.bind(this), this.eventReceived.bind(this));
-
   }
 };
