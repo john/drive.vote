@@ -12,7 +12,6 @@ class Ride < ApplicationRecord
 
   validates :voter, presence: true
 
-  after_create :notify_creation
   before_save :note_status_update
   around_save :notify_update
   before_save :close_conversation_when_complete
@@ -45,14 +44,19 @@ class Ride < ApplicationRecord
   end
 
   # returns true if assignment worked
-  def assign_driver driver
+  def assign_driver driver, allow_reassign = false
     self.with_lock do # reloads record
-      return false if self.driver_id
+      return false if self.driver_id && !allow_reassign
       self.driver = driver
       self.status = :driver_assigned
       save!
     end
     true
+  end
+
+  # returns true if assignment worked
+  def reassign_driver driver
+    assign_driver(driver, true)
   end
 
   # returns true if driver was valid and cleared
@@ -124,22 +128,19 @@ class Ride < ApplicationRecord
   end
 
   private
-  def notify_creation
-    self.ride_zone.event(:new_ride, self) if self.ride_zone
-  end
-
   def note_status_update
     self.status_updated_at = Time.now if new_record? || self.status_changed?
   end
 
   def notify_update
-    was_new = new_record?
-    # note, if we offer a one-step reassign, this only notifies on the old driver
-    driver_to_notify = User.find_by_id(self.driver_id_was) || self.driver
-    notify_driver = driver_to_notify && (driver_id_changed? || status_changed?)
+    was_new = self.new_record?
+    old_driver = User.find_by_id(self.driver_id_was)
+    new_driver = self.driver
+    notify_old_driver = old_driver != new_driver
     yield
-    self.ride_zone.event(:ride_changed, self) if !was_new && self.ride_zone
-    self.ride_zone.event(:driver_changed, driver_to_notify, :driver) if notify_driver && self.ride_zone
+    self.ride_zone.event(:conversation_changed, self.conversation) if !was_new && self.ride_zone && self.conversation
+    self.ride_zone.event(:driver_changed, old_driver, :driver) if notify_old_driver && old_driver && self.ride_zone
+    self.ride_zone.event(:driver_changed, new_driver, :driver) if new_driver && self.ride_zone
   end
 
   def close_conversation_when_complete

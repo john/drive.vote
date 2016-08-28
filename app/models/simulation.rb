@@ -127,9 +127,15 @@ class Simulation < ActiveRecord::Base
                    email: "simvoter#{i}@example.com", password: '123456789', city: @ride_zone.city,
                    state: @ride_zone.state, zip: @ride_zone.zip,
                    phone_number: '510-617-%03d7' % i )
-      offset = ride.delete('pickup_offset')
-      ride['pickup_at'] = TimeZoneUtils.origin_time(offset, @ride_zone.time_zone)
-      Ride.create!(ride.merge(voter: voter, ride_zone: @ride_zone, name: voter.name, status: :scheduled))
+      # simulate a conversation created by the staff person creating this ride
+      convo = Conversation.create(user: voter, from_phone: @ride_zone.phone_number, to_phone: voter.phone_number,
+                                  ride_zone: @ride_zone)
+      Message.create(conversation: convo, ride_zone: @ride_zone, from: @ride_zone.phone_number, to: voter.phone_number,
+                            body: 'Thanks for scheduling a ride')
+      ride_attrs = ride.dup
+      offset = ride_attrs.delete('pickup_offset')
+      ride_attrs['pickup_at'] = TimeZoneUtils.origin_time(offset, @ride_zone.time_zone)
+      Ride.create!(ride_attrs.merge(voter: voter, ride_zone: @ride_zone, name: voter.name, status: :scheduled, conversation: convo))
     end
   end
 

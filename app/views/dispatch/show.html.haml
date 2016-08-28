@@ -23,11 +23,11 @@
     %table.table.admin{id: 'conversations'}
       %thead
         %tr
-          %th
-          %th Voter
-          %th Last message
-          %th Status
-          %th Desired pickup
+          %th{style: 'width:3%'}
+          %th{style: 'width:15%'} Voter
+          %th{style: 'width:60%'} Last message
+          %th{style: 'width:12%'} Status
+          %th{style: 'width:10%'} Desired pickup
 
   .col-md-5{style: 'margin-top: 15px;'}
     #dispatch-map
@@ -37,6 +37,7 @@
   #{render partial: 'dispatch/init.js'}
 
   jQuery(document).ready(function($) {
+    jQuery.timeago.settings.allowFuture = true;
     $(document).on("click", '.clickable', function(event) {
       $(".modal-body").modal();
       dispatchController.loadRidePane($(this).data("cid"));

@@ -75,7 +75,8 @@ DispatchController.prototype = {
 
   conversationCells: function (c) {
     var statusClass = (c.status == 'help_needed') ? 'conv-alert' : 'conv-normal';
-    var timestamp = new Date(c.last_message_time*1000).toISOString();
+    var timestamp = (c.last_message_time === undefined) ? '' : new Date(c.last_message_time*1000).toISOString();
+    var pickup = (c.ride === undefined) ? '' : new Date(c.ride.pickup_at*1000).toISOString();
     var ride_icon = (c.status == 'ride_created') ? '🚕' : '';
 
     return '<td>' + ride_icon + '</td>' +
@@ -87,7 +88,7 @@ DispatchController.prototype = {
         '</span>' +
         '<br>' + c.last_message_body + '</td>' +
       '<td class="'+statusClass+'">' + c.status.replace('_', ' ') + '</td>' +
-      '<td class="updated"></td>'
+      '<td><time class="timeago" datetime="' + pickup + '">' + pickup + '</time> </td>'
   },
 
   updateConversationTable: function (c) {
@@ -117,40 +118,6 @@ DispatchController.prototype = {
     $("#conv-stale").css( "background-color", "#777" );
   },
 
-  rideCells: function (r) {
-    return '<td>' + r.name + '</td>' +
-      '<td>' + r.status + '</td>' +
-      '<td>' + strftime('%l:%M%P', new Date(r.status_updated_at*1000)) + '</td>' +
-      '<td>' + strftime('%l:%M%P', new Date(r.pickup_at*1000)) + '</td>'
-  },
-
-  updateRideTable: function (r) {
-    this.updateTable('#rides', 'ride', r, this.rideCells(r));
-  },
-
-  showAllRides: function () {
-    this.showAllRows('#rides');
-    $( ".btn-ride" ).css( "background-color", "#bdc3c7" );
-    $("#ride-all").css( "background-color", "#777" );
-  },
-
-  showStatusRides: function (status) {
-    this.showOnlyRows('#rides', function(r) { return r.data('objref').status == status });
-    $( ".btn-ride" ).css( "background-color", "#bdc3c7" );
-    if (status == 'waiting_assignment') {
-      $("#ride-waiting").css( "background-color", "#777" );
-    } else if (status == 'driver_assigned') {
-      $("#ride-assigned").css( "background-color", "#777" );
-    }
-  },
-
-  showStaleRides: function (status) {
-    var self = this;
-    this.showOnlyRows('#rides', function(r) { return self.stale(r.data('objref')) });
-    $( ".btn-ride" ).css( "background-color", "#bdc3c7" );
-    $("#ride-stale").css( "background-color", "#777" );
-  },
-
   stale: function(data) {
     return 1000*data.status_updated_at < (new Date - 30*60*1000)
   },
@@ -166,6 +133,7 @@ DispatchController.prototype = {
       $(tableSelector).prepend(row);
     }
     $('#' + rowId).data('objref', obj);
+    $("time.timeago").timeago()
   },
 
   showAllRows: function (sel) {
@@ -192,11 +160,13 @@ DispatchController.prototype = {
   // Called for new conversation event or changed
   processConversation: function (convo) {
     this.updateConversationTable(convo);
+    if (convo.ride != undefined) {
+      this.processRide(convo.ride);
+    }
   },
 
   // Called when a ride is created or changed
   processRide: function (ride) {
-    this.updateRideTable(ride);
     this._mapController.processRide(ride);
   },
 
@@ -219,21 +189,6 @@ DispatchController.prototype = {
       success: function(data, status, xhr) {
         for (var i = 0; i < data.response.length; ++i) {
           self.processConversation(data.response[i]);
-        }
-      $("time.timeago").timeago()
-      },
-      error: function(xhr, status, err) { $('error_msg').text(xhr.responseText) }
-    });
-  },
-
-  refreshRides: function () {
-    var self = this;
-    this._mapController.clearRideMarkers();
-    $("#rides > tbody").html("");
-    $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/rides', {
-      success: function(data, status, xhr) {
-        for (var i = 0; i < data.response.length; ++i) {
-          self.processRide(data.response[i]);
         }
       },
       error: function(xhr, status, err) { $('error_msg').text(xhr.responseText) }
@@ -261,12 +216,6 @@ DispatchController.prototype = {
       case 'conversation_changed':
         this.processConversation(event.conversation);
         break;
-      case 'new_ride':
-        this.processRide(event.ride);
-        break;
-      case 'ride_changed':
-        this.processRide(event.ride);
-        break;
       case 'new_driver':
         this.processDriver(event.driver);
         break;
@@ -281,7 +230,6 @@ DispatchController.prototype = {
 
   init: function() {
     this.refreshConversations();
-    this.refreshRides();
     this.refreshDrivers();
     createRideZoneChannel(this._rideZoneId, this.connected.bind(this), this.disconnected.bind(this), this.eventReceived.bind(this));
 
