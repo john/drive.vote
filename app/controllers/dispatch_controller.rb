@@ -9,6 +9,7 @@ class DispatchController < ApplicationController
   end
 
   def drivers
+    @drivers = @ride_zone.drivers.order(:name)
   end
 
   def map
