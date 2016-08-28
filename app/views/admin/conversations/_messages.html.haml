@@ -1,4 +1,4 @@
-.messages
+#messages
   - @conversation.messages.order('created_at asc').each do |message|
     .message{style: "text-align: #{(message.sent_by == 'Voter') ? 'left' : 'right'}"}
       -#.btn.btn-info.btn-xs

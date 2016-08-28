@@ -20,3 +20,7 @@
 
             %td{style: 'width: 340px;'}
               #conversation-messages
+
+              .msg-reply
+                = text_area_tag 'body', '', style: 'font-size: 14px; font-weight: normal;'
+                = button_tag 'Send', type: :submit, class: 'btn btn-primary btn-xs pull-right', data: {disable_with: "Sending..."}, onclick: "javascript: dispatchController.sendReply(); return false;"

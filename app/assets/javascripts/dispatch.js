@@ -38,8 +38,9 @@ DispatchController.prototype = {
 
   loadConversationMessages: function (id) {
     $('#conversation-messages').load('/admin/conversations/' + id + '/messages', function( response, status, xhr ) {
-      var cont = $('.messages');
-      cont[0].scrollTop = cont[0].scrollHeight;
+      var cont = $('#messages');
+      //alert('cont[0].scrollHeight: ' + cont[0].scrollHeight);
+      cont[0].scrollTop = 100; //cont[0].scrollHeight;
     });
   },
 
@@ -75,12 +76,19 @@ DispatchController.prototype = {
 
   conversationCells: function (c) {
     var statusClass = (c.status == 'help_needed') ? 'conv-alert' : 'conv-normal';
-    return '<td> </td>' +
+    var timestamp = new Date(c.last_message_time*1000).toISOString();
+    var ride_icon = (c.status == 'ride_created') ? '🚕' : '';
+
+    return '<td>' + ride_icon + '</td>' +
       '<td class="from">' + c.from_phone + '<br>' + c.name + '</td>' +
-      '<td><div class="sm pull-right">+' + (c.message_count-1) + ' more</div><span class="sm">tk min ago:</span><br>' + c.last_message_body + '</td>' +
+      '<td>' +
+        '<div class="sm pull-right">+' + (c.message_count-1) + ' earlier</div>' +
+        '<span class="sm">' +
+          '<time class="timeago" datetime="' + timestamp + '">' + timestamp + '</time>' +
+        '</span>' +
+        '<br>' + c.last_message_body + '</td>' +
       '<td class="'+statusClass+'">' + c.status.replace('_', ' ') + '</td>' +
-      '<td class="updated">tk</td>'
-//      '<td class="updated">' + strftime('%l:%M%P', new Date(c.status_updated_at*1000)) + '</td>'
+      '<td class="updated"></td>'
   },
 
   updateConversationTable: function (c) {
@@ -174,14 +182,11 @@ DispatchController.prototype = {
     })
   },
 
-  setReplyUrl: function(url) {
-    this._replyUrl = url;
-  },
-
   sendReply: function() {
-    // alert('this will send, but then it just reloads the page. it needs to insert the sent message into the DOM on this modal.');
     var args = {'message' : {'body': $('#body').val()}};
-    $.ajax(this._replyUrl, {type: 'POST', dataType: 'json', data: args, process_data: false, content_type: 'application/json'});
+    var url = '/api/1/conversations/' + this._activeConversationId + '/messages';
+
+    $.ajax(url, {type: 'POST', dataType: 'json', data: args, process_data: false, content_type: 'application/json'});
     $('#body').val('')
   },
 
@@ -216,6 +221,7 @@ DispatchController.prototype = {
         for (var i = 0; i < data.response.length; ++i) {
           self.processConversation(data.response[i]);
         }
+      $("time.timeago").timeago()
       },
       error: function(xhr, status, err) { $('error_msg').text(xhr.responseText) }
     });
@@ -279,5 +285,6 @@ DispatchController.prototype = {
     this.refreshRides();
     this.refreshDrivers();
     createRideZoneChannel(this._rideZoneId, this.connected.bind(this), this.disconnected.bind(this), this.eventReceived.bind(this));
+
   }
 };

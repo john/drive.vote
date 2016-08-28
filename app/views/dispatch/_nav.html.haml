@@ -8,9 +8,10 @@
     = (action_name == 'show') ? "<b>Dashboard</b>".html_safe : link_to('Dashboard', dispatch_path(@ride_zone))
     &nbsp; · &nbsp;
 
-    = (action_name == 'drivers') ? "<b>Drivers</b> (#)".html_safe : link_to('Drivers (#)', drivers_dispatch_path(@ride_zone))
+    = (action_name == 'drivers') ? "<b>Drivers</b> (#{@driver_count})".html_safe : link_to("Drivers (#{@driver_count})", drivers_dispatch_path(@ride_zone))
     &nbsp; · &nbsp;
 
     = (action_name == 'map') ? "<b>Large Map</b>".html_safe : link_to('Large map', map_dispatch_path(@ride_zone))
     &nbsp; · &nbsp;
-    Poll finder
+
+    = link_to 'Poll finder', 'http://yourfuckingpollingplace.com/', target: '_blank'
