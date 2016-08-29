@@ -41,9 +41,6 @@ class User < ApplicationRecord
 
   phony_normalize :phone_number, as: :phone_number_normalized, default_country_code: 'US'
 
-  # google api key, should work for all enabled apis, including maps & civic info:
-  # AIzaSyDefFnLJQKoz1OQGjaqaJPHMISVcnXZNPc
-  # https://console.developers.google.com/apis/credentials/wizard?api=maps_backend&project=phonic-client-135123
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   validates :phone_number_normalized, phony_plausible: true
   validate :permissible_user_type
