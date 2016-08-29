@@ -1,3 +1,5 @@
+"use strict";
+
 function DispatchMapController(map)
 {
   this.map = map;

@@ -1,5 +1,4 @@
 //= require jquery-ui
-
 // app/assets/javascripts/dispatch.js
 "use strict";
 
@@ -63,11 +62,11 @@ DispatchController.prototype = {
       if((action=='edit') && (el == '#driver_select')) {
         // just change the driver, on the ride object
         var url = '/api/1/rides/' + id + '/update_attribute?name=driver_id&value=' + $(el).val();
-        var msg = ''
+        var msg = '';
       } else {
         // this copies everything over from the conversation
         var url = '/api/1/conversations/' + id + '/rides?driver_id=' + $(el).val();
-        var msg = 'A new ride was created! It should appear in the \'rides\' column, and on the map.'
+        var msg = 'A new ride was created! It should appear in the \'rides\' column, and on the map.';
       }
 
       $.post( url, function() {
@@ -78,7 +77,7 @@ DispatchController.prototype = {
          humane.log(msg, { waitForMove: true });
         })
         .fail(function() {
-          humane.log ('Something has gone horribly wrong.')
+          humane.log ('Something has gone horribly wrong.');
         });
       e.preventDefault();
     });
@@ -204,7 +203,7 @@ DispatchController.prototype = {
     var url = '/api/1/conversations/' + this._activeConversationId + '/messages';
 
     $.ajax(url, {type: 'POST', dataType: 'json', data: args, process_data: false, content_type: 'application/json'});
-    $('#body').val('')
+    $('#body').val('');
   },
 
   // Called for new conversation event or changed
