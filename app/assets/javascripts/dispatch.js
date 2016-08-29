@@ -135,7 +135,7 @@ DispatchController.prototype = {
         '<span class="sm">' +
           '<time class="timeago" datetime="' + timestamp + '">' + timestamp + '</time>' +
         '</span>' +
-        '<br>' + c.last_message_body + '</td>' +
+        '<br>' + c.last_message_body.truncate(100) + '</td>' +
       '<td>' + this._statusStrings[status]+ '</td>';
     if (status == 'complete' || status == 'driving') {
       cells = cells + '<td></td>';
