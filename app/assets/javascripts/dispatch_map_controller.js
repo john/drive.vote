@@ -7,8 +7,8 @@ function DispatchMapController(map)
   this._drivers = {}; // hash keyed by the driver unique id, value is map object's marker id
 }
 
-// 15 minutes before pickup time to warn unassigned
-DispatchMapController.unassignedWindow = 900;
+// 10 minutes before pickup time to warn unassigned
+DispatchMapController.unassignedWindow = 600;
 
 // 15 minutes after pickup time to warn not picked up
 DispatchMapController.notPickedUpWindow = 900;
@@ -93,14 +93,14 @@ DispatchMapController.prototype = {
       if (pickupWarning != undefined && now > pickupWarning) {
         // this ride is overdue for a driver
         icon = Map.icons.overdue_ride;
-        label = label + '<br>Pickup time: ' + strftime('%l:%M%P', new Date(obj.pickup_at*1000))
+        label = label + ' Pickup time: ' + strftime('%l:%M%P', new Date(obj.pickup_at*1000))
       }
     } else if (obj.status == 'driver_assigned') {
       // this ride has an assigned driver
       if (notPickedUpWarning != undefined && now > notPickedUpWarning) {
         // this ride is overdue to be picked up
         icon = Map.icons.overdue_ride;
-        label = label + '<br>Pickup time: ' + strftime('%l:%M%P', new Date(obj.pickup_at*1000))
+        label = label + ' Pickup time: ' + strftime('%l:%M%P', new Date(obj.pickup_at*1000))
       } else {
         icon = Map.icons.assigned_ride;
       }

@@ -18,6 +18,11 @@ drivers:
     events:
       - {at: 4, type: move, lat: 28.541, lng: -81.412 }
       - {at: 8, repeat_count: 10, repeat_time: 4, type: move_by, lat: 0.001, lng: 0.001 }
+  -
+    events:
+      - {at: 10, type: move, lat: 28.545, lng: -81.416 }
+      - {at: 15, repeat_count: 4, repeat_time: 4, type: move_by, lat: 0.001, lng: 0.001 }
+      - {at: "+5", type: accept_nearest_ride}
 
 voters:
   -
@@ -41,5 +46,13 @@ rides:
     from_city: "orlando"
     from_latitude: 28.534
     from_longitude: -81.407
+    additional_passengers: 0
+    special_requests: none
+  -
+    pickup_offset: "-15 minutes"
+    from_address: "3337 Rogers Drive"
+    from_city: "orlando"
+    from_latitude: 28.531146
+    from_longitude: -81.419256
     additional_passengers: 0
     special_requests: none

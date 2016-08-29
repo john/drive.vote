@@ -6,11 +6,14 @@ function DispatchController(rideZoneId, mapController) {
   this._rideZoneId = rideZoneId;
   this._mapController = mapController;
   this._activeConversationId = undefined;
+  this.OVERDUE_ASSIGNMENT = 10*60*1000;
+  this.OVERDUE_PICKUP = 15*60*1000;
+  this.OVERDUE_COMPLETION = 30*60*1000;
   this._statusStrings = {
     messaging: 'Messaging', help_needed: 'Help Needed', scheduled: 'Scheduled',
     waiting_assignment: 'Waiting for Assignment', assignment_overdue: 'Assignment Overdue',
     waiting_pickup: 'Waiting for Pickup', pickup_overdue: 'Pickup Overdue',
-    driving: 'Driving', complete: 'Complete'
+    driving: 'Driving', completion_overdue: 'Completion Overdue', complete: 'Complete'
   };
   this._statusClasses = [];
   for (var status in this._statusStrings) {
@@ -94,13 +97,15 @@ DispatchController.prototype = {
         case 'complete':
           return 'complete';
         case 'picked_up':
+          if (now - desired_time > this.OVERDUE_COMPLETION)
+            return 'completion_overdue';
           return 'driving';
         case 'driver_assigned':
-          if (now - desired_time > 15 * 60 * 1000)
+          if (now - desired_time > this.OVERDUE_PICKUP)
             return 'pickup_overdue';
           return 'waiting_pickup';
         case 'waiting_assignment':
-          if (now - desired_time < 10 * 60 * 1000)
+          if (now > desired_time - this.OVERDUE_ASSIGNMENT)
             return 'assignment_overdue';
           return 'waiting_assignment';
         default:
@@ -148,14 +153,15 @@ DispatchController.prototype = {
 
     if (existing.length > 0) {
       existing.html(cells);
-      this.setRowStatus(existing, status)
+      this.setRowStatus(existing, status);
     } else {
       var classes = "conv-row clickable conv-status-" + status,
           row = '<tr id="'+rowId+'" class="'+classes+'" data-cid="'+c.id+'">' + cells +'</tr>';
       $('#conversations').prepend(row);
     }
     $('#' + rowId).data('objref', c);
-    $("time.timeago").timeago()
+    $("time.timeago").timeago();
+    this.recalcBadges();
   },
 
   showConversationsWithStatuses: function (statusList) {
@@ -175,6 +181,28 @@ DispatchController.prototype = {
       } else
         console.log("ERROR: style " + all[i] + " NOT FOUND");
     }
+  },
+
+  recalcBadges: function() {
+    $('.btn-conv-filter').each(function() {
+      var total = 0,
+          statuses = $(this).data('statuses').split(' '),
+          curr_name = $(this).text();
+      if (statuses[0] == '*') {
+        total = $('.conv-row').length;
+      } else {
+        for (var i = 0; i < statuses.length; ++i) {
+          total = total + $('.conv-status-' + statuses[i]).length;
+        }
+      }
+      if (total == 0) {
+        if (curr_name.includes('(')) {
+          $(this).text(curr_name.replace(/ \(.*/, ''));
+        }
+      } else {
+        $(this).text(curr_name.replace(/ \(.*/, '') + ' (' + total + ')');
+      }
+    })
   },
 
   setRowStatus: function(row, rowStatus) {
