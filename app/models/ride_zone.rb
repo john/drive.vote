@@ -11,9 +11,17 @@ class RideZone < ApplicationRecord
   validates_uniqueness_of :slug
 
   geocoded_by :zip
+  reverse_geocoded_by :latitude, :longitude do |obj,results|
+    if geo = results.first
+      obj.city = geo.city
+      obj.state = geo.state_code
+      obj.country = geo.country_code
+    end
+  end
+
   after_validation :geocode, if: ->(obj){ obj.zip.present? && obj.zip_changed? }
   after_validation :set_time_zone, if: ->(obj){ obj.latitude.present? && obj.latitude_changed? }
-
+  after_validation :reverse_geocode, if: ->(obj){ obj.latitude.present? && obj.latitude_changed? }
 
   def active_rides
     # convoluted because you have to get the enum integer. probably a more graceful way to do it.
