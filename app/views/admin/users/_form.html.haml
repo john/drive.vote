@@ -36,20 +36,6 @@
       %i
         Not a dispatcher
 
-  /   %table{style: 'width: 170px;'}
-  /     %tr
-  /       %td
-  /         Roles
-  /       %td
-  /         %ul
-  /           - Role.global.each do |role|
-  /             %li
-  /               %label{style: 'display: block; margin: 0; padding: 0'}
-  /                 = hidden_field_tag( role.name.to_sym, 0 )
-  /                 = check_box_tag( role.name, 1, @user.has_role?( role.name.to_sym ))
-  /                 &nbsp;
-  /                 = role.name.titleize
-
   .col-sm-8.field
     Available? &nbsp;
     %label{style: 'padding-right; 20px;'}
