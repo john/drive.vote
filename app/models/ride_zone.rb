@@ -21,7 +21,7 @@ class RideZone < ApplicationRecord
 
   after_validation :geocode, if: ->(obj){ obj.zip.present? && obj.zip_changed? }
   after_validation :set_time_zone, if: ->(obj){ obj.latitude.present? && obj.latitude_changed? }
-  after_validation :reverse_geocode, if: ->(obj){ obj.latitude.present? && obj.latitude_changed? }
+  after_validation :reverse_geocode, if: ->(obj){ obj.latitude.present? && obj.longitude.present? && obj.latitude_changed? && obj.longitude_changed? }
 
   def active_rides
     # convoluted because you have to get the enum integer. probably a more graceful way to do it.
