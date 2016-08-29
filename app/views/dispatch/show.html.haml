@@ -9,16 +9,22 @@
   .col-md-7
 
     .dispatch-filters
-      = link_to 'All', '#', onclick: 'javascript: dispatchController.showAllConversations(); return false;', id: 'conv-all'
+      = link_to 'All', '#', 'data-statuses': '*', class: 'btn-conv-filter'
       &nbsp; · &nbsp;
-
-      = link_to 'Needs Help', '#', onclick: 'javascript: dispatchController.showStatusConversations("need_help"); return false;', id: 'conv-help'
+      = link_to 'Needs Help', '#', 'data-statuses': 'help_needed', class: 'btn-conv-filter'
       &nbsp; · &nbsp;
-
-      = link_to 'In Progress', '#', onclick: 'javascript: dispatchController.showStatusConversations("in_progress"); return false;', id: 'conv-prog'
+      = link_to 'Overdue', '#', 'data-statuses': 'assignment_overdue pickup_overdue', class: 'btn-conv-filter'
       &nbsp; · &nbsp;
-
-      = link_to 'Stale', '#', onclick: 'javascript: dispatchController.showStaleConversations(); return false;', id: 'conv-stale'
+      = link_to 'Waiting Assignment', '#', 'data-statuses': 'waiting_assignment', class: 'btn-conv-filter'
+      &nbsp; · &nbsp;
+      = link_to 'Waiting Pickup', '#', 'data-statuses': 'waiting_pickup', class: 'btn-conv-filter'
+      &nbsp; · &nbsp;
+      = link_to 'Scheduled', '#', 'data-statuses': 'scheduled', class: 'btn-conv-filter'
+      &nbsp; · &nbsp;
+      = link_to 'Driving', '#', 'data-statuses': 'driving', class: 'btn-conv-filter'
+      &nbsp; · &nbsp;
+      = link_to 'Messaging', '#', 'data-statuses': 'messaging', class: 'btn-conv-filter'
+      &nbsp; · &nbsp;
 
     %table.table.admin{id: 'conversations'}
       %thead
@@ -36,6 +42,11 @@
 
   #{render partial: 'dispatch/init.js'}
 
+  function refreshStatuses() {
+    if (dispatchController !== undefined)
+      dispatchController.refreshStatuses();
+  }
+
   jQuery(document).ready(function($) {
     jQuery.timeago.settings.allowFuture = true;
     $(document).on("click", '.clickable', function(event) {
@@ -44,10 +55,19 @@
       dispatchController.loadConversationMessages($(this).data("cid"));
     });
 
+    $('.btn-conv-filter').click(function(event) {
+      event.preventDefault();
+      dispatchController.showConversationsWithStatuses($(this).data('statuses'));
+      $(".btn-conv-filter" ).css( "background-color", "#ddd" );
+      $(this).css( "background-color", "#fff" );
+    });
+
     // something's fucked with bootstrap, so make sure we clean up half-closed modals ourselves
     $('#conv-modal').on('hidden.bs.modal', function () {
       $('body').removeClass('modal-open');
       $('.modal-backdrop').remove();
     });
+
+    setInterval(refreshStatuses, 30000);
   });
 

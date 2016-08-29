@@ -18,3 +18,32 @@
   font-weight: bold;
 }
 
+.conv-status-messaging {
+  visibility: visible;
+}
+.conv-status-help_needed {
+  visibility: visible;
+}
+.conv-status-scheduled {
+  visibility: visible;
+}
+.conv-status-waiting_assignment {
+  visibility: visible;
+}
+.conv-status-assignment_overdue {
+  visibility: visible;
+  background-color: #f6e0e0;
+}
+.conv-status-waiting_pickup {
+  visibility: visible;
+}
+.conv-status-pickup_overdue {
+  visibility: visible;
+  background-color: #f6e0e0;
+}
+.conv-status-driving {
+  visibility: visible;
+}
+.conv-status-complete {
+  visibility: visible;
+}
