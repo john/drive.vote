@@ -8,11 +8,16 @@ RSpec.describe RideZone, type: :model do
   describe 'lifecycle hooks' do
     # note we cannot rely on VCR for http calls to timezone b/c it adds a timestamp
     # to every call
-    describe 'after_validation geocode and timezone' do
+    describe 'after_validation geocode, reverse geocode, and timezone' do
       let(:rz) { create :ride_zone }
       it 'should set lat/long on ride_zone create' do
         expect(rz.latitude).to_not be_nil
         expect(rz.longitude).to_not be_nil
+      end
+
+      it 'should set state and country on ride_zone create' do
+        expect(rz.state).to_not be_nil
+        expect(rz.country).to_not be_nil
       end
 
       it 'should set time zone' do
@@ -39,6 +44,7 @@ RSpec.describe RideZone, type: :model do
         rz.save!
         expect(rz.reload.time_zone).to eq('Hawaii')
       end
+
     end
   end
 
