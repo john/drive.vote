@@ -1,5 +1,3 @@
-
-
 - if @user.errors.any?
   #error_explanation
     %h2
@@ -13,19 +11,44 @@
 = form_for [:admin, @user], :role => 'form', :html => {:class => 'form-horizontal'}  do |f|
 
   .col-sm-8.field
-    %table{style: 'width: 170px;'}
-      %tr
-        %td
-          Roles
-        %td
-          %ul
-            - Role.global.each do |role|
-              %li
-                %label{style: 'display: block; margin: 0; padding: 0'}
-                  = hidden_field_tag( role.name.to_sym, 0 )
-                  = check_box_tag( role.name, 1, @user.has_role?( role.name.to_sym ))
-                  &nbsp;
-                  = role.name.titleize
+    %i
+      To edit driver/dispatcher roles, go to the edit page for that ride zone.
+  .col-sm-8.field
+    %i
+      Driver for:
+    - if @zones_driving_for.present?
+      - @zones_driving_for.each do |rz|
+        %div
+          #{rz.name} &nbsp &#183; &nbsp; [#{link_to 'edit', edit_admin_ride_zone_path(rz)}]
+    - else
+      %i
+        Not a driver
+
+  .col-sm-8.field
+
+    %i
+      Dispatcher for:
+    - if @zones_dispatching_for.present?
+      - @zones_dispatching_for.each do |rz|
+        %div
+          #{rz.name} &nbsp &#183; &nbsp; [#{link_to 'edit', edit_admin_ride_zone_path(rz)}]
+    - else
+      %i
+        Not a dispatcher
+
+  /   %table{style: 'width: 170px;'}
+  /     %tr
+  /       %td
+  /         Roles
+  /       %td
+  /         %ul
+  /           - Role.global.each do |role|
+  /             %li
+  /               %label{style: 'display: block; margin: 0; padding: 0'}
+  /                 = hidden_field_tag( role.name.to_sym, 0 )
+  /                 = check_box_tag( role.name, 1, @user.has_role?( role.name.to_sym ))
+  /                 &nbsp;
+  /                 = role.name.titleize
 
   .col-sm-8.field
     Available? &nbsp;
