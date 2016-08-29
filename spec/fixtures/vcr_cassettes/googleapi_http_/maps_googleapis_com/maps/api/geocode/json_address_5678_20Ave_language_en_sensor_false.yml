@@ -1,0 +1,114 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=5678%20Ave&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Wed, 24 Aug 2016 20:19:18 GMT
+      Expires:
+      - Thu, 25 Aug 2016 20:19:18 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '536'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "5678",
+                       "short_name" : "5678",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "I Avenue",
+                       "short_name" : "I Ave",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Cherokee",
+                       "short_name" : "Cherokee",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Rock",
+                       "short_name" : "Rock",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Cherokee County",
+                       "short_name" : "Cherokee County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Iowa",
+                       "short_name" : "IA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "51012",
+                       "short_name" : "51012",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "5678 I Ave, Cherokee, IA 51012, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 42.693707,
+                       "lng" : -95.703667
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 42.6950559802915,
+                          "lng" : -95.70231801970849
+                       },
+                       "southwest" : {
+                          "lat" : 42.6923580197085,
+                          "lng" : -95.70501598029151
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "ChIJ6XMAHhJ1jYcRUWATPw7_Ftw",
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Wed, 24 Aug 2016 20:19:18 GMT
+recorded_with: VCR 3.0.3

@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Ride, type: :model do
+  it_behaves_like 'to_from_addressable'
 
   it { should belong_to(:ride_zone) }
   it { should belong_to(:voter) }

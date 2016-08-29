@@ -19,6 +19,7 @@ class Ride < ApplicationRecord
   attr_accessor :phone_number, :email # for ride + voter creation
 
   include HasAddress
+  include ToFromAddressable
 
   # create a new ride from the data in a conversation
   def self.create_from_conversation conversation

@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Conversation, type: :model do
+  it_behaves_like 'to_from_addressable'
+
   let(:ride_address_attrs) {{from_address: 'from', from_city: 'fcity', from_latitude: 1, from_longitude: 2,
                              to_address: 'to', to_city: 'tcity', to_latitude: 3, to_longitude: 4}}
   let(:full_address_attrs) { {from_latitude: 34.5, from_longitude: -122.6, from_confirmed: true, to_latitude: 34.5, to_longitude: -122.6, to_confirmed: true} }
@@ -43,18 +45,21 @@ RSpec.describe Conversation, type: :model do
     end
   end
 
-  describe 'saving status and lifecycle' do
-    let(:user) { create :user, language:1, name: 'foo' }
+  describe 'lifecycle hooks' do
 
-    it 'writes lifecycle to db' do
-      c = create :conversation, user: user
-      expect(c.reload.lifecycle).to eq('have_name')
-    end
+    describe 'saving status' do
+      let(:user) { create :user, language:1, name: 'foo' }
 
-    it 'auto updates status' do
-      c = create :conversation, user: user, status: :sms_created
-      c.reload.update_attribute(:additional_passengers, 2)
-      expect(c.reload.status).to eq('in_progress')
+      it 'writes lifecycle to db' do
+        c = create :conversation, user: user
+        expect(c.reload.lifecycle).to eq('have_name')
+      end
+
+      it 'auto updates status' do
+        c = create :conversation, user: user, status: :sms_created
+        c.reload.update_attribute(:additional_passengers, 2)
+        expect(c.reload.status).to eq('in_progress')
+      end
     end
   end
 
