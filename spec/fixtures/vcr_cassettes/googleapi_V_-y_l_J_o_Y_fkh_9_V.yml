@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://maps.googleapis.com/maps/api/geocode/json?address=,%20,%20Toledo,%20Oh,%2043601,%20&language=en&sensor=false
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=Toledo,%20OH&language=en&sensor=false
     body:
       encoding: US-ASCII
       string: ''
@@ -21,21 +21,23 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Sat, 20 Aug 2016 17:01:50 GMT
+      - Tue, 30 Aug 2016 05:07:34 GMT
       Expires:
-      - Sun, 21 Aug 2016 17:01:50 GMT
-      Cache-Control:
-      - public, max-age=86400
+      - Wed, 31 Aug 2016 05:07:34 GMT
       Access-Control-Allow-Origin:
       - "*"
       Server:
       - mafe
       Content-Length:
-      - '488'
+      - '450'
       X-Xss-Protection:
       - 1; mode=block
       X-Frame-Options:
       - SAMEORIGIN
+      Cache-Control:
+      - public, max-age=86400
+      Age:
+      - '1583'
     body:
       encoding: ASCII-8BIT
       string: |
@@ -43,16 +45,6 @@ http_interactions:
            "results" : [
               {
                  "address_components" : [
-                    {
-                       "long_name" : "43601",
-                       "short_name" : "43601",
-                       "types" : [ "postal_code" ]
-                    },
-                    {
-                       "long_name" : "Southside",
-                       "short_name" : "Southside",
-                       "types" : [ "neighborhood", "political" ]
-                    },
                     {
                        "long_name" : "Toledo",
                        "short_name" : "Toledo",
@@ -74,40 +66,40 @@ http_interactions:
                        "types" : [ "country", "political" ]
                     }
                  ],
-                 "formatted_address" : "Toledo, OH 43601, USA",
+                 "formatted_address" : "Toledo, OH, USA",
                  "geometry" : {
                     "bounds" : {
                        "northeast" : {
-                          "lat" : 41.642891,
-                          "lng" : -83.54173
+                          "lat" : 41.7328441,
+                          "lng" : -83.4547053
                        },
                        "southwest" : {
-                          "lat" : 41.6396018,
-                          "lng" : -83.5459079
+                          "lat" : 41.5802659,
+                          "lng" : -83.69423700000002
                        }
                     },
                     "location" : {
-                       "lat" : 41.6411077,
-                       "lng" : -83.54366259999999
+                       "lat" : 41.6639383,
+                       "lng" : -83.55521200000001
                     },
                     "location_type" : "APPROXIMATE",
                     "viewport" : {
                        "northeast" : {
-                          "lat" : 41.642891,
-                          "lng" : -83.54173
+                          "lat" : 41.7328441,
+                          "lng" : -83.4547053
                        },
                        "southwest" : {
-                          "lat" : 41.6396018,
-                          "lng" : -83.5459079
+                          "lat" : 41.5802659,
+                          "lng" : -83.69423700000002
                        }
                     }
                  },
-                 "place_id" : "ChIJkaFGN9aGO4gRxl-Ntmgm9-w",
-                 "types" : [ "postal_code" ]
+                 "place_id" : "ChIJeU4e_C2HO4gRRcM6RZ_IPHw",
+                 "types" : [ "locality", "political" ]
               }
            ],
            "status" : "OK"
         }
     http_version: 
-  recorded_at: Sat, 20 Aug 2016 17:01:50 GMT
+  recorded_at: Tue, 30 Aug 2016 05:33:57 GMT
 recorded_with: VCR 3.0.3

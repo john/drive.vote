@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://maps.googleapis.com/maps/api/geocode/json?address=Unknown&language=en&sensor=false
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=,%20,%20Toledo,%20OH,%2043601,%20&language=en&sensor=false
     body:
       encoding: US-ASCII
       string: ''
@@ -21,9 +21,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Wed, 24 Aug 2016 20:17:35 GMT
+      - Tue, 30 Aug 2016 05:35:06 GMT
       Expires:
-      - Thu, 25 Aug 2016 20:17:35 GMT
+      - Wed, 31 Aug 2016 05:35:06 GMT
       Cache-Control:
       - public, max-age=86400
       Access-Control-Allow-Origin:
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - mafe
       Content-Length:
-      - '604'
+      - '488'
       X-Xss-Protection:
       - 1; mode=block
       X-Frame-Options:
@@ -44,75 +44,70 @@ http_interactions:
               {
                  "address_components" : [
                     {
-                       "long_name" : "Unknown",
-                       "short_name" : "Unknown",
-                       "types" : [ "establishment", "natural_feature" ]
+                       "long_name" : "43601",
+                       "short_name" : "43601",
+                       "types" : [ "postal_code" ]
                     },
                     {
-                       "long_name" : "Bryant Pattengill West",
-                       "short_name" : "Bryant Pattengill West",
+                       "long_name" : "Southside",
+                       "short_name" : "Southside",
                        "types" : [ "neighborhood", "political" ]
                     },
                     {
-                       "long_name" : "Pittsfield Charter Township",
-                       "short_name" : "Pittsfield Charter Twp",
+                       "long_name" : "Toledo",
+                       "short_name" : "Toledo",
                        "types" : [ "locality", "political" ]
                     },
                     {
-                       "long_name" : "Washtenaw County",
-                       "short_name" : "Washtenaw County",
+                       "long_name" : "Lucas County",
+                       "short_name" : "Lucas County",
                        "types" : [ "administrative_area_level_2", "political" ]
                     },
                     {
-                       "long_name" : "Michigan",
-                       "short_name" : "MI",
+                       "long_name" : "Ohio",
+                       "short_name" : "OH",
                        "types" : [ "administrative_area_level_1", "political" ]
                     },
                     {
                        "long_name" : "United States",
                        "short_name" : "US",
                        "types" : [ "country", "political" ]
-                    },
-                    {
-                       "long_name" : "48108",
-                       "short_name" : "48108",
-                       "types" : [ "postal_code" ]
                     }
                  ],
-                 "formatted_address" : "Unknown, Pittsfield Charter Twp, MI 48108, USA",
+                 "formatted_address" : "Toledo, OH 43601, USA",
                  "geometry" : {
                     "bounds" : {
                        "northeast" : {
-                          "lat" : 42.23117269999999,
-                          "lng" : -83.74577239999999
+                          "lat" : 41.642891,
+                          "lng" : -83.54173
                        },
                        "southwest" : {
-                          "lat" : 42.2293843,
-                          "lng" : -83.74740200000001
+                          "lat" : 41.6396018,
+                          "lng" : -83.5459079
                        }
                     },
                     "location" : {
-                       "lat" : 42.230537,
-                       "lng" : -83.7466403
+                       "lat" : 41.6411077,
+                       "lng" : -83.54366259999999
                     },
                     "location_type" : "APPROXIMATE",
                     "viewport" : {
                        "northeast" : {
-                          "lat" : 42.2316274802915,
-                          "lng" : -83.7452382197085
+                          "lat" : 41.642891,
+                          "lng" : -83.54173
                        },
                        "southwest" : {
-                          "lat" : 42.2289295197085,
-                          "lng" : -83.74793618029152
+                          "lat" : 41.6396018,
+                          "lng" : -83.5459079
                        }
                     }
                  },
-                 "place_id" : "ChIJCaTtYvGvPIgRSEaJPCH5wbA",
-                 "types" : [ "establishment", "natural_feature" ]
+                 "place_id" : "ChIJkaFGN9aGO4gRxl-Ntmgm9-w",
+                 "types" : [ "postal_code" ]
               }
            ],
            "status" : "OK"
         }
     http_version: 
-  recorded_at: Wed, 24 Aug 2016 20:17:35 GMT
+  recorded_at: Tue, 30 Aug 2016 05:35:06 GMT
 recorded_with: VCR 3.0.3
