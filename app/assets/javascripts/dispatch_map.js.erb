@@ -98,6 +98,39 @@ Map.prototype = {
     this._markers[id] = null;
   },
 
+  visibleMarker: function(id, visible)
+  {
+    var marker = this._markers[id];
+
+    if (marker && this._gmap) {
+      if (visible)
+        marker.setMap(this._gmap);
+      else
+        marker.setMap(null);
+    }
+    // todo: leaflet
+  },
+
+  animateMarker: function(id)
+  {
+    var marker = this._markers[id];
+
+    if (marker && this._gmap) {
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
+    // todo: leaflet
+  },
+
+  unanimateMarker: function(id)
+  {
+    var marker = this._markers[id];
+
+    if (marker && this._gmap) {
+      marker.setAnimation(null);
+    }
+    // todo: leaflet
+  },
+
   _prepareMarkerContent: function(name, href)
   {
     var content;

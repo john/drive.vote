@@ -126,9 +126,10 @@ DispatchController.prototype = {
   conversationCells: function (c, status) {
     var timestamp = (c.last_message_time === undefined) ? '' : new Date(c.last_message_time*1000).toISOString();
     var pickup = (c.ride === undefined) ? '' : new Date(c.ride.pickup_at*1000).toISOString();
-    var ride_icon = (c.status == 'ride_created') ? '🚕' : '';
+    var ride_icon = (c.ride !== undefined) ? '🚕' : '';
+    var ride_id = (c.ride !== undefined) ? c.ride.id : 0;
 
-    var cells = '<td>' + ride_icon + '</td>' +
+    var cells = '<td class="ride-icon" data-ride-id="'+ ride_id +'">' + ride_icon + '</td>' +
       '<td class="from">' + c.from_phone + '<br>' + c.name + '</td>' +
       '<td>' +
         '<div class="sm pull-right">+' + (c.message_count-1) + ' earlier</div>' +
@@ -145,6 +146,8 @@ DispatchController.prototype = {
     return cells
   },
 
+  // Adds or replaces row in the conversation table with data from conversation
+  // object c. Returns the conversation's calculated status.
   updateConversationTable: function (c) {
     var status = this.conversationStatus(c),
         rowId = 'conv-row-'+c.id,
@@ -162,6 +165,7 @@ DispatchController.prototype = {
     $('#' + rowId).data('objref', c);
     $("time.timeago").timeago();
     this.recalcBadges();
+    return status;
   },
 
   showConversationsWithStatuses: function (statusList) {
@@ -174,15 +178,44 @@ DispatchController.prototype = {
         if (toShow.indexOf(status) == -1) {
           style.visibility = 'hidden';
           style.display = 'none';
+          this.visibleMapMarkersWithStatus(status, false);
         } else {
           style.visibility = 'visible';
           style.display = '';
+          this.visibleMapMarkersWithStatus(status, true);
         }
       } else
         console.log("ERROR: style " + all[i] + " NOT FOUND");
     }
   },
 
+  // Returns true if rows with 'status' are currently visible
+  statusIsVisible: function(status) {
+    var style = this._statusStyles[status];
+    return style.visibility == 'visible';
+  },
+
+  // Sets all ride markers in the map with 'status' visible true/false
+  visibleMapMarkersWithStatus: function (status, visible) {
+    var self = this;
+    $('.conv-row.conv-status-'+status).each(function() {
+      var ride = $(this).data('objref').ride;
+      if (ride !== null && ride !== undefined) {
+        self._mapController.visibleRide(ride, visible);
+      }
+    })
+  },
+
+  animateRide: function(rideId) {
+    this._mapController.animateRideId(rideId);
+  },
+
+  unanimateRide: function(rideId) {
+    this._mapController.unanimateRideId(rideId);
+  },
+
+  // Counts the number of items that match the filters for each filter button
+  // and updates their text to have (N) badge with count
   recalcBadges: function() {
     $('.btn-conv-filter').each(function() {
       var total = 0,
@@ -205,6 +238,8 @@ DispatchController.prototype = {
     })
   },
 
+  // Sets the conv-status-xxx status for this row object and removes all other
+  // conv-status-xxx statuses from the row
   setRowStatus: function(row, rowStatus) {
     var statusClass = 'conv-status-' + rowStatus,
         classes = this._statusClasses.slice(0),
@@ -212,16 +247,17 @@ DispatchController.prototype = {
 
     row.addClass(statusClass);
     classes.splice(index, 1);
-    console.log('removing classes='+classes.join(' '));
     row.removeClass(classes.join(' '));
   },
 
+  // Iterates over all conversation table rows and recomputes their status. If
+  // it has changed, processes the conversation fresh.
   refreshStatuses: function() {
     var self = this;
     $('.conv-row').each(function() {
       var status = self.conversationStatus($(this).data('objref'));
       if (!$(this).hasClass('conv-status-'+status)) {
-        self.updateConversationTable($(this).data('objref'));
+        self.processConversation($(this).data('objref'));
       }
     })
   },
@@ -236,15 +272,10 @@ DispatchController.prototype = {
 
   // Called for new conversation event or changed
   processConversation: function (convo) {
-    this.updateConversationTable(convo);
+    var status = this.updateConversationTable(convo);
     if (convo.ride != undefined) {
-      this.processRide(convo.ride);
+      this._mapController.processRide(convo.ride, this.statusIsVisible(status));
     }
-  },
-
-  // Called when a ride is created or changed
-  processRide: function (ride) {
-    this._mapController.processRide(ride);
   },
 
   // Handle new driver creation or change

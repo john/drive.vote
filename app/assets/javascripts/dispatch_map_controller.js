@@ -34,7 +34,6 @@ DispatchMapController.prototype = {
       } else {
         icon = Map.icons.driving_driver;
       }
-      this.processRide(ride);
     }
 
     if(this._drivers[id] != undefined) {
@@ -72,52 +71,70 @@ DispatchMapController.prototype = {
   },
 
   // https://github.com/john/drive.vote/blob/7ef10e17d/doc/drive_the_vote_dispatch_api.md#ride-events
-  processRide: function(obj)
+  processRide: function(ride, visible)
   {
-    var id = obj.id.toString(),
-      lat = parseFloat(obj.from_latitude),
-      lon = parseFloat(obj.from_longitude),
-      label = obj.name,
+    var id = ride.id.toString(),
+      lat = parseFloat(ride.from_latitude),
+      lon = parseFloat(ride.from_longitude),
+      label = ride.name,
       now = (new Date()).getTime() / 1000,
-      icon = Map.icons.waiting_ride,
-      hideIt = false;
+      icon = Map.icons.waiting_ride;
 
     var pickupWarning, notPickedUpWarning;
-    if (obj.pickup_at != undefined) {
-      pickupWarning = obj.pickup_at - DispatchMapController.unassignedWindow;
-      notPickedUpWarning = obj.pickup_at + DispatchMapController.notPickedUpWindow;
+    if (ride.pickup_at != undefined) {
+      pickupWarning = ride.pickup_at - DispatchMapController.unassignedWindow;
+      notPickedUpWarning = ride.pickup_at + DispatchMapController.notPickedUpWindow;
     }
 
     if (lat == undefined || lat == null || lon == undefined || lon == null) { return }
-    if (obj.status == 'waiting_assignment') {
+    if (ride.status == 'waiting_assignment') {
       if (pickupWarning != undefined && now > pickupWarning) {
         // this ride is overdue for a driver
         icon = Map.icons.overdue_ride;
-        label = label + ' Pickup time: ' + strftime('%l:%M%P', new Date(obj.pickup_at*1000))
+        label = label + ' Pickup time: ' + strftime('%l:%M%P', new Date(ride.pickup_at*1000))
       }
-    } else if (obj.status == 'driver_assigned') {
+    } else if (ride.status == 'driver_assigned') {
       // this ride has an assigned driver
       if (notPickedUpWarning != undefined && now > notPickedUpWarning) {
         // this ride is overdue to be picked up
         icon = Map.icons.overdue_ride;
-        label = label + ' Pickup time: ' + strftime('%l:%M%P', new Date(obj.pickup_at*1000))
+        label = label + ' Pickup time: ' + strftime('%l:%M%P', new Date(ride.pickup_at*1000))
       } else {
         icon = Map.icons.assigned_ride;
       }
-    } else if (obj.status == 'picked_up' || obj.status == 'complete') {
-      hideIt = true;
+    } else if (ride.status == 'picked_up' || ride.status == 'complete') {
+      visible = false;
     }
 
     if (this._rides[id] != undefined) {
       // re-use the existing marker
-      if (hideIt)
-        this.map.removeMarker(this._rides[id]);
-      else
-        this.map.updateMarker(this._rides[id], lat, lon, icon, label);
-    } else if (!hideIt) {
+      this.map.updateMarker(this._rides[id], lat, lon, icon, label);
+    } else {
       // make a new marker
       this._rides[id] = this.map.addMarker(lat, lon, icon, label);
     }
-  }
+    this.visibleRide(ride, visible);
+  },
 
+  visibleRide: function(ride, visible) {
+    var id = ride.id.toString();
+
+    if (this._rides[id] != undefined) {
+      this.map.visibleMarker(this._rides[id], visible);
+    }
+  },
+
+  animateRideId: function(rideId) {
+    var marker = this._rides[rideId];
+
+    if (marker != undefined)
+      this.map.animateMarker(marker);
+  },
+
+  unanimateRideId: function(rideId) {
+    var marker = this._rides[rideId];
+
+    if (marker != undefined)
+      this.map.unanimateMarker(marker);
+  }
 };
