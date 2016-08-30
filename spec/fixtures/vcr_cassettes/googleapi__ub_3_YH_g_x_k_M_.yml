@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://maps.googleapis.com/maps/api/geocode/json?address=,%20,%20,%20,%2043601,%20&language=en&sensor=false
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=,%20,%20Toledo,%20Oh,%2043601,%20&language=en&sensor=false
     body:
       encoding: US-ASCII
       string: ''
@@ -21,11 +21,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Sun, 21 Aug 2016 17:30:08 GMT
+      - Tue, 30 Aug 2016 05:19:05 GMT
       Expires:
-      - Mon, 22 Aug 2016 17:30:08 GMT
-      Cache-Control:
-      - public, max-age=86400
+      - Wed, 31 Aug 2016 05:19:05 GMT
       Access-Control-Allow-Origin:
       - "*"
       Server:
@@ -36,6 +34,10 @@ http_interactions:
       - 1; mode=block
       X-Frame-Options:
       - SAMEORIGIN
+      Cache-Control:
+      - public, max-age=86400
+      Age:
+      - '853'
     body:
       encoding: ASCII-8BIT
       string: |
@@ -109,5 +111,5 @@ http_interactions:
            "status" : "OK"
         }
     http_version: 
-  recorded_at: Sun, 21 Aug 2016 17:30:08 GMT
+  recorded_at: Tue, 30 Aug 2016 05:33:18 GMT
 recorded_with: VCR 3.0.3
