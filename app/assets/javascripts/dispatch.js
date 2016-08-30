@@ -44,7 +44,8 @@ DispatchController.prototype = {
     }
     $('#conversation-form').load( url, function( response, status, xhr ) {
       if (!sameConvo) {
-        $('#body').val('');
+        $('#msg-input').text('');
+        $('#msg-input').prop('disabled',false);
       }
     });
   },
@@ -227,11 +228,12 @@ DispatchController.prototype = {
   },
 
   sendReply: function() {
-    var args = {'message' : {'body': $('#body').val()}};
+    $('#msg-submit').text('Sending...').prop('disabled',true);
+    $('#msg-input').prop('disabled',true);
+    var args = {'message' : {'body': $('#msg-input').text()}};
     var url = '/api/1/conversations/' + this._activeConversationId + '/messages';
 
     $.ajax(url, {type: 'POST', dataType: 'json', data: args, process_data: false, content_type: 'application/json'});
-    $('#body').val('');
   },
 
   // Called for new conversation event or changed
@@ -292,6 +294,10 @@ DispatchController.prototype = {
         break;
       case 'conversation_changed':
         this.processConversation(event.conversation);
+        $('.btn-send').text('Send');
+        $('.btn-send').prop('disabled',false);;
+        $('#msg-input').text('');
+        $('#msg-input').prop('disabled',false);
         break;
       case 'new_driver':
         this.processDriver(event.driver);
@@ -311,5 +317,14 @@ DispatchController.prototype = {
     this.refreshConversations();
     this.refreshDrivers();
     createRideZoneChannel(this._rideZoneId, this.connected.bind(this), this.disconnected.bind(this), this.eventReceived.bind(this));
+
+    $('#conv-modal').on('shown.bs.modal', function () {
+      $('#msg-input').keypress(function(e){
+        if(e.which == 13){
+          dispatchController.sendReply(); return false;
+        }
+      });
+      $('#msg-input').focus();
+    })
   }
 };

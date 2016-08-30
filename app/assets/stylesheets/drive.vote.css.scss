@@ -1,8 +1,8 @@
 // Errors when form validation fails
 
 #logo {
-  width: 130px;
-  height: 68px;
+  width: 90px;
+  height: 47px;
 }
 
 p, div {
@@ -211,12 +211,28 @@ h3.dispatch { margin: 0 0 0 10px; }
   line-height: 20px;
 }
 .msg-reply {
-  font-weight: bold;
   margin: 0 0 0 5px;
   textarea {
     width: 400px;
   }
 }
+
+#msg-input {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+  background-color: white;
+  background-color: -moz-field;
+  border: 1px solid darkgray;
+  box-shadow: 1px 1px 1px 0 lightgray inset;
+  font: -moz-field;
+  font: -webkit-small-control;
+  font-size: 14px;
+  margin: 5px 2px 10px 0;
+  padding: 2px 3px;
+  width: 400px;
+  height: 55px;
+}
+
 #msg-count {
   margin: 0px 310px 0 0;
   color: #999;
