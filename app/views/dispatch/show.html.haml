@@ -24,7 +24,6 @@
       = link_to 'Driving', '#', 'data-statuses': 'driving', class: 'btn-conv-filter'
       &nbsp; · &nbsp;
       = link_to 'Messaging', '#', 'data-statuses': 'messaging', class: 'btn-conv-filter'
-      &nbsp; · &nbsp;
 
     %table.table.admin{id: 'conversations'}
       %thead
@@ -76,6 +75,7 @@
       $('.modal-backdrop').remove();
     });
 
+    // TODO(awong): Add random jitter to this to avoid accidental DoS of the API.
     setInterval(refreshStatuses, 30000);
   });
 

@@ -19,10 +19,11 @@ class TwilioService
       @conversation.save!
     end
 
-    message.save
-    return nil if @conversation.status == 'help_needed' || @conversation.staff_initiated?
+    message.save!
+    return nil if (@conversation.status == 'help_needed' || @conversation.staff_initiated? ||
+                   @ride_zone.bot_disabled)
     answer = ConversationBot.new(@conversation, message).response
-    Message.create(
+    Message.create!(
         ride_zone: @ride_zone,
         conversation: @conversation,
         to: message.from,

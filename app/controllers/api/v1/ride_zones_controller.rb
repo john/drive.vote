@@ -1,6 +1,6 @@
 module Api::V1
   class RideZonesController < Api::ApplicationController
-    include RideParams
+    include RideParams  # TODO(awong): Is this the right params concern?  This doesn't look like it works.
 
     before_action :find_ride_zone
 
@@ -27,6 +27,12 @@ module Api::V1
 
     def drivers
       render json: {response: @ride_zone.drivers.map(&:api_json)}
+    end
+
+    def bot_disabled
+      @ride_zone.bot_disabled = params["value"]
+      @ride_zone.save!
+      render json: {response: @ride_zone.bot_disabled }
     end
 
     def assign_ride

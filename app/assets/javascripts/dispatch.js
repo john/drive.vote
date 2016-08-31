@@ -2,9 +2,10 @@
 // app/assets/javascripts/dispatch.js
 "use strict";
 
-function DispatchController(rideZoneId, mapController) {
+function DispatchController(rideZoneId, mapController, botDisabled) {
   this._rideZoneId = rideZoneId;
   this._mapController = mapController;
+  this._botDisabled = botDisabled;
   this._activeConversationId = undefined;
   this.OVERDUE_ASSIGNMENT = 10*60*1000;
   this.OVERDUE_PICKUP = 15*60*1000;
@@ -30,6 +31,19 @@ DispatchController.prototype = {
 
   disconnected: function () {
     $('.disp-server-status').text("Disconnected").toggleClass('disp-text-alert', true);
+  },
+
+  toggleBotDisabled: function () {
+    var self = this;
+    $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/bot_disabled', {
+      method: 'POST',
+      data: { value: !self._botDisabled },
+      success: function(data, status, xhr) {
+        self._botDisabled = JSON.parse(xhr.responseText).response;
+        $('.disp-bot-disable').text(self._botDisabled ? 'Enable Bot' : 'Disable Bot');
+      },
+      error: function(xhr, status, err) { $('error_msg').text(xhr.responseText) }
+    });
   },
 
   loadRidePane: function (id, action) {
