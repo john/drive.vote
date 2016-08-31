@@ -35,11 +35,11 @@ DispatchController.prototype = {
 
   toggleBotDisabled: function () {
     var self = this;
-    $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/bot_disabled', {
-      method: 'POST',
-      data: { value: !self._botDisabled },
+    $.ajax('/api/1/ride_zones/' + this._rideZoneId, {
+      method: 'PUT',
+      data: { ride_zone: { bot_disabled: !self._botDisabled } },
       success: function(data, status, xhr) {
-        self._botDisabled = JSON.parse(xhr.responseText).response;
+        self._botDisabled = JSON.parse(xhr.responseText).bot_disabled;
         $('.disp-bot-disable').text(self._botDisabled ? 'Enable Bot' : 'Disable Bot');
       },
       error: function(xhr, status, err) { $('error_msg').text(xhr.responseText) }

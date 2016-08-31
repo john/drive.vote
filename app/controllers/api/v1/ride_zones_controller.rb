@@ -1,8 +1,8 @@
 module Api::V1
   class RideZonesController < Api::ApplicationController
-    include RideParams  # TODO(awong): Is this the right params concern?  This doesn't look like it works.
+    include RideParams, RideZoneParams
 
-    before_action :find_ride_zone
+    before_action :require_ride_zone
 
     def conversations
       # default to non-closed statuses or passed parameter
@@ -29,10 +29,15 @@ module Api::V1
       render json: {response: @ride_zone.drivers.map(&:api_json)}
     end
 
-    def bot_disabled
-      @ride_zone.bot_disabled = params["value"]
-      @ride_zone.save!
-      render json: {response: @ride_zone.bot_disabled }
+    def update
+      if has_zone_privilege?
+        @ride_zone.update(ride_zone_params)
+      else
+        # Restrict updates to only bot_disabled unless there are zone privileges.
+        @ride_zone.bot_disabled = ride_zone_params.bot_disabled
+        @ride_zone.save!
+      end
+      render json: @ride_zone
     end
 
     def assign_ride
@@ -71,8 +76,8 @@ module Api::V1
     end
 
     private
-    def find_ride_zone
-      @ride_zone = RideZone.find_by_id(params[:id])
+    def require_ride_zone
+      set_ride_zone
       render json: {error: 'RideZone not found'}, status: :not_found unless @ride_zone
     end
 

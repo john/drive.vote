@@ -118,9 +118,15 @@ class Conversation < ApplicationRecord
     save
   end
 
+  def allow_bot_reply?
+    return self.status == 'help_needed' || self.staff_initiated? ||
+      self.ride_zone.bot_disabled
+  end
+
   def self.active_statuses
     Conversation.statuses.keys - ['closed']
   end
+
 
   private
   def notify_creation

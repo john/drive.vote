@@ -84,7 +84,7 @@ Rails.application.routes.draw do
       resources :ride_zones do
         member do
           post 'assign_ride' => 'ride_zones#assign_ride'
-          post 'bot_disabled' => 'ride_zones#bot_disabled'
+          put 'bot_disabled' => 'ride_zones#update'
           get 'conversations' => 'ride_zones#conversations'
           post 'conversations' => 'ride_zones#create_conversation'
           get 'drivers' => 'ride_zones#drivers'
