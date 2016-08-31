@@ -1,9 +1,14 @@
 class SimDefinition
-  attr_reader :slug, :name, :user_identifier, :ride_zone_name, :drivers, :voters, :rides, :run_time
+  attr_reader :slug, :name, :user_identifier, :ride_zone_name, :drivers, :voters, :rides, :run_time, :file_name
 
   def load_file(filename)
+    @file_name = filename
     load(File.read(filename))
     self
+  end
+
+  def reload
+    load(File.read(@file_name)) if @file_name
   end
 
   def load(content)

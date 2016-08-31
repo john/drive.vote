@@ -160,12 +160,8 @@ class ConversationBot
     # Look for: time of day
     case @bot_counter
       when 0..1
-        # when Time parses a time string like "4pm" it puts it in the current day and
-        # in the server's time zone. so there is some trickiness here to be able to
-        # store the right value in the database and echo back the right thing to the
-        # voter
         pickup_time = TimeZoneUtils.origin_time(@body, @conversation.ride_zone.time_zone)
-        if pickup_time && pickup_time > @conversation.ride_zone.current_time - 10.minutes
+        if pickup_time
           @conversation.update_attribute(:pickup_time, pickup_time)
           # when echoing back to user we use server's local time which is how it was parsed
           @response = I18n.t(:confirm_the_time, locale: @locale, time: pickup_time.strftime('%l:%M %P'))
@@ -231,11 +227,11 @@ class ConversationBot
     max_counter = (from_or_to == :from) ? 2 : 1
     case @bot_counter
       when 0..max_counter
-        if @body.blank?
+        if dont_know_answer
+          return give_up_on_location(from_or_to)
+        elsif @body.blank? || @body.length < 10
           @response = I18n.t(:no_address_match, locale: @locale)
           return @bot_counter + 1
-        elsif dont_know_answer
-          return give_up_on_location(from_or_to)
         end
 
         results = GooglePlaces.search(@body + ' ' + @conversation.ride_zone.state)
