@@ -54,24 +54,24 @@ if  Rails.env == "development"
 
 
 
-  # ride_zones = RideZone.create!([
-  #   {
-  #     slug: 'toledo_d_4',
-  #     name: 'Toledo, OH',
-  #     phone_number: '+14193860121',
-  #     zip: '43601',
-  #     latitude: '41.6639',
-  #     longitude: '-83.5552'
-  #   },
-  #   {
-  #     slug: 'tampa_fl',
-  #     name: 'Tampa, FL',
-  #     phone_number: '+18133580421',
-  #     zip: '33601',
-  #     latitude: '27.9506',
-  #     longitude: '-82.4572'
-  #   }
-  # ])
+  ride_zones = RideZone.create!([
+    {
+      slug: 'toledo_d_4',
+      name: 'Toledo, OH',
+      phone_number: '+14193860121',
+      zip: '43601',
+      latitude: '41.6639',
+      longitude: '-83.5552'
+    },
+    {
+      slug: 'tampa_fl',
+      name: 'Tampa, FL',
+      phone_number: '+18133580421',
+      zip: '33601',
+      latitude: '27.9506',
+      longitude: '-82.4572'
+    }
+  ])
 
   # conversation = Conversation.create!(
   #   ride_zone_id: ride_zones.first.id,
