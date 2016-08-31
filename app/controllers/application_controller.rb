@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:user_type, :name, :email, :phone_number, :zip, :city, :state, :city_state])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:user_type, :name, :email, :phone_number, :zip, :city, :state, :city_state, :ride_zone_id])
   end
 
   # Use callbacks to share common setup or constraints between actions.

@@ -14,18 +14,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
         redirect_to root_path and return
       end
     end
+
+    if params[:zone].present?
+      if @ride_zone = RideZone.find(params[:zone])
+        resource.ride_zone_id = @ride_zone.id
+      end
+    end
+
     respond_with resource
   end
 
   # POST /resource
   def create
-
-    # validate if it's a swing state zip
-    #if swing_state_zip?( params[:zip] )
-      super
-      #else
-      #redirect_to new_user_registration_path, notice: "Sorry not a battleground zip code!"
-      #end
+    super
   end
 
   # GET /resource/edit
