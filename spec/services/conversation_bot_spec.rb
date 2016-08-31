@@ -121,7 +121,7 @@ RSpec.describe ConversationBot do
         expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
         expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
       else
-        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:when_do_you_want_pickup, locale: :en))
+        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:no_dest_when_do_you_want_pickup, locale: :en))
       end
     end
 
@@ -135,7 +135,7 @@ RSpec.describe ConversationBot do
         expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
         expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
       else
-        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:when_do_you_want_pickup, locale: :en))
+        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:no_dest_when_do_you_want_pickup, locale: :en))
       end
     end
   end
@@ -237,7 +237,7 @@ RSpec.describe ConversationBot do
 
     it "should handle don't know reply" do
       reply = create :message, conversation: convo, body: "i don't know"
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:when_do_you_want_pickup, locale: :en))
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:no_dest_when_do_you_want_pickup, locale: :en))
       expect(convo.reload.lifecycle).to eq('have_confirmed_destination')
       expect(convo.to_address).to eq(Conversation::UNKNOWN_ADDRESS)
       expect(convo.to_confirmed).to be_truthy

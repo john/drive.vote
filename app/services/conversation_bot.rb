@@ -269,7 +269,7 @@ class ConversationBot
     if from_or_to == :to
       # not knowing destination is OK
       @conversation.set_unknown_destination
-      @response = I18n.t(:when_do_you_want_pickup, locale: @locale)
+      @response = I18n.t(:no_dest_when_do_you_want_pickup, locale: @locale)
       0
     else
       stalled

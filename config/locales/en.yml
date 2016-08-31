@@ -108,6 +108,7 @@ en:
   what_is_destination_location: "Where do you want to go - address and city? If not sure, reply \"don't know\" or \"skip\"."
   are_you_going_from_to: 'Welcome back! Reply "help" at any time. Are you going from %{from} to %{to}?'
   when_do_you_want_pickup: 'When do you want to be picked up (HH:MM am/pm)?'
+  no_dest_when_do_you_want_pickup: 'You can work out destination with your driver. When do you want to be picked up (HH:MM am/pm)?'
   confirm_address: 'Please confirm the address is %{address}. Yes/no?'
   confirm_the_time: 'Please confirm pickup today at %{time}. Yes/no?'
   invalid_time: "That doesn't look like a good time or it's passed. Enter something like 4:30pm"
