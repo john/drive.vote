@@ -11,6 +11,9 @@
 /db/*.sqlite3
 /db/*.sqlite3-journal
 
+# Ignore local postgres database used for development.
+/db/postgres
+
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
