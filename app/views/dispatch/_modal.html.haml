@@ -14,7 +14,6 @@
             %td{style: 'width: 500px;'}
               - if @ride
                 #ride_info
-
               - else
                 #conversation-form
 
@@ -22,5 +21,5 @@
               #conversation-messages
 
               .msg-reply
-                = text_area_tag 'body', '', style: 'font-size: 14px; font-weight: normal;'
-                = button_tag 'Send', type: :submit, class: 'btn btn-primary btn-xs pull-right', data: {disable_with: "Sending..."}, onclick: "javascript: dispatchController.sendReply(); return false;"
+                #msg-input{ contenteditable: true }
+                = button_tag 'Send', type: :submit, id: 'msg-submit', onclick: "dispatchController.sendReply(); return false;", class: 'btn btn-send btn-primary btn-xs pull-right'

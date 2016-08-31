@@ -60,7 +60,7 @@
             %option
               Select driver:
 
-            - if driver = @obj.send(:driver)
+            - if @obj.class == Ride && driver = @obj.send(:driver)
               - if driver_name = driver.try(:name)
                 %option{value: driver.id}
                   = driver_name
