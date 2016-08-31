@@ -29,15 +29,16 @@ function Map(element, callback, args)
 
 // Built-in icon options.
 Map.icons = {
-  voter:   {w: 38, h: 57, url: "<%= asset_path('icon-voter.svg')%>"},
-  driver:  {w: 38, h: 57, url: "<%= asset_path('icon-driver.svg')%>"},
-  poll:    {w: 38, h: 57, url: "<%= asset_path('icon-poll.svg')%>"},
-  open_driver: {w: 38, h: 57, url: "<%= asset_path('icon-driver-open.svg')%>"},
-  assigned_driver: {w: 38, h: 57, url: "<%= asset_path('icon-driver-assigned.svg')%>"},
-  driving_driver: {w: 38, h: 57, url: "<%= asset_path('icon-driver-driving.svg')%>"},
-  waiting_ride: {w: 38, h: 57, url: "<%= asset_path('icon-ride-waiting.svg')%>"},
-  overdue_ride: {w: 38, h: 57, url: "<%= asset_path('icon-ride-overdue.svg')%>"},
-  assigned_ride: {w: 38, h: 57, url: "<%= asset_path('icon-ride-assigned.svg')%>"},
+  driver:  {w: 30, h: 45, url: "<%= asset_path('driver-waiting-assignment.png')%>"},
+  poll:    {w: 30, h: 45, url: "<%= asset_path('icon-poll.svg')%>"},
+  open_driver: {w: 30, h: 45, url: "<%= asset_path('driver-waiting-assignment.png')%>"},
+  assigned_driver: {w: 30, h: 45, url: "<%= asset_path('driver-assigned.png')%>"},
+  driving_driver: {w: 30, h: 45, url: "<%= asset_path('driver-driving.png')%>"},
+  voter:   {w: 30, h: 45, url: "<%= asset_path('rider-waiting-pickup.png')%>"},
+  waiting_assignment: {w: 30, h: 45, url: "<%= asset_path('rider-waiting-assignment.png')%>"},
+  overdue_assignment: {w: 30, h: 45, url: "<%= asset_path('rider-overdue-assignment.png')%>"},
+  waiting_pickup: {w: 30, h: 45, url: "<%= asset_path('rider-waiting-pickup.png')%>"},
+  overdue_pickup: {w: 30, h: 45, url: "<%= asset_path('rider-overdue-pickup.png')%>"},
 
   // Used when no other icon is provided.
   default: {w: 38, h: 57, url: "<%= asset_path('/icon-default.svg')%>"}
@@ -149,13 +150,13 @@ Map.prototype = {
   _addGoogleMarker: function(lat, lon, icon, title, content)
   {
     var gmap = this._gmap,
-      // gicon = {url: icon.url,
-      //   size: {width: icon.w, height: icon.h},
-      //   anchor: {x: icon.w/2, y: icon.h},
-      //   labelOrigin: {x: icon.w/2, y: 0}},
+       gicon = {url: icon.url,
+         size: {width: icon.w, height: icon.h},
+         anchor: {x: icon.w/2, y: icon.h},
+         labelOrigin: {x: icon.w/2, y: 0}},
       gmarker = new google.maps.Marker({
         position: {lat: lat, lng: lon},
-        //icon: gicon,
+        icon: gicon,
         map: gmap,
         title: title
       });

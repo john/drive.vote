@@ -33,6 +33,9 @@ DispatchMapController.prototype = {
         icon = Map.icons.assigned_driver;
       } else {
         icon = Map.icons.driving_driver;
+        ride.from_latitude = lat;   // move the ride with the driver
+        ride.from_longitude = lon;
+        this.processRide(ride, true);
       }
     }
 
@@ -78,7 +81,7 @@ DispatchMapController.prototype = {
       lon = parseFloat(ride.from_longitude),
       label = ride.name,
       now = (new Date()).getTime() / 1000,
-      icon = Map.icons.waiting_ride;
+      icon = Map.icons.waiting_assignment;
 
     var pickupWarning, notPickedUpWarning;
     if (ride.pickup_at != undefined) {
@@ -90,19 +93,19 @@ DispatchMapController.prototype = {
     if (ride.status == 'waiting_assignment') {
       if (pickupWarning != undefined && now > pickupWarning) {
         // this ride is overdue for a driver
-        icon = Map.icons.overdue_ride;
+        icon = Map.icons.overdue_assignment;
         label = label + ' Pickup time: ' + strftime('%l:%M%P', new Date(ride.pickup_at*1000))
       }
     } else if (ride.status == 'driver_assigned') {
       // this ride has an assigned driver
       if (notPickedUpWarning != undefined && now > notPickedUpWarning) {
         // this ride is overdue to be picked up
-        icon = Map.icons.overdue_ride;
+        icon = Map.icons.overdue_pickup;
         label = label + ' Pickup time: ' + strftime('%l:%M%P', new Date(ride.pickup_at*1000))
       } else {
-        icon = Map.icons.assigned_ride;
+        icon = Map.icons.waiting_pickup;
       }
-    } else if (ride.status == 'picked_up' || ride.status == 'complete') {
+    } else if (ride.status == 'complete') {
       visible = false;
     }
 
