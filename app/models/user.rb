@@ -34,7 +34,9 @@ class User < ApplicationRecord
   around_save :notify_update
 
   attr_accessor :city_state
-  attr_accessor :user_type, :ride_zone # set transiently for user creation
+  attr_accessor :user_type
+  attr_accessor :ride_zone # set transiently for user creation
+  attr_accessor :ride_zone_id
 
   serialize :start_drive_time, Tod::TimeOfDay
   serialize :end_drive_time, Tod::TimeOfDay
@@ -185,6 +187,12 @@ class User < ApplicationRecord
   def add_rolify_role
     if self.user_type.present?
       self.add_role self.user_type, self.ride_zone
+    end
+
+    if self.ride_zone_id.present?
+      if ride_zone = RideZone.find(self.ride_zone_id)
+        self.add_role :unassigned_driver, ride_zone
+      end
     end
   end
 

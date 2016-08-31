@@ -1,5 +1,6 @@
 :css
   h2 { font-size: 22px; }
+  h3 { margin-top: 0; }
   label { font-weight: bold; }
   .field_with_errors {
     @extend .control-group !optional;
@@ -7,16 +8,28 @@
    }
 
 .col-sm-8.field
-  %h3{style: 'margin-top: 0;'}
-    = t(:will_drive)
+
+  - if @ride_zone.present?
+    %div{style: "font-size: 18px; font-weight: bold;"}
+      #{t(:will_drive)} for
+    %h3
+      = @ride_zone.name
+
+  - else
+    %h3
+      = t(:will_drive)
+
+
   %div{style: 'margin-bottom: 0;'}
     = t(:will_drive_signup_description)
 
 = form_for(resource, as: resource_name, url: registration_path(resource_name), html: {autocomplete: "off"}) do |f|
+  = f.hidden_field :user_type
+  = f.hidden_field :ride_zone_id
+
   - if devise_error_messages!.present?
     .col-sm-8
       = devise_error_messages!
-      = f.hidden_field :user_type
 
   .col-sm-8.field
     = f.label :name, "#{t(:name)} *"
@@ -30,19 +43,19 @@
     = f.label :phone_number, "#{t(:phone_number)} *"
     = f.telephone_field :phone_number, class: 'form-control', required: 'true'
 
-  .col-sm-8.field
+  - unless @ride_zone.present?
+    .col-sm-8.field
+      %label{for: 'user_city_state'}
+        %div
+          City and State*
+          %div{style: "line-height: 22px; margin-bottom: 0px;"}
+            %i
+              Where you want to volunteer. Enter a location in #{User::VALID_STATES.map{|s| s[0]}.to_sentence(last_word_connector: ', or ')}.
+      = f.text_field :city_state, class: 'form-control', required: 'true', autocomplete: :off
 
-    %label{for: 'user_city_state'}
-      %div
-        City and State*
-        %div{style: "line-height: 22px; margin-bottom: 0px;"}
-          %i
-            Where you want to volunteer. Enter a location in #{User::VALID_STATES.map{|s| s[0]}.to_sentence(last_word_connector: ', or ')}.
-    = f.text_field :city_state, class: 'form-control', required: 'true', autocomplete: :off
-
-    -# These hidden fields
-    = f.hidden_field :city, :value => ''
-    = f.hidden_field :state, :value => ''
+      -# These hidden fields
+      = f.hidden_field :city, :value => ''
+      = f.hidden_field :state, :value => ''
 
   .col-sm-8.field
     = f.label :password
