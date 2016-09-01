@@ -55,4 +55,14 @@ RSpec.describe Simulation, :type => :model do
       expect(sim.events.count).to eq(6)
     end
   end
+
+  describe 'missing sim definition' do
+    let!(:rz) { create :ride_zone, name: 'rztest' }
+    let!(:sim_def) { SimDefinition.new.load(TWO_DRIVERS) }
+    let!(:sim) { Simulation.create_from_def(sim_def) }
+
+    it 'handles missing definition' do
+      expect(Simulation.first.run_time).to be_nil # because TWO_DRIVERS is not in file system
+    end
+  end
 end
