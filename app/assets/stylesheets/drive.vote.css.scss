@@ -9,6 +9,23 @@
 .navbar-default { background-color: white; border: 0; box-shadow: none !important }
 .navbar-static-top { background-color: white; border: 0; box-shadow: none !important }
 
+.nav-links {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.locale-active {
+  margin-top: 7px;
+  font-weight: bold;
+  color: #34495e;
+
+}
+
+.locale-inactive {
+  margin-top: 7px;
+  color: #aaa;
+}
+
 p, div {
   font-size: 15px;
 }
@@ -27,19 +44,6 @@ td {
     list-style: none;
     margin: 0 0 18px 0;
   }
-}
-
-.locale-active {
-  margin-top: 7px;
-  font-weight: bold;
-  color: #34495e;
-  font-size: 12px;
-}
-
-.locale-inactive {
-  margin-top: 7px;
-  color: #aaa;
-  font-size: 12px;
 }
 
 form {
