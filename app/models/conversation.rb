@@ -63,7 +63,7 @@ class Conversation < ApplicationRecord
   def self.create_from_staff(ride_zone, user, body, timeout, attrs = {})
     sms = send_staff_sms(ride_zone, user, body, timeout)
     return sms if sms.is_a?(String)
-    c = Conversation.create({ride_zone: ride_zone, user: user, from_phone: ride_zone.phone_number,
+    c = Conversation.create({ride_zone: ride_zone, user: user, from_phone: ride_zone.phone_number_normalized,
                             to_phone: user.phone_number, status: :in_progress}.merge(attrs))
     msg = Message.create_from_staff(c, sms)
     c
@@ -71,7 +71,7 @@ class Conversation < ApplicationRecord
 
   def self.send_staff_sms(ride_zone, user, body, timeout)
     sms = TwilioService.send_message(
-        { from: ride_zone.phone_number, to: user.phone_number, body: body},
+        { from: ride_zone.phone_number_normalized, to: user.phone_number, body: body},
         timeout
     )
     if sms.error_code

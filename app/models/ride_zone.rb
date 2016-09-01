@@ -5,6 +5,9 @@ class RideZone < ApplicationRecord
   has_many :messages
   has_many :rides
 
+  phony_normalize :phone_number, as: :phone_number_normalized, default_country_code: 'US'
+
+  validates :phone_number_normalized, phony_plausible: true
   validates_presence_of :name
   validates_presence_of :zip
   validates_presence_of :slug

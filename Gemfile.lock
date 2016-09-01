@@ -8,20 +8,15 @@ GIT
       thor (>= 0.14, < 2.0)
 
 GIT
-  remote: git://github.com/sinatra/rack-protection.git
-  revision: 7e723a74763bb83989d1249cdceb9cceb2ee6f01
-  specs:
-    rack-protection (2.0.0)
-      rack
-
-GIT
   remote: git://github.com/sinatra/sinatra.git
-  revision: 285275b42fa1bf096a5c9559b6cead2f31b65b66
+  revision: 1b0edc0aeaaf4839cadfcec1b21da86e6af1d4c0
   specs:
-    sinatra (2.0.0.pre.alpha)
-      mustermann (~> 0.4)
+    rack-protection (2.0.0.beta2)
+      rack
+    sinatra (2.0.0.beta2)
+      mustermann (= 1.0.0.beta2)
       rack (~> 2.0)
-      rack-protection (~> 2.0)
+      rack-protection (= 2.0.0.beta2)
       tilt (~> 2.0)
 
 GEM
@@ -165,8 +160,7 @@ GEM
     minitest (5.9.0)
     multi_json (1.12.1)
     multipart-post (2.0.0)
-    mustermann (0.4.0)
-      tool (~> 0.2)
+    mustermann (1.0.0.beta2)
     nio4r (1.2.1)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
@@ -292,7 +286,6 @@ GEM
     timecop (0.8.1)
     timezone (1.1.1)
     tod (2.1.0)
-    tool (0.2.3)
     turbolinks (5.0.1)
       turbolinks-source (~> 5)
     turbolinks-source (5.0.0)
