@@ -1,7 +1,15 @@
 slug: 'dpdemo'
 name: "DevProgress Demo"
 user_identifier: "(dp)"
-ride_zone_name: 'Florida 5th CD'
+ride_zone:
+  name: 'Florida 5th CD'
+  slug: 'florida-5th-cd'
+  zip: '32805'
+  phone_number: '+15555550001'
+  latitude: 28.533609
+  longitude: -81.406011
+  time_zone: 'America/New_York'
+
 drivers:
   -
     events:

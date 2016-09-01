@@ -22,14 +22,15 @@ class Simulation < ActiveRecord::Base
 
   def self.create_named_sim(slug)
     sim = find_named_sim_def(slug)
-    return "Sim #{slug} not found" unless sim
+    return "Sim definition #{slug} not found" unless sim
     self.create_from_def(sim)
   end
 
-  def self.create_from_def(sim)
-    return "Sim ride zone #{sim.ride_zone_name} not found" unless RideZone.find_by_name(sim.ride_zone_name)
-    s = Simulation.create!(name: sim.name)
-    s.definition = sim
+  def self.create_from_def(simdef)
+    rz = simdef.create_ride_zone rescue nil
+    return 'Could not create or update ride zone' unless rz
+    s = Simulation.create!(name: simdef.name)
+    s.definition = simdef
     s
   end
 
@@ -46,7 +47,7 @@ class Simulation < ActiveRecord::Base
   end
 
   def run_time
-    sim_def.run_time
+    sim_def.try(:run_time)
   end
 
   def active?

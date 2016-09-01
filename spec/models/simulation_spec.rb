@@ -1,8 +1,11 @@
 require 'rails_helper'
 
 TWO_DRIVERS = <<driver
-ride_zone_name: rztest
 name: testing
+ride_zone:
+  name: rztest
+  slug: rztest
+  zip: 32805
 drivers:
   -
     events:
@@ -37,6 +40,29 @@ RSpec.describe Simulation, :type => :model do
 
     it 'creates a new sim' do
       expect(Simulation.create_named_sim(sim_name)).to_not be_nil
+    end
+  end
+
+  describe 'ride zone' do
+    let!(:sim_def) { SimDefinition.new.load(TWO_DRIVERS) }
+    it 'creates ride zone' do
+      sim_def.create_ride_zone
+      expect(RideZone.count).to eq(1)
+      expect(RideZone.first.name).to eq('rztest')
+    end
+
+    it 'updates ride zone' do
+      rz = create :ride_zone, name: 'rztest', slug: 'foo'
+      sim_def.create_ride_zone
+      expect(RideZone.count).to eq(1)
+      expect(RideZone.first.slug).to eq('rztest')
+    end
+
+    it 'fails to update on index error' do
+      create :ride_zone, name: 'foo', slug: 'rztest'
+      rz = sim_def.create_ride_zone rescue nil
+      expect(RideZone.count).to eq(1)
+      expect(rz).to be_nil
     end
   end
 
