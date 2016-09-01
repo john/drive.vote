@@ -1,0 +1,108 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=32805&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Thu, 01 Sep 2016 04:56:55 GMT
+      Expires:
+      - Fri, 02 Sep 2016 04:56:55 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '468'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "32805",
+                       "short_name" : "32805",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "Orlando",
+                       "short_name" : "Orlando",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Orange County",
+                       "short_name" : "Orange County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Orlando, FL 32805, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 28.552975,
+                          "lng" : -81.38105899999999
+                       },
+                       "southwest" : {
+                          "lat" : 28.5030919,
+                          "lng" : -81.43439599999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 28.5345501,
+                       "lng" : -81.40042269999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 28.552975,
+                          "lng" : -81.38105899999999
+                       },
+                       "southwest" : {
+                          "lat" : 28.5030919,
+                          "lng" : -81.43439599999999
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJgd85VF9554gRm0zHqTy3qOM",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Thu, 01 Sep 2016 04:56:55 GMT
+recorded_with: VCR 3.0.3

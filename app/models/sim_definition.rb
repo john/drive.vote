@@ -15,7 +15,8 @@ class SimDefinition
     @data = YAML.load(content)
     @slug = @data['slug']
     @name = @data['name']
-    @ride_zone_name = @data['ride_zone_name']
+    @ride_zone_data = @data['ride_zone']
+    @ride_zone_name = @ride_zone_data['name']
     @drivers = @data['drivers'] || []
     @voters = @data['voters'] || []
     @rides = @data['rides'] || []
@@ -30,6 +31,16 @@ class SimDefinition
       at = at.to_i + last_at
     end
     return at.to_i, at.to_i
+  end
+
+  def create_ride_zone
+    ride_zone = RideZone.find_by_name(@ride_zone_name)
+    if ride_zone
+      ride_zone.update_attributes!(@ride_zone_data)
+    else
+      ride_zone = RideZone.create!(@ride_zone_data)
+    end
+    ride_zone
   end
 
   private
