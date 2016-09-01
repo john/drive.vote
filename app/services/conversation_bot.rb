@@ -11,7 +11,7 @@ class ConversationBot
       4 => [/4/, /four/, /cuatro/]
   }.freeze
 
-  DONT_KNOW_FRAGMENTS = [/don'*t know/i, /unsure/i, /dunno/i, /skip/i, /omitir/i, /seguro/i, /no se/i, /no sé/i].freeze
+  DONT_KNOW_FRAGMENTS = [/don.?t know/i, /unsure/i, /dunno/i, /skip/i, /omitir/i, /seguro/i, /no se/i, /no sé/i].freeze
 
   # accepts a conversation at a certain state and a new message that has arrived
   def initialize convo, message
