@@ -46,7 +46,7 @@ class Simulation < ActiveRecord::Base
   end
 
   def run_time
-    sim_def.run_time
+    sim_def.try(:run_time)
   end
 
   def active?

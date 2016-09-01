@@ -255,11 +255,17 @@ RSpec.describe ConversationBot do
     let(:voter_formatted) { voter_time.strftime('%l:%M %P')}
 
     describe 'valid times' do
+      around :each do |example|
+        Timecop.travel(Time.parse('12:00 pm')) do
+          example.run
+        end
+      end
+
       it 'should accept valid time, update conversation, and confirm' do
-        reply = create :message, conversation: convo, body: voter_time.strftime('%l:%M%p')
+        reply = create :message, conversation: convo, body: voter_formatted
         expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_the_time, locale: :en, time: voter_formatted))
         expect(convo.reload.lifecycle).to eq('have_time')
-        expect(convo.pickup_time).to eq(voter_time)
+        expect(convo.pickup_time.to_i).to eq(voter_time.to_i)
       end
 
       it 'should confirm time' do
