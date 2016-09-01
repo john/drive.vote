@@ -7,7 +7,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
   # RideZone. As you add validations to RideZone, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    { name: 'Toledo, OH', zip: '43601', phone_number: '867-5309', slug: 'toledo' }
+    { name: 'Toledo, OH', zip: '43601', phone_number: '203-867-5309', slug: 'toledo' }
   }
 
   let(:invalid_attributes) {

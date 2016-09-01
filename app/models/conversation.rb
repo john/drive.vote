@@ -64,7 +64,7 @@ class Conversation < ApplicationRecord
     sms = send_staff_sms(ride_zone, user, body, timeout)
     return sms if sms.is_a?(String)
     c = Conversation.create({ride_zone: ride_zone, user: user, from_phone: ride_zone.phone_number_normalized,
-                            to_phone: user.phone_number, status: :in_progress}.merge(attrs))
+                            to_phone: user.phone_number_normalized, status: :in_progress}.merge(attrs))
     msg = Message.create_from_staff(c, sms)
     c
   end
@@ -97,7 +97,7 @@ class Conversation < ApplicationRecord
   # a conversation is staff initiated if the "from" phone number matches
   # the ride zone twilio-assigned number
   def staff_initiated?
-    self.from_phone.phony_formatted == self.ride_zone.phone_number.phony_formatted
+    self.from_phone == self.ride_zone.phone_number_normalized
   end
 
   def set_unknown_destination
