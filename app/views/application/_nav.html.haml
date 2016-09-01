@@ -14,7 +14,10 @@
         = image_tag(t(:logo_filename), id: 'logo')
 
     #navbar.collapse.navbar-collapse
-      .pull-right{style: 'margin-top: 10px;'}
+      .pull-right.nav-links
+
+
+
         %a{href: '?locale=en', class: "locale-#{(locale.to_s == 'en') ? 'active' : 'inactive'}"}
           English
 
@@ -22,20 +25,16 @@
         %a{href: '?locale=es', class: "locale-#{(locale.to_s == 'es') ? 'active' : 'inactive'}"}
           Español
 
-        .btn.btn-info.btn-xs{style: 'margin: 5px 0 0 20px;'}
-          = link_to t(:learn_more), about_path(locale: I18n.locale.to_s), style: 'color: white;'
+
+        &nbsp; &#183; &nbsp;
+        - unless user_signed_in?
+          = link_to t(:sign_in), new_user_session_path
+        - else
+          = link_to t(:sign_out), destroy_user_session_path, {method: :delete}
 
         - if user_signed_in? && current_user.has_role?(:admin)
+          &nbsp; &#183; &nbsp;
+          = link_to 'admin', admin_path, style: 'color: red;'
 
-          %button.btn.btn-default.btn-xs.dropdown-toggle{type: 'button', 'data-toggle': "dropdown", 'aria-haspopup': "true", 'aria-expanded': "false", style: 'margin: 5px 0 0 5px;'}
-            %span.glyphicon.glyphicon-user.inverse{'aria-hidden': "true"}
-            %span.caret.inverse
-
-          %ul.dropdown-menu{style: 'margin: -10px 20px 0 0;'}
-            %li= link_to t(:sign_out), destroy_user_session_path, {method: :delete}
-            - if current_user.has_role? :admin
-              %li= link_to 'admin', admin_path, style: 'color: red;'
-
-        - elsif user_signed_in?
-          .btn.btn-info.btn-xs{style: 'margin: 5px 0 0 20px;'}
-            = link_to t(:sign_out), destroy_user_session_path, {method: :delete, style: 'color: white'}
+        .btn.btn-info.btn-xs{style: 'margin: 5px 0 0 20px;'}
+          = link_to t(:learn_more), about_path(locale: I18n.locale.to_s), style: 'color: white;'
