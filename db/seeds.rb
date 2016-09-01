@@ -25,8 +25,47 @@ john.add_role(:admin)
 
 if  Rails.env == "development"
 
+  zones = RideZone.create!([
+    {
+      name: 'Las Vegas, NV',
+      phone_number: '+17024890894',
+      city: 'Las Vegas',
+      state: 'NV',
+      zip: '89169',
+      country: 'us',
+      latitude: 36.1295416,
+      longitude: -115.1325897,
+      slug: 'las_vegas',
+      time_zone: 'America/Los_Angeles',
+
+    },
+    {
+      name: 'Toledo, OH',
+      phone_number: '+14193860121',
+      city: 'Toledo',
+      state: 'OH',
+      zip: '43601',
+      country: 'us',
+      latitude: 41.6411077,
+      longitude: -83.5436626,
+      slug: 'toledo',
+      time_zone: 'America/New_York',
+
+    }
+  ])
+
   drivers = User.create!([
     {
+      name: 'Las Vegas Test Driver',
+      available: false,
+      email: 'lvtest@fryolator.com',
+      password: '1234abcd',
+      phone_number: '5123328709',
+      phone_number_normalized: '+5123328709',
+      image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
+      locale: 'en',
+      zip: '89169'
+    },{
       name: 'Deborah Driver',
       available: false,
       email: 'john@fryolator.com',
@@ -51,6 +90,7 @@ if  Rails.env == "development"
 
   drivers[0].add_role(:unassigned_driver)
   drivers[1].add_role(:unassigned_driver)
+  drivers[2].add_role(:unassigned_driver)
 
 
 

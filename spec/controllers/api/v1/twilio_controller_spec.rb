@@ -75,7 +75,7 @@ RSpec.describe Api::V1::TwilioController, type: :controller do
     end
 
     it 'handles bad to phone' do
-      allow(RideZone).to receive(:find_by_phone_number).and_return(nil)
+      allow(RideZone).to receive(:find_by_phone_number_normalized).and_return(nil)
       post :sms, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
       expect(response).to be_successful  # we 200 back to Twilio
       expect(response.body.include?(TwilioService::CONFIG_ERROR_MSG)).to be_truthy

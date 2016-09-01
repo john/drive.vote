@@ -61,7 +61,7 @@ class TwilioService
   # Find the ride zone based on the 'to' phone number
   def establish_ride_zone(params)
     to_phone = PhonyRails.normalize_number(params['To'], default_country_code: 'US')
-    @ride_zone = RideZone.find_by_phone_number(to_phone)
+    @ride_zone = RideZone.find_by_phone_number_normalized(to_phone)
     raise ConfigurationError.new(CONFIG_ERROR_MSG) unless @ride_zone
   end
 

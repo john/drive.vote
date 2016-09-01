@@ -16,7 +16,6 @@ gem 'phony_rails'
 gem 'puma'
 gem 'pundit'
 gem 'rack-timeout'
-gem 'rack-protection', github: 'sinatra/rack-protection'
 gem 'rails', '>= 5.0.0', '< 5.1'
 gem 'redis'
 gem 'redis-namespace'
@@ -27,6 +26,9 @@ gem 'sass-rails', '~> 5.0'
 gem 'sendgrid'
 gem 'sidekiq'
 gem 'sinatra', github: 'sinatra/sinatra', :require => false # for sidekiq
+github 'sinatra/sinatra' do
+  gem 'rack-protection'
+end
 gem 'timezone'
 gem 'tod'
 gem 'turbolinks', '~> 5.x'
