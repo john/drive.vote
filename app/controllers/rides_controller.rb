@@ -1,10 +1,10 @@
 require 'securerandom'
 
 class RidesController < ApplicationController
-  include RideParams
+  include RideParams, RideZoneParams
   before_action :require_session, only: [:edit, :update]
   before_action :set_ride, only: [:edit, :update]
-  before_action :set_ride_zone
+  before_action :require_ride_zone
   around_action :set_time_zone
 
   def new
@@ -92,9 +92,9 @@ class RidesController < ApplicationController
     redirect_to '/users/sign_in' unless user_signed_in?
   end
 
-  def set_ride_zone
+  def require_ride_zone
     @ride_zone = @ride.ride_zone if @ride
-    @ride_zone ||= RideZone.find_by_id(params[:ride_zone_id]) || RideZone.find_by_slug(params[:ride_zone_id])
+    set_ride_zone(:ride_zone_id) unless @ride_zone
     render :need_area unless @ride_zone
   end
 

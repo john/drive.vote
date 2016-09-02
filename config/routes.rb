@@ -83,10 +83,10 @@ Rails.application.routes.draw do
 
       resources :ride_zones do
         member do
+          post 'assign_ride' => 'ride_zones#assign_ride'
           get 'conversations' => 'ride_zones#conversations'
           post 'conversations' => 'ride_zones#create_conversation'
           get 'drivers' => 'ride_zones#drivers'
-          post 'assign_ride' => 'ride_zones#assign_ride'
           get 'rides' => 'ride_zones#rides'
           post 'rides' => 'ride_zones#create_ride'
         end

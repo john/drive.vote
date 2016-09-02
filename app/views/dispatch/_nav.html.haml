@@ -5,6 +5,9 @@
     = @ride_zone.phone_number.phony_formatted(normalize: :US, spaces: '-')
     &nbsp; · &nbsp;
 
+    = link_to(@ride_zone.bot_disabled ? 'Enable Bot' : 'Disable Bot', '', onclick: 'dispatchController.toggleBotDisabled(); return false;', class: 'disp-bot-disable')
+    &nbsp; · &nbsp;
+
     = (action_name == 'show') ? "<b>Dashboard</b>".html_safe : link_to('Dashboard', dispatch_path(@ride_zone))
     &nbsp; · &nbsp;
 

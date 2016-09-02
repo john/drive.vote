@@ -7,6 +7,6 @@ var gmap = new Map(document.getElementById('dispatch-map'), onMapLoaded,
 
 function onMapLoaded(map) {
   dispatchMapController = new DispatchMapController(map);
-  dispatchController = new DispatchController(<%= @ride_zone.id %>, dispatchMapController);
+  dispatchController = new DispatchController(<%= @ride_zone.id %>, dispatchMapController, <%= @ride_zone.bot_disabled %>);
   dispatchController.init();
 }

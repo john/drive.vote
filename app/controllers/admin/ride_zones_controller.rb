@@ -1,4 +1,5 @@
 class Admin::RideZonesController < Admin::AdminApplicationController
+  include RideZoneParams
 
   skip_before_action :require_admin_privileges, only: [:show, :edit, :update]
   before_action :set_ride_zone, except: [:index, :new, :create]
@@ -106,11 +107,4 @@ class Admin::RideZonesController < Admin::AdminApplicationController
       flash[:notice] = msg
       redirect_back(fallback_location: root_path)
     end
-
-    # Only allow a trusted parameter "white list" through.
-    def ride_zone_params
-      params.require(:ride_zone).permit(:name, :description, :phone_number, :short_code,
-                                        :city, :county, :state, :zip, :country, :latitude, :longitude, :slug )
-    end
-
 end
