@@ -31,11 +31,13 @@ module Api::V1
 
     def update
       if has_zone_privilege?
-        @ride_zone.update(ride_zone_params)
-      else
-        # Restrict updates to only bot_disabled unless there are zone privileges.
-        @ride_zone.bot_disabled = ride_zone_params.bot_disabled
-        @ride_zone.save!
+        if (current_user.has_role?(:admin))
+          @ride_zone.update(ride_zone_params)
+        else
+          # Restrict updates to only bot_disabled unless there are zone privileges.
+          @ride_zone.bot_disabled = ride_zone_params['bot_disabled']
+          @ride_zone.save!
+        end
       end
       render json: @ride_zone
     end

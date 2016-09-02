@@ -18,16 +18,22 @@ FactoryGirl.define do
     end
 
     factory :dispatcher_user do
-      after(:create) do |user|
-        rz = create( :ride_zone )
-        user.add_role( :dispatcher, rz)
+      transient do
+        rz { create( :ride_zone ) }
+      end
+
+      after(:create) do |user, evaluator|
+        user.add_role( :dispatcher, evaluator.rz )
       end
     end
 
     factory :zoned_driver_user do
-      after(:create) do |user|
-        rz = create( :ride_zone )
-        user.add_role( :driver, rz)
+      transient do
+        rz { create( :ride_zone ) }
+      end
+
+      after(:create) do |user, evaluator|
+        user.add_role( :driver, evaluator.rz)
       end
     end
 
@@ -36,12 +42,15 @@ FactoryGirl.define do
     end
 
     factory :voter_user do
+      transient do
+        rz { create( :ride_zone ) }
+      end
+
       user_type :voter
       locale :en
 
-      after(:create) do |user|
-        rz = create( :ride_zone )
-        user.add_role( :voter, rz)
+      after(:create) do |user, evaluator|
+        user.add_role( :voter, evaluator.rz)
       end
 
       factory :sms_voter_user do

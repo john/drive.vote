@@ -184,4 +184,91 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
       expect(JSON.parse(response.body)['error']).to include('voter')
     end
   end
+
+  describe 'update ride zone', focus: true do
+    let(:rz) { create :ride_zone }
+    let(:rz_updates) {
+      {
+         name: 'beebee',
+         description: 'baba',
+         phone_number: 'bobo',
+         short_code: 'bibi',
+         city: 'bubu',
+         county: 'byby',
+         state: 'boiboi',
+         zip: 'blahblah',
+         country: 'behbeh',
+         latitude: 1.234,
+         longitude: 3.423,
+         slug: 'slug_slug',
+         bot_disabled: !rz.bot_disabled
+      }.stringify_keys
+    }
+
+    it 'anonymous user cannot enable and disable bot' do
+      expect {
+        put :update, params: { id: rz.id, ride_zone: { bot_disabled: true } }
+      }.to_not change{ RideZone.find(rz.id).bot_disabled }.from(false)
+    end
+
+    context 'user' do
+      login_user
+      it 'cannot enable and disable bot' do
+        expect {
+          put :update, params: { id: rz.id, ride_zone: { bot_disabled: true } }
+        }.to_not change{ RideZone.find(rz.id).bot_disabled }.from(false)
+      end
+    end
+
+    context 'dispatcher' do
+      login_dispatcher
+      it 'can enable and disable bot' do
+        # Disable
+        expect {
+          put :update, params: { id: rz.id, ride_zone: { bot_disabled: true } }
+          expect(JSON.parse(response.body)['bot_disabled']).to be true
+        }.to change{ RideZone.find(rz.id).bot_disabled }.from(false).to(true)
+
+        # No change no-ops.
+        expect {
+          put :update, params: { id: rz.id, ride_zone: { bot_disabled: true } }
+          expect(JSON.parse(response.body)['bot_disabled']).to be true
+        }.to_not change{ RideZone.find(rz.id).bot_disabled }.from(true)
+
+        # Enable
+        expect {
+          put :update, params: { id: rz.id, ride_zone: { bot_disabled: false } }
+          expect(JSON.parse(response.body)['bot_disabled']).to be false
+        }.to change{ RideZone.find(rz.id).bot_disabled }.from(true).to(false)
+      end
+
+      it 'cannot update fields other than bot disabled' do
+        put :update, params: { id: rz.id, ride_zone: rz_updates }
+        response_rz = JSON.parse(response.body)
+
+        expect(response_rz).to_not include(rz_updates.except('bot_disabled'))
+        expect(response_rz['bot_disabled']).to eql(rz_updates['bot_disabled'])
+
+        stored_rz = RideZone.find(rz.id).as_json
+        expect(stored_rz).to_not include(rz_updates.except('bot_disabled'))
+        expect(stored_rz['bot_disabled']).to eql(rz_updates['bot_disabled'])
+      end
+    end
+
+    context 'admin' do
+      login_admin
+      it 'can update all fields' do
+        put :update, params: { id: rz.id, ride_zone: rz_updates }
+        response_rz = JSON.parse(response.body)
+
+        # Correctly convert the non-string types so rspec include can match.
+        response_rz['latitude'] = response_rz['latitude'].to_d if response_rz.key?('latitude')
+        response_rz['longitude'] = response_rz['longitude'].to_d if response_rz.key?('latitude')
+
+        expect(response_rz).to include(rz_updates)
+
+        expect(RideZone.find(rz.id).as_json).to include(rz_updates)
+      end
+    end
+  end
 end
