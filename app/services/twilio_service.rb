@@ -20,7 +20,7 @@ class TwilioService
     end
 
     message.save!
-    return nil if @conversation.allow_bot_reply?
+    return nil if @conversation.block_bot_reply?
     answer = ConversationBot.new(@conversation, message).response
     Message.create!(
         ride_zone: @ride_zone,

@@ -118,7 +118,7 @@ class Conversation < ApplicationRecord
     save
   end
 
-  def allow_bot_reply?
+  def block_bot_reply?
     return self.status == 'help_needed' || self.staff_initiated? ||
       self.ride_zone.bot_disabled
   end

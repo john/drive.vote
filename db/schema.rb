@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160901042728) do
+ActiveRecord::Schema.define(version: 20160901062404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,22 +65,23 @@ ActiveRecord::Schema.define(version: 20160901042728) do
   end
 
   create_table "ride_zones", force: :cascade do |t|
-    t.string   "name",                                              default: "", null: false
+    t.string   "name",                                              default: "",    null: false
     t.text     "description"
     t.string   "phone_number"
     t.string   "short_code"
-    t.string   "city",                                              default: "", null: false
-    t.string   "county",                                            default: "", null: false
-    t.string   "state",                                             default: "", null: false
-    t.string   "zip",                                               default: "", null: false
-    t.string   "country",                                           default: "", null: false
+    t.string   "city",                                              default: "",    null: false
+    t.string   "county",                                            default: "",    null: false
+    t.string   "state",                                             default: "",    null: false
+    t.string   "zip",                                               default: "",    null: false
+    t.string   "country",                                           default: "",    null: false
     t.decimal  "latitude",                precision: 15, scale: 10
     t.decimal  "longitude",               precision: 15, scale: 10
-    t.datetime "created_at",                                                     null: false
-    t.datetime "updated_at",                                                     null: false
+    t.datetime "created_at",                                                        null: false
+    t.datetime "updated_at",                                                        null: false
     t.string   "slug"
     t.string   "time_zone"
     t.string   "phone_number_normalized"
+    t.boolean  "bot_disabled",                                      default: false, null: false
     t.index ["phone_number"], name: "index_ride_zones_on_phone_number", unique: true, using: :btree
     t.index ["slug"], name: "index_ride_zones_on_slug", unique: true, using: :btree
   end
