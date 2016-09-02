@@ -15,6 +15,10 @@ RSpec.describe Admin::RideZonesController, type: :routing do
       expect(get: "/admin/ride_zones/1").to route_to("admin/ride_zones#show", id: "1")
     end
 
+    it "routes to #drivers" do
+      expect(get: "/admin/ride_zones/1/drivers").to route_to("admin/ride_zones#drivers", id: "1")
+    end
+
     it "routes to #edit" do
       expect(get: "/admin/ride_zones/1/edit").to route_to("admin/ride_zones#edit", id: "1")
     end
@@ -35,36 +39,20 @@ RSpec.describe Admin::RideZonesController, type: :routing do
       expect(delete: "/admin/ride_zones/1").to route_to("admin/ride_zones#destroy", id: "1")
     end
 
-    it "routes to #add_dispatcher" do
-      expect(post: "/admin/ride_zones/1/add_dispatcher").to route_to("admin/ride_zones#add_dispatcher", id: "1")
+    it "routes post to #add_role" do
+      expect(post: "/admin/ride_zones/1/add_role").to route_to("admin/ride_zones#add_role", id: "1")
     end
 
-    it "routes to #add_dispatcher" do
-      expect(get: "/admin/ride_zones/1/add_dispatcher").to_not route_to("admin/ride_zones#add_dispatcher", id: "1")
+    it "does not route get to #add_role" do
+      expect(get: "/admin/ride_zones/1/add_role").to_not route_to("admin/ride_zones#add_role", id: "1")
     end
 
-    it "routes to #remove_dispatcher" do
-      expect(delete: "/admin/ride_zones/1/remove_dispatcher").to route_to("admin/ride_zones#remove_dispatcher", id: "1")
+    it "routes to delete #remove_role" do
+      expect(delete: "/admin/ride_zones/1/remove_role").to route_to("admin/ride_zones#remove_role", id: "1")
     end
 
-    it "routes to #remove_dispatcher" do
-      expect(get: "/admin/ride_zones/1/remove_dispatcher").to_not route_to("admin/ride_zones#remove_dispatcher", id: "1")
-    end
-
-    it "routes to #add_driver" do
-      expect(post: "/admin/ride_zones/1/add_driver").to route_to("admin/ride_zones#add_driver", id: "1")
-    end
-
-    it "routes to #add_driver" do
-      expect(get: "/admin/ride_zones/1/add_driver").to_not route_to("admin/ride_zones#add_driver", id: "1")
-    end
-
-    it "routes to #remove_driver" do
-      expect(delete: "/admin/ride_zones/1/remove_driver").to route_to("admin/ride_zones#remove_driver", id: "1")
-    end
-
-    it "routes to #remove_driver" do
-      expect(get: "/admin/ride_zones/1/remove_driver").to_not route_to("admin/ride_zones#remove_driver", id: "1")
+    it "does not route get to #remove_role" do
+      expect(get: "/admin/ride_zones/1/remove_role").to_not route_to("admin/ride_zones#remove_role", id: "1")
     end
 
   end
