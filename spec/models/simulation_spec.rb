@@ -9,16 +9,10 @@ ride_zone:
 drivers:
   -
     events:
-      -
-        at: 10
-        type: solo
+      - {at: 10, type: "move", lat: 34, lng: 122}
   -
     events:
-      -
-        at: 30
-        type: multi
-        repeat_count: 4
-        repeat_time: 10
+      - {at: 30, type: "move", lat: 34, lng: 122, repeat_count: 4, repeat_time: 10}
 driver
 
 RSpec.describe Simulation, :type => :model do
@@ -72,12 +66,12 @@ RSpec.describe Simulation, :type => :model do
     let(:sim) { Simulation.create_from_def(sim_def) }
 
     it 'creates drivers' do
-      sim.send(:prepare)
+      sim.send(:setup_data)
       expect(User.count).to eq(2)
     end
 
     it 'creates events' do
-      sim.send(:prepare)
+      sim.send(:setup_data)
       expect(sim.events.count).to eq(6)
     end
   end

@@ -8,6 +8,8 @@ class Simulation < ActiveRecord::Base
   SLEEP_INTERVAL = 1
   DB_CHECK_INTERVAL = 2
   DB_CHECK_COUNTER = DB_CHECK_INTERVAL / SLEEP_INTERVAL
+  WAITING_ASSIGNMENT_INTERVAL = 1.minute
+  EVENT_RUN_POOL = ENV['SIM_EVENT_POOL'] || 15 # simultaneous events to run
 
   USERNAME_BODY = '<USERNAME>'.freeze
 
@@ -51,13 +53,12 @@ class Simulation < ActiveRecord::Base
   end
 
   def active?
-    self.status == 'running'
+    self.status == 'running' || self.status == 'preparing'
   end
 
   def play
     logger.info "Starting to play #{name} #{id}"
-    prepare
-    run_timeline
+    prepare_and_run
   end
 
   def stop
@@ -70,11 +71,18 @@ class Simulation < ActiveRecord::Base
     @definition ||= Simulation.find_named_sim_def(self.name)
   end
 
-  def prepare
+  def prepare_and_run
     self.status = :preparing
     save
-    sim_def.reload
-    Simulation.clean_up(sim_def)
+    Thread.new do
+      sim_def.reload
+      Simulation.clean_up(sim_def)
+      setup_data
+      run_timeline
+    end
+  end
+
+  def setup_data
     @ride_zone = RideZone.find_by_name(sim_def.ride_zone_name)
     @events = []
     create_drivers
@@ -83,22 +91,28 @@ class Simulation < ActiveRecord::Base
   end
 
   def create_drivers
-    sim_def.drivers.each_with_index do |driver, i|
-      d = create_driver(i)
-      last_at = nil
-      driver['events'].each do |event|
-        start, last_at = SimDefinition.calc_start(last_at, event['at'])
-        times = [start]
-        if event['repeat_count'] && event['repeat_time']
-          event['repeat_count'].times do |t|
-            times << (start + (t+1)*event['repeat_time'])
+    User.sim_mode = true
+    begin
+      sim_def.drivers.each_with_index do |driver, i|
+        broadcast_event("Creating #{sim_def.drivers.length - i} more drivers") if (i % 10) == 0
+        d = create_driver(i)
+        last_at = nil
+        driver['events'].each do |event|
+          start, last_at = SimDefinition.calc_start(last_at, event['at'])
+          times = [start]
+          if event['repeat_count'] && event['repeat_time']
+            event['repeat_count'].times do |t|
+              times << (start + (t+1)*event['repeat_time'])
+            end
+          end
+          last_at = times.last
+          times.each do |t|
+            @events << [t, event.merge(user: d)]
           end
         end
-        last_at = times.last
-        times.each do |t|
-          @events << [t, event.merge(user: d)]
-        end
       end
+    ensure
+      User.sim_mode = false
     end
   end
 
@@ -112,6 +126,7 @@ class Simulation < ActiveRecord::Base
   # voters are actually created by inbound sms's. we just assign their events
   # to a unique phone number
   def create_voters
+    broadcast_event("Creating #{sim_def.voters.length} voters")
     sim_def.voters.each_with_index do |voter, i|
       phone = '+1510613%03d8' % i
       last_at = nil
@@ -124,6 +139,7 @@ class Simulation < ActiveRecord::Base
   end
 
   def create_rides
+    broadcast_event("Creating #{sim_def.rides.length} rides")
     sim_def.rides.each_with_index do |ride, i|
       voter = User.create!(name: next_random_name, user_type: :voter, ride_zone: @ride_zone,
                    email: "simvoter#{i}@example.com", password: '123456789', city: @ride_zone.city,
@@ -143,34 +159,41 @@ class Simulation < ActiveRecord::Base
 
   def run_timeline
     update_attribute(:status, :running)
+    ActionCable.server.broadcast 'simulation', {type: 'status', status: 'running', id: self.id}
     timeline = @events.sort_by {|ev| ev[0]}
     final_status = :completed
     Thread.new do
       begin
-        start = Time.now
+        last_assignment_check = start = Time.now
         logger.info "Starting simulator thread at #{start}"
         counter = 0
         stopped = false
         while timeline.length > 0 && !stopped
-          next_time, next_event = timeline.first
-          ActiveRecord::Base.connection_pool.with_connection do
-            Ride.where(ride_zone: @ride_zone, status: :scheduled).where('pickup_at < ?', 5.minutes.from_now).each do |ride|
-              ride.update_attribute(:status, :waiting_assignment)
-            end
             runtime = Time.now - start
-            if runtime >= next_time
-              execute_event(next_event)
-              ActionCable.server.broadcast 'simulation', {type: 'event', id: self.id, name: "@#{runtime.to_i}: #{next_event['type']}"}
+            events_to_run = []
+            next_time, next_event = timeline.first
+            while next_time && runtime >= next_time
+              events_to_run << next_event
               timeline.shift
+              next_time, next_event = timeline.first
+            end
+            if events_to_run.length > 0
+              execute_events(runtime, events_to_run)
             else
               sleep SLEEP_INTERVAL
               if counter % DB_CHECK_COUNTER == 0
-                # do not reload this object instance in memory
-                stopped = Simulation.find(self.id).status == 'stopped'
+                stopped = Simulation.is_stopped?(self.id)
               end
               counter += 1
+              if Time.now - last_assignment_check > WAITING_ASSIGNMENT_INTERVAL
+                ActiveRecord::Base.connection_pool.with_connection do
+                  Ride.where(ride_zone: @ride_zone, status: :scheduled).where('pickup_at < ?', 5.minutes.from_now).each do |ride|
+                    ride.update_attribute(:status, :waiting_assignment)
+                  end
+                end
+                last_assignment_check = Time.now
+              end
             end
-          end
         end
       rescue =>e
         final_status = :failed
@@ -178,7 +201,33 @@ class Simulation < ActiveRecord::Base
       end
       update_attribute(:status, final_status)
       logger.info "Ending simulator thread at #{Time.now}"
-      ActionCable.server.broadcast 'simulation', {type: 'complete', id: self.id}
+      ActionCable.server.broadcast 'simulation', {type: 'status', status: 'complete', id: self.id}
+    end
+  end
+
+  # executes a potentially large set of events in slices using
+  # parallel threads
+  def execute_events(runtime, events_to_run)
+    broadcast_event("#{(runtime/60).floor}:%02d - #{events_to_run.length} event(s)" % (runtime % 60))
+    events_to_run.each_slice(EVENT_RUN_POOL) do |events|
+      break if Simulation.is_stopped?(self.id)
+      events.map do |event|
+        Thread.new do
+          begin
+            ActiveRecord::Base.connection_pool.with_connection do
+              execute_event(event)
+            end
+          rescue => e
+            logger.warn "Event execution crash #{e.message} #{e.backtrace}"
+          end
+        end
+      end.map(&:join)
+    end
+  end
+
+  def self.is_stopped?(sim_id)
+    ActiveRecord::Base.connection_pool.with_connection do
+      Simulation.find(sim_id).status == 'stopped'
     end
   end
 
@@ -243,6 +292,10 @@ class Simulation < ActiveRecord::Base
     end
     params = ActionController::Parameters.new({'To' => @ride_zone.phone_number, 'From' => event[:user_phone], 'Body' => event['body']})
     TwilioService.new.process_inbound_sms(params)
+  end
+
+  def broadcast_event(name)
+    ActionCable.server.broadcast 'simulation', {type: 'event', id: self.id, name: name}
   end
 
   # clean up all records associated with a sim definition, starting

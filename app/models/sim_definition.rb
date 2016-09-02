@@ -17,7 +17,7 @@ class SimDefinition
     @name = @data['name']
     @ride_zone_data = @data['ride_zone']
     @ride_zone_name = @ride_zone_data['name']
-    @drivers = @data['drivers'] || []
+    create_drivers
     @voters = @data['voters'] || []
     @rides = @data['rides'] || []
     @user_identifier = @data['user_identifier']
@@ -44,6 +44,24 @@ class SimDefinition
   end
 
   private
+  def create_drivers
+    @drivers = []
+    (@data['drivers'] || []).each_with_index do |info, i|
+      count = info['count'] || 1
+      time_jitter = info['time_jitter'] || 0
+      loc_jitter = info['loc_jitter'] || 0
+      raise "bad driver #{i} info" unless info['events'][0]['type'] == 'move'
+      count.times do
+        driver = info.deep_dup
+        first_move = driver['events'][0]
+        first_move['at'] = first_move['at'] + ((rand(100).to_f/100.0) * time_jitter)
+        first_move['lat'] = first_move['lat'] + ((rand(100).to_f/100.0) * loc_jitter)
+        first_move['lng'] = first_move['lng'] + ((rand(100).to_f/100.0) * loc_jitter)
+        @drivers << driver
+      end
+    end
+  end
+
   def calc_run_time
     max_time = 0
     @drivers.each do |driver|

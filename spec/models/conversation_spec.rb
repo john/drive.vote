@@ -96,13 +96,13 @@ RSpec.describe Conversation, type: :model do
 
   describe 'event generation' do
     it 'sends new conversation event' do
-      expect_any_instance_of(RideZone).to receive(:event).with(:new_conversation, anything)
+      expect(RideZone).to receive(:event).with(anything, :new_conversation, anything)
       create :conversation
     end
 
     it 'sends conversation update event' do
       c = create :conversation
-      expect_any_instance_of(RideZone).to receive(:event).with(:conversation_changed, anything)
+      expect(RideZone).to receive(:event).with(c.ride_zone_id, :conversation_changed, anything)
       c.update_attribute(:status, :closed)
     end
   end

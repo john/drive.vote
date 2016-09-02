@@ -78,8 +78,9 @@ class Message < ApplicationRecord
 
   private
   def notify_creation
-    self.ride_zone.event(:new_message, self) if self.ride_zone
-    self.ride_zone.event(:conversation_changed, self.conversation) if self.ride_zone
+    rz_id = self.ride_zone_id || self.ride_zone.try(:id)
+    RideZone.event(rz_id, :new_message, self) if rz_id
+    RideZone.event(rz_id, :conversation_changed, self.conversation) if rz_id
   end
 
   def conversation_has_correct_phone_numbers
@@ -93,6 +94,7 @@ class Message < ApplicationRecord
   def notify_update
     was_new = new_record?
     yield
-    self.ride_zone.event(:message_changed, self) if !was_new && self.ride_zone
+    rz_id = self.ride_zone_id || self.ride_zone.try(:id)
+    RideZone.event(rz_id, :message_changed, self) if !was_new && rz_id
   end
 end

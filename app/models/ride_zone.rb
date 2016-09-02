@@ -64,13 +64,13 @@ class RideZone < ApplicationRecord
 
   # call this to broadcast an event for this ride zone
   # the object must respond to :api_json
-  def event(event_type, object, tag = nil)
+  def self.event(rz_id, event_type, object, tag = nil)
     event = {
       event_type: event_type,
       timestamp: Time.now.to_i,
       tag || object.class.name.downcase => object.send(:api_json)
     }
-    ActionCable.server.broadcast "ride_zone_#{self.id}", event
+    ActionCable.server.broadcast "ride_zone_#{rz_id}", event
   end
 
   def set_time_zone
