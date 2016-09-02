@@ -56,15 +56,14 @@ class User < ApplicationRecord
     data.merge('active_ride' => self.active_ride.try(:api_json))
   end
 
+  def is_super_admin?
+    self.has_role?(:admin)
+  end
+
   def driver_ride_zone_id
     # the roles table has entries for driver with resource id = ride zone id
     driver_role = self.roles.where(name: 'driver').first
     driver_role.try(:resource_id)
-  end
-
-  def dispatcher_ride_zone_id
-    dispatcher_role = self.roles.where(name: 'dispatcher').first
-    dispatcher_role.try(:resource_id)
   end
 
   def voter_ride_zone_id

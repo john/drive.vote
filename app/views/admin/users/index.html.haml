@@ -1,15 +1,24 @@
+:css
+  #user-filter { margin-left: 30px; }
+
 = render 'admin/nav', {active: 'users'}
 
 %h1
   Users
 
+  %select#user-filter
+    - %w{unassigned_driverall admin dispatcher driver unassigned_driver}.each do |role|
+      %option{value: role, selected: params[:"filter"] == role}
+        = role.gsub('_', ' ')
+
 %table.admin
   %thead
     %tr
       %th Name
-      %th Created at
+      %th Created
       %th Description
       %th Location
+      %th Roles
       %th Available?
       %th
       %th
@@ -21,6 +30,13 @@
         %td= user.created_at.strftime("%-m/%-d/%Y, %-H:%M %P (%Z)")
         %td= user.description
         %td #{[user.city, user.state, user.zip].reject(&:blank?).join(', ')}
+        %td= user.roles.collect{|r| r.name.gsub('_', ' ')}.join(', ')
         %td= (user.available?) ? 'Yes' : 'No'
         %td= link_to 'Edit', edit_admin_user_path(user)
         %td= link_to 'Destroy', admin_user_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+
+:javascript
+  $('#user-filter').change(function() {
+    window.location.href = "/admin/users/?filter=" + $(this).val();
+  });

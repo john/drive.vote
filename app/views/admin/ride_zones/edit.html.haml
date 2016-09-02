@@ -1,48 +1,91 @@
+:css
+  h1 { font-size: 50px; font-weight: bold; }
+  h2 { font-size: 18px; font-weight: bold; margin-top: 0px;}
+  table { margin: 30px 0 20px 0; width: 550px; }
+  td { vertical-align: top;}
+  .user_type { width: 150px; }
+
 = render 'admin/nav', {active: 'ride_zones'}
 
 %h1
   Editing #{link_to @ride_zone.name, admin_ride_zone_path(@ride_zone)}
 
-%br
-%div{style: 'font-size: 14px; font-weight: bold;'}
-  Dispatchers:
+%table
+  %tbody
+    %tr
+      %td.user_type
+        %h2
+          Admin
+      %td
+        - if @admins.present?
+          - @admins.each do |admin|
+            %div
+              #{admin.name}
+              - if admin.is_super_admin?
+                (superadmin)
+              &nbsp;
+              %span{style: 'font-size: 12px;'}
+                - # to be replaced:
+                [ #{link_to 'x', remove_role_admin_ride_zone_path(@ride_zone, user_id: admin.id, role: 'admin'), method: :delete, data: {confirm: "For real?"}, onclick: "return false;"} ]
 
-- if @dispatchers.present?
-  %ul
-    - @dispatchers.each do |dispatcher|
-      %li
-        #{dispatcher.name} &nbsp; [ #{link_to 'x', remove_dispatcher_admin_ride_zone_path(@ride_zone, user_id: dispatcher.id), method: :delete, data: {confirm: "For real?"}} ]
+        %div{style: 'margin-top: 10px; font-style: italic;'}
+          Add admin:
+          %select#add-admin
+            %option
+            = options_for_select( @local_users.map{ |u| [u.name, u.id] } )
 
-Add dispatcher:
-%select#add-dispatcher
-  %option
-  = options_for_select( User.all.map{ |u| [u.name, u.id] } )
+%table
+  %tbody
+    %tr
+      %td.user_type
+        %h2
+          Dispatchers
+      %td
+        - if @dispatchers.present?
+          - @dispatchers.each do |dispatcher|
+            %div
+              #{dispatcher.name} &nbsp;
+              %span{style: 'font-size: 12px;'}
+                [ #{link_to 'x', remove_role_admin_ride_zone_path(@ride_zone, user_id: dispatcher.id, role: 'dispatcher'), method: :delete, data: {confirm: "For real?"}, onclick: "return false;"} ]
 
-%hr
-%br
-%div{style: 'font-size: 14px; font-weight: bold;'}
-  Drivers:
+        %div{style: 'margin-top: 10px; font-style: italic;'}
+          Add dispatcher:
+          %select#add-dispatcher
+            %option
+            = options_for_select( @local_users.map{ |u| [u.name, u.id] } )
 
-- if @drivers.present?
-  %ul
-    - @drivers.each do |driver|
-      %li
-        #{driver.name} &nbsp; [ #{link_to 'x', remove_driver_admin_ride_zone_path(@ride_zone, user_id: driver.id), method: :delete, data: {confirm: "Are you certain?"}} ]
+%table
+  %tbody
+    %tr
+      %td.user_type
+        %h2
+          Drivers
+      %td
+        - if @drivers.present?
+          - @drivers.each do |driver|
+            %div
+              #{driver.name} &nbsp;
+              %span{style: 'font-size: 12px;'}
+                [ #{link_to 'x', remove_role_admin_ride_zone_path(@ride_zone, user_id: driver.id, role: 'driver'), method: :delete, data: {confirm: "For real?"}, onclick: "return false;"} ]
 
-Add driver:
-%select#add-driver
-  %option
-  = options_for_select( User.all.map{ |u| [u.name, u.id] } )
+        %div{style: 'margin-top: 10px; font-style: italic;'}
+          Add driver:
+          %select#add-driver
+            %option
+            = options_for_select( @local_users.map{ |u| [u.name, u.id] } )
 
 :javascript
+
+  $('#add-admin').change(function() {
+    $.post( "/admin/ride_zones/#{@ride_zone.id}/add_role?role=admin&user_id=" + $(this).val() );
+  });
+
   $('#add-dispatcher').change(function() {
-    $.post( "/admin/ride_zones/#{@ride_zone.id}/add_dispatcher?user_id=" + $(this).val() );
+    $.post( "/admin/ride_zones/#{@ride_zone.id}/add_role?role=dispatcher&user_id=" + $(this).val() );
   });
 
   $('#add-driver').change(function() {
-    $.post( "/admin/ride_zones/#{@ride_zone.id}/add_driver?user_id=" + $(this).val() );
+    $.post( "/admin/ride_zones/#{@ride_zone.id}/add_role?role=driver&user_id=" + $(this).val() );
   });
-
-%hr
 
 = render 'form'

@@ -35,4 +35,20 @@ class ApplicationController < ActionController::Base
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:user_type, :name, :email, :phone_number, :zip, :city, :state, :city_state, :ride_zone_id])
   end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_ride_zone
+    @ride_zone = RideZone.find(params[:id])
+  end
+
+  def require_zone_privilege
+    unless user_signed_in? &&
+      ( current_user.has_role?(:admin) ||
+        current_user.has_role?(:admin, @ride_zone) ||
+        current_user.has_role?(:dispatcher, @ride_zone)
+      )
+      redirect_to '/404.html'
+    end
+  end
+
 end

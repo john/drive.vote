@@ -26,13 +26,31 @@ class RideZone < ApplicationRecord
   after_validation :set_time_zone, if: ->(obj){ obj.latitude.present? && obj.latitude_changed? }
   after_validation :reverse_geocode, if: ->(obj){ (obj.latitude.present? && obj.latitude_changed?) || (obj.longitude.present? && obj.longitude_changed?) }
 
+  # for creating an admin at the same time the rz is created
+  attr_accessor :admin_name
+  attr_accessor :admin_email
+  attr_accessor :admin_phone_number
+  attr_accessor :admin_password
+
   def active_rides
     # convoluted because you have to get the enum integer. probably a more graceful way to do it.
     self.rides.where("status IN (?)", Ride.active_statuses.map { |stat| Ride.statuses[stat] })
   end
 
+  def admins
+    User.with_role(:admin, self)
+  end
+
+  def dispatchers
+    User.with_role(:dispatcher, self)
+  end
+
   def drivers
     User.with_role(:driver, self)
+  end
+
+  def unassigned_drivers
+    User.with_role(:unassigned_driver, self)
   end
 
   def unavailable_drivers
@@ -41,10 +59,6 @@ class RideZone < ApplicationRecord
 
   def available_drivers
     User.with_role(:driver, self) - unavailable_drivers
-  end
-
-  def dispatchers
-    User.with_role(:dispatcher, self)
   end
 
   def driving_stats

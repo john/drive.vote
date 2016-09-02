@@ -16,15 +16,12 @@
     #navbar.collapse.navbar-collapse
       .pull-right.nav-links
 
-
-
         %a{href: '?locale=en', class: "locale-#{(locale.to_s == 'en') ? 'active' : 'inactive'}"}
           English
 
         &nbsp; &#183; &nbsp;
         %a{href: '?locale=es', class: "locale-#{(locale.to_s == 'es') ? 'active' : 'inactive'}"}
           Español
-
 
         &nbsp; &#183; &nbsp;
         - unless user_signed_in?

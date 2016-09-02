@@ -14,16 +14,27 @@
       %th Description
       %th Phone number
       %th
-      %th
-      %th
+
 
   %tbody
     - @ride_zones.each do |ride_zone|
       %tr
-        %td= link_to ride_zone.name, admin_ride_zone_path(ride_zone)
-        %td= ride_zone.zip
-        %td= ride_zone.description
-        %td= ride_zone.phone_number
-        %td= link_to 'Dispatch', dispatch_path(ride_zone), target: '_blank'
-        %td= link_to 'Edit', edit_admin_ride_zone_path(ride_zone)
-        %td= link_to 'Destroy', admin_ride_zone_path(ride_zone), :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td
+          = link_to ride_zone.name, admin_ride_zone_path(ride_zone)
+        %td
+          = ride_zone.zip
+        %td
+          = ride_zone.description
+        %td
+          = ride_zone.phone_number
+        %td
+          = link_to 'Dispatch', dispatch_path(ride_zone), target: '_blank'
+
+          &nbsp &#183; &nbsp;
+          = link_to "Drivers (#{ride_zone.drivers.count}, #{ride_zone.unassigned_drivers.count} unassigned)", drivers_admin_ride_zone_path(ride_zone)
+
+          &nbsp &#183; &nbsp;
+          = link_to 'Edit', edit_admin_ride_zone_path(ride_zone)
+
+          &nbsp &#183; &nbsp;
+          = link_to 'Destroy', admin_ride_zone_path(ride_zone), :method => :delete, :data => { :confirm => 'Are you sure?' }

@@ -15,30 +15,38 @@
       = @user.description
 
 %p
-  Admin?:
+  DtV Admin?:
   %b=@user.has_role?(:admin)
 
-%p
-  Dispatcher for Zone:
-  %ul
-    - if @dispatch_zone.present?
-      %li
-        = @dispatch_zone.name
-    - else
-      %li
-        %i
-          None
+Zone admin for:
+- if @admin_zones.present?
+  - @admin_zones.each do |zone|
+    %div
+      = zone.name
 
-%p
-  Driving for Zone:
-  %ul
-    - if @driving_zone.present?
-      %li
-        = @driving_zone.name
-    - else
-      %li
-        %i
-          None
+- else
+  %div
+    %i
+      None
 
-%p
-  = link_to 'Back to Users', admin_users_url
+%br
+Dispatcher for Zones:
+- if @dispatch_zones.present?
+  - @dispatch_zones.each do |zone|
+    %div
+      = zone.name
+- else
+  %div
+    %i
+      None
+
+%br
+Driving for Zones:
+- if @driving_zones.present?
+  - @driving_zones.each do |zone|
+    %div
+      = zone.name
+- else
+  %div
+    %i
+      None
