@@ -21,7 +21,7 @@ class Admin::SimulationsController < Admin::AdminApplicationController
     if Simulation.can_start_new?
       @simulation = Simulation.create_named_sim(params[:slug])
       @simulation.play
-      flash[:notice] = 'Simulation running'
+      flash[:notice] = 'Simulation preparing'
     else
       flash[:notice] = 'Simulation already in progress'
     end

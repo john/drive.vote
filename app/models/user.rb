@@ -33,6 +33,8 @@ class User < ApplicationRecord
   after_create :notify_creation
   around_save :notify_update
 
+  cattr_accessor :sim_mode
+
   attr_accessor :city_state
   attr_accessor :user_type
   attr_accessor :ride_zone # set transiently for user creation
@@ -46,8 +48,8 @@ class User < ApplicationRecord
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   validates :phone_number_normalized, phony_plausible: true
   validate :permissible_user_type
-  validate :permissible_zip
-  validate :permissible_state
+  validate :permissible_zip, if: -> (obj) { obj.zip_changed? || obj.new_record? }
+  validate :permissible_state, if: -> (obj) { obj.state_changed? || obj.new_record? }
 
   def api_json
     data = self.as_json(only: [:id, :name, :available, :latitude, :longitude], methods: [:phone, :location_timestamp])
@@ -173,15 +175,15 @@ class User < ApplicationRecord
   end
 
   def notify_creation
-    # these two attributes are only present on creation
-    self.ride_zone.event(:new_driver, self, :driver) if self.user_type == 'driver' && self.ride_zone
+    rz_id = self.ride_zone_id || self.ride_zone.try(:id)
+    RideZone.event(rz_id, :new_driver, self, :driver) if self.user_type == 'driver' && rz_id
   end
 
   def notify_update
     was_new = new_record?
     yield
     driver_rz = driver_ride_zone_id
-    RideZone.find(driver_rz).event(:driver_changed, self, :driver) if !was_new && driver_rz
+    RideZone.event(driver_rz, :driver_changed, self, :driver) if !was_new && driver_rz
   end
 
   def add_rolify_role
@@ -203,7 +205,7 @@ class User < ApplicationRecord
   end
 
   def send_welcome_email
-    return if has_sms_name?
+    return if has_sms_name? || @@sim_mode
     if self.has_role? 'driver', :any
       UserMailer.welcome_email_driver(self).deliver_later
     end

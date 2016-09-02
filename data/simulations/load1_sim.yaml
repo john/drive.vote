@@ -1,0 +1,93 @@
+slug: 'loadtest1'
+name: "Test 200 drivers @15 seconds"
+user_identifier: "(dp)"
+ride_zone:
+  name: 'Florida 5th CD'
+  slug: 'florida-5th-cd'
+  zip: '32805'
+  phone_number: '+15555550001'
+  latitude: 28.533609
+  longitude: -81.406011
+  time_zone: 'America/New_York'
+drivers:
+  - count: 200
+    time_jitter: 300
+    loc_jitter: 0.060
+    events:
+      - {at: 4, type: move, lat: 28.541, lng: -81.412 }
+      - {at: "+15", repeat_count: 30, repeat_time: 15, type: move_by, lat: 0.001, lng: 0.001 }
+
+voters:
+  -
+    events:
+      - {at: 10, type: sms, body: "hi can i get a ride"}
+      - {at: "+3", type: sms, body: "1"}
+      - {at: "+5", type: sms, body: "<USERNAME>"}
+      - {at: "+10", type: sms, body: "700 ohio avenue orlando"}
+      - {at: "+5", type: sms, body: "yes"}
+      - {at: "+10", type: sms, body: "3099 Orange Center Blvd, Orlando"}
+      - {at: "+5", type: sms, body: "yes"}
+      - {at: "+7", type: sms, time_offset: "15 minutes"}
+      - {at: "+5", type: sms, body: "yes"}
+      - {at: "+5", type: sms, body: "none"}
+      - {at: "+5", type: sms, body: "none"}
+  -
+    events:
+      - {at: 20, type: sms, body: "hola"}
+      - {at: "+3", type: sms, body: "2"}
+      - {at: "+5", type: sms, body: "<USERNAME>"}
+      - {at: "+10", type: sms, body: "1832 horne ave orlando"}
+      - {at: "+5", type: sms, body: "si"}
+      - {at: "+5", type: sms, body: "no se"}
+      - {at: "+5", type: sms, time_offset: "ahora"}
+      - {at: "+5", type: sms, body: "si"}
+      - {at: "+5", type: sms, body: "1"}
+      - {at: "+5", type: sms, body: "nada"}
+  -
+    events:
+      - {at: 30, type: sms, body: "is this for rides?"}
+      - {at: "+5", type: sms, body: "1"}
+      - {at: "+5", type: sms, body: "<USERNAME>"}
+      - {at: "+10", type: sms, body: "ermas day care orlando"}
+      - {at: "+5", type: sms, body: "yes"}
+      - {at: "+14", type: sms, body: "i'm not really sure"}
+      - {at: "+5", type: sms, body: "wut?"}
+      - {at: "+5", type: sms, body: "skip"}
+      - {at: "+7", type: sms, time_offset: "45 minutes"}
+      - {at: "+5", type: sms, body: "yes"}
+      - {at: "+3", type: sms, body: "0"}
+      - {at: "+3", type: sms, body: "none"}
+
+rides:
+  -
+    pickup_offset: "-5 minutes"
+    from_address: "624 Doby Avenue"
+    from_city: "orlando"
+    from_latitude: 28.534
+    from_longitude: -81.407
+    additional_passengers: 0
+    special_requests: none
+  -
+    pickup_offset: "-15 minutes"
+    from_address: "3337 Rogers Drive"
+    from_city: "orlando"
+    from_latitude: 28.531146
+    from_longitude: -81.419256
+    additional_passengers: 0
+    special_requests: none
+  -
+    pickup_offset: "15 minutes"
+    from_address: "1140 Martin L King Dr"
+    from_city: "orlando"
+    from_latitude: 28.5327758
+    from_longitude: -81.412722
+    additional_passengers: 0
+    special_requests: none
+  -
+    pickup_offset: "30 minutes"
+    from_address: "2001 West South Street"
+    from_city: "orlando"
+    from_latitude: 28.538499
+    from_longitude: -81.405609
+    additional_passengers: 0
+    special_requests: none

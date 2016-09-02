@@ -4,7 +4,7 @@
   Simulations
 - if Simulation.can_start_new?
   .row
-    .col-md-2
+    .col-md-4
       = form_tag start_new_admin_simulations_url, method: :POST do
         = select_tag "slug", options_from_collection_for_select(@simulation_defs, "slug", "name"), include_blank: false
         %br
@@ -29,22 +29,27 @@
       %tr
         %td= sim.id
         %td= sim.name
-        %td= sim.status
+        %td{id: "sim-status-#{sim.id}"}= sim.status
         %td= sim.created_at.localtime.strftime('%l:%M %P')
-        %td= sim.run_time
+        %td= "#{(sim.run_time/60).floor}:%02d" % (sim.run_time % 60)
         %td.sim_latest_event{id: "sim-event-#{sim.id}"}
         %td
           - if sim.active?
             = link_to 'Stop', stop_admin_simulation_path(sim), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }, method: :POST
-          - elsif sim.status == 'completed'
+          - elsif sim.status == 'completed' || sim.status == 'failed'
             = link_to 'Delete', delete_admin_simulation_path(sim), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }, method: :DELETE
 
 :javascript
   createSimulationChannel(simEvent)
 
   function simEvent(data) {
-    if (data.type == 'complete') {
-      location.reload(true)
+    if (data.type == 'status') {
+      if (data.status == 'complete')
+        location.reload(true);
+      else {
+        jQuery('#sim-status-'+data.id).text(data.status)
+        jQuery('#sim-event-'+data.id).text('')
+      }
     } else if (data.type == 'event') {
       jQuery('#sim-event-'+data.id).text(data.name)
     }

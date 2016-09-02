@@ -124,13 +124,15 @@ class Conversation < ApplicationRecord
 
   private
   def notify_creation
-    self.ride_zone.event(:new_conversation, self) if self.ride_zone
+    rz_id = self.ride_zone_id || self.ride_zone.try(:id)
+    RideZone.event(rz_id, :new_conversation, self) if rz_id
   end
 
   def notify_update
     was_new = new_record?
     yield
-    self.ride_zone.event(:conversation_changed, self) if !was_new && self.ride_zone
+    rz_id = self.ride_zone_id || self.ride_zone.try(:id)
+    RideZone.event(rz_id, :conversation_changed, self) if !was_new && rz_id
   end
 
   def check_ride_attached

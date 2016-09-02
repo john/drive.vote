@@ -174,18 +174,18 @@ RSpec.describe User, :type => :model do
     let(:rz) { create :ride_zone }
 
     it 'does not send event for new voter' do
-      expect_any_instance_of(RideZone).to_not receive(:event)
+      expect(RideZone).to_not receive(:event)
       create :voter_user, ride_zone: rz
     end
 
     it 'does not send event for updated voter' do
       u = create :voter_user, ride_zone: rz
-      expect_any_instance_of(RideZone).to_not receive(:event)
+      expect(RideZone).to_not receive(:event)
       u.update_attribute(:name, 'foobar')
     end
 
     it 'sends new driver event' do
-      expect_any_instance_of(RideZone).to receive(:event).with(:new_driver, anything, :driver)
+      expect(RideZone).to receive(:event).with(anything, :new_driver, anything, :driver)
       # cannot use factory because it doesn't create users the same way code
       # does with transient attributes
       User.create! name: 'foo', user_type: 'driver', ride_zone: rz, email: 'foo@example.com', phone_number: '+14155555555', phone_number_normalized: '+14155555555', password: '123456789'
@@ -193,7 +193,7 @@ RSpec.describe User, :type => :model do
 
     it 'sends driver update event on change' do
       d = create :driver_user, ride_zone: rz
-      expect_any_instance_of(RideZone).to receive(:event).with(:driver_changed, anything, :driver)
+      expect(RideZone).to receive(:event).with(rz.id, :driver_changed, anything, :driver)
       d.update_attribute(:name, 'foo bar')
     end
   end

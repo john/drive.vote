@@ -139,9 +139,12 @@ class Ride < ApplicationRecord
     new_driver = self.driver
     notify_old_driver = old_driver != new_driver
     yield
-    self.ride_zone.event(:conversation_changed, self.conversation) if !was_new && self.ride_zone && self.conversation
-    self.ride_zone.event(:driver_changed, old_driver, :driver) if notify_old_driver && old_driver && self.ride_zone
-    self.ride_zone.event(:driver_changed, new_driver, :driver) if new_driver && self.ride_zone
+    rz_id = self.ride_zone_id || self.ride_zone.try(:id)
+    if rz_id
+      RideZone.event(rz_id, :conversation_changed, self.conversation) if !was_new && self.conversation
+      RideZone.event(rz_id, :driver_changed, old_driver, :driver) if notify_old_driver && old_driver
+      RideZone.event(rz_id, :driver_changed, new_driver, :driver) if new_driver
+    end
   end
 
   def close_conversation_when_complete
