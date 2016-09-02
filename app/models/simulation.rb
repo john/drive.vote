@@ -9,7 +9,7 @@ class Simulation < ActiveRecord::Base
   DB_CHECK_INTERVAL = 2
   DB_CHECK_COUNTER = DB_CHECK_INTERVAL / SLEEP_INTERVAL
   WAITING_ASSIGNMENT_INTERVAL = 1.minute
-  EVENT_RUN_POOL = ENV['SIM_EVENT_POOL'] || 15 # simultaneous events to run
+  EVENT_RUN_POOL = ENV['SIM_EVENT_POOL'].try(:to_i) || 15 # simultaneous events to run
 
   USERNAME_BODY = '<USERNAME>'.freeze
 

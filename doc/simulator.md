@@ -53,9 +53,19 @@ Here are the required fields for a simulation definition file:
 ```
 slug: "an identifier with no spaces"
 name: "human friendly name"
-ride_zone_name: "the exact name of the ride zone where the simulation will take place"
+ride_zone:
+  name: 'some name'
+  slug: 'nospaces'
+  zip: '32805'
+  phone_number: '+15555550001'
+  latitude: 28.533609
+  longitude: -81.406011
+  time_zone: 'America/New_York'
 user_identifier: "a small string like (sim) or (demo) to identify users created by the sim"
 ```
+
+The ride zone zip must be in one of the accepted swing states and the lat/long should be
+accurate for the map to look correct.
 
 The definition file can also define drivers, voters, and pre-existing rides.
 
@@ -91,6 +101,31 @@ drivers:
       - {at: "+30", type: move_by, lat: 0.002, lng: 0}
       - {at: "+60", type: move_by, lat: 0, lng: .003 }
 ```
+
+To script a large number of drivers doing exactly the same series of events, you can define
+a group of drivers like this:
+
+```
+drivers:
+  - count: 200
+    time_jitter: 300
+    loc_jitter: 0.060
+    events:
+      - {at: 4, type: move, lat: 28.541, lng: -81.412 }
+      - {at: "+15", repeat_count: 30, repeat_time: 15, type: move_by, lat: 0.001, lng: 0.001 }
+```
+
+The first event **must** be of type move and specify `at`, `lat`, and `lng`
+
+The `count` says how many drivers to create in total that will perform these events.
+
+The `time_jitter` defines the splay in seconds for when the drivers will do their first event. So
+in the example above, 200 drives will be created that randomly appear on the map starting
+at 4 seconds extending to 4+300 seconds.
+
+A random percentage of the  `loc_jitter` is added to both the `lat` and `lng` of the first move event
+for each driver in the group. So drivers created will appear in the example above from
+28.541 to 28.601 latitude.
 
 #### Voters
 As with drivers, the only information needed for each voter is their event stream.
