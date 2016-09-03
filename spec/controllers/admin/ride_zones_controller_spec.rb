@@ -2,13 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Admin::RideZonesController, type: :controller do
 
-  # This should return the minimal set of attributes required to create a valid
-  # RideZone. As you add validations to RideZone, be sure to
-  # adjust the attributes here as well.
   let(:valid_attributes) { { name: 'Toledo, OH', zip: '43601', phone_number: '203-867-5309', slug: 'toledo' } }
-
   let(:invalid_attributes) { skip("Add a hash of attributes invalid for your model") }
-
   let(:rz) { create :ride_zone }
 
   describe "GET #index" do
@@ -256,29 +251,6 @@ RSpec.describe Admin::RideZonesController, type: :controller do
           post :change_role, params: { id: rz.id, driver: user.id, to_role: 'driver' }
         }.to change(rz.drivers, :count).by(1)
       end
-
-
-
-      # it "does not let an unassigned drive promote themselves" do
-      # end
-      #
-      # it "does not let an unassigned drive demote" do
-      # end
-      #
-      # it "does not let a driver promote" do
-      # end
-      #
-      # it "does not let a driver demote" do
-      # end
-      #
-      # it "does not let a dispatcher promote" do
-      # end
-      #
-      # it "does not let a dispatcher demote" do
-      # end
-      #
-      # it "lets a super admin promote an unassigned drive" do
-      # end
     end
   end
 
@@ -319,5 +291,4 @@ RSpec.describe Admin::RideZonesController, type: :controller do
     end
 
   end
-
 end
