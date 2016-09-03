@@ -13,8 +13,8 @@
 = render 'admin/nav', {active: 'ride_zones'}
 
 %h1
-  = @ride_zone.name
-  - if current_user.has_role?(:admin)
+  = link_to @ride_zone.name, admin_ride_zone_path(@ride_zone)
+  - if current_user.has_role?(:admin, @ride_zone)
     &nbsp;
     %small
       = link_to 'Edit', edit_admin_ride_zone_path(@ride_zone), class: 'btn btn-default btn-xs'
@@ -42,52 +42,53 @@
         %li
           = driver.name
 
-%h6
-  Conversations
-
-  %span{style: 'margin-left: 50px; font-weight: normal; font-size: 16px;'}
-    filter: &nbsp;&nbsp;
-
-  %select#conversation-status
-    %option
-      all
-    - Conversation.statuses.each do |status|
-      - selected = (params[:status].present? && params[:status] == status[0]) ? 'selected' : ''
-
-      - if selected.present?
-        %option{selected: selected}
-          = status[0]
-      - else
-        %option
-          = status[0]
-
-  :javascript
-    $('#conversation-status').change(function() {
-      window.location = "/admin/ride_zones/#{@ride_zone.id}?status=" + $(this).val();
-    });
-
-#conversations
-  - if @conversations.present?
-    %table.admin
-      %thead
-        %th Started
-        %th From
-        %th Message Count
-        %th Status
-      %tbody
-        - @conversations.each do |conversation|
-          %tr
-            %td= conversation.created_at.in_time_zone('Pacific Time (US & Canada)').strftime("%l:%M%P, %-m/%-d %Z")
-            %td= conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')
-            %td= conversation.messages.count
-            %td= conversation.status
-
-#events
-%h6
-  Event Stream
-%table.admin{id: 'event-table'}
-  %thead
-    %th Time
-    %th Type
-    %th Data
-  %tbody
+-#
+  / %h6
+  /   Conversations
+  /
+  /   %span{style: 'margin-left: 50px; font-weight: normal; font-size: 16px;'}
+  /     filter: &nbsp;&nbsp;
+  /
+  /   %select#conversation-status
+  /     %option
+  /       all
+  /     - Conversation.statuses.each do |status|
+  /       - selected = (params[:status].present? && params[:status] == status[0]) ? 'selected' : ''
+  /
+  /       - if selected.present?
+  /         %option{selected: selected}
+  /           = status[0]
+  /       - else
+  /         %option
+  /           = status[0]
+  /
+  /   :javascript
+  /     $('#conversation-status').change(function() {
+  /       window.location = "/admin/ride_zones/#{@ride_zone.id}?status=" + $(this).val();
+  /     });
+  /
+  / #conversations
+  /   - if @conversations.present?
+  /     %table.admin
+  /       %thead
+  /         %th Started
+  /         %th From
+  /         %th Message Count
+  /         %th Status
+  /       %tbody
+  /         - @conversations.each do |conversation|
+  /           %tr
+  /             %td= conversation.created_at.in_time_zone('Pacific Time (US & Canada)').strftime("%l:%M%P, %-m/%-d %Z")
+  /             %td= conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')
+  /             %td= conversation.messages.count
+  /             %td= conversation.status
+  /
+  / #events
+  / %h6
+  /   Event Stream
+  / %table.admin{id: 'event-table'}
+  /   %thead
+  /     %th Time
+  /     %th Type
+  /     %th Data
+  /   %tbody

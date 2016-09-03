@@ -30,7 +30,7 @@ module Api::V1
     end
 
     def update
-      if has_zone_privilege?
+      if has_zone_dispatch?
         if (current_user.has_role?(:admin))
           @ride_zone.update(ride_zone_params)
         else

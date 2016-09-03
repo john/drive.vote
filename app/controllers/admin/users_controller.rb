@@ -5,12 +5,17 @@ class Admin::UsersController < Admin::AdminApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def show
-    @dispatch_zone = RideZone.with_role(:dispatcher, @user).first
-    @driving_zone = RideZone.with_role(:driver, @user).first
+    @admin_zones = RideZone.with_role(:admin, @user)
+    @dispatch_zones = RideZone.with_role(:dispatcher, @user)
+    @driving_zones = RideZone.with_role(:driver, @user)
   end
 
   def index
-    @users = User.all
+    if params[:filter].present?
+      @users = User.with_role(params[:filter].to_sym, :any)
+    else
+      @users = User.non_voters
+    end
   end
 
   def edit

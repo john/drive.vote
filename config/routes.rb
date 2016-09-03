@@ -107,10 +107,10 @@ Rails.application.routes.draw do
     resources :rides
     resources :ride_zones, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
       member do
-        post 'add_dispatcher'
-        post 'add_driver'
-        delete 'remove_dispatcher'
-        delete 'remove_driver'
+        get 'drivers'
+        post 'add_role'
+        post 'change_role'
+        delete 'remove_role'
       end
     end
     resources :simulations, only: [:index] do

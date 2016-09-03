@@ -40,7 +40,7 @@ RSpec.describe "RideZones", type: :request do
       expect(response).to have_http_status(302)
     end
 
-    it "lets you view a ride zone if you're a dispatcher for it" do
+    it "redirects ride zones if you're a dispatcher for it" do
       ride_zone = create(:ride_zone)
       user = create(:user)
       user.add_role(:dispatcher, ride_zone)
@@ -48,7 +48,7 @@ RSpec.describe "RideZones", type: :request do
       sign_in user
 
       get admin_ride_zone_path(ride_zone)
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(302)
     end
 
     it "lets you view a ride zone if you're an admin" do
