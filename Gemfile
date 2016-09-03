@@ -9,7 +9,7 @@ gem 'geokit-rails'
 gem 'google-api-client'
 gem 'haml-rails'
 gem 'humane-rails'
-gem 'jquery-rails', github: 'rails/jquery-rails'
+gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'pg'
 gem 'phony_rails'
@@ -25,7 +25,7 @@ gem 'rspec-rails'
 gem 'sass-rails', '~> 5.0'
 gem 'sendgrid'
 gem 'sidekiq'
-gem 'sinatra', github: 'sinatra/sinatra', :require => false # for sidekiq
+gem 'sinatra', '~> 2.0.0.beta2', :require => false # for sidekiq
 github 'sinatra/sinatra' do
   gem 'rack-protection'
 end
