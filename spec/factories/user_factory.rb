@@ -15,6 +15,13 @@ FactoryGirl.define do
 
     factory :driver_user do
       user_type :driver
+      transient do
+        rz { create( :ride_zone ) }
+      end
+
+      after(:create) do |user, evaluator|
+        user.add_role( :driver, evaluator.rz )
+      end
     end
 
     factory :dispatcher_user do

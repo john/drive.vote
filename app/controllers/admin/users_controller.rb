@@ -14,7 +14,7 @@ class Admin::UsersController < Admin::AdminApplicationController
     if params[:filter].present?
       @users = User.with_role(params[:filter].to_sym, :any)
     else
-      @users = User.all
+      @users = User.non_voters
     end
   end
 

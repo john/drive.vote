@@ -1,9 +1,9 @@
 class Admin::RideZonesController < Admin::AdminApplicationController
   include RideZoneParams
 
-  skip_before_action :require_admin_privileges, only: [:show, :edit, :update]
   before_action :set_ride_zone, except: [:index, :new, :create]
-  before_action :require_zone_privilege
+  before_action :require_zone_admin
+  before_action :require_admin_privileges, only: [:add_role, :remove_role, :change_role] #[:show, :edit, :update]
 
   def index
     @ride_zones = RideZone.all
@@ -35,10 +35,12 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   end
 
   def edit
-    @dispatchers = @ride_zone.dispatchers
-    @drivers = @ride_zone.drivers
-    @admins = User.with_role(:admin, @ride_zone) #@ride_zone.admins
-    @local_users = User.all
+    @zone_dispatchers = @ride_zone.dispatchers
+    @zone_drivers = @ride_zone.drivers
+    @zone_admins = User.with_role(:admin, @ride_zone) #@ride_zone.admins
+
+    # TODO: scope to nearby when adding proximity
+    @local_users = User.where.not(id: User.with_role(:voter)) #User.all
   end
 
   def create
@@ -50,7 +52,7 @@ class Admin::RideZonesController < Admin::AdminApplicationController
         ride_zone_params.has_key?(:admin_password)
 
       if @admin_user = User.find_by_email( ride_zone_params[:admin_email] )
-        user_creation_flash = ". User already existed, promoting to RZ admin."
+        user_creation_flash = ". User already exists, promoting to RZ admin."
       else
         @admin_user = User.create!({
           name: ride_zone_params[:admin_name],
@@ -85,6 +87,8 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   end
 
   def add_role
+    require_zone_admin
+
     if params[:user_id].present? && role_type = params[:role].to_sym
       @user = User.find(params[:user_id])
 
@@ -114,6 +118,8 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   end
 
   def remove_role
+    require_zone_admin
+
     if params[:user_id].present? && role_type = params[:role].to_sym
       @user = User.find(params[:user_id])
       @user.remove_role(role_type, @ride_zone)
@@ -131,13 +137,9 @@ class Admin::RideZonesController < Admin::AdminApplicationController
       driver = User.find(params[:driver])
 
       if params[:to_role] == 'driver'
-        logger.debug "-------------------> MAKE DRIVER"
         driver.add_role(:driver, @ride_zone)
         driver.remove_role(:unassigned_driver, @ride_zone)
       else
-        logger.debug "-------------------> params[:to_role]: #{params[:to_role]}"
-
-        logger.debug "-------------------> MAKE UNASSIGNED"
         driver.add_role(:unassigned_driver, @ride_zone)
         driver.remove_role(:driver, @ride_zone)
       end
@@ -148,14 +150,5 @@ class Admin::RideZonesController < Admin::AdminApplicationController
     flash[:notice] = msg
     redirect_back(fallback_location: root_path)
   end
-
-  private
-
-    # Only allow a trusted parameter "white list" through.
-    def ride_zone_params
-      params.require(:ride_zone).permit(:name, :description, :phone_number, :short_code, :city,
-                                        :county, :state, :zip, :country, :latitude, :longitude, :slug,
-                                        :admin_name, :admin_email, :admin_phone_number, :admin_password)
-    end
 
 end

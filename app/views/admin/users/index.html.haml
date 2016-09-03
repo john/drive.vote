@@ -1,5 +1,5 @@
 :css
-  #user-filter { margin-left: 30px; }
+  #user-filter { margin-left: 30px; font-size: 15px; font-weight: normal;}
 
 = render 'admin/nav', {active: 'users'}
 
@@ -7,7 +7,7 @@
   Users
 
   %select#user-filter
-    - %w{unassigned_driverall admin dispatcher driver unassigned_driver}.each do |role|
+    - %w{all admin dispatcher driver unassigned_driver}.each do |role|
       %option{value: role, selected: params[:"filter"] == role}
         = role.gsub('_', ' ')
 

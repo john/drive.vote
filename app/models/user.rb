@@ -51,6 +51,14 @@ class User < ApplicationRecord
   validate :permissible_zip, if: -> (obj) { obj.zip_changed? || obj.new_record? }
   validate :permissible_state, if: -> (obj) { obj.state_changed? || obj.new_record? }
 
+  def self.non_voters
+    User.where.not(id: User.with_role(:voter))
+  end
+
+  def self.sms_name(phone_number)
+    "#{phone_number} via sms"
+  end
+
   def api_json
     data = self.as_json(only: [:id, :name, :available, :latitude, :longitude], methods: [:phone, :location_timestamp])
     data.merge('active_ride' => self.active_ride.try(:api_json))
@@ -89,10 +97,6 @@ class User < ApplicationRecord
 
   def location_timestamp
     self.location_updated_at.try(:to_i)
-  end
-
-  def self.sms_name(phone_number)
-    "#{phone_number} via sms"
   end
 
   def has_sms_name?

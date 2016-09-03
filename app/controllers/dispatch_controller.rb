@@ -1,8 +1,8 @@
 class DispatchController < ApplicationController
   include RideZoneParams
 
-  before_action :set_ride_zone, only: [:show, :drivers, :map]
-  before_action :require_zone_privilege, only: [:show, :drivers, :map]
+  before_action :set_ride_zone
+  before_action :require_zone_dispatch
   before_action :get_driver_count
 
   # GET /dispatch/ride_zone

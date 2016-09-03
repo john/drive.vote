@@ -17,6 +17,14 @@ module ControllerMacros
     end
   end
 
+  def login_driver
+    before(:each) do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      driver_user = FactoryGirl.create(:driver_user, rz: (defined? rz) ? rz : create(:ride_zone))
+      sign_in driver_user
+    end
+  end
+
   def login_user
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:user]

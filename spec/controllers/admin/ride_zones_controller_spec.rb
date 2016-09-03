@@ -1,75 +1,177 @@
 require 'rails_helper'
 
 RSpec.describe Admin::RideZonesController, type: :controller do
-  login_admin
 
   # This should return the minimal set of attributes required to create a valid
   # RideZone. As you add validations to RideZone, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    { name: 'Toledo, OH', zip: '43601', phone_number: '203-867-5309', slug: 'toledo' }
-  }
+  let(:valid_attributes) { { name: 'Toledo, OH', zip: '43601', phone_number: '203-867-5309', slug: 'toledo' } }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  let(:invalid_attributes) { skip("Add a hash of attributes invalid for your model") }
+
+  let(:rz) { create :ride_zone }
 
   describe "GET #index" do
-    it "assigns all ride_zones as @ride_zones" do
-      ride_zone = create(:ride_zone)
-      get :index, params: {}
-      expect(assigns(:ride_zones)).to eq([ride_zone])
+    it "redirects if not logged in" do
+      get :index
+      expect(response).to redirect_to('/404.html')
+    end
+
+    context "as dispatcher" do
+      login_dispatcher
+
+      it "redirects dispatchers" do
+        get :index
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
+    context "as admin" do
+      login_admin
+
+      it "assigns all ride_zones as @ride_zones" do
+        get :index, params: {}
+        expect(assigns(:ride_zones)).to eq([rz])
+      end
     end
   end
 
   describe "GET #show" do
-    it "assigns the requested ride_zone as @ride_zone" do
-      ride_zone = create(:ride_zone)
-      get :show, params: {id: ride_zone.to_param}
-      expect(assigns(:ride_zone)).to eq(ride_zone)
+    it "redirects if not logged in" do
+      get :show, params: {id: rz.to_param}
+      expect(response).to redirect_to('/404.html')
+    end
+
+    context "as dispatcher" do
+      login_dispatcher
+
+      it "redirects dispatchers" do
+        get :show, params: {id: rz.to_param}
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
+    context "as admin" do
+      login_admin
+
+      it "assigns the requested ride_zone as @ride_zone" do
+        get :show, params: {id: rz.to_param}
+        expect(assigns(:ride_zone)).to eq(rz)
+      end
     end
   end
 
   describe "GET #driver" do
-    it "assigns the requested ride_zone as @ride_zone" do
-      ride_zone = create(:ride_zone)
-      get :drivers, params: {id: ride_zone.to_param}
-      expect(assigns(:ride_zone)).to eq(ride_zone)
+    it "redirects if not logged in" do
+      get :drivers, params: {id: rz.to_param}
+      expect(response).to redirect_to('/404.html')
+    end
+
+    context "as dispatcher" do
+      login_dispatcher
+
+      it "redirects dispatchers" do
+        get :drivers, params: {id: rz.to_param}
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
+    context "as admin" do
+      login_admin
+
+      it "assigns the requested ride_zone as @ride_zone" do
+        get :drivers, params: {id: rz.to_param}
+        expect(assigns(:ride_zone)).to eq(rz)
+      end
     end
   end
 
   describe "GET #new" do
-    it "assigns a new ride_zone as @ride_zone" do
-      get :new, params: {}
-      expect(assigns(:ride_zone)).to be_a_new(RideZone)
+    it "redirects if not logged in" do
+      get :new
+      expect(response).to redirect_to('/404.html')
+    end
+
+    context "as dispatcher" do
+      login_dispatcher
+
+      it "redirects dispatchers" do
+        get :new
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
+    context "as admin" do
+      login_admin
+
+      it "assigns a new ride_zone as @ride_zone" do
+        get :new
+        expect(assigns(:ride_zone)).to be_a_new(RideZone)
+      end
     end
   end
 
   describe "GET #edit" do
-    it "assigns the requested ride_zone as @ride_zone" do
-      ride_zone = create(:ride_zone)
-      get :edit, params: {id: ride_zone.to_param}
-      expect(assigns(:ride_zone)).to eq(ride_zone)
+    it "redirects if not logged in" do
+      get :edit, params: {id: rz.to_param}
+      expect(response).to redirect_to('/404.html')
+    end
+
+    context "as dispatcher" do
+      login_dispatcher
+
+      it "redirects dispatchers" do
+        get :edit, params: {id: rz.to_param}
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
+    context "as admin" do
+      login_admin
+
+      it "assigns the requested ride_zone as @ride_zone" do
+        get :edit, params: {id: rz.to_param}
+        expect(assigns(:ride_zone)).to eq(rz)
+      end
     end
   end
 
   describe "POST #add_role" do
-    it "adds a dispatcher to a ride zone" do
+    it "redirects if not logged in" do
       user = create(:user)
-      ride_zone = create(:ride_zone)
-
-      expect {
-        post :add_role, params: {id: ride_zone.to_param, user_id: user.to_param, role: 'dispatcher'}
-      }.to change(ride_zone.dispatchers, :count).by(1)
+      post :add_role, params: {id: rz.to_param, user_id: user.to_param, role: 'dispatcher'}
+      expect(response).to redirect_to('/404.html')
     end
 
-    it "adds a driver to a ride zone" do
-      user = create(:user)
-      ride_zone = create(:ride_zone)
+    context "as dispatcher" do
+      login_dispatcher
 
-      expect {
-        post :add_role, params: {id: ride_zone.to_param, user_id: user.to_param, role: 'driver'}
-      }.to change(ride_zone.drivers, :count).by(1)
+      it "redirects dispatchers" do
+        user = create(:user)
+        post :add_role, params: {id: rz.to_param, user_id: user.to_param, role: 'dispatcher'}
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
+    context "as admin" do
+      login_admin
+
+      it "adds a dispatcher to a ride zone" do
+        user = create(:user)
+
+        expect {
+          post :add_role, params: {id: rz.to_param, user_id: user.to_param, role: 'dispatcher'}
+        }.to change(rz.dispatchers, :count).by(1)
+      end
+
+      it "adds a driver to a ride zone" do
+        user = create(:user)
+        ride_zone = create(:ride_zone)
+
+        expect {
+          post :add_role, params: {id: ride_zone.to_param, user_id: user.to_param, role: 'driver'}
+        }.to change(ride_zone.drivers, :count).by(1)
+      end
     end
 
     # We problably want to relax this. Remove after confirmed
@@ -87,29 +189,117 @@ RSpec.describe Admin::RideZonesController, type: :controller do
   end
 
   describe "POST #remove_role" do
-    it "remove a dispatcher from a ride zone" do
+    it "redirects if not logged in" do
       user = create(:user)
-      ride_zone = create(:ride_zone)
-      user.add_role(:dispatcher, ride_zone)
-
-      expect {
-        delete :remove_role, params: {id: ride_zone.to_param, user_id: user.to_param, role: 'dispatcher'}
-      }.to change(ride_zone.dispatchers, :count).by(-1)
+      user.add_role(:dispatcher, rz)
+      delete :remove_role, params: {id: rz.to_param, user_id: user.to_param, role: 'dispatcher'}
+      expect(response).to redirect_to('/404.html')
     end
 
-    it "remove a driver from a ride zone" do
-      user = create(:user)
-      ride_zone = create(:ride_zone)
-      user.add_role(:driver, ride_zone)
+    context "as dispatcher" do
+      login_dispatcher
 
-      expect {
-        delete :remove_role, params: {id: ride_zone.to_param, user_id: user.to_param, role: 'driver'}
-      }.to change(ride_zone.drivers, :count).by(-1)
+      it "redirects dispatchers" do
+        user = create(:user)
+        user.add_role(:dispatcher, rz)
+        delete :remove_role, params: {id: rz.to_param, user_id: user.to_param, role: 'dispatcher'}
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
+    context "as admin" do
+      login_admin
+
+      it "remove a dispatcher from a ride zone" do
+        user = create(:user)
+        user.add_role(:dispatcher, rz)
+
+        expect {
+          delete :remove_role, params: {id: rz.to_param, user_id: user.to_param, role: 'dispatcher'}
+        }.to change(rz.dispatchers, :count).by(-1)
+      end
+
+      it "remove a driver from a ride zone" do
+        user = create(:user)
+        user.add_role(:driver, rz)
+
+        expect {
+          delete :remove_role, params: {id: rz.to_param, user_id: user.to_param, role: 'driver'}
+        }.to change(rz.drivers, :count).by(-1)
+      end
+    end
+  end
+
+  describe "POST #change_role" do
+    it "redirects if not logged in" do
+      user = create(:unassigned_driver_user)
+      post :change_role, params: { id: rz.id, driver: user.id, to_role: 'driver' }
+      expect(response).to redirect_to('/404.html')
+    end
+
+    context "as dispatcher" do
+      login_dispatcher
+
+      it "redirects dispatchers" do
+        user = create(:unassigned_driver_user)
+        post :change_role, params: { id: rz.id, driver: user.id, to_role: 'driver' }
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
+    context "as admin" do
+      login_admin
+
+      it "lets an admin promote" do
+        user = create(:unassigned_driver_user)
+        expect {
+          post :change_role, params: { id: rz.id, driver: user.id, to_role: 'driver' }
+        }.to change(rz.drivers, :count).by(1)
+      end
+
+
+
+      # it "does not let an unassigned drive promote themselves" do
+      # end
+      #
+      # it "does not let an unassigned drive demote" do
+      # end
+      #
+      # it "does not let a driver promote" do
+      # end
+      #
+      # it "does not let a driver demote" do
+      # end
+      #
+      # it "does not let a dispatcher promote" do
+      # end
+      #
+      # it "does not let a dispatcher demote" do
+      # end
+      #
+      # it "lets a super admin promote an unassigned drive" do
+      # end
     end
   end
 
   describe "POST #create" do
-    context "with valid params" do
+    it "redirects if not logged in" do
+      post :create, params: {ride_zone: valid_attributes}
+      expect(response).to redirect_to('/404.html')
+    end
+
+    context "as dispatcher" do
+      login_dispatcher
+
+      it "redirects dispatchers" do
+        post :create, params: {ride_zone: valid_attributes}
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
+    context "admin with valid params" do
+      login_admin
+
       it "creates a new RideZone" do
         expect {
           post :create, params: {ride_zone: valid_attributes}
