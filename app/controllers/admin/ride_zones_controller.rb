@@ -3,7 +3,7 @@ class Admin::RideZonesController < Admin::AdminApplicationController
 
   before_action :set_ride_zone, except: [:index, :new, :create]
   before_action :require_zone_admin
-  before_action :require_admin_privileges, only: [:add_role, :remove_role, :change_role] #[:show, :edit, :update]
+  before_action :require_admin_privileges, only: [:add_role, :remove_role, :change_role]
 
   def index
     @ride_zones = RideZone.all
@@ -12,17 +12,6 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   def show
     @dispatchers = @ride_zone.dispatchers
     @drivers = @ride_zone.drivers
-
-    # # TODO: @drivers_on_call = User.with_role(:driver, @ride_zone).on_call
-    # status = params[:status]
-    # if status.present?
-    #   rel = @ride_zone.conversations.order('created_at DESC')
-    #   if rel.respond_to? status
-    #     @conversations = rel.public_send(status)
-    #   end
-    # else
-    #   @conversations = @ride_zone.conversations.order('created_at DESC')
-    # end
   end
 
   def drivers
