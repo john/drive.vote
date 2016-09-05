@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe "AdminHome", type: :request do
-  describe "GET /admin" do
+RSpec.describe "Simulations", type: :request do
+  describe "GET /admin/simulations" do
 
     it "redirects if you're not logged in" do
-      get admin_path
+      get admin_simulations_path
       expect(response).to have_http_status(302)
     end
 
@@ -12,7 +12,7 @@ RSpec.describe "AdminHome", type: :request do
       user = create(:user)
       sign_in user
 
-      get admin_path
+      get admin_simulations_path
       expect(response).to have_http_status(302)
     end
 
@@ -20,7 +20,7 @@ RSpec.describe "AdminHome", type: :request do
       user = create(:admin_user)
       sign_in user
 
-      get admin_path
+      get admin_simulations_path
       expect(response).to have_http_status(200)
     end
 

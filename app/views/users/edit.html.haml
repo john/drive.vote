@@ -4,20 +4,11 @@
   td { vertical-align: top;}
   label { margin-top: 10px; font-weight: normal;}
 
--#%script{:src => 'https://maps.googleapis.com/maps/api/js?v=3.exp&key=#{@google_api_key}&sensor=false&libraries=places'}
-
--# %script{:src => '//maps.google.com/maps/api/js?v=3.23&key=#{@google_api_key}&sensor=false&libraries=places'}
-
 .col-sm-8.field{style: 'margin-top: -20px; margin-bottom: -10px;'}
   - if current_user.has_required_fields?
     %h2 Edit #{link_to @user.name, @user}
 
   - else
-    -# %h4
-      / #{t(:thanks)} #{current_user.name}
-      / %br
-      / %small{style: 'color: #777;'}
-      /   =t(:complete_registration)
     %b{style: 'font-size: 16px;'}
       #{t(:thanks)}!
     %br
@@ -32,7 +23,7 @@
 
 = render 'form'
 
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=#{@google_api_key}"></script>
+%script{:src => "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=#{ENV['GOOGLE_API_KEY']}"}
 %script{:src => 'https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/dist/typeahead.bundle.min.js'}
 %script{:src => 'https://cdnjs.cloudflare.com/ajax/libs/typeahead-addresspicker/0.1.4/typeahead-addresspicker.min.js'}
 
@@ -50,17 +41,9 @@
     });
 
     addressPicker.bindDefaultTypeaheadEvent($('#user_city_state'));
-
     $(addressPicker).on('addresspicker:selected', function (event, result) {
-
-      //alert('result.address(): ' + result.address());
-
       var city_state = result.address().split(',');
       $('#user_city').val( city_state[0] );
       $('#user_state').val( city_state[1] );
-
-      //alert("city:" + $('#user_city').val() );
-      //alert("state:" + $('#user_state').val() );
-
     });
   })

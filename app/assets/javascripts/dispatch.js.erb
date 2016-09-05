@@ -1,4 +1,3 @@
-//= require jquery-ui
 // app/assets/javascripts/dispatch.js
 "use strict";
 
@@ -16,6 +15,20 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
     waiting_pickup: 'Waiting for Pickup', pickup_overdue: 'Pickup Overdue',
     driving: 'Driving', completion_overdue: 'Completion Overdue', complete: 'Complete'
   };
+
+  this._statusPinURLs = {
+    messaging: "<%= asset_path('rider-waiting-assignment.png')%>",
+    help_needed: "<%= asset_path('rider-overdue-pickup.png')%>",
+    scheduled: "<%= asset_path('rider-waiting-assignment.png')%>",
+    waiting_assignment: "<%= asset_path('rider-waiting-assignment.png')%>",
+    assignment_overdue: "<%= asset_path('rider-overdue-pickup.png')%>",
+    waiting_pickup: "<%= asset_path('rider-waiting-pickup.png')%>",
+    pickup_overdue: "<%= asset_path('rider-overdue-assignment.png')%>",
+    driving: "<%= asset_path('driver-driving.png')%>",
+    completion_overdue: "<%= asset_path('driver-waiting-assignment.png')%>",
+    complete: "<%= asset_path('driver-driving.png')%>"
+  };
+
   this._statusClasses = [];
   for (var status in this._statusStrings) {
     this._statusClasses.push('conv-status-' + status)
@@ -143,10 +156,9 @@ DispatchController.prototype = {
   conversationCells: function (c, status) {
     var timestamp = (c.last_message_time === undefined) ? '' : new Date(c.last_message_time*1000).toISOString();
     var pickup = (c.ride === undefined) ? '' : new Date(c.ride.pickup_at*1000).toISOString();
-    var ride_icon = (c.ride !== undefined) ? '🚕' : '';
     var ride_id = (c.ride !== undefined) ? c.ride.id : 0;
 
-    var cells = '<td class="ride-icon" data-ride-id="'+ ride_id +'">' + ride_icon + '</td>' +
+    var cells = '<td class="ride-icon" data-ride-id="'+ ride_id +'"><img class="ride-img" src="' + this._statusPinURLs[status] + '" /></td>' +
       '<td class="from">' + c.from_phone + '<br>' + c.name + '</td>' +
       '<td>' +
         '<div class="sm pull-right">+' + (c.message_count-1) + ' earlier</div>' +
@@ -154,7 +166,7 @@ DispatchController.prototype = {
           '<time class="timeago" datetime="' + timestamp + '">' + timestamp + '</time>' +
         '</span>' +
         '<br>' + c.last_message_body.truncate(100) + '</td>' +
-      '<td>' + this._statusStrings[status]+ '</td>';
+      '<td>' + this._statusStrings[status] + '</td>';
     if (status == 'complete' || status == 'driving') {
       cells = cells + '<td></td>';
     } else {

@@ -13,8 +13,6 @@
 
 //= require humane-rails
 //= require underscore
-//= require jquery2
-//= require jquery_ujs
 //= require turbolinks
 //= require_tree .
 //= require_tree ./channels
