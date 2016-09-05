@@ -156,7 +156,6 @@ DispatchController.prototype = {
   conversationCells: function (c, status) {
     var timestamp = (c.last_message_time === undefined) ? '' : new Date(c.last_message_time*1000).toISOString();
     var pickup = (c.ride === undefined) ? '' : new Date(c.ride.pickup_at*1000).toISOString();
-    // var ride_icon = (c.ride !== undefined) ? '🚕' : '';
     var ride_id = (c.ride !== undefined) ? c.ride.id : 0;
 
     var cells = '<td class="ride-icon" data-ride-id="'+ ride_id +'"><img class="ride-img" src="' + this._statusPinURLs[status] + '" /></td>' +
