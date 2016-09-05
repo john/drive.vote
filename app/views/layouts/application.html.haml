@@ -18,20 +18,21 @@
     %meta{ property: 'og:description', content: "#{t(:long_description)}" }
     %meta{ property:'og:image', content: "#{asset_url(t(:logo_filename))}" }
 
-    %link{href: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', rel: 'stylesheet'}
+    %link{href: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css', rel: 'stylesheet'}
     %link{href: "https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css", rel: "stylesheet"}
-    %link{href: "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css", rel: "stylesheet"}
+    %link{href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css", rel: "stylesheet"}
     %link{href: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css", rel: "stylesheet"}
+    %link{href: "https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/css/jqueryui-editable.css", rel: "stylesheet"}
+
+    %link{href: "https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.min.css", rel: "stylesheet"}
 
     = stylesheet_link_tag "application", media: "all"
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
 
-    %script{src: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'}
-    %script{src: 'https://code.jquery.com/ui/1.12.0/jquery-ui.min.js'}
-
-    %link{href: "https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/css/jqueryui-editable.css", rel: "stylesheet"}
-    %link{href: "https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css", rel: "stylesheet"}
-
+    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js'}
+    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery-ujs/1.2.2/rails.min.js'}
+    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'}
+    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js'}
     %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/js/jqueryui-editable.min.js'}
     %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.5.3/jquery.timeago.min.js'}
     %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/sugar/1.4.1/sugar.min.js'}

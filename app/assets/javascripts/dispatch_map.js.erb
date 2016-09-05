@@ -153,6 +153,7 @@ Map.prototype = {
        gicon = {url: icon.url,
          size: {width: icon.w, height: icon.h},
          anchor: {x: icon.w/2, y: icon.h},
+         scaledSize: new google.maps.Size(21, 34),
          labelOrigin: {x: icon.w/2, y: 0}},
       gmarker = new google.maps.Marker({
         position: {lat: lat, lng: lon},

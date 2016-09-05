@@ -11,11 +11,11 @@
     .dispatch-filters
       = link_to 'All', '#', 'data-statuses': '*', class: 'btn-conv-filter'
       &nbsp; · &nbsp;
-      = link_to 'Needs Help', '#', 'data-statuses': 'help_needed', class: 'btn-conv-filter'
+      = link_to 'Need Help', '#', 'data-statuses': 'help_needed', class: 'btn-conv-filter'
       &nbsp; · &nbsp;
       = link_to 'Overdue', '#', 'data-statuses': 'assignment_overdue pickup_overdue completion_overdue', class: 'btn-conv-filter'
       &nbsp; · &nbsp;
-      = link_to 'Waiting Assignment', '#', 'data-statuses': 'waiting_assignment', class: 'btn-conv-filter'
+      = link_to 'Waiting Assign.', '#', 'data-statuses': 'waiting_assignment', class: 'btn-conv-filter'
       &nbsp; · &nbsp;
       = link_to 'Waiting Pickup', '#', 'data-statuses': 'waiting_pickup', class: 'btn-conv-filter'
       &nbsp; · &nbsp;
@@ -36,6 +36,35 @@
 
   .col-md-5{style: 'margin-top: 15px;'}
     #dispatch-map
+
+    .pull-left{style: 'width: 100px; font-weight: bold;'}
+      = link_to 'Map key', '#', onclick: "$('.key').toggle(); return false;"
+    .pull-left
+      %table.key{style: 'display: none; margin-bottom: 30px;;'}
+        %tr
+          %td.key-pin-cell= image_tag "rider-overdue-assignment.png", class: 'key-pin-img'
+          %td.key-label     Voter overdue assign.
+          %td.key-pin-cell= image_tag "driver-waiting-assignment.png", class: 'key-pin-img'
+          %td.key-label     Driver waiting assign.
+
+        %tr
+          %td.key-pin-cell= image_tag "rider-overdue-pickup.png", class: 'key-pin-img'
+          %td.key-label     Voter overdue pickup
+          %td.key-pin-cell= image_tag "driver-driving.png", class: 'key-pin-img'
+          %td.key-label     Driver assigned
+
+        %tr
+          %td.key-pin-cell= image_tag "rider-overdue-pickup.png", class: 'key-pin-img'
+          %td.key-label     Voter awaiting pickup
+          %td.key-pin-cell= image_tag "driver-driving.png", class: 'key-pin-img'
+          %td.key-label     Driver driving
+
+        %tr
+          %td.key-pin-cell= image_tag "rider-waiting-assignment.png", class: 'key-pin-img'
+          %td.key-label     Voter awaiting assign.
+          %td.key-pin-cell
+          %td.key-label
+
 
 :javascript
 
