@@ -8,6 +8,10 @@ Rails.application.routes.draw do
     unlocks: 'users/unlocks'
   }
 
+  devise_scope :user do
+    get '/volunteer_to_drive/:id', :to => 'users/registrations#new'
+  end
+
   # https://blog.heroku.com/real_time_rails_implementing_websockets_in_rails_5_with_action_cable
   # NOTE: to re-enable you also need to uncomment ./channels in application.js,
   # and the code in /channels/messages.js

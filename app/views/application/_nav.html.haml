@@ -31,7 +31,7 @@
 
         - if user_signed_in? && current_user.has_role?(:admin)
           &nbsp; &#183; &nbsp;
-          = link_to 'admin', admin_path, style: 'color: red;'
+          = link_to 'admin', admin_ride_zones_path, style: 'color: red;'
 
         .btn.btn-info.btn-xs{style: 'margin: 5px 0 0 20px;'}
           = link_to t(:learn_more), about_path(locale: I18n.locale.to_s), style: 'color: white;'
