@@ -15,8 +15,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
       end
     end
 
-    if params[:id].present?
-      if @ride_zone = RideZone.find(params[:id])
+    if params[:zone].present?
+      if @ride_zone = RideZone.find(params[:zone])
         resource.ride_zone_id = @ride_zone.id
       end
     end
@@ -54,6 +54,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   protected
+
+  # When new users sign up, we don't want them automatically signed in
+  # http://stackoverflow.com/questions/18545306/dont-allow-sign-in-after-sign-up-in-devise
+  def sign_up(resource_name, resource)
+    true
+  end
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
