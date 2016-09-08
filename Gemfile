@@ -1,4 +1,4 @@
-#ruby=2.2.5
+#ruby=2.3.1
 #ruby-gemset=drive.vote
 source 'https://rubygems.org'
 
