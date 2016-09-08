@@ -24,3 +24,5 @@ test:
 production:
   <<: *default
   database: vote_production
+  password: abcd1234
+  host: drivethevote-dev.cruv7pnft9jw.us-west-2.rds.amazonaws.com
