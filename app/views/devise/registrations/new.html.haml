@@ -72,10 +72,5 @@
       By saving your are agreeing to the #{link_to t(:terms_of_service), terms_of_service_path, target: '_blank'}.
     %br
 
-- @google_api_key = 'AIzaSyDefFnLJQKoz1OQGjaqaJPHMISVcnXZNPc'
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=#{@google_api_key}"></script>
-%script{:src => 'https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/dist/typeahead.bundle.min.js'}
-%script{:src => 'https://cdnjs.cloudflare.com/ajax/libs/typeahead-addresspicker/0.1.4/typeahead-addresspicker.min.js'}
-
 :javascript
   locationAutocomplete.attach();
