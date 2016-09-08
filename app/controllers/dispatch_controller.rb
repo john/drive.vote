@@ -20,7 +20,7 @@ class DispatchController < ApplicationController
   private
 
   def get_driver_count
-    @driver_count = @ride_zone.drivers.count
+    @driver_count = @ride_zone.drivers.count(:all)
   end
 
 end
