@@ -1,4 +1,7 @@
 # config/initializers/geocoder.rb
+
+GEO_NEARBY_DISTANCE = 75
+
 Geocoder.configure(
 
   # geocoding service (see below for supported options):

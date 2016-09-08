@@ -23,10 +23,6 @@
 
 = render 'form'
 
-%script{:src => "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=#{ENV['GOOGLE_API_KEY']}"}
-%script{:src => 'https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/dist/typeahead.bundle.min.js'}
-%script{:src => 'https://cdnjs.cloudflare.com/ajax/libs/typeahead-addresspicker/0.1.4/typeahead-addresspicker.min.js'}
-
 :javascript
   $( function() {
     var addressPicker = new AddressPicker({autocompleteService: {types: ['(cities)'], componentRestrictions: {country: 'US'}}});

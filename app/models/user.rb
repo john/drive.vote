@@ -51,6 +51,9 @@ class User < ApplicationRecord
   validate :permissible_zip, if: -> (obj) { obj.zip_changed? || obj.new_record? }
   validate :permissible_state, if: -> (obj) { obj.state_changed? || obj.new_record? }
 
+  # scope that gets Users, of any/all roles, close to a particular RideZone
+  scope :nearby_ride_zone, ->(rz) { near(rz.zip, GEO_NEARBY_DISTANCE) }
+
   def self.non_voters
     User.where.not(id: User.with_role(:voter))
   end

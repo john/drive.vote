@@ -11,6 +11,33 @@ https://docs.google.com/document/d/10g34fvm6qZ-s8ca0TDMET56McxQYUPsc_1dOPFlYoAY/
 1. Run `rake pg:first_run` on the first run, and `rake pg:start` for subsequent runs to start the DB
 1. Run `bundle exec rails s` to start the server
 
+## Deploying the code
+Code is deployed using AWS Elastic Beanstalk CLI tool which is a python script. To execute a deploy,
+configure a python virtualenv and run the Elastic Beanstalk CLI tool from there.
+
+Prod URL (cloudflare): https://drive.vote.
+
+EB direct URL: https://dtv-dev.us-west-2.elasticbeanstalk.com.
+
+### Bootstrap python
+1. Install [pip](https://pip.pypa.io/en/stable/installing/) if it isn't there. If you're using Os X, it's likely already installed.
+1. Install virtual env. `sudo pip install virtualenv`
+
+### Create a virtualenv in your checkout.
+This creates a directory named `venv` which is a little self-consistent Python sandbox that you can install packages into without being root.
+1. `virtualenv venv`
+1. `source venv/bin/activate`  --  Do this for each new shell
+1. `pip install -r requirements.pip`
+
+### Run your elastic beanstalk commands
+
+| Command | Description |
+| ------- | ----------- |
+| `eb deploy` | Deploys to the environment in `.elasticbeanstalk/config.yml` from `HEAD` (yes! the last commit! not necessarily what's on your filesystem!). Command blocks until deploy is finished. |
+| `eb printenv` | Prints environment variables the running app is currently figured with. Warning: has secrets. All people that can deploy can see the secrets. |
+| `eb setenv A=1 B=2` | Sets new environment variables. This will restart the webservers so combine multiple variable updates on one line. Command blocks until deploy is finished.  |
+
+
 ## Using the app.
 The app is not very functional without a logged in session. To login, visit `localhost:3000/users/sign_in`.
 Refer to `db/seed.rb` for login info in dev.

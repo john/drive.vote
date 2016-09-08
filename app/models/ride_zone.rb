@@ -32,6 +32,10 @@ class RideZone < ApplicationRecord
   attr_accessor :admin_phone_number
   attr_accessor :admin_password
 
+  def nearby_users
+    User.nearby_ride_zone self
+  end
+
   def active_rides
     # convoluted because you have to get the enum integer. probably a more graceful way to do it.
     self.rides.where("status IN (?)", Ride.active_statuses.map { |stat| Ride.statuses[stat] })
@@ -46,11 +50,11 @@ class RideZone < ApplicationRecord
   end
 
   def drivers
-    User.with_role(:driver, self)
+    nearby_users.with_role(:driver, self)
   end
 
   def unassigned_drivers
-    User.with_role(:unassigned_driver, self)
+    nearby_users.with_role(:unassigned_driver, self)
   end
 
   def unavailable_drivers
@@ -58,7 +62,7 @@ class RideZone < ApplicationRecord
   end
 
   def available_drivers
-    User.with_role(:driver, self) - unavailable_drivers
+    nearby_users.with_role(:driver, self) - unavailable_drivers
   end
 
   def driving_stats
