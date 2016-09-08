@@ -165,7 +165,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
 
         expect {
           post :add_role, params: {id: ride_zone.to_param, user_id: user.to_param, role: 'driver'}
-        }.to change(ride_zone.drivers, :count).by(1)
+        }.to change{ ride_zone.drivers.count(:all) }.by(1)
       end
     end
 
@@ -220,7 +220,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
 
         expect {
           delete :remove_role, params: {id: rz.to_param, user_id: user.to_param, role: 'driver'}
-        }.to change(rz.drivers, :count).by(-1)
+        }.to change{ rz.drivers.count(:all) }.by(-1)
       end
     end
   end
@@ -249,7 +249,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
         user = create(:unassigned_driver_user)
         expect {
           post :change_role, params: { id: rz.id, driver: user.id, to_role: 'driver' }
-        }.to change(rz.drivers, :count).by(1)
+        }.to change{ rz.drivers.count(:all) }.by(1)
       end
     end
   end
