@@ -2,6 +2,9 @@
 
 Drive the Vote helps people arrange free rides to the polls on election day.
 
+Weekly meeting notes [here](
+https://docs.google.com/document/d/10g34fvm6qZ-s8ca0TDMET56McxQYUPsc_1dOPFlYoAY/edit?usp=sharing).
+
 ## Running the code
 1. Install postgresql.
 1. Install Redis
