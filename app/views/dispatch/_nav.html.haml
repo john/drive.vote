@@ -1,7 +1,7 @@
 %h3.dispatch
   = @ride_zone.name
 
-  %span.dispatch-links
+  %span.dispatch-links{style: 'border: 0px solid red;'}
     = @ride_zone.phone_number.phony_formatted(normalize: :US, spaces: '-')
     &nbsp; · &nbsp;
 
@@ -18,3 +18,20 @@
     &nbsp; · &nbsp;
 
     = link_to 'Poll finder', 'http://yourfuckingpollingplace.com/', target: '_blank'
+    &nbsp; · &nbsp;
+
+    %a.dispatch-xtras.glyphicon.glyphicon-cog{ 'data-toggle': "popover" }
+
+
+:javascript
+  $(function () {
+    var content = "#{j( link_to 'Schedule a ride', get_a_ride_path(@ride_zone.slug) )}";
+    content += "<div style='padding-top: 8px; margin-top: 8px; border-top: 1px solid #ccc;'>";
+    content += "#{j( link_to 'Driver volunteer form', volunteer_to_drive_path(@ride_zone.slug))}";
+    content += "</div>";
+
+    $('.dispatch-xtras').popover({
+      placement: 'bottom',
+      html: true,
+      content: content})
+  })

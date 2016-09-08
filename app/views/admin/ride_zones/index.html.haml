@@ -6,15 +6,13 @@
   %small
     = link_to 'New Ride Zone', new_admin_ride_zone_path, class: 'btn btn-default btn-xs'
 
-%table.admin
+%table.table-striped.admin
   %thead
     %tr
       %th Name
       %th Zip
       %th Description
       %th Phone number
-      %th
-
 
   %tbody
     - @ride_zones.each do |ride_zone|
@@ -27,14 +25,23 @@
           = ride_zone.description
         %td
           = ride_zone.phone_number
-        %td
-          = link_to 'Dispatch', dispatch_path(ride_zone), target: '_blank'
 
+        %td{style: 'font-size: 13px; color: #999;'}
+          = link_to 'Dispatch', dispatch_path(ride_zone.slug), target: '_blank'
           &nbsp &#183; &nbsp;
-          = link_to "Drivers (#{ride_zone.drivers.count}, #{ride_zone.unassigned_drivers.count} unassigned)", drivers_admin_ride_zone_path(ride_zone)
 
+          = link_to "Drivers", drivers_admin_ride_zone_path(ride_zone)
           &nbsp &#183; &nbsp;
+
+          = link_to 'Schedule form', get_a_ride_path(ride_zone.slug), target: '_blank'
+          &nbsp &#183; &nbsp;
+
+          = link_to 'Volunteer form', volunteer_to_drive_path(ride_zone.slug), target: '_blank'
+          &nbsp &#183; &nbsp;
+
           = link_to 'Edit', edit_admin_ride_zone_path(ride_zone)
 
-          &nbsp &#183; &nbsp;
-          = link_to 'Destroy', admin_ride_zone_path(ride_zone), :method => :delete, :data => { :confirm => 'Are you sure?' }
+          = link_to admin_ride_zone_path(ride_zone), :method => :delete, :data => { :confirm => 'Are you abso-fucking-lutley sure? You can never go back.' } do
+            %button.close{type: "button", 'aria-label': "Close", style: 'margin-left: 30px;'}
+              %span{'aria-hidden': "true"}
+                &times;

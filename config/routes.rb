@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   }
 
   devise_scope :user do
-    get '/volunteer_to_drive/:id', :to => 'users/registrations#new'
+    get '/volunteer_to_drive/:id', :to => 'users/registrations#new', :as => 'volunteer_to_drive'
   end
 
   # https://blog.heroku.com/real_time_rails_implementing_websockets_in_rails_5_with_action_cable
@@ -57,7 +57,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'get_a_ride/:ride_zone_id' => 'rides#new'
+  get 'get_a_ride/:ride_zone_id' => 'rides#new', as: 'get_a_ride'
   get 'conseguir_un_paseo/:ride_zone_id' => 'rides#new'
 
   resources :rides, only: [:create, :edit, :update]

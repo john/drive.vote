@@ -124,10 +124,24 @@ form {
 h3.dispatch { margin: 0 0 0 10px; }
 
 .dispatch-links {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
   font-size: 13px;
   font-weight: normal;
   margin-left: 20px;
   color: #444;
+}
+
+.dispatch-xtras {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  border: 0px solid red;
+  font-size: 18px;
+  color: #444;
+  opacity: 0.5;
+  margin-top: -3px;
 }
 
 .dispatch-filters {
