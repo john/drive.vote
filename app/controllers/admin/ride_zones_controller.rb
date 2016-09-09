@@ -2,11 +2,21 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   include RideZoneParams
 
   before_action :set_ride_zone, except: [:index, :new, :create]
-  before_action :require_zone_admin
-  before_action :require_admin_privileges, only: [:add_role, :remove_role, :change_role]
+  before_action :require_zone_admin, except: [:index] # handled at the method level
+  before_action :require_admin_privileges, only: [:new, :create] # only super admins
 
   def index
-    @ride_zones = RideZone.all
+    if current_user.present?
+      if current_user.has_role?(:admin)
+        @ride_zones = RideZone.all
+      elsif current_user.is_zone_admin?
+        @ride_zones = RideZone.with_role(:admin, current_user)
+      else
+        redirect_to '/404.html'
+      end
+    else
+      redirect_to '/404.html'
+    end
   end
 
   def show
@@ -76,8 +86,6 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   end
 
   def add_role
-    require_zone_admin
-
     if params[:user_id].present? && role_type = params[:role].to_sym
       @user = User.find(params[:user_id])
 
@@ -103,12 +111,9 @@ class Admin::RideZonesController < Admin::AdminApplicationController
 
     flash[:notice] = msg
     redirect_back(fallback_location: root_path)
-
   end
 
   def remove_role
-    require_zone_admin
-
     if params[:user_id].present? && role_type = params[:role].to_sym
       @user = User.find(params[:user_id])
       @user.remove_role(role_type, @ride_zone)
