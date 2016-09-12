@@ -3,6 +3,7 @@
   = hidden_field_tag(:ride_zone_id, @ride_zone.id)
   = hidden_field_tag(:locale, @locale || 'en')
   = hidden_field_tag(:user_id, @user.try(:id))
+
   - if @ride.errors.any? || (@user && @user.errors.any?)
     #error_explanation
       %h5= t(:problem_saving_ride)
@@ -16,40 +17,67 @@
   - if !rescheduling && (!@user || @user.new_record?)
     .col-sm-8.field
       = f.label t(:voter_name)
-      = f.text_field :name, class: 'form-control', required: true
-
-    .col-sm-8.field
-      = f.label t(:voter_password)
-      = f.password_field :password, class: 'form-control', required: true
-
-    .col-sm-8.field
-      = f.label t(:mobile_phone_number)
-      = f.text_field :phone_number, class: 'form-control', required: true
-
-    .col-sm-8.field
-      = f.label t(:email_address)
-      = f.text_field :email, class: 'form-control', required: true
+      = f.text_field :name, class: 'form-control', required: true, maxlength: 100
 
   .col-sm-8.field
     = f.label t(:where_to_be_picked_up)
-    = f.text_field :from_address, class: 'form-control', required: true
+    = f.text_field :from_address, class: 'form-control', required: true, maxlength: 100
 
   .col-sm-8.field
     = f.label t(:city_for_pickup)
-    = f.text_field :from_city, class: 'form-control', required: true
+    = f.text_field :city_state, class: 'form-control', required: 'true', autocomplete: :off, maxlength: 40
+
+    -# populated by location_autocomplete from city_state, which is populated by google places api
+    = f.hidden_field :from_city, :value => ''
+    = f.hidden_field :from_state, :value => ''
+    = f.hidden_field :from_zip, :value => ''
 
   .col-sm-8.field
     = f.label t(:what_time_pickup)
-    = f.datetime_select :pickup_at
+    %p#pickupdaytime
+      %input.date.start#pickup_at_date{type: 'text', name: "pickup_day", value: "11/8/2016", maxlength: 10}
+      %input.time.start#pickup_at_time{type: 'text', name: "pickup_time", value: "Select a time", required: 'true', maxlength: 8}
 
   .col-sm-8.field
     = f.label t(:how_many_additional)
-    = f.select :additional_passengers, 0..5, {prompt: 'None Assigned'}
+    &nbsp;
+    = f.select :additional_passengers, [['0 (just me)',0], [1,1], [2,2], [3,3], [4,4], [5,5]]
 
   .col-sm-8.field
     = f.label t(:special_requests)
-    = f.text_area :special_requests, class: 'form-control'
+    = f.text_area :special_requests, class: 'form-control', maxlength: 200
+
+  .col-sm-8.field
+    = f.label t(:mobile_phone_number)
+    = f.telephone_field :phone_number, class: 'form-control', required: true, maxlength: 17
+
+  .col-sm-8.field
+    = f.label t(:email_address)
+    = f.text_field :email, class: 'form-control', required: true, maxlength: 50
+
+  .col-sm-8.field
+    = f.label t(:voter_password)
+    = f.password_field :password, class: 'form-control', required: true, minlength: 8, maxlength: 50
 
   .col-sm-8.actions
     = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."
 
+:javascript
+  $( function() {
+    // initialize input widgets first
+    $('#pickupdaytime .time').timepicker({
+      'showDuration': true,
+      'timeFormat': 'g:ia'
+    });
+
+    $('#pickupdaytime .date').datepicker({
+      'format': 'm/d/yyyy',
+      'autoclose': true
+    });
+
+    // initialize datepair
+    var dpEl = document.getElementById('pickupdaytime');
+    var datepair = new Datepair(dpEl);
+
+    locationAutocomplete.attach('#ride_city_state', '#ride_from_city', '#ride_from_state', '#ride_from_zip');
+  });

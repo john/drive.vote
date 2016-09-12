@@ -1,3 +1,6 @@
-%h4= t(:thanks_requesting)
+%h3{style: "margin: 10px 0 0 15px;"}
+  = t(:schedule_ride)
+%div{style: "margin: 0 0 0 15px; font-weight: normal; font-size: 22px;"}
+  = t(:to_or_from)
 
 = render partial: 'form', locals: {rescheduling: false}

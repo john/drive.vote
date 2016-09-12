@@ -19,7 +19,6 @@
     %h3
       = t(:will_drive)
 
-
   %div{style: 'margin-bottom: 0;'}
     = t(:will_drive_signup_description)
 
@@ -33,15 +32,15 @@
 
   .col-sm-8.field
     = f.label :name, "#{t(:name)} *"
-    = f.text_field :name, class: 'form-control', autofocus: true
+    = f.text_field :name, class: 'form-control', autofocus: true, maxlength: 100
 
   .col-sm-8.field
     = f.label :email, "Email *"
-    = f.email_field :email, class: 'form-control', required: 'true'
+    = f.email_field :email, class: 'form-control', required: 'true', maxlength: 50
 
   .col-sm-8.field
     = f.label :phone_number, "#{t(:phone_number)} *"
-    = f.telephone_field :phone_number, class: 'form-control', required: 'true'
+    = f.telephone_field :phone_number, class: 'form-control', required: 'true', maxlength: 17
 
   - unless @ride_zone.present?
     .col-sm-8.field
@@ -51,7 +50,7 @@
           %div{style: "line-height: 22px; margin-bottom: 0px;"}
             %i
               Where you want to volunteer. Enter a location in #{User::VALID_STATES.map{|s| s[0]}.to_sentence(last_word_connector: ', or ')}.
-      = f.text_field :city_state, class: 'form-control', required: 'true', autocomplete: :off
+      = f.text_field :city_state, class: 'form-control', required: 'true', autocomplete: :off, maxlength: 40
 
       -# These hidden fields
       = f.hidden_field :city, :value => ''
@@ -63,7 +62,7 @@
       %em
         (#{@minimum_password_length} characters minimum)
     %br/
-    = f.password_field :password, autocomplete: "off", class: 'form-control', required: 'true'
+    = f.password_field :password, autocomplete: "off", class: 'form-control', required: 'true', minlength: 8, maxlength: 50
 
   .col-sm-8.field
     = f.submit t(:volunteer_to_drive), class: 'btn btn-primary', style: 'width: 100%; margin: 10px 0 0 0', disable_with: "#{t(:saving)}..."
@@ -74,5 +73,5 @@
 
 :javascript
   $( function() {
-    locationAutocomplete.attach();
+    locationAutocomplete.attach('#user_city_state', '#user_city', '#user_state');
   });

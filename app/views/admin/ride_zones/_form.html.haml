@@ -8,23 +8,23 @@
 
   .col-sm-8.field
     = f.label :name, "Ride Zone Name"
-    = f.text_field :name, class: 'form-control', autofocus: true, required: true
+    = f.text_field :name, class: 'form-control', autofocus: true, required: true, maxlength: 50
 
   .col-sm-8.field
     = f.label :slug
-    = f.text_field :slug, class: 'form-control', required: true
+    = f.text_field :slug, class: 'form-control', required: true, maxlength: 50
 
   .col-sm-8.field
     = f.label :description, t(:description)
-    = f.text_area :description, class: 'form-control'
+    = f.text_area :description, class: 'form-control', maxlength: 100
 
   .col-sm-8.field
     = f.label :phone_number
-    = f.text_field :phone_number, class: 'form-control', required: true
+    = f.text_field :phone_number, class: 'form-control', required: true, maxlength: 17
 
   .col-sm-8.field
     = f.label :zip
-    = f.text_field :zip, class: 'form-control', required: true
+    = f.text_field :zip, class: 'form-control', required: true, maxlength: 12
 
 
   -# ----------> CREATE ADMIN USER TOO
@@ -33,19 +33,19 @@
       %i
         You can optionally create an admin user for this Ride Zone.
     = f.label :admin_name, "Name of admin user"
-    = f.text_field :admin_name, class: 'form-control', required: true
+    = f.text_field :admin_name, class: 'form-control', required: true, maxlength: 50
 
   .col-sm-8.field.for_admin_user
     = f.label :admin_phone_number, "Mobile phone"
-    = f.text_field :admin_phone_number, class: 'form-control', required: true
+    = f.text_field :admin_phone_number, class: 'form-control', required: true, maxlength: 17
 
   .col-sm-8.field.for_admin_user
     = f.label :admin_email, "Email"
-    = f.text_field :admin_email, class: 'form-control', required: true
+    = f.text_field :admin_email, class: 'form-control', required: true, maxlength: 50
 
   .col-sm-8.field.for_admin_user
     = f.label :admin_password, "Admin user's password"
-    = f.password_field :admin_password, class: 'form-control', required: true
+    = f.password_field :admin_password, class: 'form-control', required: true, minlength: 8, maxlength: 50
 
 
   .col-sm-8.actions.for_admin_user

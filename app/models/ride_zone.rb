@@ -13,6 +13,14 @@ class RideZone < ApplicationRecord
   validates_presence_of :slug
   validates_uniqueness_of :slug
 
+  validates :name, length: { maximum: 50 }
+  validates :phone_number, length: { maximum: 20 }
+  validates :slug, length: { maximum: 20 }
+  validates :description, length: { maximum: 200 }
+  validates :city, length: { maximum: 50 }
+  validates :state, length: { maximum: 2 }
+  validates :zip, length: { maximum: 12 }
+
   geocoded_by :zip
   reverse_geocoded_by :latitude, :longitude do |obj,results|
     if geo = results.first

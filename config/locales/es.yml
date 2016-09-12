@@ -118,14 +118,16 @@ es:
   thanks_wait_for_driver: '¡Gracias! Tenemos su información y pondremos en contacto con usted antes de su viaje.'
 
   # voter form
-  thanks_requesting: 'Gracias por su interés en un viaje hacia o desde las urnas!'
+  thanks_requesting: 'Gracias por su interés en un paseo el %{time}. Txt este número con preguntas, o enviar correo electrónico a %{email}.'
+  schedule_ride: 'Programar un viaje gratis'
+  to_or_from: 'hacia o desde su lugar de votación'
   sign_in_to_edit: 'Por favor, inicia sesión para cambiar su solicitud paseo existente'
   voter_name: 'Cuál es su nombre?'
   voter_password: 'Introducir una contraseña (por lo menos 8 caracteres)'
   mobile_phone_number: '¿Cuál es su número de teléfono móvil?'
   where_to_be_picked_up: '¿Dónde desea ser recogido?'
   city_for_pickup: '¿Qué ciudad es que en?'
-  what_time_pickup: '¿A qué hora desea ser recogido?'
+  what_time_pickup: '¿A qué dia y hora?'
   special_requests: 'Cualquier petición especial (silla de ruedas, asientos para niños)?'
   problem_saving_ride: 'Hubo un problema al guardar la información de su'
   found_active_request: 'Encontramos una solicitud activa - reprogramación'

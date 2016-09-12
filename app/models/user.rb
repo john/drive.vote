@@ -13,22 +13,6 @@ class User < ApplicationRecord
   geocoded_by :full_address
   after_validation :geocode, if: ->(obj){ obj.new_record? }
 
-  def is_driver?
-    RideZone.find_roles(:driver, self).present?
-  end
-
-  def is_super_admin?
-    current_user.has_role?(:admin)
-  end
-
-  def is_zone_admin?
-    RideZone.find_roles(:admin, self).present?
-  end
-
-  def is_dispatcher?
-    RideZone.find_roles(:dispatcher, self).present?
-  end
-
   # TODO: when users & ridezones are geocoded
   # def nearby_ride_zones
   # end
@@ -63,6 +47,17 @@ class User < ApplicationRecord
   validate :permissible_zip, if: -> (obj) { obj.zip_changed? || obj.new_record? }
   validate :permissible_state, if: -> (obj) { obj.state_changed? || obj.new_record? }
 
+  validates :email, length: { maximum: 50 }
+  validates :name, length: { maximum: 50 }
+  validates :phone_number, length: { maximum: 17 }
+  validates :address1, length: { maximum: 100 }
+  validates :address2, length: { maximum: 100 }
+  validates :city, length: { maximum: 50 }
+  validates :state, length: { maximum: 2 }
+  validates :zip, length: { maximum: 12 }
+  validates :password, length: { in: 8..50 }
+  validates :country, length: { maximum: 50 }
+
   # scope that gets Users, of any/all roles, close to a particular RideZone
   scope :nearby_ride_zone, ->(rz) { near(rz.zip, GEO_NEARBY_DISTANCE) }
 
@@ -81,6 +76,18 @@ class User < ApplicationRecord
 
   def is_super_admin?
     self.has_role?(:admin)
+  end
+
+  def is_driver?
+    RideZone.find_roles(:driver, self).present?
+  end
+
+  def is_zone_admin?
+    RideZone.find_roles(:admin, self).present?
+  end
+
+  def is_dispatcher?
+    RideZone.find_roles(:dispatcher, self).present?
   end
 
   def driver_ride_zone_id

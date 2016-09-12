@@ -1,17 +1,17 @@
 = form_for @user, :role => 'form', :html => {:class => 'form-horizontal'}  do |f|
   .col-sm-8.field
     = f.label :phone_number, "#{t(:phone_number)} *"
-    = f.telephone_field :phone_number, class: 'form-control', autofocus: true, required: 'true'
+    = f.telephone_field :phone_number, class: 'form-control', autofocus: true, required: 'true', maxlength: 20
 
   .col-sm-8.field
     = f.label :address1, t(:address)
-    = f.text_field :address1, class: 'form-control'
+    = f.text_field :address1, class: 'form-control', maxlength: 50
 
   .clearfix
 
   .col-sm-8.field
     = f.label :city_state, "#{t(:city)} and #{t(:state)} *"
-    = f.text_field :city_state, class: 'form-control', required: 'true'
+    = f.text_field :city_state, class: 'form-control', required: 'true', maxlength: 50
 
     -# These hidden fields
     = f.hidden_field :city, :value => ''

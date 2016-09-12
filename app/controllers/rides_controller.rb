@@ -27,15 +27,25 @@ class RidesController < ApplicationController
       if existing
         # after sign-in voters are redirected to edit their existing open ride
         flash[:notify] = t(:sign_in_to_edit)
-        redirect_to '/users/sign_in?locale=' + @user.locale
-        return
+        redirect_to '/users/sign_in?locale=' + @user.locale and return
       end
     end
 
     # create user if not found
     rp = ride_params
     @ride = Ride.new(rp)
-    @ride.ride_zone = @ride_zone
+
+    if @ride.pickup_at.blank?
+      if Chronic.parse(params[:pickup_day]) && Chronic.parse(params[:pickup_time])
+        from_date_time = Chronic.parse( [params[:pickup_day], params[:pickup_time]].join(' ') )
+        @ride.pickup_at =  from_date_time
+      else
+        @ride.errors.add(:pickup_at, :invalid)
+        flash[:notice] = "Please fill in scheduled date and time."
+        redirect_back(fallback_location: root_path) and return
+      end
+    end
+
     unless @user
       user_params = params.require(:ride).permit(:phone_number, :email, :name, :password)
       attrs = {
@@ -50,20 +60,23 @@ class RidesController < ApplicationController
       # todo: better error handling
       @user = User.create(attrs)
       if @user.errors.any?
-        render :new
-        return
+        flash[:notice] = "Problem creating a new user."
+        redirect_back(fallback_location: root_path) and return
       end
     end
 
     @ride.voter = @user
     @ride.status = :scheduled
+    @ride.ride_zone = @ride_zone
+
     if @ride.save
       Conversation.create_from_staff(@ride_zone, @user, thanks_msg, Rails.configuration.twilio_timeout,
                                      {status: :ride_created, ride: @ride})
       UserMailer.welcome_email_voter_ride(@user, @ride).deliver_later
       render :success
     else
-      render :new
+      flash[:notice] = "Problem creating a ride."
+      redirect_back(fallback_location: root_path) and return
     end
   end
 
@@ -85,7 +98,7 @@ class RidesController < ApplicationController
 
   private
   def thanks_msg
-    I18n.t(:thanks_for_requesting, locale: @ride.voter.locale, time: @ride.pickup_at.strftime('%m/%d %l:%M %P'))
+    I18n.t(:thanks_for_requesting, locale: (@ride.voter.locale ||= 'en'), time: @ride.pickup_at.strftime('%m/%d %l:%M %P'), email: 'hello@drive.vote')
   end
 
   def require_session
