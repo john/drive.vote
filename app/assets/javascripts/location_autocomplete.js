@@ -1,9 +1,9 @@
 var locationAutocomplete = {
 
-  attach: function() {
+  attach: function( city_state_el, city_el, state_el, zip_el ) {
     var addressPicker = new AddressPicker({autocompleteService: {types: ['(cities)'], componentRestrictions: {country: 'US'}}});
 
-    $('#user_city_state').typeahead({minLength: 0}, {
+    $( city_state_el ).typeahead({minLength: 0}, {
       displayKey: 'description',
       source: addressPicker.ttAdapter(),
       display: function(data){
@@ -12,12 +12,18 @@ var locationAutocomplete = {
       }
     });
 
-    addressPicker.bindDefaultTypeaheadEvent($('#user_city_state'));
+    addressPicker.bindDefaultTypeaheadEvent($( city_state_el ));
+
     $(addressPicker).on('addresspicker:selected', function (event, result) {
-      //alert('result.address(): ' + result.address());
       var city_state = result.address().split(',');
-      $('#user_city').val( city_state[0].trim() );
-      $('#user_state').val( city_state[1].trim() );
+      var city = city_state[0];
+      var state_zip = city_state[1].trim().split(' ');
+      var state = state_zip[0].trim();
+      var zip = state_zip[1].trim();
+
+      $( city_el ).val( city );
+      $( state_el ).val( state );
+      $( zip_el ).val( zip );
     });
   }
 

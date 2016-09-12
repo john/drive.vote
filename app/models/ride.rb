@@ -16,7 +16,12 @@ class Ride < ApplicationRecord
   around_save :notify_update
   before_save :close_conversation_when_complete
 
-  attr_accessor :phone_number, :email # for ride + voter creation
+  # for ride + voter creation
+  attr_accessor :phone_number
+  attr_accessor :email
+  attr_accessor :city_state
+  attr_accessor :pickup_day
+  attr_accessor :pickup_time
 
   include HasAddress
   include ToFromAddressable
