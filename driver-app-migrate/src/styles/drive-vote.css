@@ -1,0 +1,43 @@
+/* Layout */
+
+.container {
+    max-width: 600px;
+}
+
+.btn-bottom {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+label{
+	display: block;
+}
+
+.fa-5x{
+	font-size: 100px;
+}
+
+
+/* Utilities */
+
+.p-y {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.p-b {
+    padding-bottom: 1em;
+}
+
+.m-b {
+    margin-bottom: 1em;
+}
+
+
+/* Utilities */
+
+.logo {
+    width: 80px;
+}
