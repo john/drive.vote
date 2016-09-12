@@ -17,15 +17,15 @@
   - if !rescheduling && (!@user || @user.new_record?)
     .col-sm-8.field
       = f.label t(:voter_name)
-      = f.text_field :name, class: 'form-control', required: true
+      = f.text_field :name, class: 'form-control', required: true, maxlength: 100
 
   .col-sm-8.field
     = f.label t(:where_to_be_picked_up)
-    = f.text_field :from_address, class: 'form-control', required: true
+    = f.text_field :from_address, class: 'form-control', required: true, maxlength: 100
 
   .col-sm-8.field
     = f.label t(:city_for_pickup)
-    = f.text_field :city_state, class: 'form-control', required: 'true', autocomplete: :off
+    = f.text_field :city_state, class: 'form-control', required: 'true', autocomplete: :off, maxlength: 40
 
     -# populated by location_autocomplete from city_state, which is populated by google places api
     = f.hidden_field :from_city, :value => ''
@@ -35,8 +35,8 @@
   .col-sm-8.field
     = f.label t(:what_time_pickup)
     %p#pickupdaytime
-      %input.date.start#pickup_at_date{type: 'text', name: "pickup_day", value: "11/8/2016"}
-      %input.time.start#pickup_at_time{type: 'text', name: "pickup_time", value: "Select a time", required: 'true'}
+      %input.date.start#pickup_at_date{type: 'text', name: "pickup_day", value: "11/8/2016", maxlength: 10}
+      %input.time.start#pickup_at_time{type: 'text', name: "pickup_time", value: "Select a time", required: 'true', maxlength: 8}
 
   .col-sm-8.field
     = f.label t(:how_many_additional)
@@ -45,19 +45,19 @@
 
   .col-sm-8.field
     = f.label t(:special_requests)
-    = f.text_area :special_requests, class: 'form-control'
+    = f.text_area :special_requests, class: 'form-control', maxlength: 200
 
   .col-sm-8.field
     = f.label t(:mobile_phone_number)
-    = f.text_field :phone_number, class: 'form-control', required: true
+    = f.telephone_field :phone_number, class: 'form-control', required: true, maxlength: 17
 
   .col-sm-8.field
     = f.label t(:email_address)
-    = f.text_field :email, class: 'form-control', required: true
+    = f.text_field :email, class: 'form-control', required: true, maxlength: 50
 
   .col-sm-8.field
     = f.label t(:voter_password)
-    = f.password_field :password, class: 'form-control', required: true
+    = f.password_field :password, class: 'form-control', required: true, minlength: 8, maxlength: 50
 
   .col-sm-8.actions
     = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."
