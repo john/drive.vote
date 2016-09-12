@@ -5,6 +5,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
   let(:valid_attributes) { { name: 'Toledo, OH', zip: '43601', phone_number: '203-867-5309', slug: 'toledo' } }
   let(:invalid_attributes) { skip("Add a hash of attributes invalid for your model") }
   let(:rz) { create :ride_zone }
+  let(:rz2) { create :ride_zone, slug: 'rz2' }
 
   describe "GET #index" do
     it "redirects if not logged in" do
@@ -21,12 +22,35 @@ RSpec.describe Admin::RideZonesController, type: :controller do
       end
     end
 
-    context "as admin" do
+    context "as single rz admin" do
+      login_rz_admin
+
+      it "shows you the rz you have rights to" do
+        get :index, params: {}
+        expect( assigns(:ride_zones).first).to eq(rz)
+        expect( assigns(:ride_zones).collect(&:id)).to include(rz.id)
+        expect( assigns(:ride_zones).length).to eq(1)
+      end
+
+      it "does not show you rz's you don't have rights to" do
+        get :index, params: {}
+        expect( assigns(:ride_zones).first).to eq(rz)
+        expect( assigns(:ride_zones).collect(&:id)).to include(rz.id)
+        expect( assigns(:ride_zones).length).to eq(1)
+        expect( assigns(:ride_zones).collect(&:id)).not_to include(rz2.id)
+      end
+    end
+
+    context "as super admin" do
       login_admin
 
       it "assigns all ride_zones as @ride_zones" do
         get :index, params: {}
-        expect(assigns(:ride_zones)).to eq([rz])
+
+        expect(assigns(:ride_zones)).to eq([rz, rz2])
+        expect( assigns(:ride_zones).length).to eq(2)
+        expect( assigns(:ride_zones).collect(&:id)).to include(rz.id)
+        expect( assigns(:ride_zones).collect(&:id)).to include(rz2.id)
       end
     end
   end
@@ -48,6 +72,15 @@ RSpec.describe Admin::RideZonesController, type: :controller do
 
     context "as admin" do
       login_admin
+
+      it "assigns the requested ride_zone as @ride_zone" do
+        get :show, params: {id: rz.to_param}
+        expect(assigns(:ride_zone)).to eq(rz)
+      end
+    end
+
+    context "as single rz admin" do
+      login_rz_admin
 
       it "assigns the requested ride_zone as @ride_zone" do
         get :show, params: {id: rz.to_param}
@@ -79,6 +112,16 @@ RSpec.describe Admin::RideZonesController, type: :controller do
         expect(assigns(:ride_zone)).to eq(rz)
       end
     end
+
+    context "as single rz admin" do
+      login_rz_admin
+
+      it "assigns the requested ride_zone as @ride_zone" do
+        get :drivers, params: {id: rz.to_param}
+        expect(assigns(:ride_zone)).to eq(rz)
+      end
+    end
+
   end
 
   describe "GET #new" do
@@ -91,6 +134,15 @@ RSpec.describe Admin::RideZonesController, type: :controller do
       login_dispatcher
 
       it "redirects dispatchers" do
+        get :new
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
+    context "as single rz admin" do
+      login_rz_admin
+
+      it "redirects single rz admins" do
         get :new
         expect(response).to redirect_to('/404.html')
       end
@@ -121,6 +173,15 @@ RSpec.describe Admin::RideZonesController, type: :controller do
       end
     end
 
+    context "as single rz admin" do
+      login_rz_admin
+
+      it "assigns the requested ride_zone as @ride_zone" do
+        get :edit, params: {id: rz.to_param}
+        expect(assigns(:ride_zone)).to eq(rz)
+      end
+    end
+
     context "as admin" do
       login_admin
 
@@ -148,6 +209,26 @@ RSpec.describe Admin::RideZonesController, type: :controller do
       end
     end
 
+    context "as single rz admin" do
+      login_rz_admin
+
+      it "adds a dispatcher to a ride zone" do
+        user = create(:user)
+
+        expect {
+          post :add_role, params: {id: rz.to_param, user_id: user.to_param, role: 'dispatcher'}
+        }.to change(rz.dispatchers, :count).by(1)
+      end
+
+      it "adds a driver to a ride zone" do
+        user = create(:user)
+
+        expect {
+          post :add_role, params: {id: rz.to_param, user_id: user.to_param, role: 'driver'}
+        }.to change{ rz.drivers.count(:all) }.by(1)
+      end
+    end
+
     context "as admin" do
       login_admin
 
@@ -161,11 +242,10 @@ RSpec.describe Admin::RideZonesController, type: :controller do
 
       it "adds a driver to a ride zone" do
         user = create(:user)
-        ride_zone = create(:ride_zone)
 
         expect {
-          post :add_role, params: {id: ride_zone.to_param, user_id: user.to_param, role: 'driver'}
-        }.to change{ ride_zone.drivers.count(:all) }.by(1)
+          post :add_role, params: {id: rz.to_param, user_id: user.to_param, role: 'driver'}
+        }.to change{ rz.drivers.count(:all) }.by(1)
       end
     end
 
@@ -199,6 +279,28 @@ RSpec.describe Admin::RideZonesController, type: :controller do
         user.add_role(:dispatcher, rz)
         delete :remove_role, params: {id: rz.to_param, user_id: user.to_param, role: 'dispatcher'}
         expect(response).to redirect_to('/404.html')
+      end
+    end
+
+    context "as single rz admin" do
+      login_rz_admin
+
+      it "remove a dispatcher from a ride zone" do
+        user = create(:user)
+        user.add_role(:dispatcher, rz)
+
+        expect {
+          delete :remove_role, params: {id: rz.to_param, user_id: user.to_param, role: 'dispatcher'}
+        }.to change(rz.dispatchers, :count).by(-1)
+      end
+
+      it "remove a driver from a ride zone" do
+        user = create(:user)
+        user.add_role(:driver, rz)
+
+        expect {
+          delete :remove_role, params: {id: rz.to_param, user_id: user.to_param, role: 'driver'}
+        }.to change{ rz.drivers.count(:all) }.by(-1)
       end
     end
 
@@ -242,10 +344,21 @@ RSpec.describe Admin::RideZonesController, type: :controller do
       end
     end
 
+    context "as single rz admin" do
+      login_rz_admin
+
+      it "can promote" do
+        user = create(:unassigned_driver_user)
+        expect {
+          post :change_role, params: { id: rz.id, driver: user.id, to_role: 'driver' }
+        }.to change{ rz.drivers.count(:all) }.by(1)
+      end
+    end
+
     context "as admin" do
       login_admin
 
-      it "lets an admin promote" do
+      it "can promote" do
         user = create(:unassigned_driver_user)
         expect {
           post :change_role, params: { id: rz.id, driver: user.id, to_role: 'driver' }
@@ -264,6 +377,15 @@ RSpec.describe Admin::RideZonesController, type: :controller do
       login_dispatcher
 
       it "redirects dispatchers" do
+        post :create, params: {ride_zone: valid_attributes}
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
+    context "as single rz admin" do
+      login_rz_admin
+
+      it "redirects" do
         post :create, params: {ride_zone: valid_attributes}
         expect(response).to redirect_to('/404.html')
       end

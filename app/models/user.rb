@@ -13,8 +13,20 @@ class User < ApplicationRecord
   geocoded_by :full_address
   after_validation :geocode, if: ->(obj){ obj.new_record? }
 
-  def is_a_driver?
+  def is_driver?
     RideZone.find_roles(:driver, self).present?
+  end
+
+  def is_super_admin?
+    current_user.has_role?(:admin)
+  end
+
+  def is_zone_admin?
+    RideZone.find_roles(:admin, self).present?
+  end
+
+  def is_dispatcher?
+    RideZone.find_roles(:dispatcher, self).present?
   end
 
   # TODO: when users & ridezones are geocoded
@@ -122,7 +134,7 @@ class User < ApplicationRecord
   private
 
   def if_driver_remove_unassigned(added_role)
-    if self.is_a_driver?
+    if self.is_driver?
       self.remove_role(:unassigned_driver)
     end
   end

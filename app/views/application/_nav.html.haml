@@ -26,12 +26,19 @@
         &nbsp; &#183; &nbsp;
         - unless user_signed_in?
           = link_to t(:sign_in), new_user_session_path
+
         - else
           = link_to t(:sign_out), destroy_user_session_path, {method: :delete}
 
-        - if user_signed_in? && current_user.has_role?(:admin)
+        - if user_signed_in?
           &nbsp; &#183; &nbsp;
-          = link_to 'admin', admin_ride_zones_path, style: 'color: red;'
+
+          - if current_user.is_super_admin? || current_user.is_zone_admin?
+            = link_to 'admin', admin_ride_zones_path, style: 'color: red;'
+
+          - elsif current_user.is_dispatcher?
+            = link_to 'dispatch', dispatch_path( RideZone.with_role(:dispatcher, current_user ).first.slug), target: '_blank'
+
 
         .btn.btn-info.btn-xs{style: 'margin: 5px 0 0 20px;'}
           = link_to t(:learn_more), about_path(locale: I18n.locale.to_s), style: 'color: white;'

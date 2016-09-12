@@ -13,6 +13,16 @@ FactoryGirl.define do
       user_type :admin
     end
 
+    factory :zoned_admin_user do
+      transient do
+        rz { create( :ride_zone ) }
+      end
+
+      after(:create) do |user, evaluator|
+        user.add_role( :admin, evaluator.rz)
+      end
+    end
+
     factory :driver_user do
       user_type :driver
       transient do

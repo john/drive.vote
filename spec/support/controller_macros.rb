@@ -7,6 +7,18 @@ module ControllerMacros
     end
   end
 
+  def login_rz_admin
+    before(:each) do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      # rz_admin_user = FactoryGirl.create(:user)
+      # rz_admin_user.add_role(:admin, rz)
+
+      rz_admin_user = FactoryGirl.create(:zoned_admin_user, rz: (defined? rz) ? rz : create(:ride_zone))
+
+      sign_in rz_admin_user
+    end
+  end
+
   # If rz is defined as a let variable within the rspec block, the created dispatcher will be
   # associated with that rz. If none is defined, a new rz is created.
   def login_dispatcher
