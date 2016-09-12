@@ -4,3 +4,16 @@
 require_relative 'config/application'
 
 Rails.application.load_tasks
+
+# Hook webpack to run along with asset precompilation.
+Rake::Task['assets:precompile'].enhance ['webpack:compile']
+
+namespace :foreman do
+  task :prod do
+    sh "bundle exec foreman start -f Procfile"
+  end
+
+  task :dev do
+    sh "bundle exec foreman start -f Procfile.dev"
+  end
+end
