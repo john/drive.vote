@@ -7,6 +7,8 @@ import  store, { history } from './store';
 import App from './containers/App';
 import DriverStatusContainer from './containers/DriverStatusContainer';
 
+require('./styles/drive-vote.css');
+
 const router = (
 	<Provider store={store}>
 		<Router history={history}>

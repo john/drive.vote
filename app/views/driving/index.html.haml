@@ -24,5 +24,4 @@
         %p
           Loading app...
 
-  -# Production build of the driver app, see: https://github.com/mcamis/drive.vote.driver
-  %script{src: 'https://drive-vote-driver.herokuapp.com/static/js/main.js'}
+  = javascript_include_tag *webpack_asset_paths("driving")

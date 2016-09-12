@@ -1,8 +1,7 @@
 import fetch from 'isomorphic-fetch';
 
-const dev = 'http://localhost:3000/driving';
-const prod = 'https://drive.vote/driving';
-const api = prod;
+// Expect API to be served off the same origin.
+const api = '/driving';
 
 export function requestStatus() {
     return {
