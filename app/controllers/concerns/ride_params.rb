@@ -32,4 +32,11 @@ module RideParams
                                  :special_requests,
                                  :status)
   end
+
+  def require_ride_access
+    unless user_signed_in? && has_zone_rights?(@ride.ride_zone)
+      redirect_to '/404.html'
+    end
+  end
+
 end

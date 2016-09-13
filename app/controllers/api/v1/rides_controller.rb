@@ -3,6 +3,7 @@ module Api::V1
     include RideParams
 
     before_action :find_ride
+    before_action :require_ride_access
 
     def update_attribute
       if(params.has_key?(:name) && params.has_key?(:value))

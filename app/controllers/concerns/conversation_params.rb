@@ -9,5 +9,11 @@ module ConversationParams
                                          :from_latitude, :from_longitude, :to_latitude, :to_longitude,
                                          :additional_passengers, :special_requests)
   end
-  
+
+  def require_conversation_access
+    unless user_signed_in? && has_zone_rights?(@conversation.ride_zone)
+      redirect_to '/404.html'
+    end
+  end
+
 end

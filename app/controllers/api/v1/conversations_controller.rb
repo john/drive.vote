@@ -3,6 +3,7 @@ module Api::V1
     include ConversationParams
 
     before_action :find_conversation
+    before_action :require_conversation_access
     before_action :ensure_message, only: :create_message
 
     def show
