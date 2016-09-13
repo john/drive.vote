@@ -9,7 +9,13 @@ https://docs.google.com/document/d/10g34fvm6qZ-s8ca0TDMET56McxQYUPsc_1dOPFlYoAY/
 1. Install postgresql.
 1. Install Redis
 1. Run `rake pg:first_run` on the first run, and `rake pg:start` for subsequent runs to start the DB
-1. Run `bundle exec rails s` to start the server
+1. Run `rake foreman:dev` to start the server in dev mode.
+
+For production, instead of `foreman:dev`, run
+  1. `rake assets:precompile`
+  1. `rake foreman:prod`
+
+Do NOT do run rails directly by hand. If you do, you will not start the webpack dev server meaning the javascript be available.
 
 ## Deploying the code
 Code is deployed using AWS Elastic Beanstalk CLI tool which is a python script. To execute a deploy,

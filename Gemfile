@@ -34,6 +34,7 @@ gem 'turbolinks', '~> 5.x'
 gem 'twilio-ruby'
 gem 'uglifier', '>= 1.3.0'
 gem 'underscore-rails'
+gem 'webpack-rails'
 gem 'zip-codes'
 
 group :development do
@@ -60,3 +61,5 @@ group :test do
   gem 'rails-controller-testing'
   gem 'timecop'
 end
+
+gem 'foreman'
