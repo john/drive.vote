@@ -3,6 +3,7 @@
 source 'https://rubygems.org'
 
 gem 'city-state'
+gem 'chronic'
 gem 'devise'
 gem 'geocoder'
 gem 'geokit-rails'

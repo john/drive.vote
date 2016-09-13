@@ -8,11 +8,11 @@
 
   .col-sm-8.field
     = f.label :name
-    = f.text_field :name, class: 'form-control'
+    = f.text_field :name, class: 'form-control', maxlength: 50
 
   .col-sm-8.field
     = f.label :description
-    = f.text_area :description, class: 'form-control'
+    = f.text_area :description, class: 'form-control', maxlength: 100
 
   .col-sm-8.field
     = f.label :pickup_at
@@ -36,7 +36,7 @@
 
   .col-sm-8.field
     = f.label :special_requests
-    = f.text_area :special_requests, class: 'form-control'
+    = f.text_area :special_requests, class: 'form-control', maxlength: 100
 
   .col-sm-8.field
     = f.label :status

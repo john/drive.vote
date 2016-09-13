@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160901062404) do
+ActiveRecord::Schema.define(version: 20160912184452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,6 +109,8 @@ ActiveRecord::Schema.define(version: 20160901062404) do
     t.datetime "status_updated_at"
     t.string   "to_state",                                        default: "", null: false
     t.string   "from_state",                                      default: "", null: false
+    t.string   "from_zip",                                        default: "", null: false
+    t.string   "to_zip",                                          default: "", null: false
     t.index ["driver_id"], name: "index_rides_on_driver_id", using: :btree
     t.index ["ride_zone_id"], name: "index_rides_on_ride_zone_id", using: :btree
     t.index ["voter_id"], name: "index_rides_on_voter_id", using: :btree

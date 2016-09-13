@@ -6,6 +6,16 @@ RSpec.describe Ride, type: :model do
   it { should belong_to(:ride_zone) }
   it { should belong_to(:voter) }
   it { should validate_presence_of(:voter) }
+  it { should validate_length_of(:name).is_at_most(50)}
+
+  it { should validate_length_of(:from_address).is_at_most(100)}
+  it { should validate_length_of(:from_city).is_at_most(50)}
+  it { should validate_length_of(:from_state).is_at_most(2)}
+  it { should validate_length_of(:from_zip).is_at_most(50)}
+  it { should validate_length_of(:to_address).is_at_most(100)}
+  it { should validate_length_of(:to_city).is_at_most(50)}
+  it { should validate_length_of(:to_state).is_at_most(2)}
+  it { should validate_length_of(:to_zip).is_at_most(12)}
 
   describe 'event generation' do
     let!(:driver) { create :driver_user }

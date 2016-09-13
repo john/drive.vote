@@ -11,12 +11,28 @@ class Ride < ApplicationRecord
   scope :completed, -> { where(status: :complete)}
 
   validates :voter, presence: true
+  validates :name, length: { maximum: 50 }
+  validates :from_address, length: { maximum: 100 }
+  validates :from_city, length: { maximum: 50 }
+  validates :from_state, length: { maximum: 2 }
+  validates :from_zip, length: { maximum: 50 }
+  validates :to_address, length: { maximum: 100 }
+  validates :to_city, length: { maximum: 50 }
+  validates :to_state, length: { maximum: 2 }
+  validates :to_zip, length: { maximum: 12 }
+  validates :phone_number, length: { maximum: 17 }
+  validates :email, length: { maximum: 17 }
 
   before_save :note_status_update
   around_save :notify_update
   before_save :close_conversation_when_complete
 
-  attr_accessor :phone_number, :email # for ride + voter creation
+  # for ride + voter creation
+  attr_accessor :phone_number
+  attr_accessor :email
+  attr_accessor :city_state
+  attr_accessor :pickup_day
+  attr_accessor :pickup_time
 
   include HasAddress
   include ToFromAddressable

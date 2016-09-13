@@ -191,12 +191,12 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
       {
          name: 'beebee',
          description: 'baba',
-         phone_number: 'bobo',
+         phone_number: '2222223456',
          short_code: 'bibi',
          city: 'bubu',
          county: 'byby',
-         state: 'boiboi',
-         zip: 'blahblah',
+         state: 'FL',
+         #zip: '11111', this is triggering a re-geocode, which changest the city and fsu
          country: 'behbeh',
          latitude: 1.234,
          longitude: 3.423,
