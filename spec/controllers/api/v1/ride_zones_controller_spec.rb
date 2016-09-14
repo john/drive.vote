@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::RideZonesController, :type => :controller do
+
   describe 'conversations' do
     let!(:notinrz) { create :conversation }
     let(:rz) { create :ride_zone }
@@ -8,29 +9,38 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
     let!(:c2) { create :conversation, ride_zone: rz, status: :ride_created }
     let!(:c3) { create :conversation, ride_zone: rz, status: :closed }
 
-    it 'is successful' do
+    it "redirects if not logged in" do
       get :conversations, params: {id: rz.id}
-      expect(response).to be_successful
+      expect(response).to redirect_to('/404.html')
     end
 
-    it 'returns active conversations' do
-      get :conversations, params: {id: rz.id}
-      expect(JSON.parse(response.body)['response']).to match_array([c1.api_json(true), c2.api_json(true)])
-    end
+    context "logged in as a dispatcher" do
+      login_dispatcher
 
-    it 'returns requested conversations' do
-      get :conversations, params: {id: rz.id, status: :ride_created}
-      expect(JSON.parse(response.body)['response']).to match_array([c2.api_json(true)])
-    end
+      it 'is successful' do
+        get :conversations, params: {id: rz.id}
+        expect(response).to be_successful
+      end
 
-    it 'returns multitype requested conversations' do
-      get :conversations, params: {id: rz.id, status: 'ride_created, closed'}
-      expect(JSON.parse(response.body)['response']).to match_array([c2.api_json(true), c3.api_json(true)])
-    end
+      it 'returns active conversations' do
+        get :conversations, params: {id: rz.id}
+        expect(JSON.parse(response.body)['response']).to match_array([c1.api_json(true), c2.api_json(true)])
+      end
 
-    it '404s for missing ride zone' do
-      get :conversations, params: {id: 0}
-      expect(response.status).to eq(404)
+      it 'returns requested conversations' do
+        get :conversations, params: {id: rz.id, status: :ride_created}
+        expect(JSON.parse(response.body)['response']).to match_array([c2.api_json(true)])
+      end
+
+      it 'returns multitype requested conversations' do
+        get :conversations, params: {id: rz.id, status: 'ride_created, closed'}
+        expect(JSON.parse(response.body)['response']).to match_array([c2.api_json(true), c3.api_json(true)])
+      end
+
+      it '404s for missing ride zone' do
+        get :conversations, params: {id: 0}
+        expect(response.status).to eq(404)
+      end
     end
   end
 
@@ -44,32 +54,41 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
       allow(Conversation).to receive(:create_from_staff).and_return(convo)
     end
 
-    it 'is successful' do
+    it "redirects if not logged in" do
       post :create_conversation, params: {id: rz.id, user_id: user.id, body: body}
-      expect(response).to be_successful
+      expect(response).to redirect_to('/404.html')
     end
 
-    it 'calls conversation model and responds with json' do
-      expect(Conversation).to receive(:create_from_staff).and_return(convo)
-      post :create_conversation, params: {id: rz.id, user_id: user.id, body: body}
-      expect(JSON.parse(response.body)['response']).to eq(convo.api_json)
-    end
+    context "logged in as a dispatcher" do
+      login_dispatcher
 
-    it 'handles error from conversation' do
-      expect(Conversation).to receive(:create_from_staff).and_return('error')
-      post :create_conversation, params: {id: rz.id, user_id: user.id, body: body}
-      expect(response.status).to eq(408)
-      expect(JSON.parse(response.body)['error']).to eq('error')
-    end
+      it 'is successful' do
+        post :create_conversation, params: {id: rz.id, user_id: user.id, body: body}
+        expect(response).to be_successful
+      end
 
-    it 'validates user id' do
-      post :create_conversation, params: {id: rz.id, user_id: 0}
-      expect(response.status).to eq(404)
-    end
+      it 'calls conversation model and responds with json' do
+        expect(Conversation).to receive(:create_from_staff).and_return(convo)
+        post :create_conversation, params: {id: rz.id, user_id: user.id, body: body}
+        expect(JSON.parse(response.body)['response']).to eq(convo.api_json)
+      end
 
-    it '404s for missing ride zone' do
-      get :create_conversation, params: {id: 0}
-      expect(response.status).to eq(404)
+      it 'handles error from conversation' do
+        expect(Conversation).to receive(:create_from_staff).and_return('error')
+        post :create_conversation, params: {id: rz.id, user_id: user.id, body: body}
+        expect(response.status).to eq(408)
+        expect(JSON.parse(response.body)['error']).to eq('error')
+      end
+
+      it 'validates user id' do
+        post :create_conversation, params: {id: rz.id, user_id: 0}
+        expect(response.status).to eq(404)
+      end
+
+      it '404s for missing ride zone' do
+        get :create_conversation, params: {id: 0}
+        expect(response.status).to eq(404)
+      end
     end
   end
 
@@ -81,47 +100,56 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
     let(:rz2) { create :ride_zone }
     let!(:notinrz) { create :driver_user, ride_zone: rz2 }
 
-    it 'is successful' do
+    it "redirects if not logged in" do
       get :drivers, params: {id: rz.id}
-      expect(response).to be_successful
+      expect(response).to redirect_to('/404.html')
     end
 
-    it 'returns drivers for ride zone' do
-      get :drivers, params: {id: rz.id}
-      resp = JSON.parse(response.body)['response']
-      expect(resp).to match_array([u1.api_json.as_json, u2.api_json.as_json])
-    end
+    context "logged in as a dispatcher" do
+      login_dispatcher
 
-    it 'succeeds assigning rides to drivers' do
-      post :assign_ride, params: {id: rz.id, driver_id: u1.id, ride_id: ride.id}
-      expect(response).to be_successful
-    end
+      it 'is successful' do
+        get :drivers, params: {id: rz.id}
+        expect(response).to be_successful
+      end
 
-    it 'assigns the ride to driver' do
-      post :assign_ride, params: {id: rz.id, driver_id: u1.id, ride_id: ride.id}
-      expect(u1.reload.active_ride).to_not be_nil
-    end
+      it 'returns drivers for ride zone' do
+        get :drivers, params: {id: rz.id}
+        resp = JSON.parse(response.body)['response']
+        expect(resp).to match_array([u1.api_json.as_json, u2.api_json.as_json])
+      end
 
-    it 'removes if already assigned' do
-      ride.assign_driver(u2)
-      post :assign_ride, params: {id: rz.id, driver_id: u1.id, ride_id: ride.id}
-      expect(response).to be_successful
-      expect(ride.reload.driver).to eq(u1)
-    end
+      it 'succeeds assigning rides to drivers' do
+        post :assign_ride, params: {id: rz.id, driver_id: u1.id, ride_id: ride.id}
+        expect(response).to be_successful
+      end
 
-    it '404s for missing ride zone' do
-      get :drivers, params: {id: 0}
-      expect(response.status).to eq(404)
-    end
+      it 'assigns the ride to driver' do
+        post :assign_ride, params: {id: rz.id, driver_id: u1.id, ride_id: ride.id}
+        expect(u1.reload.active_ride).to_not be_nil
+      end
 
-    it '404s for missing driver' do
-      post :assign_ride, params: {id: rz.id, driver_id: 0, ride_id: ride.id}
-      expect(response.status).to eq(404)
-    end
+      it 'removes if already assigned' do
+        ride.assign_driver(u2)
+        post :assign_ride, params: {id: rz.id, driver_id: u1.id, ride_id: ride.id}
+        expect(response).to be_successful
+        expect(ride.reload.driver).to eq(u1)
+      end
 
-    it '404s for missing ride' do
-      post :assign_ride, params: {id: rz.id, driver_id: u1.id, ride_id: 0}
-      expect(response.status).to eq(404)
+      it '404s for missing ride zone' do
+        get :drivers, params: {id: 0}
+        expect(response.status).to eq(404)
+      end
+
+      it '404s for missing driver' do
+        post :assign_ride, params: {id: rz.id, driver_id: 0, ride_id: ride.id}
+        expect(response.status).to eq(404)
+      end
+
+      it '404s for missing ride' do
+        post :assign_ride, params: {id: rz.id, driver_id: u1.id, ride_id: 0}
+        expect(response.status).to eq(404)
+      end
     end
   end
 
@@ -137,27 +165,36 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
     let(:rz2) { create :ride_zone }
     let!(:notinrz) { create :waiting_ride, ride_zone: rz2 }
 
-    it 'is successful' do
+    it "redirects if not logged in" do
       get :rides, params: {id: rz.id}
-      expect(response).to be_successful
+      expect(response).to redirect_to('/404.html')
     end
 
-    it 'returns rides for ride zone' do
-      get :rides, params: {id: rz.id}
-      resp = JSON.parse(response.body)['response']
-      expect(resp).to match_array([r_waiting.api_json.as_json, r_assigned.api_json.as_json,
-                                   r_picked_up.api_json.as_json, r_soon.api_json.as_json])
-    end
+    context "logged in as a dispatcher" do
+      login_dispatcher
 
-    it 'returns multitype requested conversations' do
-      get :rides, params: {id: rz.id, status: 'driver_assigned, picked_up'}
-      resp = JSON.parse(response.body)['response']
-      expect(resp).to match_array([r_assigned.api_json, r_picked_up.api_json])
-    end
+      it 'is successful' do
+        get :rides, params: {id: rz.id}
+        expect(response).to be_successful
+      end
 
-    it '404s for missing ride zone' do
-      get :rides, params: {id: 0}
-      expect(response.status).to eq(404)
+      it 'returns rides for ride zone' do
+        get :rides, params: {id: rz.id}
+        resp = JSON.parse(response.body)['response']
+        expect(resp).to match_array([r_waiting.api_json.as_json, r_assigned.api_json.as_json,
+                                     r_picked_up.api_json.as_json, r_soon.api_json.as_json])
+      end
+
+      it 'returns multitype requested conversations' do
+        get :rides, params: {id: rz.id, status: 'driver_assigned, picked_up'}
+        resp = JSON.parse(response.body)['response']
+        expect(resp).to match_array([r_assigned.api_json, r_picked_up.api_json])
+      end
+
+      it '404s for missing ride zone' do
+        get :rides, params: {id: 0}
+        expect(response.status).to eq(404)
+      end
     end
   end
 
@@ -165,23 +202,32 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
     let!(:rz) { create :ride_zone }
     let!(:voter) { create :voter_user }
 
-    it 'is successful' do
+    it "redirects if not logged in" do
       post :create_ride, params: {id: rz.id, ride: { voter_id: voter.id, name: 'foo'} }
-      expect(response).to be_successful
+      expect(response).to redirect_to('/404.html')
     end
 
-    it 'creates a new ride for the ride zone' do
-      expect {
-          post :create_ride, params: {id: rz.id, ride: { voter_id: voter.id, name: 'foo'} }
-      }.to change(Ride, :count).by(1)
-      expect(Ride.first.name).to eq('foo')
-    end
+    context "logged in as a dispatcher" do
+      login_dispatcher
 
-    it 'does not create a ride with missing voter_id' do
-      expect {
-          post :create_ride, params: {id: rz.id, ride: { name: 'foo' } }
-      }.to change(Ride, :count).by(0)
-      expect(JSON.parse(response.body)['error']).to include('voter')
+      it 'is successful' do
+        post :create_ride, params: {id: rz.id, ride: { voter_id: voter.id, name: 'foo'} }
+        expect(response).to be_successful
+      end
+
+      it 'creates a new ride for the ride zone' do
+        expect {
+            post :create_ride, params: {id: rz.id, ride: { voter_id: voter.id, name: 'foo'} }
+        }.to change(Ride, :count).by(1)
+        expect(Ride.first.name).to eq('foo')
+      end
+
+      it 'does not create a ride with missing voter_id' do
+        expect {
+            post :create_ride, params: {id: rz.id, ride: { name: 'foo' } }
+        }.to change(Ride, :count).by(0)
+        expect(JSON.parse(response.body)['error']).to include('voter')
+      end
     end
   end
 
@@ -205,6 +251,11 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
       }.stringify_keys
     }
 
+    it "redirects if not logged in" do
+      put :update, params: { id: rz.id, ride_zone: { bot_disabled: true } }
+      expect(response).to redirect_to('/404.html')
+    end
+
     it 'anonymous user cannot enable and disable bot' do
       expect {
         put :update, params: { id: rz.id, ride_zone: { bot_disabled: true } }
@@ -213,6 +264,7 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
 
     context 'user' do
       login_user
+
       it 'cannot enable and disable bot' do
         expect {
           put :update, params: { id: rz.id, ride_zone: { bot_disabled: true } }
@@ -222,6 +274,7 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
 
     context 'dispatcher' do
       login_dispatcher
+
       it 'can enable and disable bot' do
         # Disable
         expect {
@@ -257,6 +310,7 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
 
     context 'admin' do
       login_admin
+
       it 'can update all fields' do
         put :update, params: { id: rz.id, ride_zone: rz_updates }
         response_rz = JSON.parse(response.body)

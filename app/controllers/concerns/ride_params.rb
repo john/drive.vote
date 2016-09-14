@@ -33,10 +33,11 @@ module RideParams
                                  :status)
   end
 
-  def require_ride_access
-    unless user_signed_in? && has_zone_rights?(@ride.ride_zone)
-      redirect_to '/404.html'
-    end
+  protected
+
+  def find_ride
+    @ride = Ride.find_by_id(params[:id])
+    render json: {error: 'Ride not found'}, status: 404 unless @ride
   end
 
 end

@@ -10,10 +10,4 @@ module ConversationParams
                                          :additional_passengers, :special_requests)
   end
 
-  def require_conversation_access
-    unless user_signed_in? && has_zone_rights?(@conversation.ride_zone)
-      redirect_to '/404.html'
-    end
-  end
-
 end

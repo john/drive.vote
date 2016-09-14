@@ -2,10 +2,10 @@ module Api::V1
   class TwilioController < Api::ApplicationController
     include Webhookable
 
-    skip_before_action :verify_authenticity_token
+    skip_before_action :verify_authenticity_token # coming from the outside, can't do csrf
 
     rescue_from ConfigurationError do |e|
-      # todo: alerting on errors
+      # TODO: alerting on errors
       logger.warn "Configuration error #{e.message} #{params.inspect}"
       render_twiml_message(e.message)
     end

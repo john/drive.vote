@@ -1,6 +1,7 @@
 module Api::V1
   class ConversationsController < Api::ApplicationController
     include ConversationParams
+    include AccessMethods
 
     before_action :find_conversation
     before_action :require_conversation_access

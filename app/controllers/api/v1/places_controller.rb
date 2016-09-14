@@ -1,5 +1,8 @@
 module Api::V1
   class PlacesController < Api::ApplicationController
+    include AccessMethods
+
+    before_action :require_internal_access
 
     def search
       results = GooglePlaces.search(params[:query])

@@ -78,16 +78,16 @@ class User < ApplicationRecord
     self.has_role?(:admin)
   end
 
-  def is_driver?
-    RideZone.find_roles(:driver, self).present?
-  end
-
   def is_zone_admin?
     RideZone.find_roles(:admin, self).present?
   end
 
   def is_dispatcher?
     RideZone.find_roles(:dispatcher, self).present?
+  end
+
+  def is_driver?
+    RideZone.find_roles(:driver, self).present?
   end
 
   def driver_ride_zone_id

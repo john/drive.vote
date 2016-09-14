@@ -13,6 +13,15 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
       expect(response).to redirect_to('/404.html')
     end
 
+    context "logged in as a voter" do
+      login_voter
+
+      it "redirects to 404" do
+        get :show, params: {id: convo.id}
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
     context "logged in as a driver" do
       login_driver
 
@@ -37,6 +46,15 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
       expect(response).to redirect_to('/404.html')
     end
 
+    context "logged in as a voter" do
+      login_voter
+
+      it "redirects to 404" do
+        get :update_attribute, params: {id: convo.to_param}
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
     context "logged in as a driver" do
       login_driver
 
@@ -56,6 +74,15 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
     it "redirects if not logged in" do
       put :update, params: {id: convo.id, conversation: {from_address: 'foo'}}
       expect(response).to redirect_to('/404.html')
+    end
+
+    context "logged in as a voter" do
+      login_voter
+
+      it "redirects to 404" do
+        put :update, params: {id: convo.id, conversation: {from_address: 'foo'}}
+        expect(response).to redirect_to('/404.html')
+      end
     end
 
     context "logged in as a driver" do
@@ -96,6 +123,15 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
     it "redirects if not logged in" do
       post :create_message, params: {id: convo.id, message: {body: body}}
       expect(response).to redirect_to('/404.html')
+    end
+
+    context "logged in as a voter" do
+      login_voter
+
+      it "redirects to 404" do
+        post :create_message, params: {id: convo.id, message: {body: body}}
+        expect(response).to redirect_to('/404.html')
+      end
     end
 
     context "logged in as a driver" do
