@@ -1,16 +1,33 @@
+:css
+  h2 { font-size: 20px; font-weight: bold; color: #999; margin: 50px 0 -20px 0;}
+
 = render partial: 'dispatch/nav'
 
 .col-md-12
 
+  - if current_user.has_role?(:admin, @ride_zone)
+    %h2
+      Approved drivers
   %table.table{style: 'margin-top: 40px;'}
-    %thead
-      %tr
-        %th Name
-        %th Email
-        %th Phone
+
 
     - @drivers.each do |driver|
-      %tbody
+      %tr
+        %td
+          = driver.name
+        %td
+          = mail_to driver.email
+        %td
+          = tel_to  driver.phone_number.phony_formatted(normalize: :US, spaces: '-')
+        - if current_user.has_role?(:admin, @ride_zone)
+          %td
+            = link_to 'demote', change_role_admin_ride_zone_path(@ride_zone, to_role: 'unassigned_driver', driver: driver.id), method: :post
+
+  - if current_user.has_role?(:admin, @ride_zone)
+    %h2
+      Unassigned drivers
+    %table.table{style: 'margin-top: 40px;'}
+      - @unassigned_drivers.each do |driver|
         %tr
           %td
             = driver.name
@@ -18,3 +35,5 @@
             = mail_to driver.email
           %td
             = tel_to  driver.phone_number.phony_formatted(normalize: :US, spaces: '-')
+          %td
+            = link_to 'promote', change_role_admin_ride_zone_path(@ride_zone, to_role: 'driver', driver: driver.id), method: :post

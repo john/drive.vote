@@ -41,7 +41,8 @@ class Admin::ConversationsController < Admin::AdminApplicationController
   def close
     @conversation.status = :closed
     @conversation.save!
-    redirect_to admin_conversations_url, notice: 'Conversation was closed'
+    flash[:notice] = "Conversation closed."
+    redirect_back(fallback_location: root_path) and return
   end
 
   private

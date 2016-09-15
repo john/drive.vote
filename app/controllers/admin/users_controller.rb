@@ -20,7 +20,7 @@ class Admin::UsersController < Admin::AdminApplicationController
 
   def edit
     @zones_driving_for = RideZone.with_role(:driver, @user)
-    @zones_dispatching_for = RideZone.with_role(:driver, @user)
+    @zones_dispatching_for = RideZone.with_role(:dispatcher, @user)
   end
 
   # # PATCH/PUT /users/1

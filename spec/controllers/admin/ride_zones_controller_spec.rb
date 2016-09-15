@@ -89,41 +89,6 @@ RSpec.describe Admin::RideZonesController, type: :controller do
     end
   end
 
-  describe "GET #driver" do
-    it "redirects if not logged in" do
-      get :drivers, params: {id: rz.to_param}
-      expect(response).to redirect_to('/404.html')
-    end
-
-    context "as dispatcher" do
-      login_dispatcher
-
-      it "redirects dispatchers" do
-        get :drivers, params: {id: rz.to_param}
-        expect(response).to redirect_to('/404.html')
-      end
-    end
-
-    context "as admin" do
-      login_admin
-
-      it "assigns the requested ride_zone as @ride_zone" do
-        get :drivers, params: {id: rz.to_param}
-        expect(assigns(:ride_zone)).to eq(rz)
-      end
-    end
-
-    context "as single rz admin" do
-      login_rz_admin
-
-      it "assigns the requested ride_zone as @ride_zone" do
-        get :drivers, params: {id: rz.to_param}
-        expect(assigns(:ride_zone)).to eq(rz)
-      end
-    end
-
-  end
-
   describe "GET #new" do
     it "redirects if not logged in" do
       get :new
