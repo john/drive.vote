@@ -19,7 +19,12 @@ Do NOT do run rails directly by hand. If you do, you will not start the webpack 
 
 ## Deploying the code
 Code is deployed using AWS Elastic Beanstalk CLI tool which is a python script. To execute a deploy,
-configure a python virtualenv and run the Elastic Beanstalk CLI tool from there.
+configure a python virtualenv and run the Elastic Beanstalk CLI tool from there. After the virtualenv is created, the standard
+steps are scripted via
+
+```
+rake deploy:dev
+```
 
 Prod URL (cloudflare): https://drive.vote.
 
