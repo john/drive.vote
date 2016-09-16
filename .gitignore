@@ -42,6 +42,12 @@
 
 # Python virtual env files.
 venv/
+
 # Added by webpack-rails
 /node_modules
 /public/webpack
+
+# Jekyll
+_site/
+.sass-cache/
+.jekyll-metadata
