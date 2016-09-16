@@ -1,6 +1,6 @@
 theme: minima
 safe: true
-incremental: true
+permalink: /:categories/:title
 paginate: 10
 
 host: 127.0.0.1
