@@ -15,31 +15,4 @@ module RideZoneParams
                                       :admin_name, :admin_email, :admin_phone_number, :admin_password)
   end
 
-  def has_zone_dispatch?
-    return user_signed_in? &&
-      ( current_user.has_role?(:admin) ||
-        current_user.has_role?(:admin, @ride_zone) ||
-        current_user.has_role?(:dispatcher, @ride_zone)
-      )
-  end
-
-  def has_zone_admin?
-    return user_signed_in? &&
-      ( current_user.has_role?(:admin) ||
-        current_user.has_role?(:admin, @ride_zone)
-      )
-  end
-
-  def require_zone_dispatch
-    unless has_zone_dispatch?
-      redirect_to '/404.html'
-    end
-  end
-
-  def require_zone_admin
-    unless has_zone_admin?
-      redirect_to '/404.html'
-    end
-  end
-
 end

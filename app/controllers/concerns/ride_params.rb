@@ -32,4 +32,12 @@ module RideParams
                                  :special_requests,
                                  :status)
   end
+
+  protected
+
+  def find_ride
+    @ride = Ride.find_by_id(params[:id])
+    render json: {error: 'Ride not found'}, status: 404 unless @ride
+  end
+
 end

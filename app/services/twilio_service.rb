@@ -36,6 +36,7 @@ class TwilioService
   # returns the Twilio message object
   def self.send_message(args, timeout)
     sms = nil
+
     Timeout::timeout(timeout) do
       sms = twilio_client.messages.create(args)
       while sms.error_code.nil? && sms.status.to_s != 'delivered'

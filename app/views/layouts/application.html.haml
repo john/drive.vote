@@ -18,32 +18,30 @@
     %meta{ property: 'og:description', content: "#{t(:long_description)}" }
     %meta{ property:'og:image', content: "#{asset_url(t(:logo_filename))}" }
 
+    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js'}
+    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery-ujs/1.2.2/rails.min.js'}
+
+    %link{href: "https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css", rel: "stylesheet"}
+    %link{href: 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker3.min.css', rel: 'stylesheet'}
     %link{href: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css', rel: 'stylesheet'}
     %link{href: "https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css", rel: "stylesheet"}
     %link{href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css", rel: "stylesheet"}
-    / %link{href: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css", rel: "stylesheet"}
+    %link{href: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css", rel: "stylesheet"}
     %link{href: "https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/css/jqueryui-editable.css", rel: "stylesheet"}
-
-    %link{href: "https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css", rel: "stylesheet"}
     %link{href: "https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.min.css", rel: "stylesheet"}
-    %link{href: 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker3.min.css', rel: 'stylesheet'}
 
     = stylesheet_link_tag "application", media: "all"
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
 
-    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js'}
-    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery-ujs/1.2.2/rails.min.js'}
-    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js'}
-    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.5.3/jquery.timeago.min.js'}
-
     %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js'}
+    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js'}
     %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/datepair.js/0.4.14/datepair.min.js'}
 
-    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js'}
-    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/js/jqueryui-editable.min.js'}
     %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'}
+    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js'}
+    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/js/jqueryui-editable.min.js'}
+    %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.5.3/jquery.timeago.min.js'}
     %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/sugar/1.4.1/sugar.min.js'}
-
     %script{src: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=#{ENV['GOOGLE_API_KEY']}"}
     %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/dist/typeahead.bundle.min.js'}
     %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/typeahead-addresspicker/0.1.4/typeahead-addresspicker.min.js'}

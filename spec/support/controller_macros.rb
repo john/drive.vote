@@ -10,11 +10,7 @@ module ControllerMacros
   def login_rz_admin
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:user]
-      # rz_admin_user = FactoryGirl.create(:user)
-      # rz_admin_user.add_role(:admin, rz)
-
       rz_admin_user = FactoryGirl.create(:zoned_admin_user, rz: (defined? rz) ? rz : create(:ride_zone))
-
       sign_in rz_admin_user
     end
   end
@@ -23,9 +19,9 @@ module ControllerMacros
   # associated with that rz. If none is defined, a new rz is created.
   def login_dispatcher
     before(:each) do
-      @request.env["devise.mapping"] = Devise.mappings[:user]
+      @request.env["devise.mapping"] = Devise.mappings[:dispatcher_user]
       dispatcher_user = FactoryGirl.create(:dispatcher_user, rz: (defined? rz) ? rz : create(:ride_zone))
-      sign_in dispatcher_user
+      sign_in dispatcher_user, scope: :user
     end
   end
 
@@ -44,4 +40,13 @@ module ControllerMacros
       sign_in user
     end
   end
+
+  def login_voter
+    before(:each) do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      user = FactoryGirl.create(:voter_user)
+      sign_in user
+    end
+  end
+
 end

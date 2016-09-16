@@ -1,8 +1,10 @@
 module Api::V1
   class RidesController < Api::ApplicationController
     include RideParams
+    include AccessMethods
 
     before_action :find_ride
+    before_action :require_ride_access
 
     def update_attribute
       if(params.has_key?(:name) && params.has_key?(:value))
@@ -15,13 +17,6 @@ module Api::V1
       else
         render json: {error: 'missing params'}
       end
-    end
-
-    private
-
-    def find_ride
-      @ride = Ride.find_by_id(params[:id])
-      render json: {error: 'Ride not found'}, status: 404 unless @ride
     end
 
   end

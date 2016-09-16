@@ -9,5 +9,5 @@ module ConversationParams
                                          :from_latitude, :from_longitude, :to_latitude, :to_longitude,
                                          :additional_passengers, :special_requests)
   end
-  
+
 end

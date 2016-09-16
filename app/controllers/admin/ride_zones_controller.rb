@@ -1,5 +1,6 @@
 class Admin::RideZonesController < Admin::AdminApplicationController
   include RideZoneParams
+  include AccessMethods
 
   before_action :set_ride_zone, except: [:index, :new, :create]
   before_action :require_zone_admin, except: [:index] # handled at the method level

@@ -1,5 +1,6 @@
 class DispatchController < ApplicationController
   include RideZoneParams
+  include AccessMethods
 
   before_action :set_ride_zone
   before_action :require_zone_dispatch

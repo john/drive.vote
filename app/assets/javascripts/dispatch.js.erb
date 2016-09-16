@@ -377,10 +377,18 @@ DispatchController.prototype = {
     this.refreshDrivers();
     createRideZoneChannel(this._rideZoneId, this.connected.bind(this), this.disconnected.bind(this), this.eventReceived.bind(this));
 
-    $('#conv-modal').on('shown.bs.modal', function () {
-      $('#msg-input').keypress(function(e){
+    $('#conv-modal').one('shown.bs.modal', function () {
+
+      $('#msg-submit').click(function() {
+        dispatchController.sendReply();
+        return false;
+      });
+
+      $('#msg-input').keydown(function(e){
         if(e.which == 13){
-          dispatchController.sendReply(); return false;
+          dispatchController.sendReply();
+          $('#msg-submit').prop('disabled',true);
+          return false;
         }
       });
       $('#msg-input').focus();

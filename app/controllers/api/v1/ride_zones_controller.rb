@@ -1,8 +1,11 @@
 module Api::V1
   class RideZonesController < Api::ApplicationController
-    include RideParams, RideZoneParams
+    include RideParams
+    include RideZoneParams
+    include AccessMethods
 
     before_action :require_ride_zone
+    before_action :require_zone_access
 
     def conversations
       # default to non-closed statuses or passed parameter
