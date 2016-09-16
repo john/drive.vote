@@ -1,0 +1,17 @@
+theme: minima
+safe: true
+incremental: true
+paginate: 10
+
+host: 127.0.0.1
+baseurl: ""
+
+include: ['_pages']
+
+# site variables for templates
+author: DevProgress.us
+title: Drive the Vote
+email: hello@drive.vote
+
+github_username: devprogress
+twitter_username: drivevote
