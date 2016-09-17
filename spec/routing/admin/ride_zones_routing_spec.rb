@@ -15,10 +15,6 @@ RSpec.describe Admin::RideZonesController, type: :routing do
       expect(get: "/admin/ride_zones/1").to route_to("admin/ride_zones#show", id: "1")
     end
 
-    it "routes to #drivers" do
-      expect(get: "/admin/ride_zones/1/drivers").to route_to("admin/ride_zones#drivers", id: "1")
-    end
-
     it "routes to #edit" do
       expect(get: "/admin/ride_zones/1/edit").to route_to("admin/ride_zones#edit", id: "1")
     end

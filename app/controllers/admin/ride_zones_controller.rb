@@ -25,11 +25,6 @@ class Admin::RideZonesController < Admin::AdminApplicationController
     @drivers = @ride_zone.drivers
   end
 
-  def drivers
-    @drivers = @ride_zone.drivers
-    @unassigned_drivers = @ride_zone.unassigned_drivers
-  end
-
   def new
     @ride_zone = RideZone.new
   end

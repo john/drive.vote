@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     get '/volunteer_to_drive/:id', :to => 'users/registrations#new', :as => 'volunteer_to_drive'
+    get "/users/sign_out" => "devise/sessions#destroy", :as => :get_destroy_user_session
   end
 
   # https://blog.heroku.com/real_time_rails_implementing_websockets_in_rails_5_with_action_cable
