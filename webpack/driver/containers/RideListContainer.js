@@ -20,22 +20,25 @@ class RideListContainer extends React.Component {
             if (this.props.state.driverState.available) {
                 if (availableRides.length) {
                     return (
-                        <div className="container">
-                            <h5 className="text-center">Voters Found!</h5>
-                            <ul>
+                        <div>
+                            <ul className="panel-list">
                                 {availableRides.map((ride, i) => <PendingRide {...this.props} key={i} i={i} ride={ride} />)}
                             </ul>
-                            <button className="btn btn-danger btn-bottom" onClick={this.props.submitUnavailable}>Tap here to stop driving</button>
+                            <div className="bottom-controls">
+                                <button className="btn btn-danger" onClick={this.props.submitUnavailable}>Stop driving</button>
+                            </div>
                         </div>
                     )
                 } else {
                     return (
-                        <div>
+                        <div className="searching-container">
                             <div className="jumbotron text-center">
                                 <h1><i className="fa fa-circle-o-notch fa-spin text-info"></i></h1>
-                                <p>Looking for voters...</p>
+                                <p><strong>Looking for voters...</strong></p>
                             </div>
-                            <button className="btn btn-danger btn-bottom" onClick={this.props.submitUnavailable}>Tap here to stop driving</button>
+                            <div className="bottom-controls">
+                                <button className="btn btn-danger" onClick={this.props.submitUnavailable}>Stop driving</button>
+                            </div>
                         </div>
                     )
                 }

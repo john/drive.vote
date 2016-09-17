@@ -21,7 +21,9 @@ class DriverStatusContainer extends React.Component {
                             <h1><i className="fa fa-ban"></i></h1>
                             <p>Not available to drive<br /> Tap the button below to get started</p>
                         </div>
-                        <button className="btn btn-success btn-bottom" onClick={this.props.submitAvailable}>Tap here to start driving</button>
+                        <div className="bottom-controls">
+                            <button className="btn btn-lg btn-success" onClick={this.props.submitAvailable}>Start driving</button>
+                        </div>
                     </div>
                 )
             }

@@ -1,22 +1,39 @@
 /* Layout */
 
+h1,
+h2,
+h3 {
+    margin-top: 0;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 0;
+}
+
 .container {
     max-width: 600px;
 }
 
-.btn-bottom {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translate(-50%, 0);
+.container .jumbotron {
+    border-radius: 0;
 }
 
-label{
-	display: block;
+label {
+    display: block;
+    text-transform: uppercase;
+    font-size: 14px;
 }
 
-.fa-5x{
-	font-size: 100px;
+.fa-5x {
+    font-size: 100px;
 }
 
 
@@ -27,8 +44,26 @@ label{
     padding-bottom: 1em;
 }
 
+.p-y-sm {
+    padding-top: .75em;
+    padding-bottom: .75em;
+}
+
+.p-l-0 {
+    padding-left: 0;
+}
+
 .p-b {
     padding-bottom: 1em;
+}
+
+.p-x-0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.p-a-0 {
+    padding: 0 !important;
 }
 
 .m-b {
@@ -38,6 +73,115 @@ label{
 
 /* Utilities */
 
+.fa-spin{
+    -webkit-animation: fa-spin 9s infinite linear;
+  animation: fa-spin 9s infinite linear;
+}
+
 .logo {
     width: 80px;
+}
+
+.bottom-controls {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 4rem 1.5rem 1.5rem;
+    background: white;
+}
+
+.bottom-controls:before {
+    background: linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(206, 206, 206, .8) 20px);
+    content: " ";
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 20px;
+}
+
+.bottom-controls .btn {
+    display: block;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.bottom-controls .btn:nth-child(2) {
+    margin-top: 5rem;
+}
+
+.btn {
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.btn-sm {
+    font-size: 12px;
+    margin-top: 14px;
+}
+
+.btn-sm i {
+    font-size: 18px;
+    float: left;
+    padding-right: 6px;
+    margin-top: -2px;
+}
+
+.btn-lg {
+    padding: 1em 2em;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+
+/* Active Rides */
+
+.panel {
+    padding: 3rem 2rem;
+    border: none;
+    border-radius: 0;
+    background: rgb(239, 239, 239);
+}
+
+.panel-list {
+    background: rgb(239, 239, 239);
+    padding: 0;
+}
+
+.pending-ride h3 {}
+
+.pending-ride {
+    padding: 2rem 1.5rem;
+}
+
+.pending-ride p {
+    font-size: 14px;
+    color: rgba(93, 95, 98);
+    color: rgb(93, 95, 98);
+    margin: 0;
+}
+
+.dispatcher-match {
+    background: linear-gradient(top, rgb(246, 230, 85) 0%, white 140px);
+    background-repeat: no-repeat;
+}
+
+.secondary-info p {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@media (min-width: 600px) {
+    .container .jumbotron,
+    .panel {
+        border-radius: 6px;
+    }
+    .bottom-controls .btn {
+        max-width: 400px;
+    }
 }
