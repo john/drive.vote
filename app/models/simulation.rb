@@ -66,10 +66,11 @@ class Simulation < ActiveRecord::Base
     save
   end
 
-  private
   def sim_def
     @definition ||= Simulation.find_named_sim_def(self.name)
   end
+
+  private
 
   def prepare_and_run
     self.status = :preparing

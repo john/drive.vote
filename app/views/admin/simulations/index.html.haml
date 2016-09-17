@@ -28,7 +28,10 @@
     - @simulations.each do |sim|
       %tr
         %td= sim.id
-        %td= sim.name
+        %td
+          = sim.name
+          - rz = RideZone.find_by_slug( sim.sim_def.ride_zone_slug )
+          (#{link_to 'dispatch', dispatch_path(rz.id), target: '_blank'})
         %td{id: "sim-status-#{sim.id}"}= sim.status
         %td= sim.created_at.localtime.strftime('%l:%M %P')
         %td= "#{(sim.run_time/60).floor}:%02d" % (sim.run_time % 60)

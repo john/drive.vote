@@ -41,7 +41,7 @@ Map.icons = {
   overdue_pickup: {w: 30, h: 45, url: "<%= asset_path('rider-overdue-pickup.png')%>"},
 
   // Used when no other icon is provided.
-  default: {w: 38, h: 57, url: "<%= asset_path('/icon-default.svg')%>"}
+  default: {w: 30, h: 45, url: "<%= asset_path('/icon-default.svg')%>"}
 };
 
 Map.prototype = {
@@ -194,6 +194,7 @@ Map.prototype = {
       gicon = {url: icon.url,
         size: {width: icon.w, height: icon.h},
         anchor: {x: icon.w/2, y: icon.h},
+        scaledSize: new google.maps.Size(21, 34),
         labelOrigin: {x: icon.w/2, y: 0}};
 
     if(gmarker.get('wrapper:listener'))

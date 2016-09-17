@@ -1,5 +1,5 @@
 class SimDefinition
-  attr_reader :slug, :name, :user_identifier, :ride_zone_name, :drivers, :voters, :rides, :run_time, :file_name
+  attr_reader :slug, :name, :user_identifier, :ride_zone_name, :ride_zone_slug, :drivers, :voters, :rides, :run_time, :file_name
 
   def load_file(filename)
     @file_name = filename
@@ -17,6 +17,7 @@ class SimDefinition
     @name = @data['name']
     @ride_zone_data = @data['ride_zone']
     @ride_zone_name = @ride_zone_data['name']
+    @ride_zone_slug = @ride_zone_data['slug']
     create_drivers
     @voters = @data['voters'] || []
     @rides = @data['rides'] || []
