@@ -16,7 +16,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
 
     if params[:id].present?
-      if @ride_zone = RideZone.find(params[:id])
+      if @ride_zone = RideZone.find_by_slug(params[:id])
         resource.ride_zone_id = @ride_zone.id
       end
     end

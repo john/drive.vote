@@ -28,7 +28,7 @@ var config = {
 
     // must match config.webpack.output_dir
     path: path.join(__dirname, '..', 'public', 'webpack'),
-    publicPath: '/webpack/',
+    publicPath: '/',
 
     filename: production ? '[name]-[chunkhash].js' : '[name].js'
   },
@@ -126,7 +126,7 @@ if (production) {
     port: devServerPort,
     headers: { 'Access-Control-Allow-Origin': '*' }
   };
-  config.output.publicPath = '//localhost:' + devServerPort + '/webpack/';
+  config.output.publicPath = '//localhost:' + devServerPort + '/';
   // TODO(awong): Ensure prod uses full source maps, not eval.
   // Source maps
   config.devtool = '#cheap-module-eval-source-map';

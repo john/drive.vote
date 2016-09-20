@@ -58,7 +58,7 @@ class LocationManager extends React.Component {
         // if (locationUpdateInterval && nextProps.location) {
             const locationInterval = setInterval(function() { self.props.submitLocation(self.props.state.driverState.location) }, 5000);
         //     this.locationCount = locationInterval;
-       
+
         // }
         // let waitingRidesInterval = nextProps.state.driverState.waiting_rides_interval;
         // if (waitingRidesInterval) {
@@ -72,9 +72,12 @@ class LocationManager extends React.Component {
             return null
         } else {
             return (
-                <div className="takeover">
-                <h3>Drive the vote requires you to share your location.</h3><p>Please reload the application to start sharing your location</p>
+              <div className="container">
+                <div className="panel panel-default panel-ride">
+                  <h6>Drive the Vote requires you to share your location.</h6>
+                  <p>Please reload to start sharing your location</p>
                 </div>
+              </div>
             )
         }
     }
