@@ -57,7 +57,7 @@ class ActiveRide extends React.Component {
         )
       default:
         console.log('should this be running?');
-        this.this.props.fetchStatus();
+        this.props.fetchStatus();
         return null;
     }
   }
