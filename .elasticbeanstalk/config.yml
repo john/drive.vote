@@ -1,4 +1,6 @@
 branch-defaults:
+  master:
+    environment: drivevote-dev
   production:
     environment: drivevote-dev
     group_suffix: null
