@@ -21,10 +21,8 @@ class RideListContainer extends React.Component {
                 if (availableRides.length) {
                     return (
                         <div className="container">
-                            <h5 className="text-center">Voters Found!</h5>
-                            <ul>
-                                {availableRides.map((ride, i) => <PendingRide {...this.props} key={i} i={i} ride={ride} />)}
-                            </ul>
+                            <div className="text-center nearby">Nearby Ride Requests</div>
+                              {availableRides.map((ride, i) => <PendingRide {...this.props} key={i} i={i} ride={ride} />)}
                             <button className="btn btn-danger btn-bottom" onClick={this.props.submitUnavailable}>Tap here to stop driving</button>
                         </div>
                     )
