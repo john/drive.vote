@@ -1,0 +1,9 @@
+dependencies:
+  pre:
+    - sudo pip install awsebcli
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - eb deploy --profile default
