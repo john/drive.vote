@@ -5,4 +5,4 @@ deployment:
   production:
     branch: master
     commands:
-      - eb deploy --profile default
+      - 'rake deploy:dev'
