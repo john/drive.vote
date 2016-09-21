@@ -44,6 +44,11 @@ RAILS_ENV=production NODE_ENV=production  AWS_EB_PROFILE=drivevote.prod rake dep
 
 to ensure the javascript bundle is built.
 
+And finally, you need to update the enviornment to handle https with something like
+```
+aws elasticbeanstalk --profile drivevote.prod update-environment --environment-name drivevote-prod --option-settings file:///Users/awong/src/DevProgress/drive.vote/elb-prod-acm.json  --region us-west-2
+```
+
 ### Bootstrap python
 1. Install [pip](https://pip.pypa.io/en/stable/installing/) if it isn't there. If you're using Os X, it's likely already installed.
 1. Install virtual env. `sudo pip install virtualenv`
