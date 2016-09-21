@@ -1,22 +1,27 @@
 ---
 layout: default
-title: Home
+title: Drive the Vote
 ---
 
-<h2 class="footer-heading" style="margin: 10px 0 10px 10px;">Guides</h2>
+<h2 class="footer-heading" style="margin: 20px 0 10px 10px;">
+  About Drive the Vote
+</h2>
+<ul>
+  <li><a href="{{site.baseurl}}/assets/DtV-One-Sheet.pdf" target="_blank">One-sheet explainer <span style="font-size: 13px; color: #999;">(PDF)</span></a></li>
+  <li><a href="{{site.baseurl}}/assets/DtV-Dispatcher-flyer.pdf" target="_blank">Flyer for Dispatchers <span style="font-size: 13px; color: #999;">(PDF)</span></a></li>
+  <li><a href="{{site.baseurl}}/assets/DtV-Toolkit.pdf" target="_blank">Drive the Vote Toolkit <span style="font-size: 13px; color: #999;">(PDF)</span></a>
+    <div style="font-size: 13px; color: #999;">Single doc with pages for: general one-sheet, dispatcher overview, voter overview, driver overview, and user stories</div></li>
+  <li><a href="https://vimeo.com/183533546/0729fb87b0" target="_blank">Demo Video on Vimeo</a></li>
 
+
+
+</ul>
+
+<h2 class="footer-heading" style="margin: 10px 0 10px 10px;">
+  User Guides
+</h2>
 <ul>
   {% for post in site.posts reversed %}
     <li><a href="{{site.baseurl}}{{ post.url }}">{{ post.title }}</a></li>
   {% endfor %}
-</ul>
-
-
-
-<h2 class="footer-heading" style="margin: 20px 0 10px 10px;">Files</h2>
-
-
-<ul>
-  <li><a href="{{site.baseurl}}/assets/DtV-One-Sheet.pdf" target="_blank">DtV-One-Sheet.pdf</a></li>
-  <li><a href="{{site.baseurl}}/assets/DtV-Dispatcher-flyer.pdf" target="_blank">DtV-Dispatcher-flyer.pdf</a></li>
 </ul>
