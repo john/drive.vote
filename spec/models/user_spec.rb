@@ -77,6 +77,19 @@ RSpec.describe User, :type => :model do
         expect(user).to be_valid
       end
     end
+  end
+
+  describe '#add_rolify_role' do
+    let(:valid_attributes) {
+      {name: 'Rolify Test Uaer', email: 'foo@bar.com', password: '12345abcde', phone_number: '2073328710', city: 'Tolendo', state: 'OH', zip: '43601'}
+    }
+
+    it "doesn't allow the creation of super admins" do
+      user = User.new(valid_attributes)
+      user.user_type = 'admin'
+
+      expect{user.save}.to raise_error("Bad role, model.")
+    end
 
   end
 

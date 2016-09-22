@@ -17,6 +17,6 @@
     = t(:how_to_help_copy2)
 
   .volunteer
-    = link_to new_user_registration_path(type: 'unassigned_driver', locale: I18n.locale.to_s) do
+    = link_to volunteer_to_drive_path(locale: I18n.locale.to_s) do
       %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
         = t(:will_drive)

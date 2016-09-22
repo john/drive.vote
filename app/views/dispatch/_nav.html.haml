@@ -27,7 +27,7 @@
   $(function () {
     var content = "#{j( link_to 'Schedule a ride', get_a_ride_path(@ride_zone.slug), target: '_blank' )}";
     content += "<div style='padding-top: 8px; margin-top: 8px; border-top: 1px solid #ccc;'>";
-    content += "#{j( link_to 'Driver volunteer form', volunteer_to_drive_path(@ride_zone.slug), target: '_blank')}";
+    content += "#{j( link_to 'Driver volunteer form', volunteer_to_drive_for_zone_path(@ride_zone.slug), target: '_blank')}";
     content += "</div>";
     content += "<div style='padding-top: 8px; margin-top: 8px; border-top: 1px solid #ccc;'>";
     content += "#{j( link_to 'Driver app', driving_index_path, target: '_blank')}";
