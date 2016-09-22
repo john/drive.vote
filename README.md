@@ -30,6 +30,25 @@ Prod URL (cloudflare): https://drive.vote.
 
 EB direct URL: https://dtv-dev.us-west-2.elasticbeanstalk.com.
 
+## Createing a new Elastic Beanstalk environment
+
+You need a command like:
+```
+RAILS_ENV=production NODE_ENV=production  AWS_EB_PROFILE=drivevote.prod eb create drivevote-prod -db -p 'Ruby 2.3 (Puma)' -db.engine postgres -db.i db.t2.micro -i t2.micro --elb-type application -k aws-eb -r us-west-2 -db.user drivevoteprod --envvars RAILS_SECRET=[somesecret],RAILS_SKIP_ASSET_COMPILATION=true
+```
+
+Then do a deploy via
+```
+RAILS_ENV=production NODE_ENV=production  AWS_EB_PROFILE=drivevote.prod rake deploy:prod
+```
+
+to ensure the javascript bundle is built.
+
+And finally, you need to update the enviornment to handle https with something like
+```
+aws elasticbeanstalk --profile drivevote.prod update-environment --environment-name drivevote-prod --option-settings file:///Users/awong/src/DevProgress/drive.vote/elb-prod-acm.json  --region us-west-2
+```
+
 ### Bootstrap python
 1. Install [pip](https://pip.pypa.io/en/stable/installing/) if it isn't there. If you're using Os X, it's likely already installed.
 1. Install virtual env. `sudo pip install virtualenv`
