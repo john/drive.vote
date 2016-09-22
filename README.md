@@ -61,9 +61,12 @@ This creates a directory named `venv` which is a little self-consistent Python s
 
 ### Run your elastic beanstalk commands
 
+Note, if you use profile sections in your ~/.aws/credentials file, then you can set the `AWS_EB_PROFILE` env var before calling the following command in order to use the right set of credentials.
+
 | Command | Description |
 | ------- | ----------- |
-| `eb deploy` | Deploys to the environment in `.elasticbeanstalk/config.yml` from `HEAD` (yes! the last commit! not necessarily what's on your filesystem!). Command blocks until deploy is finished. |
+| `rake deploy:dev` | Deploys to the dev environment in `.elasticbeanstalk/config.yml` from `HEAD` (yes! the last commit! not necessarily what's on your filesystem!). Command blocks until deploy is finished. |
+| `RAILS_ENV=production NODE_ENV=production rake deploy:prod` | Deploys to the prod environment in `.elasticbeanstalk/config.yml` from `HEAD` (yes! the last commit! not necessarily what's on your filesystem!). Command blocks until deploy is finished. Ensure rails and node to run in production mode so the webpack bundle is built with optimizations. |
 | `eb printenv` | Prints environment variables the running app is currently figured with. Warning: has secrets. All people that can deploy can see the secrets. |
 | `eb setenv A=1 B=2` | Sets new environment variables. This will restart the webservers so combine multiple variable updates on one line. Command blocks until deploy is finished.  |
 
