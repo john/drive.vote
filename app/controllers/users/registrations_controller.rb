@@ -4,8 +4,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
+  # GET /volunteer_to_drive
   def new
     resource = build_resource({})
+
+    if request.path.include?('volunteer_to_drive')
+      resource.user_type = 'unassigned_driver'
+    end
 
     if params[:type].present?
       if params[:type] == 'unassigned_driver'

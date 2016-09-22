@@ -212,14 +212,13 @@ class User < ApplicationRecord
   end
 
   def add_rolify_role
-    if self.user_type.present?
-      self.add_role self.user_type, self.ride_zone
+    # don't create super admins
+    if self.ride_zone.blank? && self.user_type == 'admin'
+      raise "Bad role, model."
     end
 
-    if self.ride_zone_id.present?
-      if ride_zone = RideZone.find(self.ride_zone_id)
-        self.add_role :unassigned_driver, ride_zone
-      end
+    if self.user_type.present?
+      self.add_role self.user_type, self.ride_zone
     end
   end
 
