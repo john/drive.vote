@@ -1,6 +1,8 @@
 class Ride < ApplicationRecord
   belongs_to :ride_zone
 
+  SWITCH_TO_WAITING_ASSIGNMENT = 15.minutes # how long before pickup time to change status to waiting_assignment
+
   enum status: { incomplete_info: 0, scheduled: 1, waiting_assignment: 2, driver_assigned: 3, picked_up: 4, complete: 5 }
 
   belongs_to :driver, class_name: 'User', foreign_key: :driver_id
@@ -24,6 +26,7 @@ class Ride < ApplicationRecord
   validates :email, length: { maximum: 17 }
 
   before_save :note_status_update
+  before_create :check_waiting_assignment
   around_save :notify_update
   before_save :close_conversation_when_complete
 
@@ -145,6 +148,12 @@ class Ride < ApplicationRecord
   end
 
   private
+  def check_waiting_assignment
+    if self.status == 'scheduled' && self.pickup_time && self.pickup_time < SWITCH_TO_WAITING_ASSIGNMENT.from_now
+      self.status = :waiting_assignment
+    end
+  end
+
   def note_status_update
     self.status_updated_at = Time.now if new_record? || self.status_changed?
   end
