@@ -153,6 +153,13 @@ class User < ApplicationRecord
   end
 
   def full_address
+    if self.city_state.present? && self.city.blank? && self.state.blank?
+      c_s_array = self.city_state.split(',')
+      self.city = c_s_array[0].try(:strip)
+      self.state = c_s_array[1].try(:strip)
+      self.save
+    end
+
     [self.address1, self.address2, self.city, self.state, self.zip, self.country].compact.join(', ')
   end
 
