@@ -192,6 +192,16 @@ RSpec.describe Ride, type: :model do
     expect(r.reload.status_updated_at).to_not be_nil
   end
 
+  it 'switches scheduled to waiting_assignment on create' do
+    r = create :ride, status: :scheduled, pickup_time: Time.now
+    expect(r.reload.status).to eq('waiting_assignment')
+  end
+
+  it 'keeps scheduled for future time' do
+    r = create :ride, status: :scheduled, pickup_time: Time.now + 2*Ride::SWITCH_TO_WAITING_ASSIGNMENT
+    expect(r.reload.status).to eq('scheduled')
+  end
+
   it 'updates status timestamp on status change' do
     r = Timecop.travel(1.hour.ago) do
       create :ride
