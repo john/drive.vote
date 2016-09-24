@@ -17,6 +17,16 @@ For production, instead of `foreman:dev`, run
 
 Do NOT do run rails directly by hand. If you do, you will not start the webpack dev server meaning the javascript be available.
 
+## Using Vagrant for development
+1. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+1. Install [Vagrant](https://www.vagrantup.com/downloads.html)
+1. `git clone git@github.com:john/drive.vote.git`
+1. `cd drive.vote`
+1. `vagrant up`
+1. `vagrant ssh` to access the virtual machine
+1. `cd /opt/drive.vote && rake foreman:dev` to start the app
+1. Visit http://192.168.42.100:3000/
+
 ## Deploying the code
 Code is deployed using AWS Elastic Beanstalk CLI tool which is a python script. To execute a deploy,
 configure a python virtualenv and run the Elastic Beanstalk CLI tool from there. After the virtualenv is created, the standard
