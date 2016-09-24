@@ -46,3 +46,6 @@ venv/
 _site/
 .sass-cache/
 .jekyll-metadata
+
+# Ignore Vagrant environment
+.vagrant
