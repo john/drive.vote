@@ -37,10 +37,8 @@
   .col-md-5{style: 'margin-top: 15px;'}
     #dispatch-map
 
-    .pull-left{style: 'width: 100px; font-weight: bold;'}
-      = link_to 'Map key', '#', onclick: "$('.key').toggle(); return false;"
     .pull-left
-      %table.key{style: 'display: none; margin-bottom: 30px;;'}
+      %table.key{style: 'margin-bottom: 30px;;'}
         %tr
           %td.key-pin-cell= image_tag "rider-overdue-assignment.png", class: 'key-pin-img'
           %td.key-label     Voter overdue assign.

@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   resources :dispatch, only: [:show] do
     member do
       get 'drivers' => 'dispatch#drivers'
+      get 'flyer' => 'dispatch#flyer'
       get 'map' => 'dispatch#map'
     end
   end

@@ -18,6 +18,18 @@ class DispatchController < ApplicationController
     end
   end
 
+  def flyer
+    respond_to do |format|
+      format.pdf do
+        pdf = RideZonePdf.new(@ride_zone, view_context)
+        send_data pdf.render, filename:
+        "ride_zone_#{@ride_zone.slug}.pdf",
+        disposition: "inline",
+        type: "application/pdf"
+      end
+    end
+  end
+
   def map
   end
 
