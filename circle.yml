@@ -10,6 +10,6 @@ deployment:
     commands:
       - 'bundle exec rake deploy:prod'
   dev:
-    branch: cd
+    branch: master
     commands:
       - 'bundle exec rake deploy:dev'
