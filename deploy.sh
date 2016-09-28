@@ -55,7 +55,7 @@ rake assets:precompile
 # Snapshot the source code from HEAD into the deploy artifact.
 # This will NOT contain the precompiled assets.
 ARTIFACT_FILE='tmp/deploy_artifact.zip'
-echo git archive -o "${ARTIFACT_FILE}" HEAD
+git archive -o "${ARTIFACT_FILE}" HEAD
 
 # Add in the precompiled assets to the deploy file.
 zip -ru "${ARTIFACT_FILE}" public/assets
