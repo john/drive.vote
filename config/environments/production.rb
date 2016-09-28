@@ -2,8 +2,9 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Websocket for messages
-  config.action_cable.url = 'wss://drive.vote/cable'
-  config.action_cable.allowed_request_origins = ['https://drive.vote']
+  origin = ENV['DTV_ACTION_CABLE_ORIGIN'] || 'drive.vote'
+  config.action_cable.url = "wss://#{origin}/cable"
+  config.action_cable.allowed_request_origins = ["https://#{origin}"]
 
   # Code is not reloaded between requests.
   config.cache_classes = true
