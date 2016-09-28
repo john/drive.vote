@@ -5,10 +5,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   # GET /volunteer_to_drive
+
+  skip_before_action :require_no_authentication, only: [:new, :create]
+
   def new
     resource = build_resource({})
 
     if request.path.include?('volunteer_to_drive')
+      @volunteer = true
       resource.user_type = 'unassigned_driver'
     end
 
@@ -33,6 +37,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # Overridden so that when people sign up to volunteer, they're not automatically signed in
   def create
     build_resource(sign_up_params)
+    generated_password = Devise.friendly_token.first(8)
+    resource.password = generated_password
 
     resource.save
     yield resource if block_given?
@@ -40,15 +46,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
       if resource.active_for_authentication?
         set_flash_message! :notice, :signed_up
         # sign_up(resource_name, resource)
+        logger.debug "-------------> 1"
         respond_with resource, location: after_sign_up_path_for(resource)
       else
         set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
         expire_data_after_sign_in!
+        logger.debug "-------------> 2"
         respond_with resource, location: after_inactive_sign_up_path_for(resource)
       end
     else
       clean_up_passwords resource
       set_minimum_password_length
+      logger.debug "-------------> 3"
       respond_with resource
     end
   end

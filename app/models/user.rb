@@ -35,6 +35,7 @@ class User < ApplicationRecord
   attr_accessor :user_type
   attr_accessor :ride_zone # set transiently for user creation
   attr_accessor :ride_zone_id
+  attr_accessor :superadmin
 
   serialize :start_drive_time, Tod::TimeOfDay
   serialize :end_drive_time, Tod::TimeOfDay
@@ -55,8 +56,9 @@ class User < ApplicationRecord
   validates :city, length: { maximum: 50 }
   validates :state, length: { maximum: 2 }
   validates :zip, length: { maximum: 12 }
-  validates :password, length: { in: 8..50 }
   validates :country, length: { maximum: 50 }
+  validates :password, presence: true, length: { in: 8..50 }, on: :create
+  validates :password, length: { in: 8..50 }, on: :update, allow_blank: true
 
   # scope that gets Users, of any/all roles, close to a particular RideZone
   scope :nearby_ride_zone, ->(rz) { near(rz.zip, GEO_NEARBY_DISTANCE) }

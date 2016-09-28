@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   include UserParams
-  include UserRoles
 
   before_action :set_user, only: [:show, :edit, :update]
 
@@ -46,7 +45,7 @@ class UsersController < ApplicationController
     is_new_user = @user.phone_number.blank?
 
     respond_to do |format|
-      if update_user_roles(params) && @user.update(user_params)
+      if @user.update(user_params)
 
         # different notice if the user was just created
         notice = (is_new_user) ? 'Welcome to Drive the Vote!' : 'User was successfully updated.'
