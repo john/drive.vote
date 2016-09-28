@@ -4,11 +4,12 @@ machine:
   post:
       - npm install -g npm@3.8.9 # Latest LTS npm.
 
-dependencies:
-  pre:
-      - sudo pip install awsebcli --upgrade --ignore-installed
 deployment:
-  production:
+  prod:
+    branch: production
+    commands:
+      - 'bundle exec rake deploy:prod'
+  dev:
     branch: master
     commands:
       - 'bundle exec rake deploy:dev'
