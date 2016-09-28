@@ -18,42 +18,13 @@ namespace :foreman do
   end
 end
 
-artifact_file = 'tmp/deploy_artifact.zip'
-
 namespace :deploy do
+
   task :dev do
-    # TODO(awong): Add warning for dirty tree.
-
-    # Precompile all assets first so if there are errors, this task bails early.
-    # This generates files in public/assets and public/webpack.
-    Rake::Task['assets:precompile'].invoke
-
-    # Snapshot the source code from HEAD into the deploy artifact.
-    # This will NOT contain the precompiled assets.
-    sh "git archive -o #{artifact_file} HEAD"
-
-    # Add in the precompiled assets to the deploy file.
-    sh "zip -ru #{artifact_file} public/assets"
-    sh "zip -ru #{artifact_file} public/webpack"
-
-    sh "source venv/bin/activate; eb deploy drivevote-dev"
+    sh "./deploy.sh development us-west-2"
   end
 
   task :prod do
-    # TODO(awong): Add warning for dirty tree.
-
-    # Precompile all assets first so if there are errors, this task bails early.
-    # This generates files in public/assets and public/webpack.
-    Rake::Task['assets:precompile'].invoke
-
-    # Snapshot the source code from HEAD into the deploy artifact.
-    # This will NOT contain the precompiled assets.
-    sh "git archive -o #{artifact_file} HEAD"
-
-    # Add in the precompiled assets to the deploy file.
-    sh "zip -ru #{artifact_file} public/assets"
-    sh "zip -ru #{artifact_file} public/webpack"
-
-    sh "source venv/bin/activate; eb deploy drivevote-prod"
+    sh "./deploy.sh production us-west-2"
   end
 end

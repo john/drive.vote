@@ -5,13 +5,11 @@
 
 - if Simulation.can_start_new?
   .row
-    .col-md-3
+    .col-md-5
       = form_tag start_new_admin_simulations_url, method: :POST do
         = select_tag "slug", options_from_collection_for_select(@simulation_defs, "slug", "name"), include_blank: false
-    .col-md-4
-
-      = button_tag 'Start New Simulation', class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }, style: "margin: -30px 10px 0 20px;"
-
+        = button_tag 'Start New Simulation', class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }, style: "margin: -5px 10px 0 20px;"
+    .col-md-3
       = form_tag clear_all_data_admin_simulations_url, method: :POST, style: 'display: inline;' do
         = button_tag 'Clear All Sim Data', class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }
 

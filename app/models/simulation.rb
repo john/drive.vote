@@ -76,10 +76,19 @@ class Simulation < ActiveRecord::Base
     self.status = :preparing
     save
     Thread.new do
-      sim_def.reload
-      Simulation.clean_up(sim_def)
-      setup_data
-      run_timeline
+      begin
+        ActiveRecord::Base.connection_pool.with_connection do
+          sim_def.reload
+          Simulation.clean_up(sim_def)
+          setup_data
+        end
+        run_timeline
+      rescue => e
+        logger.warn "Sim prep failed with #{e.message} #{e.backtrace}"
+        ActiveRecord::Base.connection_pool.with_connection do
+          update_attribute(:status, :failed)
+        end
+      end
     end
   end
 
@@ -198,7 +207,7 @@ class Simulation < ActiveRecord::Base
         end
       rescue =>e
         final_status = :failed
-        logger.warn "Whoops crash #{e.message} #{e.backtrace}"
+        logger.warn "Simulator crash #{e.message} #{e.backtrace}"
       end
       update_attribute(:status, final_status)
       logger.info "Ending simulator thread at #{Time.now}"
