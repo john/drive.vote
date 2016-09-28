@@ -1,5 +1,8 @@
 # README
 
+Master: [![CircleCI](https://circleci.com/gh/john/drive.vote.svg?style=svg)](https://circleci.com/gh/john/drive.vote)
+Production: [![CircleCI](https://circleci.com/gh/john/drive.vote/tree/production.svg?style=svg)](https://circleci.com/gh/john/drive.vote/tree/production)
+
 Drive the Vote helps people arrange free rides to the polls on election day.
 
 Weekly meeting notes [here](
