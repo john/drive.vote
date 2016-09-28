@@ -1,7 +1,7 @@
 # README
 
-Master: [![CircleCI](https://circleci.com/gh/john/drive.vote.svg?style=svg)](https://circleci.com/gh/john/drive.vote)
-Production: [![CircleCI](https://circleci.com/gh/john/drive.vote/tree/production.svg?style=svg)](https://circleci.com/gh/john/drive.vote/tree/production)
+Master: [![CircleCI](https://circleci.com/gh/john/drive.vote.svg?style=svg&circle-token=59230e969a45b9cbd93ef91e357dd64d07db342b)](https://circleci.com/gh/john/drive.vote)
+Production: [![CircleCI](https://circleci.com/gh/john/drive.vote/tree/production.svg?style=svg&circle-token=59230e969a45b9cbd93ef91e357dd64d07db342b)](https://circleci.com/gh/john/drive.vote/tree/production)
 
 Drive the Vote helps people arrange free rides to the polls on election day.
 
