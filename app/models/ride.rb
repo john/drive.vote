@@ -106,6 +106,7 @@ class Ride < ApplicationRecord
     j = self.as_json(except: [:pickup_at, :created_at, :updated_at], methods: [:conversation_id])
     j['pickup_at'] = self.pickup_at.try(:to_i)
     j['status_updated_at'] = self.status_updated_at.to_i
+    j['voter_phone_number'] = self.voter.phone_number_normalized
     j
   end
 
