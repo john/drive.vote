@@ -1,13 +1,9 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 
-  # before_action :configure_sign_up_params, only: [:create]
-  # before_action :configure_account_update_params, only: [:update]
+  skip_before_action :require_no_authentication, only: [:new, :create]
 
   # GET /resource/sign_up
   # GET /volunteer_to_drive
-
-  skip_before_action :require_no_authentication, only: [:new, :create]
-
   def new
     resource = build_resource({})
 
@@ -46,18 +42,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
       if resource.active_for_authentication?
         set_flash_message! :notice, :signed_up
         # sign_up(resource_name, resource)
-        logger.debug "-------------> 1"
         respond_with resource, location: after_sign_up_path_for(resource)
       else
         set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
         expire_data_after_sign_in!
-        logger.debug "-------------> 2"
         respond_with resource, location: after_inactive_sign_up_path_for(resource)
       end
     else
       clean_up_passwords resource
       set_minimum_password_length
-      logger.debug "-------------> 3"
       respond_with resource
     end
   end
@@ -91,7 +84,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # The path used after sign up.
   def after_sign_up_path_for(resource)
     # super(resource)
-    confirm_path
+    if user_signed_in? && current_user.has_role?(:admin)
+      admin_users_path
+    else
+      confirm_path
+    end
   end
 
   # If you have extra params to permit, append them to the sanitizer.

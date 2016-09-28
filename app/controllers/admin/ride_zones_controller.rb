@@ -77,16 +77,16 @@ class Admin::RideZonesController < Admin::AdminApplicationController
 
       unless already_has_role
         @user.add_role(role_type, @ride_zone)
-        msg = "Added #{role_type.to_s}!"
+        @msg = "Added #{role_type.to_s}!"
       else
-        msg = 'User was already a #{role_type} :/'
+        @msg = "User is already a #{role_type} elsewhere."
       end
     else
-      msg = "I can't really do anything with that."
+      @msg = "I can't really do anything with that."
     end
 
-    flash[:notice] = msg
-    redirect_back(fallback_location: root_path)
+    flash[:notice] = @msg
+    redirect_to edit_admin_ride_zone_url(@ride_zone), notice: @msg
   end
 
   def remove_role

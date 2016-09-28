@@ -10,6 +10,10 @@
 %h1
   Editing #{link_to @ride_zone.name, admin_ride_zone_path(@ride_zone)}
 
+- if flash[:notice]
+  %p{style: "background-color: #ffffe0; font-size: 20px; font-weight: bold;"}
+    = flash[:notice]
+
 %table
   %th
     %tr
@@ -71,16 +75,8 @@
 
 :javascript
 
-  $('#add-admin').change(function() {
-    $.post( "/admin/ride_zones/#{@ride_zone.id}/add_role?role=admin&user_id=" + $(this).val() );
-  });
-
-  $('#add-dispatcher').change(function() {
-    $.post( "/admin/ride_zones/#{@ride_zone.id}/add_role?role=dispatcher&user_id=" + $(this).val() );
-  });
-
-  $('#add-driver').change(function() {
-    $.post( "/admin/ride_zones/#{@ride_zone.id}/add_role?role=driver&user_id=" + $(this).val() );
-  });
+  $(function(){
+    adminController.changeRoles( #{@ride_zone.id} );
+  })
 
 = render 'form'
