@@ -19,6 +19,7 @@ namespace :foreman do
 end
 
 namespace :deploy do
+
   task :dev do
     sh "./deploy.sh development us-west-2"
   end
