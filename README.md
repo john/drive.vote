@@ -1,7 +1,7 @@
 # README
 
-Master: [![CircleCI](https://circleci.com/gh/john/drive.vote.svg?style=svg)](https://circleci.com/gh/john/drive.vote)
-Production: [![CircleCI](https://circleci.com/gh/john/drive.vote/tree/production.svg?style=svg)](https://circleci.com/gh/john/drive.vote/tree/production)
+Master: [![CircleCI](https://circleci.com/gh/john/drive.vote.svg?style=svg&circle-token=59230e969a45b9cbd93ef91e357dd64d07db342b)](https://circleci.com/gh/john/drive.vote)
+Production: [![CircleCI](https://circleci.com/gh/john/drive.vote/tree/production.svg?style=svg&circle-token=59230e969a45b9cbd93ef91e357dd64d07db342b)](https://circleci.com/gh/john/drive.vote/tree/production)
 
 Drive the Vote helps people arrange free rides to the polls on election day.
 
@@ -9,6 +9,22 @@ Weekly meeting notes [here](
 https://docs.google.com/document/d/10g34fvm6qZ-s8ca0TDMET56McxQYUPsc_1dOPFlYoAY/edit?usp=sharing).
 
 ## Running the code
+### Running it via docker (for dev only!)
+1. Install docker. For mac, make sure to use the [Docker Mac Beta](https://docs.docker.com/engine/installation/mac/#/docker-for-mac) and not Docker Toolbox.
+1. Run `docker-compose up`. This will start 2 containers: one for postgres, and one that runs rails + webpack dev server.
+1. If necessary, run `docker-compose exec bundle exec rails db:create db:migrate db:seed` to setup the database.
+
+Your current directory will be mounted into the docker instances so changes to the files should go live immediately without restarting the envrionment. If you need to restart the rails server, just run `docker-compose up` again.
+
+To get a shell on the current docker instance, run:
+
+```
+docker-compose exec bash -l
+```
+
+This shouldn't be necessary most of the time.
+
+### Running it directly.
 1. Install postgresql.
 1. Install Redis
 1. Run `rake pg:first_run` on the first run, and `rake pg:start` for subsequent runs to start the DB
