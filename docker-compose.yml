@@ -1,0 +1,22 @@
+version: '2'
+services:
+  db:
+    image: postgres
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: bash -c "bundle install && npm install && bundle exec rake foreman:dev"
+    environment:
+      - OVERRIDE_DB_HOST=db
+      - OVERRIDE_DB_PASSWORD=
+    working_dir: /myapp
+    volumes:
+      - .:/myapp
+    ports:
+      - "3808:3808"
+      - "3000:3000"
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
