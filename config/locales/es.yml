@@ -26,6 +26,7 @@ es:
   hi: 'Hola'
   thanks: 'Gracias'
   name: 'Nombre'
+  full_name: 'Nombre'
   save: 'Guardar'
   volunteer_to_drive: 'Voluntario para conducir'
   saving: 'Guardiendo'
@@ -99,7 +100,6 @@ es:
   got_it: "LO TENGO"
 
   what_is_your_name: '¡Gracias! ¿Cuál es su nombre?'
-  name: 'nombre'
   empty_need_name: 'Lo sentimos, por favor, responda con su nombre'
   bot_stalled: 'Alguien se pondrá en contacto en breve'
   what_is_pickup_location: 'Hola %{name}. ¿Dónde desea ser recogido - dirección y la ciudad?'

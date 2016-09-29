@@ -5,6 +5,9 @@
 
 %h1
   Users
+  &nbsp;
+  %small
+    = link_to 'New User', new_user_registration_path, class: 'btn btn-default btn-xs'
 
   %select#user-filter
     - %w{all admin dispatcher driver unassigned_driver}.each do |role|

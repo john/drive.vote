@@ -1,3 +1,7 @@
+:javascript
+  var adminController = new AdminController();
+  adminController.init();
+
 %ul.nav.nav-tabs
   %li{class: (active == 'ride_zones') ? 'active' : ''}= link_to 'Ride Zones', admin_ride_zones_path
   %li{class: (active == 'users') ? 'active' : ''}= link_to 'Users', admin_users_path

@@ -32,37 +32,17 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   def edit
     @zone_dispatchers = @ride_zone.dispatchers
     @zone_drivers = @ride_zone.drivers
-    @zone_admins = User.with_role(:admin, @ride_zone) #@ride_zone.admins
+    @zone_admins = User.with_role(:admin, @ride_zone)
 
     # TODO: scope to nearby when adding proximity
-    @local_users = User.where.not(id: User.with_role(:voter)) #User.all
+    @local_users = User.where.not(id: User.with_role(:voter))
   end
 
   def create
     @ride_zone = RideZone.new(ride_zone_params)
 
-    if ride_zone_params.has_key?(:admin_name) &&
-        ride_zone_params.has_key?(:admin_email) &&
-        ride_zone_params.has_key?(:admin_phone_number) &&
-        ride_zone_params.has_key?(:admin_password)
-
-      if @admin_user = User.find_by_email( ride_zone_params[:admin_email] )
-        user_creation_flash = ". User already exists, promoting to RZ admin."
-      else
-        @admin_user = User.create!({
-          name: ride_zone_params[:admin_name],
-          email: ride_zone_params[:admin_email],
-          phone_number: ride_zone_params[:admin_phone_number],
-          password: ride_zone_params[:admin_password],
-          locale: I18n.locale
-        })
-        user_creation_flash = "; user created and made RZ admin."
-      end
-    end
-
     if @ride_zone.save
-      @admin_user.add_role(:admin, @ride_zone) if @admin_user.present?
-      redirect_to admin_ride_zones_path, notice: "RideZone was successfully created #{user_creation_flash}"
+      redirect_to admin_ride_zones_path, notice: "RideZone was successfully created."
     else
       render :new
     end
@@ -97,16 +77,16 @@ class Admin::RideZonesController < Admin::AdminApplicationController
 
       unless already_has_role
         @user.add_role(role_type, @ride_zone)
-        msg = "Added #{role_type.to_s}!"
+        @msg = "Added #{role_type.to_s}!"
       else
-        msg = 'User was already a #{role_type} :/'
+        @msg = "User is already a #{role_type} elsewhere."
       end
     else
-      msg = "I can't really do anything with that."
+      @msg = "I can't really do anything with that."
     end
 
-    flash[:notice] = msg
-    redirect_back(fallback_location: root_path)
+    flash[:notice] = @msg
+    redirect_to edit_admin_ride_zone_url(@ride_zone), notice: @msg
   end
 
   def remove_role

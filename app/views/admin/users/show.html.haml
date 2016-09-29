@@ -1,3 +1,5 @@
+
+
 = render 'admin/nav', {active: 'users'}
 
 %h1
@@ -7,12 +9,7 @@
     %small
       = link_to 'Edit', edit_admin_user_path(@user), class: 'btn btn-default'
 
-- if @user.description.present?
-  %p
-    %b
-      Description:
-    %div
-      = @user.description
+= render partial: "users/info"
 
 %p
   DtV Admin?:
