@@ -1,6 +1,5 @@
 class Admin::UsersController < Admin::AdminApplicationController
   include UserParams
-  include UserRoles
 
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
@@ -19,6 +18,7 @@ class Admin::UsersController < Admin::AdminApplicationController
   end
 
   def edit
+    @user.superadmin = @user.has_role?(:admin)
     @zones_driving_for = RideZone.with_role(:driver, @user)
     @zones_dispatching_for = RideZone.with_role(:dispatcher, @user)
   end
@@ -27,7 +27,14 @@ class Admin::UsersController < Admin::AdminApplicationController
   # # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      if update_user_roles(params) && @user.update(user_params)
+      if @user.update(user_params)
+
+        if @user.superadmin == 'true'
+          @user.add_role(:admin)
+        else
+          @user.remove_role(:admin)
+        end
+
         format.html do
           redirect_to admin_users_path, notice: 'User was successfully updated.', locale: I18n.locale.to_s
         end

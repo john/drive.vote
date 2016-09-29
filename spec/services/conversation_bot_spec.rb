@@ -27,7 +27,7 @@ RSpec.describe ConversationBot do
           convo.user.update_attribute :name, ''
           ConversationBot.new(convo, msg).response # do initial response
           voter_reply = create :message, conversation: convo, body: body
-          expect(ConversationBot.new(convo, voter_reply).response).to include(I18n.t(:name, locale: lang))
+          expect(ConversationBot.new(convo, voter_reply).response).to include(I18n.t(:name, locale: lang).downcase)
           expect(convo.reload.bot_counter).to eq(0)
           expect(convo.lifecycle).to eq('have_language')
           expect(convo.user.reload.language).to eq(lang.to_s)

@@ -13,48 +13,34 @@
   .col-sm-8.field
     %i
       To edit driver/dispatcher roles, go to the edit page for that ride zone.
-  .col-sm-8.field
-    %i
-      Driver for:
-    - if @zones_driving_for.present?
+
+  - if @zones_driving_for.present?
+    .col-sm-8.field
+      %i
+        Driver for:
       - @zones_driving_for.each do |rz|
         %div
           #{rz.name} &nbsp &#183; &nbsp; [#{link_to 'edit', edit_admin_ride_zone_path(rz)}]
-    - else
+
+  - if @zones_dispatching_for.present?
+    .col-sm-8.field
       %i
-        Not a driver
-
-  .col-sm-8.field
-
-    %i
-      Dispatcher for:
-    - if @zones_dispatching_for.present?
+        Dispatcher for:
       - @zones_dispatching_for.each do |rz|
         %div
           #{rz.name} &nbsp &#183; &nbsp; [#{link_to 'edit', edit_admin_ride_zone_path(rz)}]
-    - else
-      %i
-        Not a dispatcher
 
   .col-sm-8.field
-    Available? &nbsp;
-    %label{style: 'padding-right; 20px;'}
-      = f.radio_button :available, true, :value => true
-      &nbsp; Yes
-
-    &nbsp;&nbsp;&nbsp;
-
-    %label
-      = f.radio_button :available, false, :value => false
-      &nbsp; No
-
-  .col-sm-8.field
-    = f.label :name, "#{t(:name)} *"
+    = f.label :name, "#{t(:full_name)} *"
     = f.text_field :name, class: 'form-control', autofocus: true, required: 'true'
 
   .col-sm-8.field
     = f.label :phone_number, "#{t(:phone_number)} *"
     = f.telephone_field :phone_number, class: 'form-control', required: 'true'
+
+  .col-sm-8.field
+    = f.label :email, "Email *"
+    = f.telephone_field :email, class: 'form-control', required: 'true'
 
   .col-sm-8.field
     = f.label :address1, t(:address)
@@ -73,6 +59,29 @@
   .col-sm-8.field
     = f.label :zip, t(:zip)
     = f.text_field :zip, class: 'form-control', required: 'true'
+
+  .col-sm-8.field
+    Available? &nbsp;
+    %label
+      = f.radio_button :available, true, :value => true
+      &nbsp; Yes &nbsp;&nbsp;&nbsp;
+
+    %label
+      = f.radio_button :available, false, :value => false
+      &nbsp; No &nbsp;&nbsp;&nbsp;
+
+  .col-sm-8.field{style: "background-color: #ff9999; padding: 0px 10px 10px 10px;"}
+    Super admin? &nbsp;
+    %label
+      = f.radio_button :superadmin, true, :value => true
+      &nbsp; Yes &nbsp;&nbsp;&nbsp;
+
+    %label
+      = f.radio_button :superadmin, false, :value => false
+      &nbsp; No &nbsp;&nbsp;&nbsp;
+
+    %div{style: "font-style:italic; font-size: 14px; margin-top: -8px;"}
+      <b>DANGER!</b> Only give super admin to DtV staff, this give you access to abso-fucking-lutely everything.
 
   .col-sm-8.field
     = f.submit t(:save), class: 'btn btn-primary', style: 'width: 100%; margin-top: 10px;', disable_with: "#{t(:saving)}..."

@@ -30,20 +30,6 @@ RSpec.describe UsersController, :type => :controller do
     end
   end
 
-  describe "POST create" do
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved user as @user" do
-        post :create, params: {:user => invalid_attributes}
-        expect(assigns(:user)).to be_a_new(User)
-      end
-
-      it "redirects to root" do
-        post :create, params: {:user => invalid_attributes}
-        expect(response).to redirect_to(:root)
-      end
-    end
-  end
-
   describe "PUT update" do
     describe "with valid params" do
       let(:new_attributes) {

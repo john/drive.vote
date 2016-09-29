@@ -35,6 +35,7 @@ class User < ApplicationRecord
   attr_accessor :user_type
   attr_accessor :ride_zone # set transiently for user creation
   attr_accessor :ride_zone_id
+  attr_accessor :superadmin
 
   serialize :start_drive_time, Tod::TimeOfDay
   serialize :end_drive_time, Tod::TimeOfDay
@@ -55,14 +56,28 @@ class User < ApplicationRecord
   validates :city, length: { maximum: 50 }
   validates :state, length: { maximum: 2 }
   validates :zip, length: { maximum: 12 }
-  validates :password, length: { in: 8..50 }
   validates :country, length: { maximum: 50 }
+  validates :password, presence: true, length: { in: 8..50 }, on: :create
+  # validates :password, length: { in: 8..50 }, on: :update, allow_blank: true
 
   # scope that gets Users, of any/all roles, close to a particular RideZone
   scope :nearby_ride_zone, ->(rz) { near(rz.zip, GEO_NEARBY_DISTANCE) }
 
   def self.non_voters
     User.where.not(id: User.with_role(:voter))
+  end
+
+  def self.assigned_drivers
+    User.find_by_sql("SELECT users.* FROM users \
+        INNER JOIN users_roles ON users_roles.user_id = users.id \
+        INNER JOIN roles ON roles.id = users_roles.role_id \
+          WHERE roles.name = 'driver' \
+          AND roles.resource_type = 'RideZone' \
+          AND roles.resource_id IS NOT NULL")
+  end
+
+  def self.all_drivers
+    self.assigned_drivers + self.with_role( :unassigned_driver )
   end
 
   def self.sms_name(phone_number)
@@ -114,7 +129,7 @@ class User < ApplicationRecord
   end
 
   def full_street_address
-    [self.address1, self.address2, self.city, self.state, self.zip, self.country].compact.join(', ')
+    [self.address1, self.address2, self.city, self.state, self.zip, self.country].reject(&:empty?).join(', ')
   end
 
   def location_timestamp
