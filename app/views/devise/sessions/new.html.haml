@@ -6,17 +6,20 @@
   .col-sm-8.field
     = f.label :email
     = f.email_field :email, class: 'form-control', required: 'true', autofocus: true
-    
+
   .col-sm-8.field
     = f.label :password
     = f.password_field :password, class: 'form-control', required: 'true', autocomplete: "off"
-    
+
   - if devise_mapping.rememberable?
     .col-sm-8.field
       = f.check_box :remember_me
       = f.label :remember_me
-      
+
   .col-sm-8.field
     = f.submit t(:sign_in), class: 'btn btn-primary', style: 'width: 100%; margin-top: 10px;', disable_with: t(:signing_in)
-    
--# = render "devise/shared/links"
+
+- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
+  .col-sm-8.field
+    = link_to "Forgot your password?", new_password_path(resource_name)
+-#= render "devise/shared/links"

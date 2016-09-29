@@ -11,9 +11,9 @@ class Admin::UsersController < Admin::AdminApplicationController
 
   def index
     if params[:filter].present?
-      @users = User.with_role(params[:filter].to_sym, :any)
+      @users = User.with_role(params[:filter].to_sym, :any).order(:name)
     else
-      @users = User.non_voters
+      @users = User.non_voters.order(:name)
     end
   end
 
