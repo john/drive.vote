@@ -99,3 +99,4 @@ TODO(awong): Add a sign-in button and improve nav structure for at least develop
 ## License
 
 This software is released under the MIT License. See the LICENSE.md file for more information.
+
