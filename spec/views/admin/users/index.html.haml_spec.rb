@@ -10,6 +10,7 @@ RSpec.describe "admin/users/index", :type => :view do
   end
 
   it "renders a list of users" do
+    allow(view).to receive_messages(:will_paginate => nil) # Add this
     render
   end
 end
