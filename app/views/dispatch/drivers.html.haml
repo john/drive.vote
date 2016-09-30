@@ -15,6 +15,9 @@
       %tr
         %td
           = driver.name
+          = driver.available? ? '🔵 ' : '🔴 '
+          - if driver.active_ride.present?
+            🚕
         %td
           = mail_to driver.email
         %td

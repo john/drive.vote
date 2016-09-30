@@ -1,45 +1,60 @@
 :css
-  #user-filter { margin-left: 30px; font-size: 15px; font-weight: normal;}
+  #user-filter { margin: 0 0 20px 0;}
+  #user-search { display: inline;}
 
 = render 'admin/nav', {active: 'users'}
 
-%h1
+%h2
   Users
   &nbsp;
   %small
     = link_to 'New User', new_user_registration_path, class: 'btn btn-default btn-xs'
 
-  %select#user-filter
-    - %w{all admin dispatcher driver unassigned_driver}.each do |role|
-      %option{value: role, selected: params[:"filter"] == role}
-        = role.gsub('_', ' ')
+Filter: &nbsp;
+%select#user-filter
+  - %w{all admin dispatcher driver unassigned_driver}.each do |role|
+    %option{value: role, selected: params[:"filter"] == role}
+      = role.gsub('_', ' ')
 
-%table.admin
+%span{style: "margin-left: 25px"}
+  Search: &nbsp;
+  %form#user-search
+    %input#q{type: 'text', value: "#{@q}"}
+
+  - if @q.present?
+    = link_to 'clear', admin_users_path, style: "font-size: 13px; color: #777; margin-left: 10px;"
+
+
+%table.table-hover.admin
   %thead
     %tr
       %th Name
       %th Created
-      %th Description
       %th Location
       %th Roles
-      %th Available?
-      %th
       %th
 
   %tbody
     - @users.each do |user|
       %tr
         %td= link_to user.name, admin_user_path(user)
-        %td= user.created_at.strftime("%-m/%-d/%Y, %-H:%M %P (%Z)")
-        %td= user.description
+        %td= user.created_at.strftime("%-m/%-d, %-H:%M %P")
         %td #{[user.city, user.state, user.zip].reject(&:blank?).join(', ')}
         %td= user.roles.collect{|r| r.name.gsub('_', ' ')}.join(', ')
-        %td= (user.available?) ? 'Yes' : 'No'
-        %td= link_to 'Edit', edit_admin_user_path(user)
-        %td= link_to 'Destroy', admin_user_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td
+          = link_to 'Edit', edit_admin_user_path(user)
+          &nbsp; &#183; &nbsp;
+          = link_to 'Destroy', admin_user_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }
 
+- if @users.present?
+  = will_paginate @users
 
 :javascript
   $('#user-filter').change(function() {
     window.location.href = "/admin/users/?filter=" + $(this).val();
+  });
+
+  $( "#user-search" ).submit(function( event ) {
+    window.location.href = "/admin/users?q=" + $('#q').val();
+    event.preventDefault();
   });
