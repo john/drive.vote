@@ -53,6 +53,31 @@
   margin-bottom: 15px;
 }
 
+.btn-call {
+  width: 46%;
+  margin-right: 5%;
+}
+
+.btn-sms {
+  width: 46%;
+}
+
+.btn-nrby-call {
+  width: 30%;
+  margin-right: 2%;
+}
+
+.btn-nrby-sms {
+  width: 30%;
+  margin-right: 2%;
+}
+.btn-nrby-accept {
+  width: 35%;
+}
+
+
+
+
 label{
 	display: block;
 }

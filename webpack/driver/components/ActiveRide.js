@@ -20,9 +20,13 @@ class ActiveRide extends React.Component {
               <div>Address:</div>
               <div className="panel-detail-lg">{ride.from_address}</div>
               <div className="m-b">Special requests: <b className="drk-gray">{ride.special_requests}</b></div>
-              <a className="btn btn-info btn-block btn-ride" target="_blank" href={fromMapLink}>Get directions</a>
-              <button className="btn btn-success btn-block btn-ride" onClick={()=>this.props.pickupRider(ride)}>Rider picked up</button>
-              <button className="btn btn-danger btn-block btn-ride" onClick={()=>this.props.cancelRide(ride)}>Cancel ride</button>
+              <div>
+                <a className="btn btn-success btn-ride btn-sm btn-call" target="_blank" href="tel:{ride.voter_phone_number}">📞 Call rider</a>
+                <a className="btn btn-warning btn-ride btn-sm btn-sms" target="_blank" href="sms:{ride.voter_phone_number}">📱 Txt rider</a>
+              </div>
+              <a className="btn btn-info btn-block btn-ride btn-sm" target="_blank" href={fromMapLink}>Get directions</a>
+              <button className="btn btn-success btn-block btn-ride btn-sm" onClick={()=>this.props.pickupRider(ride)}>Rider picked up</button>
+              <button className="btn btn-danger btn-block btn-ride btn-sm" onClick={()=>this.props.cancelRide(ride)}>Cancel ride</button>
             </div>
         )
       case 'picked_up':
@@ -34,7 +38,9 @@ class ActiveRide extends React.Component {
                 // <p>Description: <label>{ride.description}</label></p>
                 <p>Special requests: <label>{ride.special_requests}</label></p>
                 <p>{ride.to_address}</p>
-                 <a className="btn btn-info btn-block" target="_blank" href={toMapLink}>Get directions</a>
+                <a className="btn btn-info btn-block btn-ride btn-call" target="_blank" href="tel:{ride.voter_phone_number}">📞 Call rider</a>
+                <a className="btn btn-info btn-block btn-ride btn-sms" target="_blank" href="sms:{ride.voter_phone_number}">📱 Txt rider</a>
+                <a className="btn btn-info btn-block" target="_blank" href={toMapLink}>Get directions</a>
                 <button className="btn btn-success btn-block" onClick={()=>this.props.completeRide(ride)}>Complete ride</button>
             </div>
         )
