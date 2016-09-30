@@ -114,7 +114,7 @@ class ConversationBot
     # Lifecycle: have language and name
     # Look for: pickup location
     # if this is a newly created sms conversation for an existing user, ask for origin
-    if @conversation.status == 'sms_created'
+    if @conversation.messages.count == 1
       @response = I18n.t(:what_is_pickup_location, locale: @locale, name: @username)
       return 0
     end
@@ -179,7 +179,14 @@ class ConversationBot
     # Look for: confirmation of time
     if positive_answer
       @conversation.update_attribute(:time_confirmed, true)
-      @response = I18n.t(:how_many_additional, locale: @locale)
+      if @conversation.ride
+        # this is a reschedule of an existing ride
+        @conversation.ride.update_attribute(:pickup_at, @conversation.pickup_time)
+        @conversation.update_attribute(:ride_confirmed, nil)
+        set_wait_response
+      else
+        @response = I18n.t(:how_many_additional, locale: @locale)
+      end
       return 0
     end
     # Go back to asking for time
@@ -210,10 +217,43 @@ class ConversationBot
     # Lifecycle: have language and name and confirmed origin and destination and confirmed time and passengers
     # Look for: special requests
     # And fini!
-    @conversation.update_attributes(special_requests: @body, status: :ride_created)
+    @conversation.update_attribute(:special_requests, @body)
     Ride.create_from_conversation(@conversation)
-    @response = I18n.t(:thanks_wait_for_driver, locale: @locale)
+    set_wait_response
     0
+  end
+
+  def requested_confirmation
+    # Lifecycle: this conversation has a scheduled ride and we prompted for confirmation
+    # Look for 1=confirm, 2=reschedule, 3=cancel, 4=someone contact
+    case @bot_counter
+      when 0..1
+        case @body
+          when '1'
+            @conversation.update_attribute(:ride_confirmed, true)
+            @conversation.ride.update_attribute(:status, :waiting_assignment)
+            @response = I18n.t(:thanks_wait_for_driver, locale: @locale)
+            return 0
+          when '2'
+            # reschedule - reset pickup time and confirmed flag
+            @conversation.update_attributes(pickup_time: nil, time_confirmed: nil)
+            @response = I18n.t(:when_do_you_want_pickup, locale: @locale)
+            return 0
+          when '3'
+            @conversation.update_attribute(:status, :closed)
+            @conversation.ride.update_attribute(:status, :complete) if @conversation.ride
+            @response = I18n.t(:thanks_for_using, locale: @locale)
+            return 0
+          when '4'
+            stalled
+            return 0
+        end
+      else
+        stalled
+        return 0
+    end
+    @response = I18n.t(:confirm_ride, locale: @locale, time: @conversation.ride.pickup_in_time_zone.strftime('%l:%M %P'))
+    @bot_counter + 1
   end
 
   def info_complete
@@ -294,5 +334,10 @@ class ConversationBot
       return num if list.any? {|regex| input =~ regex}
     end
     nil
+  end
+
+  def set_wait_response
+    msg = (@conversation.ride.status == 'scheduled') ? :thanks_will_contact : :thanks_wait_for_driver
+    @response = I18n.t(msg, locale: @locale)
   end
 end

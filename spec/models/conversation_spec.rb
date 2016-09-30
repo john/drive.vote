@@ -94,6 +94,48 @@ RSpec.describe Conversation, type: :model do
     end
   end
 
+  describe 'attempt confirmation' do
+    let(:rz) { create :ride_zone }
+    let(:user) { create :user, language: :en }
+    let(:convo) { create :complete_conversation, ride_zone: rz, user: user }
+    let!(:ride) { Ride.create_from_conversation(convo) }
+    let(:body) { 'confirm' }
+    let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid') }
+
+    before :each do
+      allow(TwilioService).to receive(:send_message).and_return(twilio_msg)
+    end
+
+    it 'calls twilio service' do
+      expect(TwilioService).to receive(:send_message).and_return(twilio_msg)
+      convo.attempt_confirmation
+    end
+
+    it 'updates ride confirmed to false' do
+      convo.attempt_confirmation
+      expect(convo.reload.ride_confirmed).to eq(false)
+    end
+
+    it 'creates a message from bot' do
+      convo.attempt_confirmation
+      expect(convo.reload.messages.last.sent_by).to eq('Bot')
+    end
+
+    [false, true].each do |val|
+      it "does not call twilio if ride confirmed is #{val}" do
+        expect(TwilioService).to_not receive(:send_message)
+        convo.update_attribute(:ride_confirmed, val)
+        convo.attempt_confirmation
+      end
+    end
+
+    it 'handles twilio error' do
+      expect(TwilioService).to receive(:send_message).and_return(OpenStruct.new(error_code: 123))
+      convo.attempt_confirmation
+      expect(convo.reload.ride_confirmed).to be_nil
+    end
+  end
+
   describe 'event generation' do
     it 'sends new conversation event' do
       expect(RideZone).to receive(:event).with(anything, :new_conversation, anything)
@@ -244,6 +286,18 @@ RSpec.describe Conversation, type: :model do
 
       it 'detects complete unknown dest' do
         c = create :complete_conversation, user: user, to_address: Conversation::UNKNOWN_ADDRESS
+        expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:info_complete])
+      end
+
+      it 'detects requested confirmation' do
+        c = create :complete_conversation, user: user, ride_confirmed: false
+        Ride.create_from_conversation(c)
+        expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:requested_confirmation])
+      end
+
+      it 'detects confirmation done' do
+        c = create :complete_conversation, user: user, ride_confirmed: true
+        Ride.create_from_conversation(c)
         expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:info_complete])
       end
     end

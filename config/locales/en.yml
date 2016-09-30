@@ -116,7 +116,10 @@ en:
   how_many_additional: 'How many additional people need a ride (0-4)?'
   invalid_passengers: 'Please reply with number of additional passengers (0-4)'
   any_special_requests: 'What are your special requests (like wheelchair, car seats)? Or reply none.'
-  thanks_wait_for_driver: 'Thank you! We have your info and will contact you before your ride.'
+  thanks_will_contact: 'Thank you! We have your info and will contact you before your ride.'
+  thanks_wait_for_driver: 'Thank you! We have your info and will contact you when we find a driver for you.'
+  thanks_for_using: 'Thanks for trying Drive the Vote'
+  confirm_ride: 'Your Drive the Vote ride is scheduled for %{time}. Reply 1 to confirm, 2 to reschedule, 3 to cancel, 4 to speak to someone'
 
   # voter form
   schedule_ride: 'Schedule a free ride'
