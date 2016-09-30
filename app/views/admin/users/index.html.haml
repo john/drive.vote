@@ -47,7 +47,8 @@ Filter: &nbsp;
           = link_to 'Destroy', admin_user_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 - if @users.present?
-  = will_paginate @users
+  %nav{'aria-label': 'pagination'}
+    = will_paginate @users, renderer: BootstrapPagination::Rails
 
 :javascript
   $('#user-filter').change(function() {
