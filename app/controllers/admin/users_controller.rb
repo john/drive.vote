@@ -11,7 +11,7 @@ class Admin::UsersController < Admin::AdminApplicationController
 
   def index
     page = params[:page] || 1
-    per_page = params[:per_page] || 4
+    per_page = params[:per_page] || 25
     if params[:q].present?
       @users = User.where("lower(name) LIKE ?", "%#{params[:q].downcase}%").paginate(page: page, per_page: per_page)
       @q = params[:q]
