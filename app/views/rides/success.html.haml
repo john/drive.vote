@@ -24,6 +24,12 @@
     = t(:special_requests_label)
   .col-sm-5
     = @ride.special_requests
-%br
-= link_to t(:click_here), edit_ride_path(@ride)
-= t(:to_change_request)
+
+.row
+  .col-sm-5
+    %br
+    If you need to change your scheduled right please email #{mail_to 'hello@drive.vote'}.
+  -#
+    / %br
+    / = link_to t(:click_here), edit_ride_path(@ride)
+    / = t(:to_change_request)
