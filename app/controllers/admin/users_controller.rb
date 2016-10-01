@@ -10,13 +10,15 @@ class Admin::UsersController < Admin::AdminApplicationController
   end
 
   def index
+    page = params[:page] || 1
+    per_page = params[:per_page] || 4
     if params[:q].present?
-      @users = User.where("lower(name) LIKE ?", "%#{params[:q].downcase}%").paginate(page: params[:page], per_page: 25)
+      @users = User.where("lower(name) LIKE ?", "%#{params[:q].downcase}%").paginate(page: page, per_page: per_page)
       @q = params[:q]
     elsif params[:filter].present?
-      @users = User.with_role(params[:filter].to_sym, :any).order(:name).paginate(page: params[:page] || 1, per_page: params[:per_page] || 25)
+      @users = User.with_role(params[:filter].to_sym, :any).order(:name).paginate(page: page, per_page: per_page)
     else
-      @users = User.non_voters.order(:name).paginate(page: params[:page] || 1, per_page: params[:per_page] || 25)
+      @users = User.non_voters.order(:name).paginate(page: page, per_page: per_page)
     end
   end
 
