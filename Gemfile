@@ -37,7 +37,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'underscore-rails'
 gem 'webpack-rails'
 gem 'will_paginate'
-gem 'will_paginate-bootstrap'
+# gem 'will_paginate-bootstrap' # I'd like to use this, but it breaks specs, weirdly :/
 gem 'zip-codes'
 
 group :development do

@@ -48,7 +48,7 @@ Filter: &nbsp;
 
 - if @users.present?
   %nav{'aria-label': 'pagination'}
-    = will_paginate @users, renderer: BootstrapPagination::Rails
+    = will_paginate @users #, renderer: BootstrapPagination::Rails
 
 :javascript
   $('#user-filter').change(function() {
