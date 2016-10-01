@@ -12,9 +12,17 @@ module ApplicationHelper
     @devise_mapping ||= Devise.mappings[:user]
   end
 
-  def tel_to(text)
+  def tel_format(text)
     groups = text.to_s.scan(/(?:^\+)?\d+/)
-    link_to text, "tel:#{groups.join '-'}"
+    groups.join '-'
+  end
+
+  def tel_to(text)
+    link_to text, "tel:#{tel_format(text)}"
+  end
+
+  def show_languages
+    (request.fullpath.include?('admin') || request.fullpath.include?('dispatch')) ? false : true
   end
 
 end
