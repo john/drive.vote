@@ -33,7 +33,7 @@ class UserMailer < ApplicationMailer
   end
 
   def welcome_email_voter_ride(user, ride)
-    sendgrid_category "welcome_voter"
+    sendgrid_category "welcome_voter_ride"
     @user = user
     @ride = ride
     email_with_name = %("#{@user.name}" <#{@user.email}>)
