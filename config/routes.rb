@@ -130,7 +130,11 @@ Rails.application.routes.draw do
         delete 'delete' => 'simulations#delete'
       end
     end
-    resources :users, only: [:show, :edit, :update, :index, :destroy]
+    resources :users, only: [:show, :edit, :update, :index, :destroy] do
+      member do
+        post 'qa_clear' => 'users#qa_clear'
+      end
+    end
   end
 
 end
