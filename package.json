@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "webpack:deploy": "webpack --config=webpack/webpack.config.js -p",
+    "webpack:deploy": "webpack --config=config/webpack.config.js -p",
     "heroku-postbuild": "npm run webpack:deploy"
   },
   "dependencies": {
