@@ -132,6 +132,14 @@ class User < ApplicationRecord
     [self.address1, self.address2, self.city, self.state, self.zip, self.country].reject(&:empty?).join(', ')
   end
 
+  def qa_clear
+    convos = Conversation.where(user_id: self.id)
+    convos.each do |convo|
+      convo.ride.destroy if convo.ride
+      convo.destroy
+    end
+  end
+
   def location_timestamp
     self.location_updated_at.try(:to_i)
   end
