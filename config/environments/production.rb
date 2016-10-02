@@ -84,7 +84,8 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
   config.logger = RemoteSyslogLogger.new("#{ENV['PAPERTRAIL_HOST']}", "#{ENV['PAPERTRAIL_PORT']}",
-                  :program => "rails-#{RAILS_ENV}")
+                  :program => "rails-#{RAILS_ENV}",
+                  :local_hostname => "#{ENV['DTV_ACTION_CABLE_ORIGIN']}")
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
