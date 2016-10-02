@@ -11,6 +11,10 @@ RSpec.describe Admin::UsersController, :type => :routing do
       expect(:get => "admin/users/1").to route_to("admin/users#show", :id => "1")
     end
 
+    it "routes to #qa_clear" do
+      expect(:post => "admin/users/1/qa_clear").to route_to("admin/users#qa_clear", :id => "1")
+    end
+
     # it "routes to #new" do
     #   expect(:get => "/users/new").to route_to("users#new")
     # end
