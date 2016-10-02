@@ -1,7 +1,7 @@
 class Conversation < ApplicationRecord
   belongs_to :ride_zone
   belongs_to :user
-  has_many :messages
+  has_many :messages, dependent: :destroy
   belongs_to :ride
 
   before_save :check_ride_attached
