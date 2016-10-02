@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   def set_locale
     if request.path.include?('conseguir_un_paseo')
       I18n.locale = 'es'
-    elsif params[:locale].present?
+    elsif params[:locale].present? && (params[:locale] == 'en' || params[:locale] == 'es')
       I18n.locale = params[:locale]
     else
       I18n.locale = I18n.default_locale

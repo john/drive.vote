@@ -16,14 +16,15 @@
     #navbar.collapse.navbar-collapse
       .pull-right.nav-links
 
-        %a{href: '?locale=en', class: "locale-#{(locale.to_s == 'en') ? 'active' : 'inactive'}"}
-          English
+        - if show_languages
+          %a{href: '?locale=en', class: "locale-#{(locale.to_s == 'en') ? 'active' : 'inactive'}"}
+            English
+          &nbsp; &#183; &nbsp;
 
-        &nbsp; &#183; &nbsp;
-        %a{href: '?locale=es', class: "locale-#{(locale.to_s == 'es') ? 'active' : 'inactive'}"}
-          Español
+          %a{href: '?locale=es', class: "locale-#{(locale.to_s == 'es') ? 'active' : 'inactive'}"}
+            Español
+          &nbsp; &#183; &nbsp;
 
-        &nbsp; &#183; &nbsp;
         - unless user_signed_in?
           = link_to t(:sign_in), new_user_session_path
 
