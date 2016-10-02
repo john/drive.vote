@@ -1,9 +1,7 @@
 Rails.application.configure do
   Rails.env = 'development'
 
-  # Websocket for messages
-  config.action_cable.url = "ws://local.drive.vote:3000/cable"
-  config.action_cable.allowed_request_origins = ['http://local.drive.vote:3000']
+  # Websocket config in application.rb
 
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -33,7 +31,17 @@ Rails.application.configure do
   end
 
 
-  config.action_mailer.smtp_settings = { address: 'localhost', port: 2525 }
+  # config.action_mailer.smtp_settings = { address: 'localhost', port: 2525 }
+  config.action_mailer.smtp_settings = {
+      :user_name => ENV['SEND_GRID_USER_NAME'],
+      :password => ENV['SEND_GRID_PASSWORD'],
+      :domain => 'drive.vote',
+      :address => 'smtp.sendgrid.net',
+      :port => 587,
+      :authentication => :plain,
+      :enable_starttls_auto => true
+  }
+
   config.active_job.queue_adapter = :inline
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.perform_deliveries = true
