@@ -1,12 +1,13 @@
 class Admin::UsersController < Admin::AdminApplicationController
   include UserParams
 
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :qa_clear]
 
   def show
     @admin_zones = RideZone.with_role(:admin, @user)
     @dispatch_zones = RideZone.with_role(:dispatcher, @user)
     @driving_zones = RideZone.with_role(:driver, @user)
+    @conversations = Conversation.where(user_id: @user.id)
   end
 
   def index
@@ -26,6 +27,12 @@ class Admin::UsersController < Admin::AdminApplicationController
     @user.superadmin = @user.has_role?(:admin)
     @zones_driving_for = RideZone.with_role(:driver, @user)
     @zones_dispatching_for = RideZone.with_role(:dispatcher, @user)
+  end
+
+  def qa_clear
+    @user.qa_clear
+    flash[:notice] = "Cleared all data for #{@user.name}"
+    redirect_back(fallback_location: admin_users_path)
   end
 
   # # PATCH/PUT /users/1
