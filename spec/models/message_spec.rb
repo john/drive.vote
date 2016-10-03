@@ -59,7 +59,7 @@ RSpec.describe Message, type: :model do
     end
   end
 
-  describe 'initial staff conversation message' do
+  describe 'staff messages' do
     let(:twilio_msg) { OpenStruct.new(sid: 'sid', status: 'status', body: 'hello') }
     let(:ride_zone) { create :ride_zone }
     let(:user) { create :driver_user, ride_zone: ride_zone }
@@ -69,6 +69,12 @@ RSpec.describe Message, type: :model do
       msg = Message.create_from_staff(convo, twilio_msg)
       expect(msg.body).to eq('hello')
       expect(msg.sent_by).to eq('Staff')
+    end
+
+    it 'should create bot message' do
+      msg = Message.create_from_bot(convo, twilio_msg)
+      expect(msg.body).to eq('hello')
+      expect(msg.sent_by).to eq('Bot')
     end
   end
 
