@@ -97,7 +97,7 @@ RSpec.describe Conversation, type: :model do
   describe 'attempt confirmation' do
     let(:rz) { create :ride_zone }
     let(:user) { create :user, language: :en }
-    let(:convo) { create :complete_conversation, ride_zone: rz, user: user }
+    let(:convo) { create :complete_conversation, ride_zone: rz, user: user, pickup_time: 5.minutes.from_now }
     let!(:ride) { Ride.create_from_conversation(convo) }
     let(:body) { 'confirm' }
     let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid') }
@@ -127,6 +127,14 @@ RSpec.describe Conversation, type: :model do
         convo.update_attribute(:ride_confirmed, val)
         convo.attempt_confirmation
       end
+    end
+
+    it 'bumps to help_needed when time goes by' do
+      convo.attempt_confirmation
+      convo.update_attribute(:pickup_time, 5.minutes.ago)
+      expect(TwilioService).to_not receive(:send_message)
+      convo.attempt_confirmation
+      expect(convo.reload.status).to eq('help_needed')
     end
 
     it 'handles twilio error' do

@@ -135,6 +135,9 @@ class Conversation < ApplicationRecord
         Message.create_from_bot(self, sms)
         update_attributes(ride_confirmed: false, bot_counter: 0)
       end
+    elsif self.ride_confirmed == false && Time.now > self.pickup_time
+      # ride has not been confirmed and pickup time has passed, bump to needs_help
+      update_attribute(:status, :help_needed)
     end
   end
 
