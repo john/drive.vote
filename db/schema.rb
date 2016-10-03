@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160912184452) do
+ActiveRecord::Schema.define(version: 20160929024721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20160912184452) do
     t.boolean  "to_confirmed"
     t.boolean  "time_confirmed"
     t.datetime "status_updated_at"
+    t.boolean  "ride_confirmed"
   end
 
   create_table "messages", force: :cascade do |t|

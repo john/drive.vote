@@ -116,7 +116,10 @@ es:
   how_many_additional: '¿Cuántas personas adicionales necesitan un paseo (0-4)?'
   invalid_passengers: 'Por favor, responda con el número de pasajeros adicionales (0-4)'
   any_special_requests: '¿Cuáles son sus peticiones especiales (como silla de ruedas, asientos de bebé)? O responder ninguno.'
-  thanks_wait_for_driver: '¡Gracias! Tenemos su información y pondremos en contacto con usted antes de su viaje.'
+  thanks_will_contact: '¡Gracias! Tenemos su información y pondremos en contacto con usted antes de su viaje.'
+  thanks_wait_for_driver: '¡Gracias! Tenemos su información y pondremos en contacto con usted cuando nos encontramos con un conductor para usted.'
+  thanks_for_using: 'Gracias por intentar Conduce tu Voto'
+  confirm_ride: 'Su paseo está programado para %{time}. Responder 1 para confirmar, 2 para reprogramar, 3 para cancelar, 4 para hablar con alguien.'
 
   # voter form
   thanks_requesting: 'Gracias por su interés en un paseo el %{time}. Txt este número con preguntas, o enviar correo electrónico a %{email}.'
