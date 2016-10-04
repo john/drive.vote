@@ -26,6 +26,10 @@ h3 {
     border-radius: 0;
 }
 
+.jumbotron p {
+    line-height: 25px;
+}
+
 label {
     display: block;
     text-transform: uppercase;
@@ -65,7 +69,12 @@ label {
 .p-a-0 {
     padding: 0 !important;
 }
-
+.m-t{
+    margin-top: 1em;
+}
+.m-t-md{
+    margin-top: 2em;
+}
 .m-b {
     margin-bottom: 1em;
 }
@@ -73,9 +82,9 @@ label {
 
 /* Utilities */
 
-.fa-spin{
+.fa-spin {
     -webkit-animation: fa-spin 9s infinite linear;
-  animation: fa-spin 9s infinite linear;
+    animation: fa-spin 9s infinite linear;
 }
 
 .logo {
@@ -158,9 +167,14 @@ label {
     padding: 2rem 1.5rem;
 }
 
-p.display-2{
-     font-size: 18px;
+p.display-2 {
+    font-size: 18px;
     line-height: 23px;
+}
+
+p.display-3{
+    font-size: 16px;
+    line-height: 20px;
 }
 
 .pending-ride p {
