@@ -1,16 +1,18 @@
 import React from 'react';
+import { isObjectEqual } from '../helpers/Equal'
 
 import autobind from 'autobind-decorator';
 
 @autobind
 class ActiveRide extends React.Component {
 
-    render() {
+    shouldComponentUpdate(nextProps) {
+        return !isObjectEqual(this.props.ride, nextProps.ride);
+    }
 
+    render() {
         const ride = this.props.ride;
         const passengers = 1 + parseInt(ride.additional_passengers);
-        console.log('Active Ride!', ride);
-        //Current status of the ride. One of waiting_assignment, driver_assigned, picked_up, complete.
         switch (ride.status) {
             case 'driver_assigned':
                 let fromMapLink = `https://www.google.com/maps?saddr=My+Location&daddr=${ride.from_address}, ${ride.from_city}, ${ride.from_state}`;
@@ -57,9 +59,7 @@ class ActiveRide extends React.Component {
                     </div>
                 )
             case 'complete':
-
                 return (
-
                     <div className="jumbotron text-center">
                         <h1>
                             <span className="fa-stack fa-5x">
@@ -75,7 +75,6 @@ class ActiveRide extends React.Component {
                     </div>
                 )
             default:
-                console.log('Active ride without status');
                 return (
                     <div className="panel dispatcher-match">
                        <h2>Dispatcher Match</h2>

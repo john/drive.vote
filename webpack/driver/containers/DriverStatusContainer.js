@@ -1,16 +1,20 @@
 import React from 'react';
 import autobind from 'autobind-decorator';
+import { isObjectEqual } from '../helpers/Equal'
 
-import RideListContainer from '../containers/RideListContainer.js';
-import Unavailable from '../components/Unavailable.js';
-import Loading from '../components/Loading.js';
-
+import RideListContainer from '../containers/RideListContainer';
+import Unavailable from '../components/Unavailable';
+import Loading from '../components/Loading';
 
 @autobind
 class DriverStatusContainer extends React.Component {
 
     componentWillMount() {
         this.props.fetchStatus();
+    }
+
+    shouldComponentUpdate(nextProps) {
+        return !isObjectEqual(this.props.state.driverState, nextProps.state.driverState);
     }
 
     render() {

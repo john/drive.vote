@@ -18,6 +18,10 @@ h3 {
     margin-top: 0;
 }
 
+h4 {
+    font-size: 20px;
+}
+
 .container {
     max-width: 600px;
 }
@@ -69,12 +73,15 @@ label {
 .p-a-0 {
     padding: 0 !important;
 }
-.m-t{
+
+.m-t {
     margin-top: 1em;
 }
-.m-t-md{
+
+.m-t-md {
     margin-top: 2em;
 }
+
 .m-b {
     margin-bottom: 1em;
 }
@@ -172,7 +179,7 @@ p.display-2 {
     line-height: 23px;
 }
 
-p.display-3{
+p.display-3 {
     font-size: 16px;
     line-height: 20px;
 }

@@ -1,15 +1,17 @@
 import React from 'react';
 import autobind from 'autobind-decorator';
+import { isObjectEqual } from '../helpers/Equal'
 
-import PendingRide from '../components/PendingRide.js';
-import ActiveRide from '../components/ActiveRide.js';
-import UnavailableButton from '../components/UnavailableButton.js';
-
+import PendingRide from '../components/PendingRide';
+import ActiveRide from '../components/ActiveRide';
+import UnavailableButton from '../components/UnavailableButton';
 
 @autobind
 class RideListContainer extends React.Component {
 
-
+    shouldComponentUpdate(nextProps) {
+        return !isObjectEqual(this.props.state.driverState.rides, nextProps.state.driverState.rides);
+    }
 
     render() {
         const availableRides = this.props.state.driverState.rides;
@@ -30,7 +32,6 @@ class RideListContainer extends React.Component {
             if (this.props.state.driverState.available) {
                 if (availableRides.length) {
                     return (
-
                         <div>
                             <ul className="panel-list">
                                 {availableRides.map((ride, i) => <PendingRide {...this.props} key={i} i={i} ride={ride} />)}
