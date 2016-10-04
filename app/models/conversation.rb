@@ -6,6 +6,7 @@ class Conversation < ApplicationRecord
   belongs_to :user
   has_many :messages, dependent: :destroy
   belongs_to :ride
+  has_one :blacklisted_phone
 
   before_save :check_ride_attached
   before_save :update_status_and_lifecycle
@@ -190,6 +191,10 @@ class Conversation < ApplicationRecord
 
   def self.active_statuses
     Conversation.statuses.keys - ['closed']
+  end
+
+  def blacklist_voter_phone
+    BlacklistedPhone.create!(phone: self.from_phone, conversation_id: self.id)
   end
 
   private
