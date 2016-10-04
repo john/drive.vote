@@ -158,6 +158,11 @@ label {
     padding: 2rem 1.5rem;
 }
 
+p.display-2{
+     font-size: 18px;
+    line-height: 23px;
+}
+
 .pending-ride p {
     font-size: 14px;
     color: rgba(93, 95, 98);

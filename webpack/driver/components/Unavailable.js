@@ -16,14 +16,19 @@ class Unavilable extends React.Component {
     }
 
     render() {
-        console.log(this.props.state.driverState.ride_zone_stats);
-
-        if (this.props.state.driverState.ride_zone_stats) {
+        const stats = this.props.state.driverState.ride_zone_stats;
+        let sentence = ``;
+        if (stats) {
+            if (stats.scheduled_rides > 0) {
+                sentence = `There are ${stats.scheduled_rides} people with scheduled rides, start driving to find a voter near you.`
+            } else {
+                sentence = `There are ${stats.available_drivers} other drivers near you, start driving to find a voter near you.`
+            }
             return (
                 <div className="searching-container">
                     <div className="jumbotron text-center">
-                        <h1><i className="fa fa-circle-o-notch fa-spin text-info"></i></h1>
-                        <p><strong>TODO: MAP</strong></p>
+                        <h1><i className="fa fa-map text-info"></i></h1>
+                        <p className="display-2">{sentence}</p>
                     </div>
                     <AvailableButton submitAvailable={this.props.submitAvailable} />
                 </div>
