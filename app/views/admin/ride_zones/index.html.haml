@@ -36,12 +36,12 @@
           = link_to 'Schedule form', get_a_ride_path(ride_zone.slug), target: '_blank'
           &nbsp &#183; &nbsp;
 
-          = link_to 'Volunteer form', volunteer_to_drive_path(ride_zone.slug), target: '_blank'
+          = link_to 'Volunteer form', volunteer_to_drive_for_zone_path(ride_zone.slug), target: '_blank'
           &nbsp &#183; &nbsp;
 
           = link_to 'Edit', edit_admin_ride_zone_path(ride_zone)
 
-          = link_to admin_ride_zone_path(ride_zone), :method => :delete, :data => { :confirm => 'Are you abso-fucking-lutley sure? You can never go back.' } do
+          = link_to admin_ride_zone_path(ride_zone), :method => :delete, :data => { :confirm => 'Are you sure? You can never go back.' } do
             %button.close{type: "button", 'aria-label': "Close", style: 'margin-left: 30px;'}
               %span{'aria-hidden': "true"}
                 &times;

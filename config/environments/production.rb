@@ -2,8 +2,9 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Websocket for messages
-  config.action_cable.url = 'wss://drive.vote/cable'
-  config.action_cable.allowed_request_origins = ['https://drive.vote']
+  origin = ENV['DTV_ACTION_CABLE_ORIGIN'] || 'drive.vote'
+  config.action_cable.url = "wss://#{origin}/cable"
+  config.action_cable.allowed_request_origins = ["https://#{origin}"]
 
   # Code is not reloaded between requests.
   config.cache_classes = true
@@ -15,11 +16,8 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  # config.consider_all_requests_local       = false
-  # config.action_controller.perform_caching = true
-
-  # Show full error reports in prod for now
-  config.consider_all_requests_local = true
+  config.consider_all_requests_local       = false
+  config.action_controller.perform_caching = true
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
@@ -51,7 +49,7 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
-  config.log_level = :warn
+  config.log_level = :info
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
@@ -60,9 +58,13 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
-  config.active_job.queue_adapter     = :sidekiq
+
+  # Until we get a worker set up, send email inline
+  # config.active_job.queue_adapter     = :sidekiq
+  config.active_job.queue_adapter = :inline
 
   config.action_mailer.perform_caching = false
+  config.action_mailer.default_url_options = { :host => "drive.vote" }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -81,6 +83,9 @@ Rails.application.configure do
   # Use a different logger for distributed setups.
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
+  config.logger = RemoteSyslogLogger.new("#{ENV['PAPERTRAIL_HOST']}", "#{ENV['PAPERTRAIL_PORT']}",
+                  :program => "rails-#{ENV['RAILS_ENV']}",
+                  :local_hostname => "#{ENV['DTV_ACTION_CABLE_ORIGIN']}")
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger           = ActiveSupport::Logger.new(STDOUT)

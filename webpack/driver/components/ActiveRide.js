@@ -76,8 +76,8 @@ class ActiveRide extends React.Component {
                 )
             default:
                 console.log('Active ride without status');
-     return (
-                   <div className="panel dispatcher-match">
+                return (
+                    <div className="panel dispatcher-match">
                        <h2>Dispatcher Match</h2>
                        <a className="btn btn-info btn-sm pull-right" target="_blank" href={fromMapLink}><i className="fa fa-map-marker"></i> Directions</a>
                         <label>Picking up:</label>
@@ -96,10 +96,10 @@ class ActiveRide extends React.Component {
                             <button className="btn btn-danger" onClick={()=>this.props.cancelRide(ride)}>Reject</button>
                         </div>
                     </div>
-                    )
-            ;
+                )
         }
     }
-};
+}
+
 
 export default ActiveRide;

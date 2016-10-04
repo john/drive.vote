@@ -1,15 +1,14 @@
 branch-defaults:
+  master:
+    environment: drivevote-dev
   production:
-    environment: drivevote-dev
-    group_suffix: null
-  ssl:
-    environment: drivevote-dev
+    environment: drivevote-prod
+deploy:
+  artifact: tmp/deploy_artifact.zip
 global:
   application_name: drive.vote
   default_ec2_keyname: aws-eb
-  default_platform: Ruby 2.2 (Puma)
+  default_platform: Ruby 2.3 (Puma)
   default_region: us-west-2
   profile: null
   sc: git
-deploy:
-  artifact: tmp/deploy_artifact.zip

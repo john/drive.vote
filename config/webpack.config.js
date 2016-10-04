@@ -124,6 +124,7 @@ if (production) {
 } else {
   config.devServer = {
     port: devServerPort,
+    host: '0.0.0.0',
     headers: { 'Access-Control-Allow-Origin': '*' }
   };
   config.output.publicPath = '//localhost:' + devServerPort + '/webpack/';

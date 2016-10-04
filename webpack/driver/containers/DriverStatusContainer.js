@@ -2,6 +2,9 @@ import React from 'react';
 import autobind from 'autobind-decorator';
 
 import RideListContainer from '../containers/RideListContainer.js';
+import Unavailable from '../components/Unavailable.js';
+import Loading from '../components/Loading.js';
+
 
 @autobind
 class DriverStatusContainer extends React.Component {
@@ -15,25 +18,10 @@ class DriverStatusContainer extends React.Component {
             if (this.props.state.driverState.available) {
                 return <RideListContainer {...this.props} />
             } else {
-                return (
-                    <div>
-                        <div className="jumbotron text-center">
-                            <h1><i className="fa fa-ban"></i></h1>
-                            <p>Not available to drive<br /> Tap the button below to get started</p>
-                        </div>
-                        <div className="bottom-controls">
-                            <button className="btn btn-lg btn-success" onClick={this.props.submitAvailable}>Start driving</button>
-                        </div>
-                    </div>
-                )
+                return <Unavailable {...this.props} />
             }
         } else {
-            return (
-                <div className="jumbotron text-center">
-                    <h1><i className="fa fa-circle-o-notch fa-spin"></i></h1>
-                    <p>Loading...</p>
-                </div>
-            )
+            return <Loading />
         }
     }
 

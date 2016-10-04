@@ -5,8 +5,8 @@ default: &default
   pool: 40
   timeout: 5000
   username: postgres
-  password: admin
-  host: 127.0.0.1
+  password: <%= ENV['OVERRIDE_DB_PASS'] || 'admin' %>
+  host: <%= ENV['OVERRIDE_DB_HOST'] || '127.0.0.1' %>
   port: 5432
 
 development:
@@ -23,6 +23,8 @@ test:
 # http://alumni.lewagon.org/questions/67
 production:
   <<: *default
-  database: vote_production
-  password: abcd1234
-  host: drivethevote-dev.cruv7pnft9jw.us-west-2.rds.amazonaws.com
+  database: <%= ENV['RDS_DB_NAME'] %>
+  username: <%= ENV['RDS_USERNAME'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
+  host: <%= ENV['RDS_HOSTNAME'] %>
+  port: <%= ENV['RDS_PORT'] %>

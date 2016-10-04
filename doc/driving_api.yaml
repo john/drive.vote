@@ -261,6 +261,9 @@ definitions:
         type: number
         format: double
         description: The end latitude
+      voter_phone_number:
+        type: string
+        description: The voter's phone number
   ErrorResponse:
     type: object
     properties:

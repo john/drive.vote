@@ -21,6 +21,8 @@
 
 %p
   Zip: #{@ride_zone.zip}
+  %br
+  = link_to "Dispatch page", dispatch_path(@ride_zone.slug), target: "_blank"
 
 %h6
   Dispatchers

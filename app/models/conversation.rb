@@ -1,7 +1,7 @@
 class Conversation < ApplicationRecord
   belongs_to :ride_zone
   belongs_to :user
-  has_many :messages
+  has_many :messages, dependent: :destroy
   belongs_to :ride
 
   before_save :check_ride_attached
@@ -28,6 +28,7 @@ class Conversation < ApplicationRecord
     have_confirmed_time: 800,
     have_passengers: 900,
     info_complete: 1000,
+    requested_confirmation: 1100,
   }
 
   def api_json(include_messages = false)
@@ -75,8 +76,10 @@ class Conversation < ApplicationRecord
         timeout
     )
     if sms.error_code
+      logger.warn "TWILIO ERROR #{sms.error_code} User id #{user.id} Message #{body}"
       return "Communication error #{sms.error_code}"
     elsif sms.status.to_s != 'delivered'
+      logger.warn "TWILIO ERROR Timeout User id #{user.id} Message #{body}"
       return 'Timeout in delivery'
     end
     sms
@@ -123,10 +126,24 @@ class Conversation < ApplicationRecord
       self.ride_zone.bot_disabled
   end
 
+  def attempt_confirmation
+    if self.ride_confirmed.nil?
+      body = I18n.t(:confirm_ride, locale: user.language, time: ride.pickup_in_time_zone.strftime('%l:%M %P'))
+      sms = Conversation.send_staff_sms(ride_zone, user, body, Rails.configuration.twilio_timeout)
+      return if sms.is_a?(String) # error sending, will try again
+      ActiveRecord::Base.transaction do
+        Message.create_from_bot(self, sms)
+        update_attributes(ride_confirmed: false, bot_counter: 0)
+      end
+    elsif self.ride_confirmed == false && Time.now > self.pickup_time
+      # ride has not been confirmed and pickup time has passed, bump to needs_help
+      update_attribute(:status, :help_needed)
+    end
+  end
+
   def self.active_statuses
     Conversation.statuses.keys - ['closed']
   end
-
 
   private
   def notify_creation
@@ -181,6 +198,12 @@ class Conversation < ApplicationRecord
       lckey = :have_confirmed_time
     elsif special_requests.nil?
       lckey = :have_passengers
+    elsif status == 'ride_created'
+      if ride_confirmed == false
+        lckey = :requested_confirmation
+      else
+        lckey = :info_complete
+      end
     else
       lckey = :info_complete
     end

@@ -49,6 +49,7 @@ class PendingRide extends React.Component {
                 </div>
             )  
     }
+
 };
 
 export default PendingRide;

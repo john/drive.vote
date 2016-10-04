@@ -231,7 +231,7 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
     end
   end
 
-  describe 'update ride zone', focus: true do
+  describe 'update ride zone' do
     let(:rz) { create :ride_zone }
     let(:rz_updates) {
       {

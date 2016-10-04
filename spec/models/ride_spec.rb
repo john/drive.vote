@@ -192,6 +192,16 @@ RSpec.describe Ride, type: :model do
     expect(r.reload.status_updated_at).to_not be_nil
   end
 
+  it 'switches scheduled to waiting_assignment on create' do
+    r = create :ride, status: :scheduled, pickup_time: Time.now
+    expect(r.reload.status).to eq('waiting_assignment')
+  end
+
+  it 'keeps scheduled for future time' do
+    r = create :ride, status: :scheduled, pickup_time: (2*Ride::SWITCH_TO_WAITING_ASSIGNMENT).minutes.from_now
+    expect(r.reload.status).to eq('scheduled')
+  end
+
   it 'updates status timestamp on status change' do
     r = Timecop.travel(1.hour.ago) do
       create :ride
@@ -200,4 +210,16 @@ RSpec.describe Ride, type: :model do
     expect(Time.now - r.reload.status_updated_at).to be <(10)
   end
 
+  describe 'confirming scheduled rides' do
+    it 'confirms only scheduled rides that are soon' do
+      c1 = create :complete_conversation, pickup_time: (Ride::SWITCH_TO_WAITING_ASSIGNMENT / 2).minutes.from_now
+      c2 = create :complete_conversation, pickup_time: (Ride::SWITCH_TO_WAITING_ASSIGNMENT / 2).minutes.from_now
+      c3 = create :complete_conversation, pickup_time: (Ride::SWITCH_TO_WAITING_ASSIGNMENT * 2).minutes.from_now
+      Ride.create_from_conversation(c1)
+      Ride.create_from_conversation(c2).update_attribute(:status, :waiting_assignment)
+      Ride.create_from_conversation(c3)
+      expect_any_instance_of(Conversation).to receive(:attempt_confirmation).once
+      Ride.confirm_scheduled_rides
+    end
+  end
 end

@@ -77,6 +77,19 @@ RSpec.describe User, :type => :model do
         expect(user).to be_valid
       end
     end
+  end
+
+  describe '#add_rolify_role' do
+    let(:valid_attributes) {
+      {name: 'Rolify Test Uaer', email: 'foo@bar.com', password: '12345abcde', phone_number: '2073328710', city: 'Tolendo', state: 'OH', zip: '43601'}
+    }
+
+    it "doesn't allow the creation of super admins" do
+      user = User.new(valid_attributes)
+      user.user_type = 'admin'
+
+      expect{user.save}.to raise_error("Bad role, model.")
+    end
 
   end
 
@@ -204,6 +217,20 @@ RSpec.describe User, :type => :model do
       d = create :driver_user, ride_zone: rz
       expect(RideZone).to receive(:event).with(rz.id, :driver_changed, anything, :driver)
       d.update_attribute(:name, 'foo bar')
+    end
+  end
+
+  describe 'qa_clear' do
+    let(:user) { create :user }
+    let(:convo) { create :conversation_with_messages, user: user }
+    let(:ride) { Ride.create_from_conversation(convo) }
+
+    it 'deletes all user conversation data' do
+      cid, rid = convo.id, ride.id
+      user.qa_clear
+      expect(Ride.find_by_id(rid)).to be_nil
+      expect(Message.where(conversation_id: cid).count).to eq(0)
+      expect(Conversation.find_by_id(cid)).to be_nil
     end
   end
 end
