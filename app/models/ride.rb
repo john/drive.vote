@@ -165,7 +165,7 @@ class Ride < ApplicationRecord
 
   private
   def check_waiting_assignment
-    if self.status == 'scheduled' && self.pickup_time && self.pickup_time < SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now
+    if self.status == 'scheduled' && self.pickup_at && self.pickup_at < SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now
       self.status = :waiting_assignment
     end
   end

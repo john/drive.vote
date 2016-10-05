@@ -10,10 +10,10 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
   this.OVERDUE_PICKUP = 15*60*1000;
   this.OVERDUE_COMPLETION = 30*60*1000;
   this._statusStrings = {
-    messaging: 'Messaging', help_needed: 'Help Needed', scheduled: 'Scheduled',
-    waiting_assignment: 'Waiting for Assignment', assignment_overdue: 'Assignment Overdue',
-    waiting_pickup: 'Waiting for Pickup', pickup_overdue: 'Pickup Overdue',
-    driving: 'Driving', completion_overdue: 'Completion Overdue', complete: 'Complete'
+    messaging: 'MESSAGING', help_needed: 'HELP NEEDED', scheduled: 'SCHEDULED',
+    waiting_assignment: 'NEEDS DRIVER', assignment_overdue: 'OVERDUE',
+    waiting_pickup: 'WAITING', pickup_overdue: 'OVERDUE',
+    driving: 'DRIVING', completion_overdue: 'OVERDUE', complete: 'COMPLETE'
   };
 
   this._statusPinURLs = {
@@ -21,12 +21,20 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
     help_needed: "<%= asset_path('rider-overdue-pickup.png')%>",
     scheduled: "<%= asset_path('rider-waiting-assignment.png')%>",
     waiting_assignment: "<%= asset_path('rider-waiting-assignment.png')%>",
-    assignment_overdue: "<%= asset_path('rider-overdue-pickup.png')%>",
+    assignment_overdue: "<%= asset_path('rider-overdue-assignment.png')%>",
     waiting_pickup: "<%= asset_path('rider-waiting-pickup.png')%>",
-    pickup_overdue: "<%= asset_path('rider-overdue-assignment.png')%>",
+    pickup_overdue: "<%= asset_path('rider-overdue-pickup.png')%>",
     driving: "<%= asset_path('driver-driving.png')%>",
-    completion_overdue: "<%= asset_path('driver-waiting-assignment.png')%>",
+    completion_overdue: "<%= asset_path('driver-driving-overdue.png')%>",
     complete: "<%= asset_path('driver-driving.png')%>"
+  };
+
+  // Maps the conversation statuses to the table they should appear in
+  this._tableStatuses = {
+    needDriverConversations: ['help_needed', 'scheduled', 'waiting_assignment', 'assignment_overdue'],
+    haveDriverConversations: ['waiting_pickup', 'pickup_overdue', 'driving', 'completion_overdue'],
+    inactiveConversations: ['complete'],
+    activeConversations: ['messaging']
   };
 
   this._statusClasses = [];
@@ -153,24 +161,27 @@ DispatchController.prototype = {
     return 'messaging';
   },
 
-  conversationCells: function (c, status) {
-    var timestamp = (c.last_message_time === undefined) ? '' : new Date(c.last_message_time*1000).toISOString();
-    var pickup = (c.ride === undefined) ? '' : new Date(c.ride.pickup_at*1000).toISOString();
-    var ride_id = (c.ride !== undefined) ? c.ride.id : 0;
+  // Converts a conversation status to the table ID where it should live
+  tableForStatus: function(status) {
+    var tableIds = Object.keys(this._tableStatuses)
+    for (var i in tableIds) {
+      if (this._tableStatuses[tableIds[i]].indexOf(status) != -1)
+          return tableIds[i];
+    }
+    return undefined;
+  },
 
-    var cells = '<td class="ride-icon" data-ride-id="'+ ride_id +'"><img class="ride-img" src="' + this._statusPinURLs[status] + '" /></td>' +
-      '<td class="from">' + c.from_phone + '<br>' + c.name + '</td>' +
-      '<td>' +
-        '<div class="sm pull-right">+' + (c.message_count-1) + ' earlier</div>' +
-        '<span class="sm">' +
-          '<time class="timeago" datetime="' + timestamp + '">' + timestamp + '</time>' +
-        '</span>' +
-        '<br>' + c.last_message_body.truncate(100) + '</td>' +
-      '<td>' + this._statusStrings[status] + '</td>';
+  conversationCells: function (c, status) {
+    var timestamp = (c.last_message_time === undefined) ? 'n/a' : strftime('%l:%M %P', new Date(c.last_message_time*1000));
+    var pickup = (c.ride === undefined) ? '' : new Date(c.ride.pickup_at*1000).toISOString();
+
+    var cells =
+      '<td class="conv-voter"><div class="voter-info">' + c.name + ' ' + c.from_phone + '</div>(' + timestamp + ')&nbsp;' + c.last_message_body.truncate(100) + '</td>' +
+      '<td class="conv-status">' + '<span class="conv-statdisp conv-statdisp-'+status+'">' + this._statusStrings[status] + '</span></td>';
     if (status == 'complete' || status == 'driving') {
-      cells = cells + '<td></td>';
+      cells = cells + '<td class="conv-time"></td>';
     } else {
-      cells = cells + '<td><time class="timeago" datetime="' + pickup + '">' + pickup + '</time> </td>';
+      cells = cells + '<td class="conv-time"><time class="timeago" datetime="' + pickup + '">' + pickup + '</time> </td>';
     }
     return cells
   },
@@ -181,15 +192,26 @@ DispatchController.prototype = {
     var status = this.conversationStatus(c),
         rowId = 'conv-row-'+c.id,
         existing = $('#' + rowId),
-        cells = this.conversationCells(c, status);
+        targetTable = this.tableForStatus(status),
+        cells = this.conversationCells(c, status),
+        ride_id = (c.ride !== undefined) ? c.ride.id : 0;
 
     if (existing.length > 0) {
-      existing.html(cells);
-      this.setRowStatus(existing, status);
+      var existingTable = existing.parent().parent().attr('id');
+      if (targetTable === undefined) {
+        // todo: what to do with this?
+      } else {
+        existing.html(cells);
+        existing.data('ride-id', ride_id);
+        this.setRowStatus(existing, status);
+        if (existingTable != targetTable) {
+          $('#'+targetTable).prepend(existing);
+        }
+      }
     } else {
-      var classes = "conv-row clickable conv-status-" + status,
-          row = '<tr id="'+rowId+'" class="'+classes+'" data-cid="'+c.id+'">' + cells +'</tr>';
-      $('#conversations').prepend(row);
+      var classes = "conv-row conv-status-" + status,
+          row = '<tr id="'+rowId+'" data-ride-id="'+ ride_id + '" class="'+classes+'" data-cid="'+c.id+'">' + cells +'</tr>';
+      $('#' + targetTable).prepend(row);
     }
     $('#' + rowId).data('objref', c);
     $("time.timeago").timeago();
@@ -197,9 +219,9 @@ DispatchController.prototype = {
     return status;
   },
 
-  showConversationsWithStatuses: function (statusList) {
-    var toShow = (statusList == '*') ? Object.keys(this._statusStrings) : statusList.split(' '),
-        all = Object.keys(this._statusStrings);
+  showConversationsWithStatuses: function (statusList, table) {
+    var toShow = (statusList == '*') ? this._tableStatuses[table] : statusList.split(' '),
+        all = this._tableStatuses[table];
     for (var i = 0; i < all.length; ++i) {
       var status = all[i],
           style = this._statusStyles[status];
@@ -248,13 +270,14 @@ DispatchController.prototype = {
   recalcBadges: function() {
     $('.btn-conv-filter').each(function() {
       var total = 0,
+          tableId = $(this).data('table'),
           statuses = $(this).data('statuses').split(' '),
           curr_name = $(this).text();
       if (statuses[0] == '*') {
-        total = $('.conv-row').length;
+        total = $('#'+tableId+' .conv-row').length;
       } else {
         for (var i = 0; i < statuses.length; ++i) {
-          total = total + $('.conv-status-' + statuses[i]).length;
+          total = total + $('#'+tableId+' .conv-status-' + statuses[i]).length;
         }
       }
       if (total == 0) {

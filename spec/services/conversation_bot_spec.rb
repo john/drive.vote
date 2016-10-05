@@ -326,7 +326,7 @@ RSpec.describe ConversationBot do
 
     it 'should accept special requests' do
       reply = create :message, conversation: convo, body: 'wheelchair'
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:thanks_will_contact, locale: :en))
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:thanks_wait_for_driver, locale: :en))
       expect(convo.reload.lifecycle).to eq('info_complete')
       expect(convo.special_requests).to eq('wheelchair')
       expect(convo.status).to eq('ride_created')
@@ -363,7 +363,7 @@ RSpec.describe ConversationBot do
       reply = create :message, conversation: convo, body: voter_formatted, from: convo.from_phone, to: convo.to_phone
       ConversationBot.new(convo, reply).response # get confirmation
       reply = create :message, conversation: convo, body: 'y', from: convo.from_phone, to: convo.to_phone
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:thanks_will_contact, locale: :en))
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:thanks_wait_for_driver, locale: :en))
       expect(convo.reload.lifecycle).to eq('info_complete')
     end
 
