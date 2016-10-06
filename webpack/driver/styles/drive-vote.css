@@ -173,6 +173,19 @@ label {
     background: rgb(239, 239, 239);
 }
 
+.panel-full{
+    position: fixed;
+    width: 100%;
+    height: calc(100% - 90px);
+    bottom: 0;
+    z-index: 500;
+}
+
+.panel-full .rideDetails{
+    height: calc(100% - 220px);
+    overflow-y: scroll;
+}
+
 .panel-list {
     background: rgb(239, 239, 239);
     padding: 0;
@@ -211,6 +224,8 @@ p.display-3 {
     font-size: 14px;
     font-weight: 500;
 }
+
+
 
 @media (min-width: 600px) {
     .container .jumbotron,
