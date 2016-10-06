@@ -1,6 +1,6 @@
 import React from 'react';
-
 import autobind from 'autobind-decorator';
+import ContactVoter from '../components/ContactVoter';
 
 @autobind
 class ActiveRide extends React.Component {
@@ -9,6 +9,7 @@ class ActiveRide extends React.Component {
     render() {
         const ride = this.props.ride;
         const passengers = 1 + parseInt(ride.additional_passengers);
+
         switch (ride.status) {
             case 'driver_assigned':
                 let fromMapLink = `https://www.google.com/maps?saddr=My+Location&daddr=${ride.from_address}, ${ride.from_city}, ${ride.from_state}`;
@@ -21,6 +22,7 @@ class ActiveRide extends React.Component {
                             {ride.from_address}<br />
                             {ride.from_city}, {ride.from_state} {ride.from_zip}
                         </p>
+                        <ContactVoter voter_phone_number={ride.voter_phone_number} />
                         <div className="secondary-info">
                             <p>Total Passengers: {passengers}</p>
                             <p>Description: {ride.description}</p>
@@ -43,6 +45,7 @@ class ActiveRide extends React.Component {
                             {ride.from_address}<br />
                             {ride.from_city}, {ride.from_state} {ride.from_zip}
                         </p>
+                        <ContactVoter voter_phone_number={ride.voter_phone_number} />
                         <div className="secondary-info">
                             <p>Total Passengers: {passengers}</p>
                             <p>Description: {ride.description}</p>

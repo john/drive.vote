@@ -20,6 +20,7 @@ h3 {
 
 h4 {
     font-size: 20px;
+    margin-top: 0;
 }
 
 .container {
@@ -66,7 +67,7 @@ label {
 }
 
 .p-r {
-     padding-right: 1em;
+    padding-right: 1em;
 }
 
 .p-x-0 {
@@ -91,7 +92,7 @@ label {
 }
 
 .m-r {
-     margin-right: 1em;
+    margin-right: 1em;
 }
 
 
@@ -205,12 +206,18 @@ label {
     border: none;
     border-radius: 0;
     background: rgb(239, 239, 239);
+    margin: 0;
+    position: relative;
+}
+
+.panel:nth-child(even) {
+    background: rgb(247, 246, 247);
 }
 
 .panel-full {
     position: fixed;
     width: 100%;
-    height: calc(100% - 90px);
+    height: calc(100% - 69px);
     bottom: 0;
     z-index: 500;
 }
@@ -227,6 +234,16 @@ label {
 .panel-list {
     background: rgb(239, 239, 239);
     padding: 0;
+}
+
+.pendingArrow {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    font-size: 50px;
+    color: gray;
+    right: 12px;
+    opacity: .4;
 }
 
 .pending-ride h3 {}

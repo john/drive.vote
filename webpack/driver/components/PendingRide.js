@@ -31,11 +31,9 @@ class PendingRide extends React.Component {
     }
 
     render() {
-        console.log('rendering');
 
         //Setup time display
         const ride = this.props.ride;
-        console.log('ride details:', ride);
         let time;
         if (ride.pickup_at) {
             const date = new Date(ride.pickup_at * 1000);
@@ -62,17 +60,18 @@ class PendingRide extends React.Component {
         }
         if (!this.state.clicked) {
             return (
-                <div className="panel pending-ride row" onClick={()=>this.handleClick()}>
-                    <div className="col-xs-6">
+                <div className="panel pending-ride row p-x-0" onClick={()=>this.handleClick()}>
+                    <div className="col-xs-7">
                         <h3>{name}</h3> 
                         <p>Total Passengers: {passengers}</p>
                         <p>Read More <i className="fa fa-angle-right"></i></p>
                     </div> 
-                    <div className="col-xs-6">
+                    <div className="col-xs-5">
                         <h4>{time}</h4>
                         <p>{ ride.from_address }</p>
                         <p>{ ride.from_city }, { ride.from_state } { ride.from_zip }</p>
                     </div>  
+                    <i className="fa fa-angle-right pendingArrow"></i>
                 </div>
             )
         } else {
