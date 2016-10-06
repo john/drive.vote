@@ -13,7 +13,7 @@ class Main extends React.Component {
             <div>
                 <Header logout={this.logout} />
                 <LocationManager {...this.props} />
-                <div className="container">
+                <div className="container p-a-0">
                     {React.cloneElement(this.props.children, this.props)}
                 </div>
             </div>
