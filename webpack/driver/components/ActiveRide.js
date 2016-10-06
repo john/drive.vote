@@ -14,8 +14,8 @@ class ActiveRide extends React.Component {
             case 'driver_assigned':
                 let fromMapLink = `https://www.google.com/maps?saddr=My+Location&daddr=${ride.from_address}, ${ride.from_city}, ${ride.from_state}`;
                 return (
-                    <div className="panel">
-                        <a className="btn btn-info btn-sm pull-right" target="_blank" href={fromMapLink}><i className="fa fa-map-marker"></i> Directions</a>
+                    <div className="panel panel-full ">
+                        <a className="directionsLink" target="_blank" href={fromMapLink}><i className="fa fa-map-marker"></i> Directions</a>
                         <label>Picking up:</label>
                         <h3>{ride.name}</h3>
                         <p>
@@ -37,8 +37,8 @@ class ActiveRide extends React.Component {
             case 'picked_up':
                 let toMapLink = `https://www.google.com/maps?saddr=My+Location&daddr=${ride.to_address}`;
                 return (
-                    <div className="panel">
-                        <a className="btn btn-info btn-sm pull-right" target="_blank" href={toMapLink}><i className="fa fa-map-marker"></i> Directions</a>
+                    <div className="panel panel-full ">
+                        <a className="directionsLink" target="_blank" href={fromMapLink}><i className="fa fa-map-marker"></i> Directions</a>
                         <label>Dropping off:</label>
                         <h3>{ride.name}</h3>
                         <p>
@@ -75,15 +75,16 @@ class ActiveRide extends React.Component {
                 )
             default:
                 return (
-                    <div className="panel dispatcher-match">
+                    <div className="panel panel-full dispatcher-match">
                        <h2>Dispatcher Match</h2>
-                       <a className="btn btn-info btn-sm pull-right" target="_blank" href={fromMapLink}><i className="fa fa-map-marker"></i> Directions</a>
+                        <a className="directionsLink" target="_blank" href={fromMapLink}><i className="fa fa-map-marker"></i> Directions</a>
                         <label>Picking up:</label>
                         <h3>{ride.name}</h3>
                         <p>
                             {ride.from_address}<br />
                             {ride.from_city}, {ride.from_state} {ride.from_zip}
                         </p>
+                        <ContactVoter voter_phone_number={ride.voter_phone_number} />
                         <div className="secondary-info">
                             <p>Total Passengers: {passengers}</p>
                             <p>Description: {ride.description}</p>

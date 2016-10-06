@@ -13,7 +13,7 @@ class PendingRideDetail extends React.Component {
         return (
             <div className="panel panel-full">
                 <div className="rideDetails">
-                    <a className="directionsLink pull-right" target="_blank" href={fromMapLink}><i className="fa fa-map-marker"></i> Directions</a>
+                    <a className="directionsLink" target="_blank" href={fromMapLink}><i className="fa fa-map-marker"></i> Directions</a>
                         <label>Accept Ride:</label>
                         <h3>{ride.name}</h3>
                     <p>

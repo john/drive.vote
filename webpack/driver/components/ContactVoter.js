@@ -5,7 +5,7 @@ class ContactVoter extends React.Component {
         let tel = `tel:${this.props.voter_phone_number}`;
         let sms = `sms:${this.props.voter_phone_number}`;
         return (
-			<div className="row">
+			<div className="row m-b">
 				<div className="col-xs-6">
 					<a className="btn btn-gray btn-block" href={tel}><i className="fa fa-phone p-r"></i>Call</a>
 				</div>

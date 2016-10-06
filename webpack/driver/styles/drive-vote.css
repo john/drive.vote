@@ -190,6 +190,7 @@ label {
     margin-top: 40px;
     font-weight: bold;
     text-transform: uppercase;
+    float: right;
 }
 
 .directionsLink i {
@@ -219,6 +220,7 @@ label {
     width: 100%;
     height: calc(100% - 69px);
     bottom: 0;
+    left: 0;
     z-index: 500;
 }
 
