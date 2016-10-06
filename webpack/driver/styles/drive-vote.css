@@ -65,6 +65,10 @@ label {
     padding-bottom: 1em;
 }
 
+.p-r {
+     padding-right: 1em;
+}
+
 .p-x-0 {
     padding-left: 0 !important;
     padding-right: 0 !important;
@@ -84,6 +88,10 @@ label {
 
 .m-b {
     margin-bottom: 1em;
+}
+
+.m-r {
+     margin-right: 1em;
 }
 
 
@@ -136,6 +144,7 @@ label {
     font-size: 16px;
     font-weight: 700;
     text-transform: uppercase;
+    border-radius: 8px;
 }
 
 .btn-sm {
@@ -157,14 +166,39 @@ label {
     text-transform: uppercase;
 }
 
-.btn-secondary {
-    background: white;
-    border: 1px solid rgb(163,163,163);
+.btn-gray {
+    background: rgb(226, 226, 226);
     color: #3498db;
 }
 
+.btn-gray i {
+    color: rgb(155, 155, 155);
+}
 
-/* Active Rides */
+.btn-secondary {
+    background: white;
+    border: 1px solid rgb(163, 163, 163);
+    color: #3498db;
+}
+
+.directionsLink {
+    background: none;
+    color: rgb(75, 145, 220);
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-top: 40px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.directionsLink i {
+    display: block;
+    font-size: 40px;
+    text-align: center;
+}
+
+
+/* Rides */
 
 .panel {
     padding: 3rem 2rem;
@@ -173,7 +207,7 @@ label {
     background: rgb(239, 239, 239);
 }
 
-.panel-full{
+.panel-full {
     position: fixed;
     width: 100%;
     height: calc(100% - 90px);
@@ -181,9 +215,13 @@ label {
     z-index: 500;
 }
 
-.panel-full .rideDetails{
+.panel-full .rideDetails {
     height: calc(100% - 220px);
     overflow-y: scroll;
+}
+
+.rideDetails h3 {
+    margin-bottom: 4px;
 }
 
 .panel-list {
@@ -224,8 +262,6 @@ p.display-3 {
     font-size: 14px;
     font-weight: 500;
 }
-
-
 
 @media (min-width: 600px) {
     .container .jumbotron,
