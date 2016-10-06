@@ -3,17 +3,39 @@ import { isObjectEqual } from '../helpers/Equal'
 
 import autobind from 'autobind-decorator';
 
+import PendingRideDetail from '../components/PendingRideDetail';
+
+
 @autobind
 class PendingRide extends React.Component {
 
-    shouldComponentUpdate(nextProps) {
-        return !isObjectEqual(this.props.ride, nextProps.ride);
+    constructor(props) {
+        super(props);
+        this.state = { clicked: false };
+    }
+
+    // shouldComponentUpdate(nextProps) {
+    //     return !isObjectEqual(this.props.ride, nextProps.ride);
+    // }
+
+    handleClick() {
+        this.setState({
+            clicked: true
+        });
+    }
+
+    declineRide(){
+        this.setState({
+            clicked: false
+        })
     }
 
     render() {
+        console.log('rendering');
 
         //Setup time display
         const ride = this.props.ride;
+        console.log('ride details:', ride);
         let time;
         if (ride.pickup_at) {
             const date = new Date(ride.pickup_at * 1000);
@@ -32,20 +54,30 @@ class PendingRide extends React.Component {
             time = "!";
         }
         const passengers = 1 + parseInt(ride.additional_passengers);
-        return (
-            <div className="panel pending-ride row">
-                <div className="col-xs-6">
-                    <h3>{ride.name}</h3> 
-                    <p>{passengers} People</p>
-                    <p>Read More .. </p>
+        let name;
+        if (ride.name) {
+            name = ride.name;
+        } else {
+            name = ride.voter_phone_number;
+        }
+        if (!this.state.clicked) {
+            return (
+                <div className="panel pending-ride row" onClick={()=>this.handleClick()}>
+                    <div className="col-xs-6">
+                        <h3>{name}</h3> 
+                        <p>Total Passengers: {passengers}</p>
+                        <p>Read More <i className="fa fa-angle-right"></i></p>
+                    </div> 
+                    <div className="col-xs-6">
+                        <h4>{time}</h4>
+                        <p>{ ride.from_address }</p>
+                        <p>{ ride.from_city }, { ride.from_state } { ride.from_zip }</p>
+                    </div>  
                 </div>
-                <div className="col-xs-6">
-                    <h4>{time}</h4>
-                    <p>{ride.from_address}</p>
-                    <p>{ride.from_city}, {ride.from_state} {ride.from_zip}</p>
-                </div>
-            </div>
-        )
+            )
+        } else {
+            return <PendingRideDetail {...this.props} declineRide={this.declineRide} />
+        }
     }
 
 };

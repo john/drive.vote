@@ -1,14 +1,10 @@
 import React from 'react';
-import { isObjectEqual } from '../helpers/Equal'
 
 import autobind from 'autobind-decorator';
 
 @autobind
 class ActiveRide extends React.Component {
 
-    shouldComponentUpdate(nextProps) {
-        return !isObjectEqual(this.props.ride, nextProps.ride);
-    }
 
     render() {
         const ride = this.props.ride;
@@ -91,7 +87,7 @@ class ActiveRide extends React.Component {
                             <p>Special requests: {ride.special_requests}</p>
                         </div>
                         <div className="bottom-controls">
-                            <button className="btn btn-success btn-lg" onClick={()=>this.props.pickupRider(ride)}>Accept Ride</button>
+                            <button className="btn btn-success btn-lg" onClick={()=>this.props.claimRide(ride)}>Accept Ride</button>
                             <button className="btn btn-danger" onClick={()=>this.props.cancelRide(ride)}>Reject</button>
                         </div>
                     </div>

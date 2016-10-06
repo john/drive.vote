@@ -175,7 +175,7 @@ export function submitAvailable() {
 export function submitLocation(location) {
     return function(dispatch) {
         // fetch(`${api}/location?latitude=${location.latitude}&longitude=${location.longitude}`, {
-        fetch(`${api}/location?latitude=36.199&longitude=-115.1398`, {
+        fetch(`${api}/location?latitude=28.532&longitude=-81.37`, {
                 credentials: 'include',
                 method: 'POST'
             })

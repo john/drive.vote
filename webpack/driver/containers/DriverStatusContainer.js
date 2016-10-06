@@ -12,11 +12,7 @@ class DriverStatusContainer extends React.Component {
     componentWillMount() {
         this.props.fetchStatus();
     }
-
-    shouldComponentUpdate(nextProps) {
-        return !isObjectEqual(this.props.state.driverState, nextProps.state.driverState);
-    }
-
+    
     render() {
         if (!this.props.state.driverState.initialFetch) {
             if (this.props.state.driverState.available) {
