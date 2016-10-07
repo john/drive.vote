@@ -18,6 +18,17 @@ export function receiveStatus(status) {
         active_ride: status.active_ride
     }
 }
+
+export function receiveRideZoneStats(rideZoneStats) {
+    return {
+        type: 'RECEIVE_RIDE_ZONE_STATS',
+        total_drivers: rideZoneStats.total_drivers,
+        available_drivers: rideZoneStats.available_drivers,
+        completed_rides: rideZoneStats.completed_rides,
+        active_rides: rideZoneStats.active_rides,
+        scheduled_rides: rideZoneStats.scheduled_rides
+    }
+}
 export function requestToggle() {
     return {
         type: 'REQUEST_TOGGLE',
@@ -107,7 +118,6 @@ export function locationSaved(response) {
     }
 }
 
-// TODO: API urls to environment vars
 export function fetchStatus() {
     return function(dispatch) {
         dispatch(requestStatus())
@@ -117,6 +127,18 @@ export function fetchStatus() {
             .then(response => response.json())
             .then(json =>
                 dispatch(receiveStatus(json.response))
+            )
+    }
+}
+
+export function fetchRideZoneStats() {
+    return function(dispatch) {
+        fetch(`${api}/ridezone_stats`, {
+                credentials: 'include',
+            })
+            .then(response => response.json())
+            .then(json =>
+                dispatch(receiveRideZoneStats(json.response))
             )
     }
 }
@@ -152,14 +174,28 @@ export function submitAvailable() {
 
 export function submitLocation(location) {
     return function(dispatch) {
+        // fetch(`${api}/location?latitude=28.532&longitude=-81.37`, {
         fetch(`${api}/location?latitude=${location.latitude}&longitude=${location.longitude}`, {
-                // fetch(`${api}/location?latitude=28.5364748&longitude=-81.399317', {
                 credentials: 'include',
                 method: 'POST'
             })
             .then(response => response.json())
             .then(json =>
                 dispatch(locationSaved(json))
+            )
+    }
+}
+
+export function fetchWaitingRides() {
+
+    return function(dispatch) {
+        dispatch(requestStatus())
+        fetch(`${api}/waiting_rides`, {
+                credentials: 'include',
+            })
+            .then(response => response.json())
+            .then(json =>
+                dispatch(receveWaitingRides(json))
             )
     }
 }
