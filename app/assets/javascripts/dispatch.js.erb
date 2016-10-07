@@ -196,26 +196,24 @@ DispatchController.prototype = {
         cells = this.conversationCells(c, status),
         ride_id = (c.ride !== undefined) ? c.ride.id : 0;
 
-    if (existing.length > 0) {
-      var existingTable = existing.parent().parent().attr('id');
-      if (targetTable === undefined) {
-        // todo: what to do with this?
-      } else {
+    if (targetTable !== undefined) {
+      if (existing.length > 0) {
+        var existingTable = existing.parent().parent().attr('id');
         existing.html(cells);
         existing.data('ride-id', ride_id);
         this.setRowStatus(existing, status);
         if (existingTable != targetTable) {
-          $('#'+targetTable).prepend(existing);
+          $('#' + targetTable).prepend(existing);
         }
+      } else {
+        var classes = "conv-row conv-status-" + status,
+            row = '<tr id="' + rowId + '" data-ride-id="' + ride_id + '" class="' + classes + '" data-cid="' + c.id + '">' + cells + '</tr>';
+        $('#' + targetTable).prepend(row);
       }
-    } else {
-      var classes = "conv-row conv-status-" + status,
-          row = '<tr id="'+rowId+'" data-ride-id="'+ ride_id + '" class="'+classes+'" data-cid="'+c.id+'">' + cells +'</tr>';
-      $('#' + targetTable).prepend(row);
+      $('#' + rowId).data('objref', c);
+      $("time.timeago").timeago();
+      this.recalcBadges();
     }
-    $('#' + rowId).data('objref', c);
-    $("time.timeago").timeago();
-    this.recalcBadges();
     return status;
   },
 
