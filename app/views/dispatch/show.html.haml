@@ -9,30 +9,48 @@
   .col-md-7
 
     .dispatch-filters
-      = link_to 'All', '#', 'data-statuses': '*', class: 'btn-conv-filter'
+      .conv-table-name Needs a Driver
+      .conv-table-desc Voters that need help, have scheduled a ride, or are waiting for a driver
+      .pull-right.table-collapse HIDE
+      %br
+      = link_to 'All', '#', 'data-table': 'needDriverConversations', 'data-statuses': '*', class: 'btn-conv-filter'
       &nbsp; · &nbsp;
-      = link_to 'Need Help', '#', 'data-statuses': 'help_needed', class: 'btn-conv-filter'
+      = link_to 'Need Help', '#', 'data-table': 'needDriverConversations', 'data-statuses': 'help_needed', class: 'btn-conv-filter'
       &nbsp; · &nbsp;
-      = link_to 'Overdue', '#', 'data-statuses': 'assignment_overdue pickup_overdue completion_overdue', class: 'btn-conv-filter'
+      = link_to 'Need Driver', '#', 'data-table': 'needDriverConversations', 'data-statuses': 'waiting_assignment', class: 'btn-conv-filter'
       &nbsp; · &nbsp;
-      = link_to 'Waiting Assign.', '#', 'data-statuses': 'waiting_assignment', class: 'btn-conv-filter'
+      = link_to 'Overdue', '#', 'data-table': 'needDriverConversations', 'data-statuses': 'assignment_overdue', class: 'btn-conv-filter'
       &nbsp; · &nbsp;
-      = link_to 'Waiting Pickup', '#', 'data-statuses': 'waiting_pickup', class: 'btn-conv-filter'
-      &nbsp; · &nbsp;
-      = link_to 'Scheduled', '#', 'data-statuses': 'scheduled', class: 'btn-conv-filter'
-      &nbsp; · &nbsp;
-      = link_to 'Driving', '#', 'data-statuses': 'driving', class: 'btn-conv-filter'
-      &nbsp; · &nbsp;
-      = link_to 'Messaging', '#', 'data-statuses': 'messaging', class: 'btn-conv-filter'
+      = link_to 'Scheduled', '#', 'data-table': 'needDriverConversations', 'data-statuses': 'scheduled', class: 'btn-conv-filter'
 
-    %table.table.admin{id: 'conversations'}
-      %thead
-        %tr
-          %th{style: 'width:5%'}
-          %th{style: 'width:20%'} Voter
-          %th{style: 'width:45%'} Last message
-          %th{style: 'width:15%'} Status
-          %th{style: 'width:15%'} Desired pickup
+    %table.table.admin.conv-table{id: 'needDriverConversations'}
+
+    .dispatch-filters
+      .conv-table-name Has a Driver
+      .conv-table-desc Voters that have been assigned a driver, are waiting for pickup, or are driving
+      .pull-right.table-collapse HIDE
+      %br
+      = link_to 'All', '#', 'data-table': 'haveDriverConversations', 'data-statuses': '*', class: 'btn-conv-filter'
+      &nbsp; · &nbsp;
+      = link_to 'Waiting Pickup', '#', 'data-table': 'haveDriverConversations', 'data-statuses': 'waiting_pickup', class: 'btn-conv-filter'
+      &nbsp; · &nbsp;
+      = link_to 'Overdue', '#', 'data-table': 'haveDriverConversations', 'data-statuses': 'pickup_overdue completion_overdue', class: 'btn-conv-filter'
+      &nbsp; · &nbsp;
+      = link_to 'Driving', '#', 'data-table': 'haveDriverConversations', 'data-statuses': 'driving', class: 'btn-conv-filter'
+
+    %table.table.admin.conv-table{id: 'haveDriverConversations'}
+
+    .dispatch-filters
+      .conv-table-name Active Conversations
+      .conv-table-desc Voters that are speaking with the 'bot'
+      .pull-right.table-collapse HIDE
+    %table.table.admin.conv-table{id: 'activeConversations'}
+
+    .dispatch-filters
+      .conv-table-name Inactive Conversations
+      .conv-table-desc Voters that have canceled rides or finished complete rides
+      .pull-right.table-collapse HIDE
+    %table.table.admin.conv-table{id: 'inactiveConversations'}
 
   .col-md-5{style: 'margin-top: 15px;'}
     #dispatch-map
@@ -40,28 +58,25 @@
     .pull-left
       %table.key{style: 'margin-bottom: 30px;;'}
         %tr
-          %td.key-pin-cell= image_tag "rider-overdue-assignment.png", class: 'key-pin-img'
-          %td.key-label     Voter overdue assign.
-          %td.key-pin-cell= image_tag "driver-waiting-assignment.png", class: 'key-pin-img'
-          %td.key-label     Driver waiting assign.
-
-        %tr
-          %td.key-pin-cell= image_tag "rider-overdue-pickup.png", class: 'key-pin-img'
-          %td.key-label     Voter overdue pickup
-          %td.key-pin-cell= image_tag "driver-driving.png", class: 'key-pin-img'
-          %td.key-label     Driver assigned
-
-        %tr
-          %td.key-pin-cell= image_tag "rider-overdue-pickup.png", class: 'key-pin-img'
-          %td.key-label     Voter awaiting pickup
-          %td.key-pin-cell= image_tag "driver-driving.png", class: 'key-pin-img'
-          %td.key-label     Driver driving
-
-        %tr
           %td.key-pin-cell= image_tag "rider-waiting-assignment.png", class: 'key-pin-img'
-          %td.key-label     Voter awaiting assign.
-          %td.key-pin-cell
-          %td.key-label
+          %td.key-label     Voter needs a driver
+          %td.key-pin-cell= image_tag "driver-waiting-assignment.png", class: 'key-pin-img'
+          %td.key-label     Available driver
+        %tr
+          %td.key-pin-cell= image_tag "rider-overdue-assignment.png", class: 'key-pin-img'
+          %td.key-label     Voter overdue assignment
+          %td.key-pin-cell= image_tag "driver-assigned.png", class: 'key-pin-img'
+          %td.key-label     Assigned driver
+        %tr
+          %td.key-pin-cell= image_tag "rider-waiting-pickup.png", class: 'key-pin-img'
+          %td.key-label     Voter waiting for pickup
+          %td.key-pin-cell= image_tag "driver-driving.png", class: 'key-pin-img'
+          %td.key-label     Driving
+        %tr
+          %td.key-pin-cell= image_tag "rider-overdue-pickup.png", class: 'key-pin-img'
+          %td.key-label     Voter pickup overdue
+          %td.key-pin-cell= image_tag "driver-driving-overdue.png", class: 'key-pin-img'
+          %td.key-label     Completion overdue
 
 
 :javascript
@@ -75,7 +90,7 @@
 
   jQuery(document).ready(function($) {
     jQuery.timeago.settings.allowFuture = true;
-    $(document).on("click", '.clickable', function(event) {
+    $(document).on("click", '.conv-row', function(event) {
       $(".modal-body").modal();
       dispatchController.loadRidePane($(this).data("cid"));
       dispatchController.loadConversationMessages($(this).data("cid"));
@@ -83,16 +98,30 @@
 
     $('.btn-conv-filter').click(function(event) {
       event.preventDefault();
-      dispatchController.showConversationsWithStatuses($(this).data('statuses'));
+      dispatchController.showConversationsWithStatuses($(this).data('statuses'), $(this).data('table'));
       $(".btn-conv-filter" ).css( "background-color", "#ddd" );
       $(this).css( "background-color", "#fff" );
     });
 
-    $("#conversations").on( "mouseenter", "td.ride-icon", function() {
+    $('.table-collapse').click(function(event) {
+      event.preventDefault();
+      var table = $(this).parent().next("table");
+      if ($(this).text() == 'HIDE') {
+        table.hide();
+        $(this).text('SHOW');
+      } else {
+        table.show();
+        $(this).text('HIDE');
+      }
+    });
+
+    $(".conv-table").on( "mouseenter", ".conv-row", function() {
+      console.log('animate start ' + $(this).data('ride-id'));
       dispatchController.animateRide($(this).data('ride-id'));
     });
 
-    $("#conversations").on( "mouseleave", "td.ride-icon", function() {
+    $(".conv-table").on( "mouseleave", ".conv-row", function() {
+      console.log('animate stop');
       dispatchController.unanimateRide($(this).data('ride-id'));
     });
 
