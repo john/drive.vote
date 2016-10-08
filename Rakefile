@@ -5,6 +5,8 @@ require_relative 'config/application'
 
 Rails.application.load_tasks
 
+task default: 'bundler:audit'
+
 # Hook webpack to run along with asset precompilation.
 Rake::Task['assets:precompile'].enhance ['webpack:compile']
 
