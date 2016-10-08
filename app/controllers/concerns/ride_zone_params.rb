@@ -12,7 +12,8 @@ module RideZoneParams
   def ride_zone_params
     params.require(:ride_zone).permit(:name, :description, :phone_number, :short_code, :city, :county,
                                       :state, :zip, :country, :latitude, :longitude, :slug, :bot_disabled,
-                                      :admin_name, :admin_email, :admin_phone_number, :admin_password)
+                                      :admin_name, :admin_email, :admin_phone_number, :admin_password,
+                                      :nearby_radius)
   end
 
 end

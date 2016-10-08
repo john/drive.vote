@@ -6,7 +6,6 @@ class DrivingController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   RIDES_LIMIT = 3
-  RIDES_RADIUS = 10 # miles by default in Geokit
   UPDATE_LOCATION_INTERVAL = 60 # seconds
   WAITING_RIDES_INTERVAL = 15 # seconds
 
@@ -80,7 +79,8 @@ class DrivingController < ApplicationController
     rides = if @active_ride
               [ @active_ride ] # this allows for dispatcher assignment
             else
-              Ride.waiting_nearby(current_user.driver_ride_zone_id, current_user.latitude, current_user.longitude, RIDES_LIMIT, RIDES_RADIUS)
+              rzid = current_user.driver_ride_zone_id
+              Ride.waiting_nearby(rzid, current_user.latitude, current_user.longitude, RIDES_LIMIT, RideZone.find(rzid).nearby_radius)
             end
     render json: {response: rides.map {|r| r.api_json}, waiting_rides_interval: waiting_rides_interval}
   end

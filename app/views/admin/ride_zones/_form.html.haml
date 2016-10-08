@@ -26,5 +26,9 @@
     = f.label :zip
     = f.text_field :zip, class: 'form-control', required: true, maxlength: 12
 
+  .col-sm-8.field
+    = f.label :nearby_radius
+    = f.text_field :nearby_radius, class: 'form-control', required: true, maxlength: 7
+
   .col-sm-8.actions
     = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."
