@@ -272,6 +272,7 @@ class Simulation < ActiveRecord::Base
       if rides.empty?
         logger.warn "SIMULATOR driver #{u.name} no nearby rides"
       else
+        logger.warn "SIMULATOR assigned #{u.name} to #{rides.first.id}"
         rides.first.assign_driver(u)
       end
     end

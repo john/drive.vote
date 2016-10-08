@@ -72,10 +72,10 @@ RSpec.describe ConversationBot do
 
   describe 'special case of new conversation registered user' do
     let(:user) { create :user, language: :en, name: 'george washington' }
-    let(:convo) { create :conversation_with_messages, user: user, status: :sms_created }
+    let(:convo) { create :conversation, user: user }
 
     it 'should ignore message and prompt for origin' do
-      reply = create :message, conversation: convo, body: 'george washington'
+      reply = create :message, conversation: convo, body: 'hi there', from: convo.from_phone, to: convo.to_phone
       expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:what_is_pickup_location, locale: :en, name: 'george'))
       expect(convo.reload.lifecycle).to eq('have_name')
       expect(convo.status).to eq('in_progress')
@@ -331,6 +331,63 @@ RSpec.describe ConversationBot do
       expect(convo.special_requests).to eq('wheelchair')
       expect(convo.status).to eq('ride_created')
       expect(convo.ride).to_not be_nil
+    end
+  end
+
+  describe 'confirmation' do
+    let!(:user) { create :user, language: :en, name: 'foo' }
+    let!(:convo) { create :complete_conversation, user: user, ride_confirmed: false }
+    let!(:ride) { Ride.create_from_conversation(convo) }
+    let(:voter_time) { Time.use_zone(convo.ride_zone.time_zone) do 10.minutes.from_now.change(sec:0, usec:0); end }
+    let(:voter_formatted) { voter_time.strftime('%l:%M %P')}
+
+    it 'should accept ride confirmation' do
+      expect(convo.lifecycle).to eq('requested_confirmation')
+      reply = create :message, conversation: convo, body: '1', from: convo.from_phone, to: convo.to_phone
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:thanks_wait_for_driver, locale: :en))
+      expect(convo.reload.lifecycle).to eq('info_complete')
+      expect(convo.ride_confirmed).to eq(true)
+      expect(convo.ride.reload.status).to eq('waiting_assignment')
+    end
+
+    it 'should accept ride reschedule' do
+      reply = create :message, conversation: convo, body: '2', from: convo.from_phone, to: convo.to_phone
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:when_do_you_want_pickup, locale: :en))
+      expect(convo.reload.lifecycle).to eq('have_confirmed_destination')
+      expect(convo.ride_confirmed).to eq(false)
+    end
+
+    it 'should reschedule, confirm, then go to waiting' do
+      reply = create :message, conversation: convo, body: '2', from: convo.from_phone, to: convo.to_phone
+      ConversationBot.new(convo, reply).response # prompt for time
+      reply = create :message, conversation: convo, body: voter_formatted, from: convo.from_phone, to: convo.to_phone
+      ConversationBot.new(convo, reply).response # get confirmation
+      reply = create :message, conversation: convo, body: 'y', from: convo.from_phone, to: convo.to_phone
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:thanks_wait_for_driver, locale: :en))
+      expect(convo.reload.lifecycle).to eq('info_complete')
+    end
+
+    it 'should accept ride cancel' do
+      reply = create :message, conversation: convo, body: '3', from: convo.from_phone, to: convo.to_phone
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:thanks_for_using, locale: :en))
+      expect(convo.reload.status).to eq('closed')
+      expect(convo.ride.status).to eq('complete')
+    end
+
+    it 'should accept confirm help needed' do
+      reply = create :message, conversation: convo, body: '4', from: convo.from_phone, to: convo.to_phone
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
+      expect(convo.reload.status).to eq('help_needed')
+    end
+
+    it 'should ask twice for confirmation' do
+      reply = create :message, conversation: convo, body: 'huh', from: convo.from_phone, to: convo.to_phone
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_ride, locale: :en, time: convo.ride.pickup_in_time_zone.strftime('%l:%M %P')))
+      reply = create :message, conversation: convo, body: 'huh', from: convo.from_phone, to: convo.to_phone
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_ride, locale: :en, time: convo.ride.pickup_in_time_zone.strftime('%l:%M %P')))
+      reply = create :message, conversation: convo, body: 'huh', from: convo.from_phone, to: convo.to_phone
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
+      expect(convo.reload.status).to eq('help_needed')
     end
   end
 

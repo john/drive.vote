@@ -193,12 +193,12 @@ RSpec.describe Ride, type: :model do
   end
 
   it 'switches scheduled to waiting_assignment on create' do
-    r = create :ride, status: :scheduled, pickup_time: Time.now
+    r = create :ride, status: :scheduled, pickup_at: Time.now
     expect(r.reload.status).to eq('waiting_assignment')
   end
 
   it 'keeps scheduled for future time' do
-    r = create :ride, status: :scheduled, pickup_time: Time.now + 2*Ride::SWITCH_TO_WAITING_ASSIGNMENT
+    r = create :ride, status: :scheduled, pickup_at: (2*Ride::SWITCH_TO_WAITING_ASSIGNMENT).minutes.from_now
     expect(r.reload.status).to eq('scheduled')
   end
 
@@ -210,4 +210,18 @@ RSpec.describe Ride, type: :model do
     expect(Time.now - r.reload.status_updated_at).to be <(10)
   end
 
+  describe 'confirming scheduled rides', focus:true do
+    it 'confirms only scheduled rides that are soon' do
+      stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 10)
+      c1 = create :complete_conversation, pickup_time: 20.minutes.from_now
+      c2 = create :complete_conversation, pickup_time: 20.minutes.from_now
+      c3 = create :complete_conversation, pickup_time: 40.minutes.from_now
+      Ride.create_from_conversation(c1)
+      Ride.create_from_conversation(c2).update_attribute(:status, :waiting_assignment)
+      Ride.create_from_conversation(c3)
+      stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 30) # only c1 should now match
+      expect_any_instance_of(Conversation).to receive(:attempt_confirmation).once
+      Ride.confirm_scheduled_rides
+    end
+  end
 end

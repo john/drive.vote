@@ -1,7 +1,7 @@
 class Ride < ApplicationRecord
   belongs_to :ride_zone
 
-  SWITCH_TO_WAITING_ASSIGNMENT = 15.minutes # how long before pickup time to change status to waiting_assignment
+  SWITCH_TO_WAITING_ASSIGNMENT = 15 # how long in minutes before pickup time to change status to waiting_assignment
 
   enum status: { incomplete_info: 0, scheduled: 1, waiting_assignment: 2, driver_assigned: 3, picked_up: 4, complete: 5 }
 
@@ -26,7 +26,7 @@ class Ride < ApplicationRecord
   validates :email, length: { maximum: 17 }
 
   before_save :note_status_update
-  before_create :check_waiting_assignment
+  before_save :check_waiting_assignment
   around_save :notify_update
   before_save :close_conversation_when_complete
 
@@ -60,7 +60,10 @@ class Ride < ApplicationRecord
       special_requests: conversation.special_requests,
       conversation: conversation,
     }
-    Ride.create!(attrs)
+    ActiveRecord::Base.transaction do
+      conversation.update_attribute(:status, :ride_created)
+      Ride.create!(attrs)
+    end
   end
 
   # returns true if assignment worked
@@ -118,6 +121,12 @@ class Ride < ApplicationRecord
     Ride.active_statuses.include?(self.status.to_sym)
   end
 
+  def pickup_in_time_zone
+    Time.use_zone(self.ride_zone.time_zone) do
+      Time.at self.pickup_at
+    end
+  end
+
   # return up to limit Rides near the specified location
   def self.waiting_nearby ride_zone_id, latitude, longitude, limit, radius
     rides = Ride.where(ride_zone_id: ride_zone_id, status: :waiting_assignment).to_a
@@ -143,6 +152,12 @@ class Ride < ApplicationRecord
     self.active_statuses.map {|s| Ride.statuses[s]}
   end
 
+  def self.confirm_scheduled_rides
+    Ride.where(status: :scheduled).where('pickup_at < ?', SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now).each do |ride|
+      ride.conversation.attempt_confirmation
+    end
+  end
+
   def passenger_count
     # always include Voter as a passenger
     self.additional_passengers + 1
@@ -150,7 +165,7 @@ class Ride < ApplicationRecord
 
   private
   def check_waiting_assignment
-    if self.status == 'scheduled' && self.pickup_time && self.pickup_time < SWITCH_TO_WAITING_ASSIGNMENT.from_now
+    if self.status == 'scheduled' && self.pickup_at && self.pickup_at < SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now
       self.status = :waiting_assignment
     end
   end
