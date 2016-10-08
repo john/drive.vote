@@ -68,7 +68,7 @@ class User < ApplicationRecord
   end
 
   def self.voters
-    User.where(id: User.with_role(:voter))
+    User.with_role(:voter)
   end
 
   def self.assigned_drivers
