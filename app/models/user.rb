@@ -84,6 +84,10 @@ class User < ApplicationRecord
     self.assigned_drivers + self.with_role( :unassigned_driver )
   end
 
+  def self.all_driver_roles
+    self.with_role( :driver ).or(self.with_role :unassigned_driver)
+  end
+
   def self.sms_name(phone_number)
     "#{phone_number} via sms"
   end
