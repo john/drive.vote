@@ -79,6 +79,16 @@ RSpec.describe User, :type => :model do
     end
   end
 
+  describe '#voters' do
+    let(:voter_user) { create(:voter_user) }
+    let(:non_voter_user) { create(:user) }
+
+    it 'includes all users with the role of voter' do
+      expect(User.voters).to include(voter_user)
+      expect(User.voters).to_not include(non_voter_user)
+    end
+  end
+
   describe '#add_rolify_role' do
     let(:valid_attributes) {
       {name: 'Rolify Test Uaer', email: 'foo@bar.com', password: '12345abcde', phone_number: '2073328710', city: 'Tolendo', state: 'OH', zip: '43601'}

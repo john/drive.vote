@@ -67,6 +67,10 @@ class User < ApplicationRecord
     User.where.not(id: User.with_role(:voter))
   end
 
+  def self.voters
+    User.where(id: User.with_role(:voter))
+  end
+
   def self.assigned_drivers
     User.find_by_sql("SELECT users.* FROM users \
         INNER JOIN users_roles ON users_roles.user_id = users.id \
