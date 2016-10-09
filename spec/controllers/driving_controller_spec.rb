@@ -73,7 +73,7 @@ RSpec.describe DrivingController, :type => :controller do
   describe 'get status' do
     let(:expected) { {'available' => true, 'active_ride' => nil, 'waiting_rides_interval' => 24, 'update_location_interval' => 42} }
     before :each do
-      driver.update_attribute :available, true
+      driver.update_attributes(available: true, latitude: 34, longitude: -122)
       allow(controller).to receive(:update_location_interval).and_return(expected['update_location_interval'])
       allow(controller).to receive(:waiting_rides_interval).and_return(expected['waiting_rides_interval'])
     end
@@ -89,9 +89,10 @@ RSpec.describe DrivingController, :type => :controller do
     end
 
     it 'returns data with ride' do
-      ride = create :ride, status: :picked_up, driver: driver
+      ride = create :ride, status: :picked_up, driver: driver, from_latitude: 34.1, from_longitude: -122.2
+      ride.set_distance_to_voter(driver.latitude, driver.longitude)
       get :status
-      expect(JSON.parse(response.body)['response']).to eq(expected.merge('active_ride' => ride.api_json))
+      expect(JSON.parse(response.body)['response']).to eq(expected.merge('active_ride' => ride.api_json.as_json))
     end
   end
 
@@ -207,16 +208,22 @@ RSpec.describe DrivingController, :type => :controller do
     end
 
     it 'returns rides' do
+      lat = car_location[:latitude]
+      long = car_location[:longitude]
       rides = create_list :waiting_ride, 3
+      rides.each_with_index do |r, i|
+        r.update_attributes(from_latitude: lat + i * 0.1, from_longitude: long + i * 0.1)
+        r.set_distance_to_voter(lat, long)
+      end
       driver.update_attributes car_location
       expect(Ride).to receive(:waiting_nearby).with(\
         rz.id,
-        car_location[:latitude],
-        car_location[:longitude],
+        lat,
+        long,
         DrivingController::RIDES_LIMIT,
         rz.nearby_radius).and_return(rides)
       get :waiting_rides
-      expect(JSON.parse(response.body)['response']).to eq(rides.map {|r| r.api_json})
+      expect(JSON.parse(response.body)['response']).to eq(rides.map {|r| r.api_json.as_json})
     end
   end
 

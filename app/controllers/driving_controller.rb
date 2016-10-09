@@ -2,6 +2,7 @@ class DrivingController < ApplicationController
 
   before_action :ensure_session
   before_action :update_location_from_params
+  before_action :update_active_ride
 
   skip_before_action :verify_authenticity_token
 
@@ -96,6 +97,10 @@ class DrivingController < ApplicationController
     lat, lng = params[:latitude], params[:longitude]
     return if lat.blank? || lng.blank?
     current_user.update_attributes(latitude: lat, longitude: lng)
+  end
+
+  def update_active_ride
+    @active_ride.set_distance_to_voter(current_user.latitude, current_user.longitude) if @active_ride
   end
 
   # this routine executes function and renders OK response or error
