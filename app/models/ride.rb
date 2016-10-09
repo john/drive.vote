@@ -106,7 +106,7 @@ class Ride < ApplicationRecord
 
   # returns json suitable for exposing in the API
   def api_json
-    j = self.as_json(except: [:pickup_at, :created_at, :updated_at], methods: [:conversation_id])
+    j = self.as_json(except: [:voter_id, :driver_id, :pickup_at, :created_at, :updated_at], methods: [:conversation_id, :driver_name])
     j['pickup_at'] = self.pickup_at.try(:to_i)
     j['status_updated_at'] = self.status_updated_at.to_i
     j['voter_phone_number'] = self.voter.phone_number_normalized
@@ -115,6 +115,10 @@ class Ride < ApplicationRecord
 
   def conversation_id
     self.conversation.try(:id)
+  end
+
+  def driver_name
+    self.driver.try(:name)
   end
 
   def active?
