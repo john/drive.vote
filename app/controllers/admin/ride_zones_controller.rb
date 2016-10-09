@@ -30,6 +30,10 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   end
 
   def edit
+    setup_edit
+  end
+
+  def setup_edit
     @zone_dispatchers = @ride_zone.dispatchers
     @zone_drivers = @ride_zone.drivers
     @zone_admins = User.with_role(:admin, @ride_zone)
@@ -52,6 +56,7 @@ class Admin::RideZonesController < Admin::AdminApplicationController
     if @ride_zone.update(ride_zone_params)
       redirect_to [:admin, @ride_zone], notice: 'RideZone was successfully updated.'
     else
+      setup_edit
       render :edit
     end
   end

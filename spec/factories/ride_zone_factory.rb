@@ -6,6 +6,7 @@ FactoryGirl.define do
     zip '43601'
     sequence(:phone_number) { |n| "207-867-%04d" % n }
     time_zone 'America/New_York'
+    nearby_radius 5
   end
 
 end

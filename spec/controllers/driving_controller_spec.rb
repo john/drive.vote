@@ -214,7 +214,7 @@ RSpec.describe DrivingController, :type => :controller do
         car_location[:latitude],
         car_location[:longitude],
         DrivingController::RIDES_LIMIT,
-        DrivingController::RIDES_RADIUS).and_return(rides)
+        rz.nearby_radius).and_return(rides)
       get :waiting_rides
       expect(JSON.parse(response.body)['response']).to eq(rides.map {|r| r.api_json})
     end
