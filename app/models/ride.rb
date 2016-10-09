@@ -37,6 +37,9 @@ class Ride < ApplicationRecord
   attr_accessor :pickup_day
   attr_accessor :pickup_time
 
+  # transient for returning distance to voter
+  attr_accessor :distance_to_voter
+
   include HasAddress
   include ToFromAddressable
 
@@ -110,6 +113,7 @@ class Ride < ApplicationRecord
     j['pickup_at'] = self.pickup_at.try(:to_i)
     j['status_updated_at'] = self.status_updated_at.to_i
     j['voter_phone_number'] = self.voter.phone_number_normalized
+    j['distance_to_voter'] = self.distance_to_voter.round(2) if self.distance_to_voter
     j
   end
 
@@ -131,6 +135,12 @@ class Ride < ApplicationRecord
     end
   end
 
+  def set_distance_to_voter(latitude, longitude)
+    pt = Geokit::LatLng.new(latitude, longitude)
+    ride_pt = Geokit::LatLng.new(self.from_latitude, self.from_longitude)
+    self.distance_to_voter = pt.distance_to(ride_pt)
+  end
+
   # return up to limit Rides near the specified location
   def self.waiting_nearby ride_zone_id, latitude, longitude, limit, radius
     rides = Ride.where(ride_zone_id: ride_zone_id, status: :waiting_assignment).to_a
@@ -139,6 +149,7 @@ class Ride < ApplicationRecord
       ride_pt = Geokit::LatLng.new(ride.from_latitude, ride.from_longitude)
       dist = pt.distance_to(ride_pt)
       if dist < radius
+        ride.distance_to_voter = dist
         [dist, ride]
       else
         nil

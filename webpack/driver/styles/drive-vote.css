@@ -91,6 +91,10 @@ label {
     margin-bottom: 1em;
 }
 
+.m-b-0 {
+    margin-bottom: 0;
+}
+
 .m-r {
     margin-right: 1em;
 }
@@ -107,7 +111,7 @@ label {
     width: 80px;
 }
 
-.bottom-controls {
+.bottom-controls.fixed {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -116,11 +120,7 @@ label {
     background: white;
 }
 
-.bottom-controls.secondary {
-    z-index: 200;
-}
-
-.bottom-controls:before {
+.bottom-controls.fixed:before {
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(206, 206, 206, .8) 20px);
     content: " ";
     display: block;
@@ -129,6 +129,10 @@ label {
     right: 0;
     bottom: 100%;
     height: 20px;
+}
+
+.bottom-controls.secondary {
+    margin-top: 2em;
 }
 
 .bottom-controls .btn {
@@ -211,22 +215,22 @@ label {
     position: relative;
 }
 
-.panel:nth-child(even) {
-    background: rgb(247, 246, 247);
-}
-
 .panel-full {
     position: fixed;
     width: 100%;
     height: calc(100% - 69px);
     bottom: 0;
     left: 0;
-    z-index: 500;
+    z-index: 100;
+    overflow-y: scroll;
 }
 
-.panel-full .rideDetails {
-    height: calc(100% - 220px);
-    overflow-y: scroll;
+.panel:nth-child(even) {
+    background: rgb(247, 246, 247);
+}
+
+.panel-full {
+    z-index: 99;
 }
 
 .rideDetails h3 {
@@ -280,6 +284,16 @@ p.display-3 {
     text-transform: uppercase;
     font-size: 14px;
     font-weight: 500;
+}
+
+.banner {
+    font-weight: bold;
+    color: white;
+    padding: 1em .5em;
+}
+
+.banner-success {
+    background: rgb(38, 204, 124);
 }
 
 @media (min-width: 600px) {

@@ -261,6 +261,10 @@ definitions:
         type: number
         format: double
         description: The end latitude
+      distance_to_voter:
+        type: number
+        format: double
+        description: Distance from driver's most recent location to the pickup location
       voter_phone_number:
         type: string
         description: The voter's phone number
