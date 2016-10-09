@@ -266,7 +266,8 @@ export function completeRide(ride) {
             })
             .then(response => response.json())
             .then(json =>
-                dispatch(dropoffSuccess(ride))
+                dispatch(dropoffSuccess(ride)),
+                dispatch(fetchWaitingRides())
             )
     }
 }

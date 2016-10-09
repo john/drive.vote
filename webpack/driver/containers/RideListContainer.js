@@ -16,7 +16,14 @@ class RideListContainer extends React.Component {
     render() {
         const availableRides = this.props.state.driverState.rides;
         const isFetching = this.props.state.driverState.isFetching;
-
+        let completedRide;
+        if (this.props.state.driverState.active_ride && this.props.state.driverState.active_ride.status === 'complete') {
+            completedRide = (
+                <div className="banner banner-success">
+                    <h4 className="m-b-0 text-center"><i className="fa fa-thumbs-up pull-left"></i> {this.props.state.driverState.active_ride.name} dropped off</h4>
+                </div>
+            );
+        }
         let loadingIndicator;
         if (isFetching) {
             loadingIndicator = (<p className="display-3"><i className="fa fa-circle-o-notch fa-spin"></i> Checking for new ride requests</p>);
@@ -25,7 +32,7 @@ class RideListContainer extends React.Component {
             loadingIndicator = (<p className="display-3">New rides will load automatically</p>);
         }
 
-        if (this.props.state.driverState.active_ride && this.props.state.driverState.active_ride.id) {
+        if (this.props.state.driverState.active_ride && this.props.state.driverState.active_ride.id && this.props.state.driverState.active_ride.status !== 'complete') {
             return <ActiveRide {...this.props} ride={this.props.state.driverState.active_ride} />
 
         } else {
@@ -34,6 +41,7 @@ class RideListContainer extends React.Component {
                     return (
                         <div>
                             <ul className="panel-list">
+                                {completedRide}
                                 {availableRides.map((ride, i) => <PendingRide {...this.props} key={i} i={i} ride={ride} />)}
                             </ul>
                             <UnavailableButton submitUnavailable={this.props.submitUnavailable} />
@@ -42,6 +50,7 @@ class RideListContainer extends React.Component {
                 } else {
                     return (
                         <div className="searching-container">
+                            {completedRide}
                             <div className="jumbotron text-center">
                                 <h1><i className="fa fa-map-o text-info"></i></h1>
                                 <p>No voters in your area currently need a ride</p>

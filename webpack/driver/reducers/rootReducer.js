@@ -60,7 +60,7 @@ function driverState(state = {
         case 'RIDE_CANCELLED':
             return Object.assign({}, state, {
                 isFetching: false,
-                active_ride: action.active_ride
+                active_ride: null
             })
         case 'RIDER_PICKUP':
             action.active_ride.status = 'picked_up';

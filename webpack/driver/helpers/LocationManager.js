@@ -56,13 +56,14 @@ class LocationManager extends React.Component {
         // clearInterval(this.rideCount);
         // let locationUpdateInterval = nextProps.state.driverState.update_location_interval;
         // if (locationUpdateInterval && nextProps.location) {
-            const locationInterval = setInterval(function() { self.props.submitLocation(self.props.state.driverState.location) }, 5000);
+        const locationInterval = setInterval(function() { self.props.submitLocation(self.props.state.driverState.location) }, 5000);
         //     this.locationCount = locationInterval;
 
         // }
         // let waitingRidesInterval = nextProps.state.driverState.waiting_rides_interval;
         // if (waitingRidesInterval) {
-            const ridesInterval = setInterval(function() { self.props.fetchWaitingRides() }, 5000);
+        const ridesInterval = setInterval(function() { self.props.fetchWaitingRides() }, 5000);
+        // const statusInterval = setInterval(function() { self.props.fetchStatus() }, 5000);
         //     this.rideCount = ridesInterval;
         // }
     }
@@ -72,7 +73,7 @@ class LocationManager extends React.Component {
             return null
         } else {
             return (
-              <div className="container">
+                <div className="container">
                 <div className="panel panel-default panel-ride">
                   <h6>Drive the Vote requires you to share your location.</h6>
                   <p>Please reload to start sharing your location</p>

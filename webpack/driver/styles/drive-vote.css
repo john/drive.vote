@@ -91,6 +91,10 @@ label {
     margin-bottom: 1em;
 }
 
+.m-b-0 {
+    margin-bottom: 0;
+}
+
 .m-r {
     margin-right: 1em;
 }
@@ -127,7 +131,7 @@ label {
     height: 20px;
 }
 
-.bottom-controls.secondary{
+.bottom-controls.secondary {
     margin-top: 2em;
 }
 
@@ -225,7 +229,7 @@ label {
     background: rgb(247, 246, 247);
 }
 
-.panel-full{
+.panel-full {
     z-index: 99;
 }
 
@@ -280,6 +284,16 @@ p.display-3 {
     text-transform: uppercase;
     font-size: 14px;
     font-weight: 500;
+}
+
+.banner {
+    font-weight: bold;
+    color: white;
+    padding: 1em .5em;
+}
+
+.banner-success {
+    background: rgb(38, 204, 124);
 }
 
 @media (min-width: 600px) {
