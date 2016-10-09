@@ -37,7 +37,7 @@ Filter: &nbsp;
   %tbody
     - @users.each do |user|
       %tr
-        %td= link_to user.name, admin_user_path(user)
+        %td{style: 'max-width: 250px;'}= link_to user.name, admin_user_path(user)
         %td= user.created_at.strftime("%-m/%-d, %-H:%M %P")
         %td #{[user.city, user.state, user.zip].reject(&:blank?).join(', ')}
         %td= user.roles.collect{|r| r.name.gsub('_', ' ')}.join(', ')
@@ -46,7 +46,7 @@ Filter: &nbsp;
           &nbsp; &#183; &nbsp;
           = link_to 'Destroy', admin_user_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }
           &nbsp; &#183; &nbsp;
-          = link_to 'QA Clear', qa_clear_admin_user_path(user), method: :post, data: { :confirm => 'Are you sure?' }
+          = link_to 'QA Clear', qa_clear_admin_user_path(user), method: :post, data: { :confirm => "This will delete all conversations, rides, and messages for this user. Are you sure that's what you want to do?" }
 
 - if @users.present?
   %nav{'aria-label': 'pagination'}
