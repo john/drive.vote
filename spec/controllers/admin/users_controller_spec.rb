@@ -110,4 +110,20 @@ RSpec.describe Admin::UsersController, type: :controller do
       end
     end
   end
+
+  describe 'DELETE destroy' do
+    it 'redirects if not logged in' do
+      delete :destroy, params: {:id => user.to_param }
+      expect(response).to redirect_to('/404.html')
+    end
+
+    context 'as admin' do
+      login_admin
+
+      it 'calls clear' do
+        expect_any_instance_of(User).to receive(:destroy)
+        delete :destroy, params: {:id => user.to_param }
+      end
+    end
+  end
 end

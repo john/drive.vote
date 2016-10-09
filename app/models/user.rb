@@ -19,7 +19,8 @@ class User < ApplicationRecord
 
   VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
   VALID_STATES = {'FL' => 'Florida', 'GA' => 'Georgia', 'NV' => 'Nevada', 'NC' => 'North Carolina', 'OH' => 'Ohio',  'PA' =>'Pennsylvania', 'WI' => 'Wisconsin'}
-  has_many :rides, foreign_key: :voter_id
+  has_many :rides, foreign_key: :voter_id, dependent: :destroy
+  has_many :conversations, foreign_key: :user_id, dependent: :destroy
 
   enum language: { unknown: 0, en: 1, es: 2 }, _suffix: true
 
