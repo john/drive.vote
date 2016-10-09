@@ -36,7 +36,7 @@ class RideListContainer extends React.Component {
                             <ul className="panel-list">
                                 {availableRides.map((ride, i) => <PendingRide {...this.props} key={i} i={i} ride={ride} />)}
                             </ul>
-                           <UnavailableButton submitUnavailable={this.props.submitUnavailable} />
+                            <UnavailableButton submitUnavailable={this.props.submitUnavailable} />
                         </div>
                     )
                 } else {
