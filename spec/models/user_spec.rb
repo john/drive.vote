@@ -220,14 +220,22 @@ RSpec.describe User, :type => :model do
     end
   end
 
-  describe 'qa_clear' do
+  describe 'qa_clear and destroy' do
     let(:user) { create :user }
     let(:convo) { create :conversation_with_messages, user: user }
     let(:ride) { Ride.create_from_conversation(convo) }
 
-    it 'deletes all user conversation data' do
+    it 'deletes all user conversation data on qa_clear' do
       cid, rid = convo.id, ride.id
       user.qa_clear
+      expect(Ride.find_by_id(rid)).to be_nil
+      expect(Message.where(conversation_id: cid).count).to eq(0)
+      expect(Conversation.find_by_id(cid)).to be_nil
+    end
+
+    it 'deletes all user conversation data on destroy' do
+      cid, rid = convo.id, ride.id
+      user.destroy
       expect(Ride.find_by_id(rid)).to be_nil
       expect(Message.where(conversation_id: cid).count).to eq(0)
       expect(Conversation.find_by_id(cid)).to be_nil

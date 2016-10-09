@@ -35,6 +35,12 @@ class Admin::UsersController < Admin::AdminApplicationController
     redirect_back(fallback_location: admin_users_path)
   end
 
+  def destroy
+    @user.destroy
+    flash[:notice] = "Deleted #{@user.name}"
+    redirect_to admin_users_path
+  end
+
   # # PATCH/PUT /users/1
   # # PATCH/PUT /users/1.json
   def update
