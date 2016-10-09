@@ -23,13 +23,10 @@ gem 'remote_syslog_logger'
 gem 'rolify'
 gem 'rspec'
 gem 'rspec-rails'
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails'
 gem 'sendgrid'
 gem 'sidekiq'
-gem 'sinatra', '~> 2.0.0.beta2', :require => false # for sidekiq
-github 'sinatra/sinatra' do
-  gem 'rack-protection'
-end
+gem 'sinatra', require: false
 gem 'timezone'
 gem 'tod'
 gem 'turbolinks', '~> 5.x'
@@ -52,6 +49,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'bundler-audit', require: false
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'dotenv-rails'
