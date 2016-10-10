@@ -18,7 +18,7 @@ module Api::V1
 
     def voice
       resp = Twilio::TwiML::Response.new do |r|
-        r.Say 'Thank you for calling drive the vote. We do not have operators available. Please send a text message to this number.'
+        r.Say "Thanks for calling drive the vote. This number does not accept voice calls. Please text 'help' to this number and someone will respond."
       end
       render_twiml(resp)
     end
