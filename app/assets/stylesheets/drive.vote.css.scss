@@ -121,7 +121,6 @@ form {
 
 // Dispatch page:
 
-
 h3.dispatch { margin: 0 0 0 10px; }
 
 .dispatch-links {
@@ -149,8 +148,7 @@ h3.dispatch { margin: 0 0 0 10px; }
   font-weight: normal;
   font-size: 13px;
   padding: 4px 10px;
-  background-color: #ddd;
-  margin: 30px 0;
+  margin: 10px 0;
 }
 
 #conversations {
@@ -279,4 +277,30 @@ h3.dispatch { margin: 0 0 0 10px; }
 .conv-field {
   height: 40px;
   margin-left: 20px;
+}
+
+
+.schedule {
+  margin: 10px 0 0 15px;
+}
+
+.to_or_from {
+  margin: 0 0 -10px 15px;
+  font-size: 22px;
+}
+
+@media(max-width:480px) {
+  #logo {
+    width: 76px;
+    height: 40px;
+  }
+
+  .schedule {
+    margin: 0px 0 0 15px;
+    font-size: 30px;
+  }
+
+  .to_or_from {
+    font-size: 20px;
+  }
 }

@@ -26,14 +26,13 @@
 
 .conv-table-name {
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   display: inline-block;
   margin-right: 10px;
 }
 
 .conv-table-desc {
-  font-size: 12px;
-  display: inline-block;
+  font-size: 14px;
 }
 
 .conv-table {
@@ -47,8 +46,12 @@
 }
 
 .voter-info {
-  font-weight: bold;
   font-size: 16px;
+}
+
+.conv-msg {
+  color: #777;
+  font-size: 13px;
 }
 
 .conv-status {
@@ -63,6 +66,8 @@
 
 .conv-time {
   width: 15%;
+  font-size: 13px;
+  color: #777;
 }
 
 .conv-status-messaging {
@@ -97,10 +102,12 @@
 }
 
 .conv-statdisp {
-  padding: 8px;
+  //display: inline;
+  width: 100px;
+  padding: 6px;
   vertical-align: middle;
   font-size: 12px;
-  font-weight: bold;
+  font-weight: normal;
 }
 
 .conv-statdisp-messaging {
