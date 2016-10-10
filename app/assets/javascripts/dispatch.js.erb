@@ -201,9 +201,16 @@ DispatchController.prototype = {
         }
         break;
     }
-    var cells =
-      '<td class="conv-voter"><div class="voter-info">' + c.name + ' ' + c.from_phone + '</div>' + msg.truncate(100) + '</td>' +
+    var cells = '<td class="conv-voter"><div class="voter-info"><b>';
+    if (c.name.length > 0) {
+      cells = cells + c.name
+    } else {
+      cells = cells + c.from_phone
+    }
+
+    cells = cells + '</b></div>' + msg.truncate(100) + '</td>' +
       '<td class="conv-status">' + '<span class="conv-statdisp conv-statdisp-'+status+'">' + this._statusStrings[status] + '</span></td>';
+
     if (status == 'complete' || status == 'driving') {
       cells = cells + '<td class="conv-time"></td>';
     } else {
