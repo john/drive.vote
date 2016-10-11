@@ -63,7 +63,7 @@ RSpec.describe User, :type => :model do
       end
 
       it 'is valid if zip in supported state' do
-        user.zip = 33101 # Miami, FL
+        user.zip = 15106 # Carnegie, PA
         expect(user).to be_valid
       end
 
@@ -81,7 +81,7 @@ RSpec.describe User, :type => :model do
 
   describe '#add_rolify_role' do
     let(:valid_attributes) {
-      {name: 'Rolify Test Uaer', email: 'foo@bar.com', password: '12345abcde', phone_number: '2073328710', city: 'Tolendo', state: 'OH', zip: '43601'}
+      {name: 'Rolify Test Uaer', email: 'foo@bar.com', password: '12345abcde', phone_number: '2073328710', city: 'Tolendo', state: 'PA', zip: '15106'}
     }
 
     it "doesn't allow the creation of super admins" do
@@ -107,9 +107,9 @@ RSpec.describe User, :type => :model do
 
         user.address1 = '5001 Monroe St'
         user.address2 = ''
-        user.city = 'Toledo'
-        user.state = 'OH'
-        user.zip = 43623
+        user.city = 'Carnegie'
+        user.state = 'PA'
+        user.zip = 15106
 
         user.save!
         user.reload
