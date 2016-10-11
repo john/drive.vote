@@ -50,7 +50,7 @@ class PendingRide extends React.Component {
                         <p>Total Passengers: {passengers}</p>
                         <p>Read More <i className="fa fa-angle-right"></i></p>
                     </div> 
-                    <div className="col-xs-5">
+                    <div className="col-xs-5 p-l-0">
                         <h4>{time}</h4>
                         <p>{ ride.from_address }</p>
                         <p>{ ride.from_city }, { ride.from_state } { ride.from_zip }</p>

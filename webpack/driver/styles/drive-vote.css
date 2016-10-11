@@ -13,14 +13,19 @@ h2 {
 }
 
 h3 {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 500;
     margin-top: 0;
 }
 
 h4 {
-    font-size: 20px;
+    font-size: 16px;
     margin-top: 0;
+}
+
+p{
+    font-size: 14px;
+    line-height: 20px;
 }
 
 .container {
@@ -54,8 +59,13 @@ label {
 }
 
 .p-y-sm {
-    padding-top: .75em;
-    padding-bottom: .75em;
+    padding-top: .75em !important;
+    padding-bottom: .75em !important;
+}
+
+.p-y-0 {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 .p-l-0 {
@@ -108,7 +118,7 @@ label {
 }
 
 .logo {
-    width: 80px;
+    width: 50px;
 }
 
 .bottom-controls.fixed {
@@ -116,7 +126,7 @@ label {
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 4rem 1.5rem 1.5rem;
+    padding: 2rem 1.5rem 1.5rem;
     background: white;
 }
 
@@ -142,7 +152,7 @@ label {
 }
 
 .bottom-controls .btn:nth-child(2) {
-    margin-top: 5rem;
+    margin-top: 2rem;
 }
 
 .btn {
@@ -189,9 +199,9 @@ label {
 .directionsLink {
     background: none;
     color: rgb(75, 145, 220);
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 1px;
-    margin-top: 40px;
+    margin-top: 24px;
     font-weight: bold;
     text-transform: uppercase;
     float: right;
@@ -218,7 +228,7 @@ label {
 .panel-full {
     position: fixed;
     width: 100%;
-    height: calc(100% - 69px);
+    height: calc(100% - 53px);
     bottom: 0;
     left: 0;
     z-index: 100;
@@ -252,14 +262,23 @@ label {
     opacity: .4;
 }
 
-.pending-ride h3 {}
+.pending-ride h3 {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-bottom: .5rem;
+}
+
+.pending-ride h4 {
+    margin-bottom: .5rem;
+}
 
 .pending-ride {
-    padding: 2rem 1.5rem;
+    padding: 1rem 1.5rem;
 }
 
 p.display-2 {
-    font-size: 18px;
+    font-size: 16px;
     line-height: 23px;
 }
 
@@ -269,7 +288,7 @@ p.display-3 {
 }
 
 .pending-ride p {
-    font-size: 14px;
+    font-size: 12px;
     color: rgba(93, 95, 98);
     color: rgb(93, 95, 98);
     margin: 0;
