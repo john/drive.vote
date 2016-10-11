@@ -7,6 +7,11 @@ RSpec.describe "TopLevel", type: :request do
       expect(response).to have_http_status(200)
     end
 
+    it "serves the generic volunteer page" do
+      get "/volunteer_to_drive"
+      expect(response).to have_http_status(200)
+    end
+
     it "serves ride zone sign up page" do
       ride_zone = create(:ride_zone)
 

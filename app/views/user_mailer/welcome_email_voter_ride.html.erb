@@ -1,22 +1,32 @@
-<h1 style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, sans-serif;font-size: 36px;line-height: 1.2em;margin: 40px 0 15px;padding: 0;color: #111111;font-weight: 200;">Welcome <%= @user.name %>!</h1>
+<h1 style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, sans-serif;font-size: 36px;line-height: 1.2em;margin: 40px 0 15px;padding: 0;color: #111111;font-weight: 200;">
 
-<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">Thank you for scheduling a ride at <%= @ride.pickup_at.strftime('%m/%d %l:%M %P') %></p>
-<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">Pickup location: <%= "#{@ride.from_address} #{@ride.from_city}}" %></p>
+  Welcome <%= @user.name %>!</h1>
 
-<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">To change this request, sign in at: https://drive.vote/users/sign_in</p>
+<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 16px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">
 
-<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">Do you know others who need rides, or want to help?</p>
+  Your ride to the polls is scheduled for
+  <br><b><%= @ride.pickup_at.strftime('%m/%d %l:%M %P') %></b>
+</p>
 
-<!-- button -->
-<table class="btn-primary" cellpadding="0" cellspacing="0" border="0" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;margin-bottom: 10px;width: auto !important;">
-  <tr style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;">
-    <td style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;background-color: #3b5998;border-radius: 25px;text-align: center;vertical-align: top;">
-      <a href="http://www.facebook.com/sharer.php?u=https://www.drive.vote" target="_blank" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 2;margin: 0;padding: 0;color: #ffffff;background-color: #3b5998;border: solid 1px #3b5998;border-radius: 25px;border-width: 10px 20px;display: inline-block;cursor: pointer;font-weight: bold;text-decoration: none;">Share on Facebook</a>
-    </td>
-  </tr>
-</table>
-<!-- /button -->
+<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 16px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">
 
-<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">or <a href="http://twitter.com/intent/tweet?url=https://www.drive.vote&text=Drive%20the%20Vote%20matches%20people%20who%20need%20a%20ride%20to%20their%20polling%20place%20with%20volunteer%20drivers.&via=drivevote&related=wordie" target="_blank" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;color: #348eda;">Share on Twitter</a></p>
+  Pickup location:
+  <br>
+  <b><%= "#{@ride.from_address} #{@ride.from_city}" %></b>
+</p>
 
-<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">Thanks, and have a lovely day :-)</p>
+<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 16px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">
+
+  <!--If you need to reschedule first <a href="https://drive.vote/users/password/new">create a password for your account</a>.--> Email <a href="mailto:hello@drive.vote">hello@drive.vote</a> if you have questions or need help.
+
+</p>
+
+<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 16px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">
+
+  Do you know others in your area who need rides?
+
+  Share on <a href="http://www.facebook.com/sharer.php?u=https://www.drive.vote" target="_blank">Facebook</a>
+  or
+  <a href="http://twitter.com/intent/tweet?url=https://www.drive.vote&text=Drive%20the%20Vote%20matches%20people%20who%20need%20a%20ride%20to%20their%20polling%20place%20with%20volunteer%20drivers.&via=drivevote&related=wordie" target="_blank">Twitter</a>.</p>
+
+<p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 16px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">Thanks getting to the polls and voting!</p>

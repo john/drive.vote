@@ -26,22 +26,23 @@ class RidesController < ApplicationController
       existing = @user.open_ride
       if existing
         # after sign-in voters are redirected to edit their existing open ride
-        flash[:notify] = t(:sign_in_to_edit)
-        redirect_to '/users/sign_in?locale=' + @user.locale and return
+        @msg = t(:sign_in_to_edit)
+        flash[:notify] = @msg
+        redirect_to '/users/sign_in?locale=' + locale and return
       end
     end
 
     # create user if not found
     rp = ride_params
     @ride = Ride.new(rp)
-
     if @ride.pickup_at.blank?
       if Chronic.parse(params[:pickup_day]) && Chronic.parse(params[:pickup_time])
         from_date_time = Chronic.parse( [params[:pickup_day], params[:pickup_time]].join(' ') )
         @ride.pickup_at =  from_date_time
       else
         @ride.errors.add(:pickup_at, :invalid)
-        flash[:notice] = "Please fill in scheduled date and time."
+        @msg = "Please fill in scheduled date and time."
+        flash[:notice] = @msg
         redirect_back(fallback_location: root_path) and return
       end
     end
@@ -57,18 +58,21 @@ class RidesController < ApplicationController
           locale: @locale,
           user_type: :voter,
       }
+
       # todo: better error handling
       @user = User.create(attrs)
       if @user.errors.any?
-        flash[:notice] = "Problem creating a new user."
-        redirect_back(fallback_location: root_path) and return
+        @msg = "Problem creating a new user."
+        flash[:notice] = @msg
+        # redirect_back(fallback_location: root_path) and return
+        render :new and return
       end
+
     end
 
     @ride.voter = @user
     @ride.status = :scheduled
     @ride.ride_zone = @ride_zone
-
     if @ride.save
       Conversation.create_from_staff(@ride_zone, @user, thanks_msg, Rails.configuration.twilio_timeout,
                                      {status: :ride_created, ride: @ride})

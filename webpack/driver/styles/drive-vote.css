@@ -1,64 +1,53 @@
 /* Layout */
 
+h1,
+h2,
+h3 {
+    margin-top: 0;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 0;
+}
+
+h4 {
+    font-size: 16px;
+    margin-top: 0;
+}
+
+p{
+    font-size: 14px;
+    line-height: 20px;
+}
+
 .container {
     max-width: 600px;
 }
 
-.nearby {
-  font-size: 20px;
-  font-weight: bold;
-  font-color: #777;
-  padding-bottom: 10px;
+.container .jumbotron {
+    border-radius: 0;
 }
 
-.panel-ride {
-  padding: 12px;
-  font-size: 14px;
-  color: #aaa;
+.jumbotron p {
+    line-height: 25px;
 }
 
-.panel-detail {
-  font-weight: bold;
-  font-size: 16px;
-  color: #333;
+label {
+    display: block;
+    text-transform: uppercase;
+    font-size: 14px;
 }
 
-.panel-detail-lg {
-  font-weight: bold;
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.tw_px_bot {
-  margin-bottom: 10px;
-}
-
-.drk-gray {
-  color: #333;
-}
-
-.lt-gray {
-  color: #aaa;
-}
-
-.btn-bottom {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translate(-50%, 0);
-}
-
-.btn-ride {
-  margin-bottom: 15px;
-}
-
-label{
-	display: block;
-}
-
-.fa-5x{
-	font-size: 100px;
+.fa-5x {
+    font-size: 100px;
 }
 
 
@@ -69,17 +58,269 @@ label{
     padding-bottom: 1em;
 }
 
+.p-y-sm {
+    padding-top: .75em !important;
+    padding-bottom: .75em !important;
+}
+
+.p-y-0 {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.p-l-0 {
+    padding-left: 0;
+}
+
 .p-b {
     padding-bottom: 1em;
+}
+
+.p-r {
+    padding-right: 1em;
+}
+
+.p-x-0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.p-a-0 {
+    padding: 0 !important;
+}
+
+.m-t {
+    margin-top: 1em;
+}
+
+.m-t-md {
+    margin-top: 2em;
 }
 
 .m-b {
     margin-bottom: 1em;
 }
 
+.m-b-0 {
+    margin-bottom: 0;
+}
+
+.m-r {
+    margin-right: 1em;
+}
+
 
 /* Utilities */
 
+.fa-spin {
+    -webkit-animation: fa-spin 9s infinite linear;
+    animation: fa-spin 9s infinite linear;
+}
+
 .logo {
-    width: 80px;
+    width: 50px;
+}
+
+.bottom-controls.fixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem 1.5rem 1.5rem;
+    background: white;
+}
+
+.bottom-controls.fixed:before {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(206, 206, 206, .8) 20px);
+    content: " ";
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 20px;
+}
+
+.bottom-controls.secondary {
+    margin-top: 2em;
+}
+
+.bottom-controls .btn {
+    display: block;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.bottom-controls .btn:nth-child(2) {
+    margin-top: 2rem;
+}
+
+.btn {
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 8px;
+}
+
+.btn-sm {
+    font-size: 12px;
+    margin-top: 14px;
+}
+
+.btn-sm i {
+    font-size: 18px;
+    float: left;
+    padding-right: 6px;
+    margin-top: -2px;
+}
+
+.btn-lg {
+    padding: 1em 2em;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.btn-gray {
+    background: rgb(226, 226, 226);
+    color: #3498db;
+}
+
+.btn-gray i {
+    color: rgb(155, 155, 155);
+}
+
+.btn-secondary {
+    background: white;
+    border: 1px solid rgb(163, 163, 163);
+    color: #3498db;
+}
+
+.directionsLink {
+    background: none;
+    color: rgb(75, 145, 220);
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-top: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    float: right;
+}
+
+.directionsLink i {
+    display: block;
+    font-size: 40px;
+    text-align: center;
+}
+
+
+/* Rides */
+
+.panel {
+    padding: 3rem 2rem;
+    border: none;
+    border-radius: 0;
+    background: rgb(239, 239, 239);
+    margin: 0;
+    position: relative;
+}
+
+.panel-full {
+    position: fixed;
+    width: 100%;
+    height: calc(100% - 53px);
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    overflow-y: scroll;
+}
+
+.panel:nth-child(even) {
+    background: rgb(247, 246, 247);
+}
+
+.panel-full {
+    z-index: 99;
+}
+
+.rideDetails h3 {
+    margin-bottom: 4px;
+}
+
+.panel-list {
+    background: rgb(239, 239, 239);
+    padding: 0;
+}
+
+.pendingArrow {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    font-size: 50px;
+    color: gray;
+    right: 12px;
+    opacity: .4;
+}
+
+.pending-ride h3 {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-bottom: .5rem;
+}
+
+.pending-ride h4 {
+    margin-bottom: .5rem;
+}
+
+.pending-ride {
+    padding: 1rem 1.5rem;
+}
+
+p.display-2 {
+    font-size: 16px;
+    line-height: 23px;
+}
+
+p.display-3 {
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.pending-ride p {
+    font-size: 12px;
+    color: rgba(93, 95, 98);
+    color: rgb(93, 95, 98);
+    margin: 0;
+}
+
+.dispatcher-match {
+    background: linear-gradient(to top, rgb(246, 230, 85) 0%, white 140px);
+    background-repeat: no-repeat;
+}
+
+.secondary-info p {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.banner {
+    font-weight: bold;
+    color: white;
+    padding: 1em .5em;
+}
+
+.banner-success {
+    background: rgb(38, 204, 124);
+}
+
+@media (min-width: 600px) {
+    .container .jumbotron,
+    .panel {
+        border-radius: 6px;
+    }
+    .bottom-controls .btn {
+        max-width: 400px;
+    }
 }

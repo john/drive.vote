@@ -4,7 +4,7 @@ class UserMailer < ApplicationMailer
   layout 'mailer'
 
   sendgrid_enable   :ganalytics, :opentrack, :clicktrack
-  default from: 'welcome@drive.vote'
+  default from: 'hello@drive.vote'
 
   # Use the previewer to check emails:
   # http://local.drive.vote:3000/rails/mailers/user_mailer/welcome_email_not_inlined
@@ -33,7 +33,7 @@ class UserMailer < ApplicationMailer
   end
 
   def welcome_email_voter_ride(user, ride)
-    sendgrid_category "welcome_voter"
+    sendgrid_category "welcome_voter_ride"
     @user = user
     @ride = ride
     email_with_name = %("#{@user.name}" <#{@user.email}>)

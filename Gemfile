@@ -12,22 +12,21 @@ gem 'haml-rails'
 gem 'humane-rails'
 gem 'pg'
 gem 'phony_rails'
+gem 'prawn'
 gem 'puma'
 gem 'pundit'
 gem 'rack-timeout'
 gem 'rails', '>= 5.0.0', '< 5.1'
 gem 'redis'
 gem 'redis-namespace'
+gem 'remote_syslog_logger'
 gem 'rolify'
 gem 'rspec'
 gem 'rspec-rails'
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails'
 gem 'sendgrid'
 gem 'sidekiq'
-gem 'sinatra', '~> 2.0.0.beta2', :require => false # for sidekiq
-github 'sinatra/sinatra' do
-  gem 'rack-protection'
-end
+gem 'sinatra', require: false
 gem 'timezone'
 gem 'tod'
 gem 'turbolinks', '~> 5.x'
@@ -35,6 +34,8 @@ gem 'twilio-ruby'
 gem 'uglifier', '>= 1.3.0'
 gem 'underscore-rails'
 gem 'webpack-rails'
+gem 'will_paginate'
+# gem 'will_paginate-bootstrap' # I'd like to use this, but it breaks specs, weirdly :/
 gem 'zip-codes'
 
 group :development do
@@ -48,6 +49,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'bundler-audit', require: false
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'dotenv-rails'

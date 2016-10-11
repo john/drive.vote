@@ -13,7 +13,7 @@ module UserParams
     params.require(:user).permit(:name, :user_type, :email, :phone_number, :image_url,
     :languages_spoken, :max_passengers, :start_drive_time, :end_drive_time, :password,
     :description, :address1, :address2, :city, :state, :zip, :country, :latitude,
-    :longitude, :accepted_tos, :email_list, :agree_to_background_check, :available, :city_state
+    :longitude, :accepted_tos, :email_list, :agree_to_background_check, :available, :city_state, :superadmin
     )
   end
 

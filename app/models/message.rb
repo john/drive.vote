@@ -32,16 +32,12 @@ class Message < ApplicationRecord
 
   # creates a new Message object that is a staff-initiated conversation
   def self.create_from_staff(conversation, twilio_msg)
-    attrs = {
-        conversation: conversation,
-        ride_zone: conversation.ride_zone,
-        from: conversation.from_phone,
-        to: conversation.to_phone,
-        sms_sid: twilio_msg.sid,
-        sms_status: twilio_msg.status,
-        body: twilio_msg.body,
-    }
-    Message.create!(attrs)
+    Message.create!(attrs_for_conversation_twilio_msg(conversation, twilio_msg))
+  end
+
+  # creates a new Message object that will appear to have come from the bot
+  def self.create_from_bot(conversation, twilio_msg)
+    Message.create!(attrs_for_conversation_twilio_msg(conversation, twilio_msg).merge(sms_status: ''))
   end
 
   # reduced set of fields required for API
@@ -96,5 +92,17 @@ class Message < ApplicationRecord
     yield
     rz_id = self.ride_zone_id || self.ride_zone.try(:id)
     RideZone.event(rz_id, :message_changed, self) if !was_new && rz_id
+  end
+
+  def self.attrs_for_conversation_twilio_msg(conversation, twilio_msg)
+    {
+      conversation: conversation,
+      ride_zone: conversation.ride_zone,
+      from: conversation.from_phone,
+      to: conversation.to_phone,
+      sms_sid: twilio_msg.sid,
+      sms_status: twilio_msg.status,
+      body: twilio_msg.body,
+    }
   end
 end

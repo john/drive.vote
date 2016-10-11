@@ -9,6 +9,12 @@
 .conv-normal {
 }
 
+.disp-extras {
+  padding-top: 8px;
+  margin-top: 8px;
+  border-top: 1px solid #ccc;
+}
+
 .disp-ride-area {
   min-height: 200px;
 }
@@ -16,6 +22,52 @@
 .disp-text-alert {
   color: #B00100;
   font-weight: bold;
+}
+
+.conv-table-name {
+  font-weight: bold;
+  font-size: 14px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.conv-table-desc {
+  font-size: 14px;
+}
+
+.conv-table {
+  margin: 0;
+  display: block;
+  width: 100%;
+}
+
+.conv-voter {
+  width: 70%;
+}
+
+.voter-info {
+  font-size: 16px;
+}
+
+.conv-msg {
+  color: #777;
+  font-size: 13px;
+}
+
+.conv-status {
+  width: 15%;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.conv-row {
+  cursor: pointer;
+}
+
+.conv-time {
+  width: 15%;
+  font-size: 13px;
+  color: #777;
 }
 
 .conv-status-messaging {
@@ -32,14 +84,12 @@
 }
 .conv-status-assignment_overdue {
   visibility: visible;
-  background-color: #f6e0e0;
 }
 .conv-status-waiting_pickup {
   visibility: visible;
 }
 .conv-status-pickup_overdue {
   visibility: visible;
-  background-color: #f6e0e0;
 }
 .conv-status-driving {
   visibility: visible;
@@ -50,7 +100,64 @@
 .conv-status-complete {
   visibility: visible;
 }
+
+.conv-statdisp {
+  //display: inline;
+  width: 100px;
+  padding: 6px;
+  vertical-align: middle;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.conv-statdisp-messaging {
+  background-color: white;
+}
+.conv-statdisp-help_needed {
+  color: white;
+  background-color: #d71e14;
+}
+.conv-statdisp-scheduled {
+  color: white;
+  background-color: #4a4a4a;
+}
+.conv-statdisp-waiting_assignment {
+  background-color: #fbe500;
+}
+.conv-statdisp-assignment_overdue {
+  color: white;
+  background-color: #d71e14;
+}
+.conv-statdisp-waiting_pickup {
+  color: white;
+  background-color: #0058bc;
+}
+.conv-statdisp-pickup_overdue {
+  color: white;
+  background-color: #d71e14;
+}
+.conv-statdisp-driving {
+  color: white;
+  background-color: #00a9e4;
+}
+.conv-statdisp-completion_overdue {
+  color: white;
+  background-color: #d71e14;
+}
+.conv-statdisp-complete {
+  background-color: white;
+}
+
 .ride-img {
   width: 15px;
   height: 22px;
+}
+
+.table-collapse {
+  font-weight: bold;
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+  color: #71a6e8;
+  vertical-align: middle;
 }

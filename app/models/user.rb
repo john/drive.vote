@@ -18,8 +18,9 @@ class User < ApplicationRecord
   # end
 
   VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
-  VALID_STATES = {'FL' => 'Florida', 'GA' => 'Georgia', 'NV' => 'Nevada', 'NC' => 'North Carolina', 'OH' => 'Ohio',  'PA' =>'Pennsylvania', 'WI' => 'Wisconsin'}
-  has_many :rides, foreign_key: :voter_id
+  VALID_STATES = {'FL' => 'Florida', 'NV' => 'Nevada', 'PA' =>'Pennsylvania', 'UT' => 'Utah'}
+  has_many :rides, foreign_key: :voter_id, dependent: :destroy
+  has_many :conversations, foreign_key: :user_id, dependent: :destroy
 
   enum language: { unknown: 0, en: 1, es: 2 }, _suffix: true
 
@@ -35,6 +36,7 @@ class User < ApplicationRecord
   attr_accessor :user_type
   attr_accessor :ride_zone # set transiently for user creation
   attr_accessor :ride_zone_id
+  attr_accessor :superadmin
 
   serialize :start_drive_time, Tod::TimeOfDay
   serialize :end_drive_time, Tod::TimeOfDay
@@ -55,14 +57,28 @@ class User < ApplicationRecord
   validates :city, length: { maximum: 50 }
   validates :state, length: { maximum: 2 }
   validates :zip, length: { maximum: 12 }
-  validates :password, length: { in: 8..50 }
   validates :country, length: { maximum: 50 }
+  validates :password, presence: true, length: { in: 8..50 }, on: :create
+  # validates :password, length: { in: 8..50 }, on: :update, allow_blank: true
 
   # scope that gets Users, of any/all roles, close to a particular RideZone
   scope :nearby_ride_zone, ->(rz) { near(rz.zip, GEO_NEARBY_DISTANCE) }
 
   def self.non_voters
     User.where.not(id: User.with_role(:voter))
+  end
+
+  def self.assigned_drivers
+    User.find_by_sql("SELECT users.* FROM users \
+        INNER JOIN users_roles ON users_roles.user_id = users.id \
+        INNER JOIN roles ON roles.id = users_roles.role_id \
+          WHERE roles.name = 'driver' \
+          AND roles.resource_type = 'RideZone' \
+          AND roles.resource_id IS NOT NULL")
+  end
+
+  def self.all_drivers
+    self.assigned_drivers + self.with_role( :unassigned_driver )
   end
 
   def self.sms_name(phone_number)
@@ -114,7 +130,15 @@ class User < ApplicationRecord
   end
 
   def full_street_address
-    [self.address1, self.address2, self.city, self.state, self.zip, self.country].compact.join(', ')
+    [self.address1, self.address2, self.city, self.state, self.zip, self.country].reject(&:empty?).join(', ')
+  end
+
+  def qa_clear
+    convos = Conversation.where(user_id: self.id)
+    convos.each do |convo|
+      convo.ride.destroy if convo.ride
+      convo.destroy
+    end
   end
 
   def location_timestamp
@@ -153,6 +177,13 @@ class User < ApplicationRecord
   end
 
   def full_address
+    if self.city_state.present? && self.city.blank? && self.state.blank?
+      c_s_array = self.city_state.split(',')
+      self.city = c_s_array[0].try(:strip)
+      self.state = c_s_array[1].try(:strip)
+      self.save
+    end
+
     [self.address1, self.address2, self.city, self.state, self.zip, self.country].compact.join(', ')
   end
 
@@ -212,14 +243,13 @@ class User < ApplicationRecord
   end
 
   def add_rolify_role
-    if self.user_type.present?
-      self.add_role self.user_type, self.ride_zone
+    # don't create super admins
+    if self.ride_zone.blank? && self.user_type == 'admin'
+      raise "Bad role, model."
     end
 
-    if self.ride_zone_id.present?
-      if ride_zone = RideZone.find(self.ride_zone_id)
-        self.add_role :unassigned_driver, ride_zone
-      end
+    if self.user_type.present?
+      self.add_role self.user_type, self.ride_zone
     end
   end
 

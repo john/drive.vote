@@ -8,28 +8,30 @@
     = link_to(@ride_zone.bot_disabled ? 'Enable Bot' : 'Disable Bot', '', onclick: 'dispatchController.toggleBotDisabled(); return false;', class: 'disp-bot-disable')
     &nbsp; · &nbsp;
 
-    = (action_name == 'show') ? "<b>Dashboard</b>".html_safe : link_to('Dashboard', dispatch_path(@ride_zone))
+    = (action_name == 'show') ? "<b>Dashboard</b>".html_safe : link_to('Dashboard', dispatch_path(@ride_zone.slug))
     &nbsp; · &nbsp;
 
-    = (action_name == 'drivers') ? "<b>Drivers</b> (#{@driver_count})".html_safe : link_to("Drivers (#{@driver_count})", drivers_dispatch_path(@ride_zone))
+    = (action_name == 'drivers') ? "<b>Drivers</b> (#{@driver_count})".html_safe : link_to("Drivers (#{@driver_count})", drivers_dispatch_path(@ride_zone.slug))
     &nbsp; · &nbsp;
 
-    = (action_name == 'map') ? "<b>Large Map</b>".html_safe : link_to('Large map', map_dispatch_path(@ride_zone))
+    = (action_name == 'map') ? "<b>Large Map</b>".html_safe : link_to('Large map', map_dispatch_path(@ride_zone.slug))
     &nbsp; · &nbsp;
 
-    = link_to 'Poll finder', 'http://yourfuckingpollingplace.com/', target: '_blank'
+    = link_to 'Contact flyer (pdf)', flyer_dispatch_path(@ride_zone.slug, format: 'pdf'), target: '_blank'
+    &nbsp; · &nbsp;
+
+    = link_to 'Poll finder', 'https://gttp.votinginfoproject.org/', target: '_blank'
     &nbsp; · &nbsp;
 
     %a.dispatch-xtras.glyphicon.glyphicon-cog{ 'data-toggle': "popover" }
 
-
 :javascript
   $(function () {
     var content = "#{j( link_to 'Schedule a ride', get_a_ride_path(@ride_zone.slug), target: '_blank' )}";
-    content += "<div style='padding-top: 8px; margin-top: 8px; border-top: 1px solid #ccc;'>";
-    content += "#{j( link_to 'Driver volunteer form', volunteer_to_drive_path(@ride_zone.slug), target: '_blank')}";
+    content += "<div class='disp-extras'>";
+    content += "#{j( link_to 'Driver volunteer form', volunteer_to_drive_for_zone_path(@ride_zone.slug), target: '_blank')}";
     content += "</div>";
-    content += "<div style='padding-top: 8px; margin-top: 8px; border-top: 1px solid #ccc;'>";
+    content += "<div class='disp-extras'>";
     content += "#{j( link_to 'Driver app', driving_index_path, target: '_blank')}";
     content += "</div>";
     $('.dispatch-xtras').popover({

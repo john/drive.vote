@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   }
 
   devise_scope :user do
-    get '/volunteer_to_drive/:id', :to => 'users/registrations#new', :as => 'volunteer_to_drive'
+    get '/volunteer_to_drive', :to => 'users/registrations#new', :as => 'volunteer_to_drive'
+    get '/volunteer_to_drive/:id', :to => 'users/registrations#new', :as => 'volunteer_to_drive_for_zone'
     get "/users/sign_out" => "devise/sessions#destroy", :as => :get_destroy_user_session
   end
 
@@ -38,6 +39,7 @@ Rails.application.routes.draw do
   resources :dispatch, only: [:show] do
     member do
       get 'drivers' => 'dispatch#drivers'
+      get 'flyer' => 'dispatch#flyer'
       get 'map' => 'dispatch#map'
     end
   end
@@ -70,6 +72,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1, path: '1' do
       post 'twilio/sms' => 'twilio#sms'
+      post 'twilio/voice' => 'twilio#voice'
       get 'places/search' => 'places#search'
 
       resources :conversations, only: [:show, :update] do
@@ -128,7 +131,11 @@ Rails.application.routes.draw do
         delete 'delete' => 'simulations#delete'
       end
     end
-    resources :users, only: [:show, :edit, :update, :index, :destroy]
+    resources :users, only: [:show, :edit, :update, :index, :destroy] do
+      member do
+        post 'qa_clear' => 'users#qa_clear'
+      end
+    end
   end
 
 end

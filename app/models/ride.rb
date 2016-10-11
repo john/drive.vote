@@ -1,6 +1,8 @@
 class Ride < ApplicationRecord
   belongs_to :ride_zone
 
+  SWITCH_TO_WAITING_ASSIGNMENT = 15 # how long in minutes before pickup time to change status to waiting_assignment
+
   enum status: { incomplete_info: 0, scheduled: 1, waiting_assignment: 2, driver_assigned: 3, picked_up: 4, complete: 5 }
 
   belongs_to :driver, class_name: 'User', foreign_key: :driver_id
@@ -24,6 +26,7 @@ class Ride < ApplicationRecord
   validates :email, length: { maximum: 17 }
 
   before_save :note_status_update
+  before_save :check_waiting_assignment
   around_save :notify_update
   before_save :close_conversation_when_complete
 
@@ -33,6 +36,9 @@ class Ride < ApplicationRecord
   attr_accessor :city_state
   attr_accessor :pickup_day
   attr_accessor :pickup_time
+
+  # transient for returning distance to voter
+  attr_accessor :distance_to_voter
 
   include HasAddress
   include ToFromAddressable
@@ -57,7 +63,10 @@ class Ride < ApplicationRecord
       special_requests: conversation.special_requests,
       conversation: conversation,
     }
-    Ride.create!(attrs)
+    ActiveRecord::Base.transaction do
+      conversation.update_attribute(:status, :ride_created)
+      Ride.create!(attrs)
+    end
   end
 
   # returns true if assignment worked
@@ -100,9 +109,11 @@ class Ride < ApplicationRecord
 
   # returns json suitable for exposing in the API
   def api_json
-    j = self.as_json(except: [:pickup_at, :created_at, :updated_at], methods: [:conversation_id])
+    j = self.as_json(except: [:voter_id, :driver_id, :pickup_at, :created_at, :updated_at], methods: [:conversation_id, :driver_name])
     j['pickup_at'] = self.pickup_at.try(:to_i)
     j['status_updated_at'] = self.status_updated_at.to_i
+    j['voter_phone_number'] = self.voter.phone_number_normalized
+    j['distance_to_voter'] = self.distance_to_voter.round(2) if self.distance_to_voter
     j
   end
 
@@ -110,8 +121,24 @@ class Ride < ApplicationRecord
     self.conversation.try(:id)
   end
 
+  def driver_name
+    self.driver.try(:name)
+  end
+
   def active?
     Ride.active_statuses.include?(self.status.to_sym)
+  end
+
+  def pickup_in_time_zone
+    Time.use_zone(self.ride_zone.time_zone) do
+      Time.at self.pickup_at
+    end
+  end
+
+  def set_distance_to_voter(latitude, longitude)
+    pt = Geokit::LatLng.new(latitude, longitude)
+    ride_pt = Geokit::LatLng.new(self.from_latitude, self.from_longitude)
+    self.distance_to_voter = pt.distance_to(ride_pt)
   end
 
   # return up to limit Rides near the specified location
@@ -122,6 +149,7 @@ class Ride < ApplicationRecord
       ride_pt = Geokit::LatLng.new(ride.from_latitude, ride.from_longitude)
       dist = pt.distance_to(ride_pt)
       if dist < radius
+        ride.distance_to_voter = dist
         [dist, ride]
       else
         nil
@@ -139,12 +167,24 @@ class Ride < ApplicationRecord
     self.active_statuses.map {|s| Ride.statuses[s]}
   end
 
+  def self.confirm_scheduled_rides
+    Ride.where(status: :scheduled).where('pickup_at < ?', SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now).each do |ride|
+      ride.conversation.attempt_confirmation
+    end
+  end
+
   def passenger_count
     # always include Voter as a passenger
     self.additional_passengers + 1
   end
 
   private
+  def check_waiting_assignment
+    if self.status == 'scheduled' && self.pickup_at && self.pickup_at < SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now
+      self.status = :waiting_assignment
+    end
+  end
+
   def note_status_update
     self.status_updated_at = Time.now if new_record? || self.status_changed?
   end

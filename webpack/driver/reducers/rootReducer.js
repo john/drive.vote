@@ -22,6 +22,17 @@ function driverState(state = {
                 update_location_interval: action.update_location_interval * 100,
                 active_ride: action.active_ride,
             })
+
+        case 'RECEIVE_RIDE_ZONE_STATS':
+            return Object.assign({}, state, {
+                ride_zone_stats: {
+                    total_drivers: action.total_drivers,
+                    available_drivers: action.available_drivers,
+                    completed_rides: action.completed_rides,
+                    active_rides: action.active_rides,
+                    scheduled_rides: action.scheduled_rides
+                }
+            })
         case 'DRIVER_UNAVAILABLE':
             return Object.assign({}, state, {
                 isFetching: false,
@@ -49,7 +60,7 @@ function driverState(state = {
         case 'RIDE_CANCELLED':
             return Object.assign({}, state, {
                 isFetching: false,
-                active_ride: action.active_ride
+                active_ride: null
             })
         case 'RIDER_PICKUP':
             action.active_ride.status = 'picked_up';

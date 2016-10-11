@@ -6,7 +6,7 @@
       margin:0 auto;
       text-align:justify;
   }
-  
+
   #ppHeader
   {
       font-family:verdana;
@@ -14,7 +14,7 @@
       width:100%;
       margin:0 auto;
   }
-  
+
   .ppConsistencies
   {
       display:none;
@@ -305,7 +305,8 @@
       %br>/
       If at any time you would like to unsubscribe from receiving future emails, you can email us at
   .innerText
-    john@drive.vote and we will promptly remove you from
+    = mail_to 'hello@drive.vote'
+    and we will promptly remove you from
     %strong ALL
     correspondence.
   %br/
@@ -318,12 +319,11 @@
     If there are any questions regarding this privacy policy, you may contact us using the information below.
     %br/
     %br/
-  .innerText https://drive.vote
-  = succeed "San" do
-    .innerText 330 Cabrillo St.
-  .innerText USA
-  .innerText john@drive.vote
-  .innerText 207-332-8709
+  .innerText= link_to 'https://drive.vote', 'https://drive.vote'
+  .innerText 430 South Capitol St. SE
+  .innterText Washington, DC, 20003
+  .innerText= mail_to 'hello@drive.vote'
+  .innerText= tel_to '(207) 332-8709'
   .innerText
     %br>/
-    Last Edited on 2016-07-27
+    Last Edited on 2016-09-28

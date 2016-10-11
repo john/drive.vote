@@ -1,0 +1,22 @@
+:css
+  .user-info { font-weight: bold; margin-bottom: 5px; }
+  .info-label { font-weight: normal; }
+
+.user-info
+  %span.info-label
+    Description:
+  = @user.description
+
+.user-info
+  %span.info-label
+    Phone number:
+  = @user.phone_number.phony_formatted(normalize: :US, spaces: '-')
+
+.user-info
+  %span.info-label
+    Email:
+  = @user.email
+.user-info
+  %span.info-label
+    Address:
+  = @user.full_street_address

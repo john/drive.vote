@@ -25,7 +25,8 @@ en:
   or: 'not sure?'
   hi: 'Hi'
   thanks: 'Thanks'
-  name: 'Full name'
+  name: 'name'
+  full_name: 'Full name'
   save: 'Save'
   volunteer_to_drive: 'Volunteer to drive'
   saving: 'Saving'
@@ -66,7 +67,8 @@ en:
   phone_number: 'Cell phone'
   address: 'Address'
   city: 'City'
-  state: 'state'
+  city_and_state: 'City and State'
+  state: 'State'
   zip_where_can_drive: 'Zip where you can drive'
   languages: 'Languages you speak'
   around_what_time: 'Around what time'
@@ -99,7 +101,6 @@ en:
   got_it: "GOT IT"
 
   what_is_your_name: 'Thanks! What is your name?'
-  name: 'name'
   empty_need_name: "Sorry, I didn't get a response. What is your name?"
   bot_stalled: 'Someone will contact you soon'
   what_is_pickup_location: 'Hello %{name}. Where do you want to be picked up - address and city?'
@@ -115,7 +116,10 @@ en:
   how_many_additional: 'How many additional people need a ride (0-4)?'
   invalid_passengers: 'Please reply with number of additional passengers (0-4)'
   any_special_requests: 'What are your special requests (like wheelchair, car seats)? Or reply none.'
-  thanks_wait_for_driver: 'Thank you! We have your info and will contact you before your ride.'
+  thanks_will_contact: 'Thank you! We have your info and will contact you before your ride.'
+  thanks_wait_for_driver: 'Thank you! We have your info and will contact you when we find a driver for you.'
+  thanks_for_using: 'Thanks for trying Drive the Vote'
+  confirm_ride: 'Your Drive the Vote ride is scheduled for %{time}. Reply 1 to confirm, 2 to reschedule, 3 to cancel, 4 to speak to someone'
 
   # voter form
   schedule_ride: 'Schedule a free ride'
@@ -125,10 +129,10 @@ en:
   voter_password: 'Enter a password (at least 8 characters)'
   mobile_phone_number: 'What is your mobile/cell phone number?'
   where_to_be_picked_up: 'Address for pickup?'
-  city_for_pickup: 'What city is that in?'
+  city_for_pickup: 'What city and state is that in?'
   what_time_pickup: 'What day and time?'
   special_requests: 'Any special requests (wheelchair, child seats)?'
-  problem_saving_ride: 'There was a problem saving your information'
+  problem_saving_ride: 'There was a problem saving your ride information'
   already_existing_ride: 'We found an existing request from you, showing it below'
   email_address: 'What is your email address?'
   request_saved: 'We have saved your ride request with the details below:'

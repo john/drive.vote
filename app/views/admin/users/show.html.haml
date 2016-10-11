@@ -1,3 +1,5 @@
+
+
 = render 'admin/nav', {active: 'users'}
 
 %h1
@@ -6,13 +8,11 @@
     &nbsp;
     %small
       = link_to 'Edit', edit_admin_user_path(@user), class: 'btn btn-default'
+    &nbsp;
+    %small
+      = link_to 'QA Clear', qa_clear_admin_user_path(@user), method: :post, class: 'btn btn-default', data: { :confirm => 'Are you sure?' }
 
-- if @user.description.present?
-  %p
-    %b
-      Description:
-    %div
-      = @user.description
+= render partial: "users/info"
 
 %p
   DtV Admin?:
@@ -50,3 +50,6 @@ Driving for Zones:
   %div
     %i
       None
+
+%h4 Conversations
+= render partial: 'admin/conversations/table', locals: {conversations: @conversations, include_show: true}

@@ -26,27 +26,9 @@
     = f.label :zip
     = f.text_field :zip, class: 'form-control', required: true, maxlength: 12
 
+  .col-sm-8.field
+    = f.label :nearby_radius
+    = f.text_field :nearby_radius, class: 'form-control', required: true, maxlength: 7
 
-  -# ----------> CREATE ADMIN USER TOO
-  .col-sm-8.field.for_admin_user
-    %div{style: 'margin-top: 30px;'}
-      %i
-        You can optionally create an admin user for this Ride Zone.
-    = f.label :admin_name, "Name of admin user"
-    = f.text_field :admin_name, class: 'form-control', required: true, maxlength: 50
-
-  .col-sm-8.field.for_admin_user
-    = f.label :admin_phone_number, "Mobile phone"
-    = f.text_field :admin_phone_number, class: 'form-control', required: true, maxlength: 17
-
-  .col-sm-8.field.for_admin_user
-    = f.label :admin_email, "Email"
-    = f.text_field :admin_email, class: 'form-control', required: true, maxlength: 50
-
-  .col-sm-8.field.for_admin_user
-    = f.label :admin_password, "Admin user's password"
-    = f.password_field :admin_password, class: 'form-control', required: true, minlength: 8, maxlength: 50
-
-
-  .col-sm-8.actions.for_admin_user
+  .col-sm-8.actions
     = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."
