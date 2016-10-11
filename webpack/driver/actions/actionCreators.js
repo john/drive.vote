@@ -3,6 +3,29 @@ import fetch from 'isomorphic-fetch';
 // Expect API to be served off the same origin.
 const api = '/driving';
 
+function checkStatus(response) {
+    if (response.status >= 200 && response.status < 300) {
+        return response
+    } else {
+        response.json().then(json => {
+            var error = new Error(json.error);
+            throw error;
+        })
+    }
+}
+
+
+function parseJSON(response) {
+    if (response.ok) {
+        return response.json();
+    } else {
+        return response.json()
+            .then(function(response) {
+                throw new Error(response.error);
+            });
+    }
+}
+
 export function requestStatus() {
     return {
         type: 'REQUEST_STATUS',
@@ -61,6 +84,7 @@ export function attemptClaim() {
     }
 }
 export function claimRideSuccess(ride) {
+    console.log('ride claim success', ride);
     return {
         type: 'RIDE_CLAIMED',
         active_ride: ride
@@ -124,7 +148,7 @@ export function fetchStatus() {
         fetch(`${api}/status`, {
                 credentials: 'include',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(receiveStatus(json.response))
             )
@@ -136,7 +160,7 @@ export function fetchRideZoneStats() {
         fetch(`${api}/ridezone_stats`, {
                 credentials: 'include',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(receiveRideZoneStats(json.response))
             )
@@ -151,7 +175,7 @@ export function submitUnavailable() {
                 credentials: 'include',
                 method: 'POST',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(driverUnavailable())
             )
@@ -165,7 +189,7 @@ export function submitAvailable() {
                 credentials: 'include',
                 method: 'POST',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(driverAvailable()),
             )
@@ -179,7 +203,7 @@ export function submitLocation(location) {
                 credentials: 'include',
                 method: 'POST'
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(locationSaved(json))
             )
@@ -193,7 +217,7 @@ export function fetchWaitingRides() {
         fetch(`${api}/waiting_rides`, {
                 credentials: 'include',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(receveWaitingRides(json))
             )
@@ -207,7 +231,7 @@ export function fetchWaitingRides() {
         fetch(`${api}/waiting_rides`, {
                 credentials: 'include',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(receveWaitingRides(json))
             )
@@ -221,9 +245,11 @@ export function claimRide(ride) {
                 credentials: 'include',
                 method: 'POST',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(claimRideSuccess(ride))
+            ).catch(error =>
+                console.log(error)
             )
     }
 }
@@ -235,7 +261,7 @@ export function cancelRide(ride) {
                 credentials: 'include',
                 method: 'POST',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(cancelRideSuccess(ride))
             )
@@ -249,7 +275,7 @@ export function pickupRider(ride) {
                 credentials: 'include',
                 method: 'POST',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(pickupRiderSuccess(ride))
             )
@@ -264,7 +290,7 @@ export function completeRide(ride) {
                 credentials: 'include',
                 method: 'POST',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(dropoffSuccess(ride)),
                 dispatch(fetchWaitingRides())
