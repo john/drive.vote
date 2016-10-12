@@ -3,24 +3,13 @@ import fetch from 'isomorphic-fetch';
 // Expect API to be served off the same origin.
 const api = '/driving';
 
-function checkStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-        return response
-    } else {
-        response.json().then(json => {
-            var error = new Error(json.error);
-            throw error;
-        })
-    }
-}
-
-
 function parseJSON(response) {
     if (response.ok) {
         return response.json();
     } else {
         return response.json()
             .then(function(response) {
+                console.log(response.error);
                 throw new Error(response.error);
             });
     }
@@ -162,6 +151,8 @@ export function fetchStatus() {
             .then(parseJSON)
             .then(json =>
                 dispatch(receiveStatus(json.response))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -174,6 +165,8 @@ export function fetchRideZoneStats() {
             .then(parseJSON)
             .then(json =>
                 dispatch(receiveRideZoneStats(json.response))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -189,6 +182,8 @@ export function submitUnavailable() {
             .then(parseJSON)
             .then(json =>
                 dispatch(driverUnavailable())
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -203,6 +198,8 @@ export function submitAvailable() {
             .then(parseJSON)
             .then(json =>
                 dispatch(driverAvailable()),
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -217,6 +214,8 @@ export function submitLocation(location) {
             .then(parseJSON)
             .then(json =>
                 dispatch(locationSaved(json))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -231,6 +230,8 @@ export function fetchWaitingRides() {
             .then(parseJSON)
             .then(json =>
                 dispatch(receveWaitingRides(json))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -245,6 +246,8 @@ export function fetchWaitingRides() {
             .then(parseJSON)
             .then(json =>
                 dispatch(receveWaitingRides(json))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -275,6 +278,8 @@ export function cancelRide(ride) {
             .then(parseJSON)
             .then(json =>
                 dispatch(cancelRideSuccess(ride))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -289,6 +294,8 @@ export function pickupRider(ride) {
             .then(parseJSON)
             .then(json =>
                 dispatch(pickupRiderSuccess(ride))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -305,6 +312,8 @@ export function completeRide(ride) {
             .then(json =>
                 dispatch(dropoffSuccess(ride)),
                 dispatch(fetchWaitingRides())
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }

@@ -299,7 +299,7 @@ p.display-3 {
 .errorBanner {
     position: fixed;
     bottom: 5px;
-    background: red; 
+    background: #e74c3c; 
     padding: 6px 8px;
     z-index: 999;
     left: 5px;
