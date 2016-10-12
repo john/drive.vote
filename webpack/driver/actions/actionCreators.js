@@ -26,6 +26,18 @@ function parseJSON(response) {
     }
 }
 
+export function apiError(message) {
+    return {
+        type: 'API_ERROR',
+        message,
+    }
+}
+
+export function clearError() {
+    return {
+        type: 'API_ERROR_CLEAR',
+    }
+}
 export function requestStatus() {
     return {
         type: 'REQUEST_STATUS',
@@ -84,7 +96,6 @@ export function attemptClaim() {
     }
 }
 export function claimRideSuccess(ride) {
-    console.log('ride claim success', ride);
     return {
         type: 'RIDE_CLAIMED',
         active_ride: ride
@@ -249,7 +260,7 @@ export function claimRide(ride) {
             .then(json =>
                 dispatch(claimRideSuccess(ride))
             ).catch(error =>
-                console.log(error)
+                dispatch(apiError(error))
             )
     }
 }
