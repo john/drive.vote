@@ -1,0 +1,413 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=40.4088514,-80.1149414&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 11 Oct 2016 20:23:24 GMT
+      Expires:
+      - Wed, 12 Oct 2016 20:23:24 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '1242'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "229",
+                       "short_name" : "229",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Ewing Road",
+                       "short_name" : "Ewing Rd",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Carnegie",
+                       "short_name" : "Carnegie",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Collier Township",
+                       "short_name" : "Collier Township",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Allegheny County",
+                       "short_name" : "Allegheny County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "1507",
+                       "short_name" : "1507",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "229 Ewing Rd, Carnegie, PA 15106, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.409274,
+                       "lng" : -80.11444
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4106229802915,
+                          "lng" : -80.11309101970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.4079250197085,
+                          "lng" : -80.11578898029151
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJ54ep-2NYNIgRvGlAdCtPIEE",
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Collier Township",
+                       "short_name" : "Collier Township",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Allegheny County",
+                       "short_name" : "Allegheny County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Collier Township, PA, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.4335879,
+                          "lng" : -80.09267699999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.361069,
+                          "lng" : -80.17043509999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.3832942,
+                       "lng" : -80.11626029999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4335879,
+                          "lng" : -80.09267699999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.361069,
+                          "lng" : -80.17043509999999
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJF69YS09YNIgRtNd1ZSLNUAo",
+                 "types" : [ "administrative_area_level_3", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "Carnegie",
+                       "short_name" : "Carnegie",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Allegheny County",
+                       "short_name" : "Allegheny County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Carnegie, PA 15106, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.434948,
+                          "lng" : -80.0570259
+                       },
+                       "southwest" : {
+                          "lat" : 40.380127,
+                          "lng" : -80.1701448
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4088514,
+                       "lng" : -80.11494139999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.434948,
+                          "lng" : -80.0570259
+                       },
+                       "southwest" : {
+                          "lat" : 40.380127,
+                          "lng" : -80.1701448
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJ8Yhm7GNYNIgRQWpx-IVW-Dw",
+                 "postcode_localities" : [ "Carnegie", "Heidelberg" ],
+                 "types" : [ "postal_code" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Allegheny County",
+                       "short_name" : "Allegheny County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Allegheny County, PA, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.6745301,
+                          "lng" : -79.6899756
+                       },
+                       "southwest" : {
+                          "lat" : 40.1943429,
+                          "lng" : -80.36087300000001
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4450813,
+                       "lng" : -80.0087746
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.6745301,
+                          "lng" : -79.6899756
+                       },
+                       "southwest" : {
+                          "lat" : 40.1943429,
+                          "lng" : -80.36087300000001
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJu-PIH-y5NIgRVFV1McCaCyw",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Pittsburgh",
+                       "short_name" : "Pittsburgh",
+                       "types" : [ "political" ]
+                    },
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Pittsburgh, PA, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 41.1731849,
+                          "lng" : -78.974649
+                       },
+                       "southwest" : {
+                          "lat" : 39.7207129,
+                          "lng" : -80.5192179
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.3565093,
+                       "lng" : -79.9192702
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.1731849,
+                          "lng" : -78.974649
+                       },
+                       "southwest" : {
+                          "lat" : 39.7207129,
+                          "lng" : -80.5192179
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJiWjZkAfsNIgRSXopSLGQlS4",
+                 "types" : [ "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Pennsylvania, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 42.2693867,
+                          "lng" : -74.69009729999999
+                       },
+                       "southwest" : {
+                          "lat" : 39.7197989,
+                          "lng" : -80.51989499999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 41.2033216,
+                       "lng" : -77.1945247
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 42.2693867,
+                          "lng" : -74.69009729999999
+                       },
+                       "southwest" : {
+                          "lat" : 39.7197989,
+                          "lng" : -80.51989499999999
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJieUyHiaALYgRPbQiUEchRsI",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "United States",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 71.3867745,
+                          "lng" : -66.9502861
+                       },
+                       "southwest" : {
+                          "lat" : 18.910677,
+                          "lng" : 172.4458955
+                       }
+                    },
+                    "location" : {
+                       "lat" : 37.09024,
+                       "lng" : -95.712891
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 49.38,
+                          "lng" : -66.94
+                       },
+                       "southwest" : {
+                          "lat" : 25.82,
+                          "lng" : -124.39
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJCzYy5IS16lQRQrfeQ5K5Oxw",
+                 "types" : [ "country", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Tue, 11 Oct 2016 20:23:24 GMT
+recorded_with: VCR 3.0.3
