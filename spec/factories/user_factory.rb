@@ -4,9 +4,9 @@ FactoryGirl.define do
     name 'Jamie Farr'
     sequence(:email) { |n| "james#{n}@example.com" }
     password '123456789'
-    city 'Toledo'
-    state 'Oh'
-    zip '43601'
+    city 'Carnegie'
+    state 'PA'
+    zip '15106'
     sequence(:phone_number) { |n| "510-555-%04d" % n}
 
     factory :admin_user do

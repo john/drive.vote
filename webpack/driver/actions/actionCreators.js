@@ -3,6 +3,30 @@ import fetch from 'isomorphic-fetch';
 // Expect API to be served off the same origin.
 const api = '/driving';
 
+function parseJSON(response) {
+    if (response.ok) {
+        return response.json();
+    } else {
+        return response.json()
+            .then(function(response) {
+                console.log(response.error);
+                throw new Error(response.error);
+            });
+    }
+}
+
+export function apiError(message) {
+    return {
+        type: 'API_ERROR',
+        message,
+    }
+}
+
+export function clearError() {
+    return {
+        type: 'API_ERROR_CLEAR',
+    }
+}
 export function requestStatus() {
     return {
         type: 'REQUEST_STATUS',
@@ -124,9 +148,11 @@ export function fetchStatus() {
         fetch(`${api}/status`, {
                 credentials: 'include',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(receiveStatus(json.response))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -136,9 +162,11 @@ export function fetchRideZoneStats() {
         fetch(`${api}/ridezone_stats`, {
                 credentials: 'include',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(receiveRideZoneStats(json.response))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -151,9 +179,11 @@ export function submitUnavailable() {
                 credentials: 'include',
                 method: 'POST',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(driverUnavailable())
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -165,9 +195,11 @@ export function submitAvailable() {
                 credentials: 'include',
                 method: 'POST',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(driverAvailable()),
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -179,9 +211,11 @@ export function submitLocation(location) {
                 credentials: 'include',
                 method: 'POST'
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(locationSaved(json))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -193,9 +227,11 @@ export function fetchWaitingRides() {
         fetch(`${api}/waiting_rides`, {
                 credentials: 'include',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(receveWaitingRides(json))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -207,9 +243,11 @@ export function fetchWaitingRides() {
         fetch(`${api}/waiting_rides`, {
                 credentials: 'include',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(receveWaitingRides(json))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -221,9 +259,11 @@ export function claimRide(ride) {
                 credentials: 'include',
                 method: 'POST',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(claimRideSuccess(ride))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -235,9 +275,11 @@ export function cancelRide(ride) {
                 credentials: 'include',
                 method: 'POST',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(cancelRideSuccess(ride))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -249,9 +291,11 @@ export function pickupRider(ride) {
                 credentials: 'include',
                 method: 'POST',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(pickupRiderSuccess(ride))
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
@@ -264,10 +308,12 @@ export function completeRide(ride) {
                 credentials: 'include',
                 method: 'POST',
             })
-            .then(response => response.json())
+            .then(parseJSON)
             .then(json =>
                 dispatch(dropoffSuccess(ride)),
                 dispatch(fetchWaitingRides())
+            ).catch(error =>
+                dispatch(apiError(error))
             )
     }
 }
