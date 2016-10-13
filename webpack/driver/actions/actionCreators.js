@@ -220,27 +220,12 @@ export function submitLocation(location) {
     }
 }
 
-export function fetchWaitingRides() {
+export function fetchWaitingRides(location) {
 
     return function(dispatch) {
         dispatch(requestStatus())
-        fetch(`${api}/waiting_rides`, {
-                credentials: 'include',
-            })
-            .then(parseJSON)
-            .then(json =>
-                dispatch(receveWaitingRides(json))
-            ).catch(error =>
-                dispatch(apiError(error))
-            )
-    }
-}
-
-export function fetchWaitingRides() {
-
-    return function(dispatch) {
-        dispatch(requestStatus())
-        fetch(`${api}/waiting_rides`, {
+        // fetch(`${api}/waiting_rides?latitude=28.532&longitude=-81.37`, {
+        fetch(`${api}/waiting_rides?latitude=${location.latitude}&longitude=${location.longitude}`, {
                 credentials: 'include',
             })
             .then(parseJSON)
