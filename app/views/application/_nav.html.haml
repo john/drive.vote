@@ -40,6 +40,9 @@
           - elsif current_user.is_dispatcher?
             = link_to 'dispatch', dispatch_path( RideZone.with_role(:dispatcher, current_user ).first.slug), target: '_blank'
 
+          - elsif current_user.is_driver?
+            = link_to 'driving app', driving_index_path
+
 
         .btn.btn-info.btn-xs{style: 'margin: 5px 0 0 20px;'}
           = link_to t(:learn_more), about_path(locale: I18n.locale.to_s), style: 'color: white;'

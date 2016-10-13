@@ -23,7 +23,7 @@ h4 {
     margin-top: 0;
 }
 
-p{
+p {
     font-size: 14px;
     line-height: 20px;
 }
@@ -68,6 +68,12 @@ label {
     padding-bottom: 0 !important;
 }
 
+.p-l {
+    padding-left: 1em;
+}
+.p-l-md{
+    padding-left: 2em;
+}
 .p-l-0 {
     padding-left: 0;
 }
@@ -196,6 +202,25 @@ label {
     color: #3498db;
 }
 
+.btn-secondary:hover {
+    color: #3498db;
+    background: #f2f2f2;
+}
+
+.fetching .btn-api:focus {
+    opacity: .5;
+    pointer-events: none;
+    position: relative;
+}
+
+.fetching .btn-api:focus:after {
+    content: "\f110";
+    font-family: 'FontAwesome';
+    animation: fa-spin 2s infinite linear;
+    position: absolute;
+    right: 22px;
+}
+
 .directionsLink {
     background: none;
     color: rgb(75, 145, 220);
@@ -315,6 +340,25 @@ p.display-3 {
     background: rgb(38, 204, 124);
 }
 
+.errorBanner {
+    position: fixed;
+    bottom: 5px;
+    background: #e74c3c;
+    padding: 6px 8px;
+    z-index: 999;
+    left: 5px;
+    right: 5px;
+    border-radius: 4px;
+    line-height: 20px;
+    font-size: 16px;
+    color: white;
+    font-weight: lighter;
+}
+
+.errorBanner a {
+    color: white;
+}
+
 @media (min-width: 600px) {
     .container .jumbotron,
     .panel {
@@ -323,4 +367,25 @@ p.display-3 {
     .bottom-controls .btn {
         max-width: 400px;
     }
+}
+
+
+/* Animation */
+
+.banner-appear {
+    opacity: 0.01;
+}
+
+.banner-appear.banner-appear-active {
+    opacity: 1;
+    transition: opacity .5s ease-in;
+}
+
+.banner-leave {
+    opacity: 1;
+}
+
+.banner-leave.banner-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in;
 }

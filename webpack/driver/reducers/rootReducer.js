@@ -4,6 +4,7 @@ import { routerReducer } from 'react-router-redux';
 function driverState(state = {
     initialFetch: true,
     isFetching: true,
+    error: '',
     rides: [],
 }, action) {
     switch (action.type) {
@@ -90,6 +91,16 @@ function driverState(state = {
                 isFetching: false,
                 update_location_interval: action.update_location_interval * 100,
             })
+        case 'API_ERROR':
+            return Object.assign({}, state, {
+                error: String(action.message),
+                isFetching: false
+            })
+      case 'API_ERROR_CLEAR':
+            return Object.assign({}, state, {
+                error: '',
+            })
+
 
         default:
             return state;
