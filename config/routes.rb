@@ -112,6 +112,7 @@ Rails.application.routes.draw do
       end
     end
     resources :drivers, only: [:index]
+    resources :metrics, only: [:index]
     resources :rides
     resources :ride_zones, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
       member do

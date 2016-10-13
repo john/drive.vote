@@ -23,6 +23,12 @@ FactoryGirl.define do
       end
     end
 
+    factory :voter do
+      after(:create) do |user, evaluator|
+        user.add_role(:voter)
+      end
+    end
+
     factory :driver_user do
       user_type :driver
       transient do
