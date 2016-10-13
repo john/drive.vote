@@ -27,7 +27,7 @@ class PendingRideDetail extends React.Component {
                         </div>
                     </div>
                     <div className="bottom-controls secondary">
-                        <button className="btn btn-success" onClick={()=>this.props.claimRide(ride)}>Accept</button>
+                        <button className="btn btn-success btn-api" onClick={()=>this.props.claimRide(ride)}>Accept</button>
                         <button className="btn btn-secondary" onClick={()=>this.props.declineRide()}>Back to list of Voters</button>
                     </div>
             </div>

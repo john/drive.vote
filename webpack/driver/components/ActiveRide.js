@@ -28,8 +28,8 @@ class ActiveRide extends React.Component {
                             <p>Special requests: {ride.special_requests}</p>
                         </div>
                         <div className="bottom-controls secondary">
-                            <button className="btn btn-success" onClick={()=>this.props.pickupRider(ride)}>Rider picked up</button>
-                            <button className="btn btn-danger" onClick={()=>this.props.cancelRide(ride)}>Cancel Ride</button>
+                            <button className="btn btn-success btn-api" onClick={()=>this.props.pickupRider(ride)}>Rider picked up</button>
+                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Cancel Ride</button>
                         </div>
                     </div>
                 )
@@ -50,8 +50,8 @@ class ActiveRide extends React.Component {
                             <p>Special requests: {ride.special_requests}</p>
                         </div>
                         <div className="bottom-controls secondary">
-                            <button className="btn btn-success" onClick={()=>this.props.completeRide(ride)}>Complete Ride</button>
-                            <button className="btn btn-danger" onClick={()=>this.props.cancelRide(ride)}>Cancel Ride</button>
+                            <button className="btn btn-success btn-api" onClick={()=>this.props.completeRide(ride)}>Complete Ride</button>
+                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Cancel Ride</button>
                         </div>
                     </div>
                 )
@@ -72,8 +72,8 @@ class ActiveRide extends React.Component {
                             <p>Special requests: {ride.special_requests}</p>
                         </div>
                         <div className="bottom-controls secondary">
-                            <button className="btn btn-success" onClick={()=>this.props.claimRide(ride)}>Accept Ride</button>
-                            <button className="btn btn-danger" onClick={()=>this.props.cancelRide(ride)}>Reject</button>
+                            <button className="btn btn-success btn-api" onClick={()=>this.props.claimRide(ride)}>Accept Ride</button>
+                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Reject</button>
                         </div>
                     </div>
                 )

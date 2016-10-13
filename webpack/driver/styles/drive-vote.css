@@ -23,7 +23,7 @@ h4 {
     margin-top: 0;
 }
 
-p{
+p {
     font-size: 14px;
     line-height: 20px;
 }
@@ -196,6 +196,25 @@ label {
     color: #3498db;
 }
 
+.btn-secondary:hover {
+    color: #3498db;
+    background: #f2f2f2;
+}
+
+.fetching .btn-api:focus {
+    opacity: .5;
+    pointer-events: none;
+    position: relative;
+}
+
+.fetching .btn-api:focus:after {
+    content: "\f110";
+    font-family: 'FontAwesome';
+    animation: fa-spin 2s infinite linear;
+    position: absolute;
+    right: 22px;
+}
+
 .directionsLink {
     background: none;
     color: rgb(75, 145, 220);
@@ -318,7 +337,7 @@ p.display-3 {
 .errorBanner {
     position: fixed;
     bottom: 5px;
-    background: #e74c3c; 
+    background: #e74c3c;
     padding: 6px 8px;
     z-index: 999;
     left: 5px;
@@ -330,7 +349,7 @@ p.display-3 {
     font-weight: lighter;
 }
 
-.errorBanner a{
+.errorBanner a {
     color: white;
 }
 
@@ -348,18 +367,19 @@ p.display-3 {
 /* Animation */
 
 .banner-appear {
-  opacity: 0.01;
+    opacity: 0.01;
 }
 
 .banner-appear.banner-appear-active {
-  opacity: 1;
-  transition: opacity .5s ease-in;
+    opacity: 1;
+    transition: opacity .5s ease-in;
 }
+
 .banner-leave {
-  opacity: 1;
+    opacity: 1;
 }
 
 .banner-leave.banner-leave-active {
-  opacity: 0.01;
-  transition: opacity 300ms ease-in;
+    opacity: 0.01;
+    transition: opacity 300ms ease-in;
 }
