@@ -10,7 +10,15 @@ class User < ApplicationRecord
 
   rolify after_add: :if_driver_remove_unassigned, after_remove: :make_unassigned
 
-  geocoded_by :full_address
+  geocoded_by :full_address do |user, results|
+    if geo = results.first
+      user.latitude = geo.latitude
+      user.longitude = geo.longitude
+      user.address1 = geo.address
+      user.zip = geo.postal_code if geo.postal_code.present?
+    end
+  end
+
   after_validation :geocode, if: ->(obj){ obj.new_record? }
 
   # TODO: when users & ridezones are geocoded

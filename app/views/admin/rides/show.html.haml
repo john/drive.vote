@@ -1,4 +1,14 @@
+= render 'admin/nav', {active: 'rides'}
+
+%p{style: 'margin-top: 20px;'}
+  = link_to 'Back to Rides', admin_rides_url
+
 %p#notice= notice
+
+%p
+  Voter
+%h3{style: 'margin-top: 0;'}
+  = @ride.voter.nil? ? 'None Assigned' : @ride.voter.name
 
 %p
   %b Name:
@@ -15,9 +25,7 @@
 %p
   %b Driver:
   = @ride.driver.nil?  ? 'None Assigned' : @ride.driver.name
-%p
-  %b Voter:
-  = @ride.voter.nil? ? 'None Assigned' : @ride.voter.name
+
 %p
   %b Additional Passengers:
   = @ride.additional_passengers
@@ -28,5 +36,4 @@
   %b Status:
   = @ride.status.nil? ? 'None Selected' : @ride.status
 
-%p
-  = link_to 'Back to Rides', admin_rides_url
+
