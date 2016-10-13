@@ -4,7 +4,7 @@ class AvailableButton extends React.Component {
     render() {
         return (
             <div className="bottom-controls fixed">
-                <button className="btn btn-lg btn-success" onClick={this.props.submitAvailable}>Start driving</button>
+                <button className="btn btn-lg btn-success btn-api" onClick={this.props.submitAvailable}>Start driving</button>
             </div>
         )
     }

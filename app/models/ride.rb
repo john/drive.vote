@@ -111,6 +111,7 @@ class Ride < ApplicationRecord
   def api_json
     j = self.as_json(except: [:voter_id, :driver_id, :pickup_at, :created_at, :updated_at], methods: [:conversation_id, :driver_name])
     j['pickup_at'] = self.pickup_at.try(:to_i)
+    j['created_at'] = self.created_at.try(:to_i)
     j['status_updated_at'] = self.status_updated_at.to_i
     j['voter_phone_number'] = self.voter.phone_number_normalized
     j['distance_to_voter'] = self.distance_to_voter.round(2) if self.distance_to_voter

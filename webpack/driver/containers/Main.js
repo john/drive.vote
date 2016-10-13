@@ -8,10 +8,14 @@ import '../styles/drive-vote.css';
 
 @autobind
 class Main extends React.Component {
-    
+
     render() {
+        let fetchClass;
+        if (this.props.state.driverState.isFetching) {
+            fetchClass = 'fetching';
+        }
         return (
-            <div>
+            <div className={fetchClass}>
                 <Header />
                 <ErrorContainer errorState={this.props.state.driverState.error} clearError={this.props.clearError}/>
                 <LocationManager {...this.props} />

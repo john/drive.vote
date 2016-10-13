@@ -202,6 +202,25 @@ label {
     color: #3498db;
 }
 
+.btn-secondary:hover {
+    color: #3498db;
+    background: #f2f2f2;
+}
+
+.fetching .btn-api:focus {
+    opacity: .5;
+    pointer-events: none;
+    position: relative;
+}
+
+.fetching .btn-api:focus:after {
+    content: "\f110";
+    font-family: 'FontAwesome';
+    animation: fa-spin 2s infinite linear;
+    position: absolute;
+    right: 22px;
+}
+
 .directionsLink {
     background: none;
     color: rgb(75, 145, 220);

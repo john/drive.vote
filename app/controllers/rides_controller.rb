@@ -11,7 +11,6 @@ class RidesController < ApplicationController
     @locale = params[:locale]
     @ride = Ride.new
     @ride.pickup_at = @ride_zone.current_time
-    @user = current_user
   end
 
   def create
@@ -28,7 +27,7 @@ class RidesController < ApplicationController
         # after sign-in voters are redirected to edit their existing open ride
         @msg = t(:sign_in_to_edit)
         flash[:notify] = @msg
-        redirect_to '/users/sign_in?locale=' + locale and return
+        redirect_to "/users/sign_in?locale=#{locale}" and return
       end
     end
 
