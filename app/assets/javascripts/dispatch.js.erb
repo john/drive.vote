@@ -234,20 +234,43 @@ DispatchController.prototype = {
         var existingTable = existing.parent().parent().attr('id');
         existing.html(cells);
         existing.data('ride-id', ride_id);
+        existing.data('objref', c);
         this.setRowStatus(existing, status);
-        if (existingTable != targetTable) {
-          $('#' + targetTable).prepend(existing);
-        }
+        this.insertIntoTable(existing, targetTable);
       } else {
         var classes = "conv-row conv-status-" + status,
-            row = '<tr id="' + rowId + '" data-ride-id="' + ride_id + '" class="' + classes + '" data-cid="' + c.id + '">' + cells + '</tr>';
-        $('#' + targetTable).prepend(row);
+            rowHtml = '<tr id="' + rowId + '" data-ride-id="' + ride_id + '" class="' + classes + '" data-cid="' + c.id + '">' + cells + '</tr>',
+            newRow = $(rowHtml);
+        newRow.data('objref', c);
+        this.insertIntoTable(newRow, targetTable);
       }
-      $('#' + rowId).data('objref', c);
       $("time.timeago").timeago();
       this.recalcBadges();
     }
     return status;
+  },
+
+  insertIntoTable: function(row, tableId) {
+    var tableRows = $('#' + tableId + ' tr'),
+        timestamp = this.rowTimestamp(row),
+        self = this,
+        inserted = false;
+    tableRows.each(function() {
+      var rowTime = self.rowTimestamp($(this));
+      if (timestamp < rowTime) {
+        row.insertBefore($(this));
+        inserted = true;
+        return false;
+      }
+    });
+    if (inserted == false)
+      $('#'+tableId).append(row);
+  },
+
+  rowTimestamp: function(row) {
+    if (row.data('ride-id') == 0)
+      return new Date(row.data('objref').last_message_time*1000);
+    return new Date(row.data('objref').ride.pickup_at * 1000);
   },
 
   showConversationsWithStatuses: function (statusList, table) {
