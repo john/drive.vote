@@ -56,10 +56,20 @@
       ga('send', 'pageview');
 
   %body
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=598384123655141";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 
     = render partial: 'application/nav', object: "container#{(@fluid.present?) ? '-fluid' : ''}", as: 'container_class'
 
     %div{class: "container#{(@fluid.present?) ? '-fluid' : ''}"}
       = yield
+
+    = render partial: 'application/footer'
 
   =raw humane_flash_messages

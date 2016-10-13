@@ -2,10 +2,8 @@
   .col-sm-8.col-sm-offset-2.text-center
     .row
       .col-sm-6.col-sm-offset-3.text-center
-        - if flash['notice'].present? && flash['notice'].downcase.include?('welcome')
-          %h4
-            Thanks!
+        -# - if flash['notice'].present? && flash['notice'].downcase.include?('welcome')
+        %h1
+          Thanks!
 
         = t(:will_contact)
-
-      = render partial: 'share'
