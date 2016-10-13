@@ -1,0 +1,60 @@
+= render 'admin/nav', {active: 'metrics'}
+
+:css
+  table {
+    margin-left: -10px;
+  }
+  td {
+    padding: 10px;
+  }
+
+  .inner {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-spacing: 10px;
+    text-align: center;
+    width: 135px;
+    height: 120px;
+  }
+
+  .count {
+    font-weight: bold;
+    font-size: 40px;
+  }
+
+%h1
+  Metrics
+
+%table{style: 'border-spacing: 10px;'}
+  %tr
+    %td
+      .inner
+        Voters
+        .count
+          = @voter_count
+    %td
+      .inner
+        Ride zones
+        .count
+          = @ride_zone_count
+    %td
+      .inner
+        Total rides
+        .count
+          = @total_rides_count
+  %tr
+    %td
+      .inner
+        Completed rides
+        .count
+          = @completed_rides_count
+    %td
+      .inner
+        Conversations
+        .count
+          = @conversation_count
+    %td
+      .inner
+        Messages
+        .count
+          = @message_count
