@@ -41,11 +41,11 @@
           &nbsp &#183; &nbsp;
 
           = link_to 'Schedule form', get_a_ride_path(ride_zone.slug), target: '_blank'
-          = link_to ' ⓘ', '#', class: 'pop', 'data-title': "#{ride_zone.name}", 'data-content': "The public URL for scheduling rides:<br>#{get_a_ride_url(ride_zone.slug)}", onclick: "return false;"
+          = link_to ' ⓘ', '#', class: 'pop', 'data-title': "#{sanitize ride_zone.name}", 'data-content': "The public URL for scheduling rides:<br>#{get_a_ride_url(ride_zone.slug)}", onclick: "return false;"
           &nbsp &#183; &nbsp;
 
           = link_to 'Volunteer form', volunteer_to_drive_for_zone_path(ride_zone.slug), target: '_blank'
-          = link_to ' ⓘ', '#', class: 'pop', 'data-title': "#{ride_zone.name}", 'data-content': "The public URL for recruiting drivers:<br>#{volunteer_to_drive_for_zone_url(ride_zone.slug)}", onclick: "return false;"
+          = link_to ' ⓘ', '#', class: 'pop', 'data-title': "#{sanitize ride_zone.name}", 'data-content': "The public URL for recruiting drivers:<br>#{volunteer_to_drive_for_zone_url(ride_zone.slug)}", onclick: "return false;"
           &nbsp &#183; &nbsp;
 
           = link_to 'Edit', edit_admin_ride_zone_path(ride_zone)
