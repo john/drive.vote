@@ -33,8 +33,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # Overridden so that when people sign up to volunteer, they're not automatically signed in
   def create
     build_resource(sign_up_params)
-    generated_password = Devise.friendly_token.first(8)
-    resource.password = generated_password
+    unless resource.password.present?
+      generated_password = Devise.friendly_token.first(8)
+      resource.password = generated_password
+    end
 
     resource.save
     yield resource if block_given?

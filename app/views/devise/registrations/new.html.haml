@@ -62,6 +62,14 @@
       = f.hidden_field :state, :value => ''
 
   .col-sm-8.field
+    = f.label :password
+    - if @minimum_password_length
+      %em
+        (#{@minimum_password_length} characters minimum)
+    %br/
+    = f.password_field :password, autocomplete: "off", class: 'form-control', required: 'true'
+
+  .col-sm-8.field
     = f.submit t(:volunteer_to_drive), class: 'btn btn-primary', style: 'width: 100%; margin: 10px 0 0 0', disable_with: "#{t(:saving)}..."
 
     .small{style: 'margin-top: -10px 0 0 0;'}
