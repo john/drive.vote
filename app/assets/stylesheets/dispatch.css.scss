@@ -82,6 +82,9 @@
 .conv-status-waiting_assignment {
   visibility: visible;
 }
+.conv-status-new_ride {
+  visibility: visible;
+}
 .conv-status-assignment_overdue {
   visibility: visible;
 }
@@ -122,6 +125,9 @@
   background-color: #4a4a4a;
 }
 .conv-statdisp-waiting_assignment {
+  background-color: #fbe500;
+}
+.conv-statdisp-new_ride {
   background-color: #fbe500;
 }
 .conv-statdisp-assignment_overdue {
