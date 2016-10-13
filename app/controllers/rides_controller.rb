@@ -54,9 +54,15 @@ class RidesController < ApplicationController
           ride_zone: @ride_zone,
           email: user_params[:email],
           password: user_params[:password] || SecureRandom.hex(8),
+          address1: rp[:from_address],
           locale: @locale,
           user_type: :voter,
       }
+      if @ride.city_state.present? && @ride.from_city.blank? && @ride.from_state.blank?
+        c_s_array = @ride.city_state.split(',')
+        attrs[:city] = c_s_array[0].try(:strip)
+        attrs[:state] = c_s_array[1].try(:strip)
+      end
 
       # todo: better error handling
       @user = User.create(attrs)
@@ -72,6 +78,7 @@ class RidesController < ApplicationController
     @ride.voter = @user
     @ride.status = :scheduled
     @ride.ride_zone = @ride_zone
+
     if @ride.save
       Conversation.create_from_staff(@ride_zone, @user, thanks_msg, Rails.configuration.twilio_timeout,
                                      {status: :ride_created, ride: @ride})
