@@ -9,10 +9,11 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
   this.OVERDUE_ASSIGNMENT = 10*60*1000;
   this.OVERDUE_PICKUP = 15*60*1000;
   this.OVERDUE_COMPLETION = 30*60*1000;
+  this.STILL_NEW_RIDE = 10*60*1000;
   this._statusStrings = {
     messaging: 'MESSAGING', help_needed: 'HELP NEEDED', scheduled: 'SCHEDULED',
     waiting_assignment: 'NEEDS DRIVER', assignment_overdue: 'OVERDUE',
-    waiting_pickup: 'WAITING', pickup_overdue: 'OVERDUE',
+    waiting_pickup: 'WAITING', pickup_overdue: 'OVERDUE', new_ride: 'NEW',
     driving: 'DRIVING', completion_overdue: 'OVERDUE', complete: 'COMPLETE'
   };
 
@@ -21,6 +22,7 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
     help_needed: "<%= asset_path('rider-overdue-pickup.png')%>",
     scheduled: "<%= asset_path('rider-waiting-assignment.png')%>",
     waiting_assignment: "<%= asset_path('rider-waiting-assignment.png')%>",
+    new_ride: "<%= asset_path('rider-waiting-assignment.png')%>",
     assignment_overdue: "<%= asset_path('rider-overdue-assignment.png')%>",
     waiting_pickup: "<%= asset_path('rider-waiting-pickup.png')%>",
     pickup_overdue: "<%= asset_path('rider-overdue-pickup.png')%>",
@@ -31,7 +33,7 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
 
   // Maps the conversation statuses to the table they should appear in
   this._tableStatuses = {
-    needDriverConversations: ['help_needed', 'scheduled', 'waiting_assignment', 'assignment_overdue'],
+    needDriverConversations: ['help_needed', 'scheduled', 'new_ride', 'waiting_assignment', 'assignment_overdue'],
     haveDriverConversations: ['waiting_pickup', 'pickup_overdue', 'driving', 'completion_overdue'],
     inactiveConversations: ['complete'],
     activeConversations: ['messaging']
@@ -124,6 +126,13 @@ DispatchController.prototype = {
     });
   },
 
+  // If you add a status here, you also need to
+  // a) add it into the list of statuses per table in _tableStatuses
+  // b) add it to _statusPinURLs
+  // c) add it to one of the filters on the tables
+  // d) add it to the _statusStrings
+  // e) create a named conv-status-XX style in css
+  // f) create a named conv-statdisp-XX style for the status display rectangle
   conversationStatus: function (c) {
     var ride = c.ride,
         desired_time = (ride !== undefined && ride !== null) ? new Date(ride.pickup_at*1000) : null,
@@ -143,6 +152,8 @@ DispatchController.prototype = {
             return 'pickup_overdue';
           return 'waiting_pickup';
         case 'waiting_assignment':
+          if (now - new Date(ride.created_at*1000) < this.STILL_NEW_RIDE)
+            return 'new_ride';
           if (now > desired_time - this.OVERDUE_ASSIGNMENT)
             return 'assignment_overdue';
           return 'waiting_assignment';

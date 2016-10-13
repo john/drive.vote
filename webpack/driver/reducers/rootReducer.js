@@ -94,6 +94,7 @@ function driverState(state = {
         case 'API_ERROR':
             return Object.assign({}, state, {
                 error: String(action.message),
+                isFetching: false
             })
       case 'API_ERROR_CLEAR':
             return Object.assign({}, state, {
