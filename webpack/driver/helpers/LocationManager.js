@@ -47,25 +47,8 @@ class LocationManager extends React.Component {
     }
 
     componentDidMount() {
-        // TODO: This is broken
-        var self = this;
-
-        // this.locationCount = this.locationCount || 0;
-        // this.rideCount = this.rideCount || 0;
-        // clearInterval(this.intervalCount);
-        // clearInterval(this.rideCount);
-        // let locationUpdateInterval = nextProps.state.driverState.update_location_interval;
-        // if (locationUpdateInterval && nextProps.location) {
-        const locationInterval = setInterval(function() { self.props.submitLocation(self.props.state.driverState.location) }, 5000);
-        //     this.locationCount = locationInterval;
-
-        // }
-        // let waitingRidesInterval = nextProps.state.driverState.waiting_rides_interval;
-        // if (waitingRidesInterval) {
-        const ridesInterval = setInterval(function() { self.props.fetchWaitingRides() }, 5000);
-        // const statusInterval = setInterval(function() { self.props.fetchStatus() }, 5000);
-        //     this.rideCount = ridesInterval;
-        // }
+        const locationInterval = setInterval(() => this.props.submitLocation(this.props.state.driverState.location), 5000);
+        const ridesInterval = setInterval(() => this.props.fetchWaitingRides(this.props.state.driverState.location), 5000);
     }
 
     render() {

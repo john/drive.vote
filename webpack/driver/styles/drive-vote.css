@@ -68,6 +68,12 @@ label {
     padding-bottom: 0 !important;
 }
 
+.p-l {
+    padding-left: 1em;
+}
+.p-l-md{
+    padding-left: 2em;
+}
 .p-l-0 {
     padding-left: 0;
 }
