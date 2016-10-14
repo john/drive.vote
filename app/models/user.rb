@@ -267,13 +267,13 @@ class User < ApplicationRecord
       raise "Bad role, model."
     end
 
+    if self.ride_zone.blank? && self.ride_zone_id.present?
+      rz = RideZone.find( self.ride_zone_id )
+      self.ride_zone = rz
+    end
+
     if self.user_type.present?
-      if self.ride_zone_id.present?
-        rz = RideZone.find(self.ride_zone_id)
-        self.add_role self.user_type, rz
-      else
-        self.add_role self.user_type
-      end
+      self.add_role self.user_type, self.ride_zone
     end
   end
 
