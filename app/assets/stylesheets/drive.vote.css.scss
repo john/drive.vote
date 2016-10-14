@@ -7,11 +7,22 @@ body {
   margin-bottom: 45px;
 }
 
+p, div {
+  font-size: 15px;
+}
+
+td {
+  vertical-align: top;
+  border: 0px solid gray;
+}
+
 footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 45px;
+  margin-top: 80px;
+  margin: auto;
 
   .center {
     margin: 0 auto; width: 550px;
@@ -37,15 +48,35 @@ footer {
   }
 }
 
-
 #logo {
   width: 90px;
   height: 47px;
 }
 
-.navbar { background-color: white; border: 0; box-shadow: none !important }
-.navbar-default { background-color: white; border: 0; box-shadow: none !important }
-.navbar-static-top { background-color: white; border: 0; box-shadow: none !important }
+h1.hed {
+  text-align: center;
+}
+h2.subhed {
+  text-align: center;
+}
+
+.navbar {
+  background-color: white;
+  border: 0;
+  box-shadow: none !important
+}
+
+.navbar-default {
+  background-color: white;
+  border: 0;
+  box-shadow: none !important
+}
+
+.navbar-static-top {
+  background-color: white;
+  border: 0;
+  box-shadow: none !important
+}
 
 .nav-links {
   margin-top: 10px;
@@ -64,13 +95,20 @@ footer {
   color: #aaa;
 }
 
-p, div {
-  font-size: 15px;
+.embed-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
 }
 
-td {
-  vertical-align: top;
-  border: 0px solid gray;
+.embed-container iframe, .embed-container object, .embed-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 // Errors when form validation fails
@@ -329,15 +367,17 @@ h3.dispatch { margin: 0 0 0 10px; }
   font-size: 22px;
 }
 
-footer {
-  margin-top: 80px;
-  margin: auto;
-}
-
 @media(max-width:480px) {
   #logo {
     width: 76px;
     height: 40px;
+  }
+
+  h1.hed {
+    font-size: 40px;
+  }
+  h2.subhed {
+    font-size: 16px;
   }
 
   .schedule {
