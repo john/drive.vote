@@ -1,5 +1,11 @@
 = render 'admin/nav', {active: 'ride_zones'}
 
+:css
+  .popover{
+      max-width:550px;
+  }
+  .pop { color: grey; }
+
 %h1
   Ride Zones
   &nbsp;
@@ -13,6 +19,7 @@
       %th Zip
       %th Description
       %th Phone number
+      %th
 
   %tbody
     - @ride_zones.each do |ride_zone|
@@ -34,9 +41,11 @@
           &nbsp &#183; &nbsp;
 
           = link_to 'Schedule form', get_a_ride_path(ride_zone.slug), target: '_blank'
+          = link_to ' ⓘ', '#', class: 'pop', 'data-title': "#{sanitize ride_zone.name}", 'data-content': "The public URL for scheduling rides:<br>#{get_a_ride_url(ride_zone.slug)}", onclick: "return false;"
           &nbsp &#183; &nbsp;
 
           = link_to 'Volunteer form', volunteer_to_drive_for_zone_path(ride_zone.slug), target: '_blank'
+          = link_to ' ⓘ', '#', class: 'pop', 'data-title': "#{sanitize ride_zone.name}", 'data-content': "The public URL for recruiting drivers:<br>#{volunteer_to_drive_for_zone_url(ride_zone.slug)}", onclick: "return false;"
           &nbsp &#183; &nbsp;
 
           = link_to 'Edit', edit_admin_ride_zone_path(ride_zone)
@@ -45,3 +54,8 @@
             %button.close{type: "button", 'aria-label': "Close", style: 'margin-left: 30px;'}
               %span{'aria-hidden': "true"}
                 &times;
+
+:javascript
+  $(function(){
+      $('.pop').popover({trigger: 'click', placement: 'top', html: true});
+  });

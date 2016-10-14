@@ -10,7 +10,15 @@ class User < ApplicationRecord
 
   rolify after_add: :if_driver_remove_unassigned, after_remove: :make_unassigned
 
-  geocoded_by :full_address
+  geocoded_by :full_address do |user, results|
+    if geo = results.first
+      user.latitude = geo.latitude
+      user.longitude = geo.longitude
+      user.address1 = geo.address
+      user.zip = geo.postal_code if geo.postal_code.present?
+    end
+  end
+
   after_validation :geocode, if: ->(obj){ obj.new_record? }
 
   # TODO: when users & ridezones are geocoded
@@ -18,8 +26,9 @@ class User < ApplicationRecord
   # end
 
   VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
-  VALID_STATES = {'FL' => 'Florida', 'GA' => 'Georgia', 'NV' => 'Nevada', 'NC' => 'North Carolina', 'OH' => 'Ohio',  'PA' =>'Pennsylvania', 'WI' => 'Wisconsin'}
-  has_many :rides, foreign_key: :voter_id
+  VALID_STATES = {'FL' => 'Florida', 'NV' => 'Nevada', 'PA' =>'Pennsylvania', 'UT' => 'Utah'}
+  has_many :rides, foreign_key: :voter_id, dependent: :destroy
+  has_many :conversations, foreign_key: :user_id, dependent: :destroy
 
   enum language: { unknown: 0, en: 1, es: 2 }, _suffix: true
 

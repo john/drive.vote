@@ -9,10 +9,11 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
   this.OVERDUE_ASSIGNMENT = 10*60*1000;
   this.OVERDUE_PICKUP = 15*60*1000;
   this.OVERDUE_COMPLETION = 30*60*1000;
+  this.STILL_NEW_RIDE = 10*60*1000;
   this._statusStrings = {
     messaging: 'MESSAGING', help_needed: 'HELP NEEDED', scheduled: 'SCHEDULED',
     waiting_assignment: 'NEEDS DRIVER', assignment_overdue: 'OVERDUE',
-    waiting_pickup: 'WAITING', pickup_overdue: 'OVERDUE',
+    waiting_pickup: 'WAITING', pickup_overdue: 'OVERDUE', new_ride: 'NEW',
     driving: 'DRIVING', completion_overdue: 'OVERDUE', complete: 'COMPLETE'
   };
 
@@ -21,6 +22,7 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
     help_needed: "<%= asset_path('rider-overdue-pickup.png')%>",
     scheduled: "<%= asset_path('rider-waiting-assignment.png')%>",
     waiting_assignment: "<%= asset_path('rider-waiting-assignment.png')%>",
+    new_ride: "<%= asset_path('rider-waiting-assignment.png')%>",
     assignment_overdue: "<%= asset_path('rider-overdue-assignment.png')%>",
     waiting_pickup: "<%= asset_path('rider-waiting-pickup.png')%>",
     pickup_overdue: "<%= asset_path('rider-overdue-pickup.png')%>",
@@ -31,7 +33,7 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
 
   // Maps the conversation statuses to the table they should appear in
   this._tableStatuses = {
-    needDriverConversations: ['help_needed', 'scheduled', 'waiting_assignment', 'assignment_overdue'],
+    needDriverConversations: ['help_needed', 'scheduled', 'new_ride', 'waiting_assignment', 'assignment_overdue'],
     haveDriverConversations: ['waiting_pickup', 'pickup_overdue', 'driving', 'completion_overdue'],
     inactiveConversations: ['complete'],
     activeConversations: ['messaging']
@@ -124,6 +126,13 @@ DispatchController.prototype = {
     });
   },
 
+  // If you add a status here, you also need to
+  // a) add it into the list of statuses per table in _tableStatuses
+  // b) add it to _statusPinURLs
+  // c) add it to one of the filters on the tables
+  // d) add it to the _statusStrings
+  // e) create a named conv-status-XX style in css
+  // f) create a named conv-statdisp-XX style for the status display rectangle
   conversationStatus: function (c) {
     var ride = c.ride,
         desired_time = (ride !== undefined && ride !== null) ? new Date(ride.pickup_at*1000) : null,
@@ -143,6 +152,8 @@ DispatchController.prototype = {
             return 'pickup_overdue';
           return 'waiting_pickup';
         case 'waiting_assignment':
+          if (now - new Date(ride.created_at*1000) < this.STILL_NEW_RIDE)
+            return 'new_ride';
           if (now > desired_time - this.OVERDUE_ASSIGNMENT)
             return 'assignment_overdue';
           return 'waiting_assignment';
@@ -174,10 +185,43 @@ DispatchController.prototype = {
   conversationCells: function (c, status) {
     var timestamp = (c.last_message_time === undefined) ? 'n/a' : strftime('%l:%M %P', new Date(c.last_message_time*1000));
     var pickup = (c.ride === undefined) ? '' : new Date(c.ride.pickup_at*1000).toISOString();
+    var rideStatusChange = (c.ride === undefined) ? '' : strftime('%l:%M %P', new Date(c.ride.status_updated_at*1000));
+    var msg = '(' + timestamp + ')&nbsp;' + c.last_message_body; // default to last message in conversation
 
-    var cells =
-      '<td class="conv-voter"><div class="voter-info">' + c.name + ' ' + c.from_phone + '</div>(' + timestamp + ')&nbsp;' + c.last_message_body.truncate(100) + '</td>' +
+    switch(status) {
+      case 'scheduled':
+      case 'waiting_assignment':
+      case 'assignment_overdue':
+        msg = 'Ride pickup time scheduled for ' + strftime('%l:%M %P', new Date(c.ride.pickup_at*1000));
+        break;
+      case 'waiting_pickup':
+        msg = 'Ride accepted by driver ' + c.ride.driver_name + ' at ' + rideStatusChange;
+        break;
+      case 'pickup_overdue':
+        msg = 'Voter not yet picked up by driver ' + c.ride.driver_name + '. Ride was accepted at ' + rideStatusChange;
+        break;
+      case 'driving':
+        msg = 'Voter picked up by driver ' + c.ride.driver_name + ' at ' + rideStatusChange;
+        break;
+      case 'completion_overdue':
+        msg = 'Ride not yet completed by driver ' + c.ride.driver_name + '. Voter was picked up at ' + rideStatusChange;
+        break;
+      case 'complete':
+        if (c.ride !== undefined) {
+          msg = 'Ride completed by ' + c.ride.driver_name + ' at ' + rideStatusChange;
+        }
+        break;
+    }
+    var cells = '<td class="conv-voter"><div class="voter-info"><b>';
+    if (c.name.length > 0) {
+      cells = cells + c.name
+    } else {
+      cells = cells + c.from_phone
+    }
+
+    cells = cells + '</b></div>' + msg.truncate(100) + '</td>' +
       '<td class="conv-status">' + '<span class="conv-statdisp conv-statdisp-'+status+'">' + this._statusStrings[status] + '</span></td>';
+
     if (status == 'complete' || status == 'driving') {
       cells = cells + '<td class="conv-time"></td>';
     } else {
@@ -201,20 +245,43 @@ DispatchController.prototype = {
         var existingTable = existing.parent().parent().attr('id');
         existing.html(cells);
         existing.data('ride-id', ride_id);
+        existing.data('objref', c);
         this.setRowStatus(existing, status);
-        if (existingTable != targetTable) {
-          $('#' + targetTable).prepend(existing);
-        }
+        this.insertIntoTable(existing, targetTable);
       } else {
         var classes = "conv-row conv-status-" + status,
-            row = '<tr id="' + rowId + '" data-ride-id="' + ride_id + '" class="' + classes + '" data-cid="' + c.id + '">' + cells + '</tr>';
-        $('#' + targetTable).prepend(row);
+            rowHtml = '<tr id="' + rowId + '" data-ride-id="' + ride_id + '" class="' + classes + '" data-cid="' + c.id + '">' + cells + '</tr>',
+            newRow = $(rowHtml);
+        newRow.data('objref', c);
+        this.insertIntoTable(newRow, targetTable);
       }
-      $('#' + rowId).data('objref', c);
       $("time.timeago").timeago();
       this.recalcBadges();
     }
     return status;
+  },
+
+  insertIntoTable: function(row, tableId) {
+    var tableRows = $('#' + tableId + ' tr'),
+        timestamp = this.rowTimestamp(row),
+        self = this,
+        inserted = false;
+    tableRows.each(function() {
+      var rowTime = self.rowTimestamp($(this));
+      if (timestamp < rowTime) {
+        row.insertBefore($(this));
+        inserted = true;
+        return false;
+      }
+    });
+    if (inserted == false)
+      $('#'+tableId).append(row);
+  },
+
+  rowTimestamp: function(row) {
+    if (row.data('ride-id') == 0)
+      return new Date(row.data('objref').last_message_time*1000);
+    return new Date(row.data('objref').ride.pickup_at * 1000);
   },
 
   showConversationsWithStatuses: function (statusList, table) {

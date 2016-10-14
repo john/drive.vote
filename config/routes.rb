@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1, path: '1' do
       post 'twilio/sms' => 'twilio#sms'
+      post 'twilio/voice' => 'twilio#voice'
       get 'places/search' => 'places#search'
 
       resources :conversations, only: [:show, :update] do
@@ -111,6 +112,7 @@ Rails.application.routes.draw do
       end
     end
     resources :drivers, only: [:index]
+    resources :metrics, only: [:index]
     resources :rides
     resources :ride_zones, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
       member do

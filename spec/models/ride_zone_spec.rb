@@ -2,8 +2,9 @@ require 'rails_helper'
 
 RSpec.describe RideZone, type: :model do
 
+  it { should have_many(:conversations) }
   it { should have_many(:messages) }
-
+  it { should have_many(:rides) }
 
   describe 'lifecycle hooks' do
     # note we cannot rely on VCR for http calls to timezone b/c it adds a timestamp

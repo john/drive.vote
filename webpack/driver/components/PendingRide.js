@@ -1,5 +1,6 @@
 import React from 'react';
-import { isObjectEqual } from '../helpers/Equal'
+import { isObjectEqual } from '../helpers/Equal';
+import h from '../helpers/helpers';
 
 import autobind from 'autobind-decorator';
 
@@ -24,33 +25,16 @@ class PendingRide extends React.Component {
         });
     }
 
-    declineRide(){
+    declineRide() {
         this.setState({
             clicked: false
         })
     }
 
     render() {
-
         //Setup time display
         const ride = this.props.ride;
-        let time;
-        if (ride.pickup_at) {
-            const date = new Date(ride.pickup_at * 1000);
-            const THIRTY_MINUTES = 10 * 60 * 1000;
-            let hours = date.getHours();
-
-            if (new Date() - date < THIRTY_MINUTES) {
-                time = "Now";
-            } else {
-                if (hours > 12) {
-                    hours -= 12;
-                }
-                time = `${hours}pm`;
-            }
-        } else {
-            time = "!";
-        }
+        const time = h.formatTime(this.props.ride.pickup_at);
         const passengers = 1 + parseInt(ride.additional_passengers);
         let name;
         if (ride.name) {
@@ -66,8 +50,8 @@ class PendingRide extends React.Component {
                         <p>Total Passengers: {passengers}</p>
                         <p>Read More <i className="fa fa-angle-right"></i></p>
                     </div> 
-                    <div className="col-xs-5">
-                        <h4>{time}</h4>
+                    <div className="col-xs-5 p-l-0">
+                        <h4>{time} <span className="p-l">{ride.distance_to_voter} mi</span></h4>
                         <p>{ ride.from_address }</p>
                         <p>{ ride.from_city }, { ride.from_state } { ride.from_zip }</p>
                     </div>  

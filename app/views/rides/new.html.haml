@@ -1,6 +1,9 @@
-%h3{style: "margin: 10px 0 0 15px;"}
+.to_or_from
+  = @ride_zone.name
+
+%h3.schedule
   = t(:schedule_ride)
-%div{style: "margin: 0 0 0 15px; font-weight: normal; font-size: 22px;"}
+.to_or_from
   = t(:to_or_from)
 
 = render partial: 'form', locals: {rescheduling: false}

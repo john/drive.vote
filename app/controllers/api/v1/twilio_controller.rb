@@ -15,5 +15,12 @@ module Api::V1
       reply = TwilioService.new.process_inbound_sms(params)
       render_twiml_message(reply) if reply
     end
+
+    def voice
+      resp = Twilio::TwiML::Response.new do |r|
+        r.Say "Thanks for calling drive the vote. This number does not accept voice calls. Please text 'help' to this number and someone will respond."
+      end
+      render_twiml(resp)
+    end
   end
 end

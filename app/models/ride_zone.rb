@@ -20,6 +20,7 @@ class RideZone < ApplicationRecord
   validates :city, length: { maximum: 50 }
   validates :state, length: { maximum: 2 }
   validates :zip, length: { maximum: 12 }
+  validates :nearby_radius, numericality: true, inclusion: { in: 1..100, message: 'must be between 1 and 100 miles' }
 
   geocoded_by :zip
   reverse_geocoded_by :latitude, :longitude do |obj,results|

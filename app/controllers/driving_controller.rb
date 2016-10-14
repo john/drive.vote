@@ -2,11 +2,11 @@ class DrivingController < ApplicationController
 
   before_action :ensure_session
   before_action :update_location_from_params
+  before_action :update_active_ride
 
   skip_before_action :verify_authenticity_token
 
   RIDES_LIMIT = 3
-  RIDES_RADIUS = 10 # miles by default in Geokit
   UPDATE_LOCATION_INTERVAL = 60 # seconds
   WAITING_RIDES_INTERVAL = 15 # seconds
 
@@ -80,7 +80,8 @@ class DrivingController < ApplicationController
     rides = if @active_ride
               [ @active_ride ] # this allows for dispatcher assignment
             else
-              Ride.waiting_nearby(current_user.driver_ride_zone_id, current_user.latitude, current_user.longitude, RIDES_LIMIT, RIDES_RADIUS)
+              rzid = current_user.driver_ride_zone_id
+              Ride.waiting_nearby(rzid, current_user.latitude, current_user.longitude, RIDES_LIMIT, RideZone.find(rzid).nearby_radius)
             end
     render json: {response: rides.map {|r| r.api_json}, waiting_rides_interval: waiting_rides_interval}
   end
@@ -96,6 +97,10 @@ class DrivingController < ApplicationController
     lat, lng = params[:latitude], params[:longitude]
     return if lat.blank? || lng.blank?
     current_user.update_attributes(latitude: lat, longitude: lng)
+  end
+
+  def update_active_ride
+    @active_ride.set_distance_to_voter(current_user.latitude, current_user.longitude) if @active_ride
   end
 
   # this routine executes function and renders OK response or error
