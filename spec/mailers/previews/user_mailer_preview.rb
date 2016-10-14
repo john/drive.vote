@@ -12,7 +12,9 @@ class UserMailerPreview < ActionMailer::Preview
 
   def welcome_email_voter_ride
     user = User.first
-    ride = Ride.new(pickup_at: Time.now, from_address: "330 Cabrillo St.", from_city: "Tampa, FL")
+    rz = RideZone.create(name: 'Tampa', slug: 'tampa')
+    ride = Ride.new(voter_id: user.id, ride_zone_id: rz.id, pickup_at: Time.now, from_address: "330 Cabrillo St.", from_city: "Tampa, FL")
+
     UserMailer.welcome_email_voter_ride(user, ride)
   end
 

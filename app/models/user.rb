@@ -114,9 +114,20 @@ class User < ApplicationRecord
     RideZone.find_roles(:driver, self).present?
   end
 
+  def is_unassigned_driver?
+    RideZone.find_roles(:unassigned_driver, self).present?
+  end
+
+  def is_voter?
+    RideZone.find_roles(:voter, self).present?
+  end
+
   def driver_ride_zone_id
     # the roles table has entries for driver with resource id = ride zone id
     driver_role = self.roles.where(name: 'driver').first
+    if driver_role.blank?
+      driver_role = self.roles.where(name: 'unassigned_driver').first
+    end
     driver_role.try(:resource_id)
   end
 
@@ -257,7 +268,12 @@ class User < ApplicationRecord
     end
 
     if self.user_type.present?
-      self.add_role self.user_type, self.ride_zone
+      if self.ride_zone_id.present?
+        rz = RideZone.find(self.ride_zone_id)
+        self.add_role self.user_type, rz
+      else
+        self.add_role self.user_type
+      end
     end
   end
 

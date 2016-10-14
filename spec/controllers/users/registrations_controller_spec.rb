@@ -33,4 +33,28 @@ RSpec.describe Users::RegistrationsController, type: :controller do
     end
   end
 
+  describe "POST #create" do
+    let(:rz) { create :ride_zone }
+    let(:unassigned_driver) {
+      {name: 'Joe Test User', email: 'foo@bar.com', password: '12345abcde', phone_number: '8133328712', zip: '', user_type: 'unassigned_driver', ride_zone_id: rz.id}
+    }
+    let(:voter) {
+      {name: 'Joe Test User', email: 'foo@bar.com', password: '12345abcde', phone_number: '8133328712', zip: '', user_type: 'voter', ride_zone_id: rz.id}
+    }
+
+    it "creates a new unassigned driver for a specific ride zone" do
+      expect { post :create, params: {user: unassigned_driver} }.to change(User, :count).by(1)
+      expect(response).to be_redirect
+      user_created = User.last
+      expect( user_created.has_role?(:unassigned_driver, rz) ).to eq(true)
+    end
+
+    it "creates a new voter for a specific ride zone" do
+      expect { post :create, params: {user: voter} }.to change(User, :count).by(1)
+      expect(response).to be_redirect
+      user_created = User.last
+      expect( user_created.has_role?(:voter, rz) ).to eq(true)
+    end
+  end
+
 end

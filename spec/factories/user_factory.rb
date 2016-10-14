@@ -62,6 +62,13 @@ FactoryGirl.define do
 
     factory :unassigned_driver_user do
       user_type :unassigned_driver
+      transient do
+        rz { create( :ride_zone ) }
+      end
+
+      after(:create) do |user, evaluator|
+        user.add_role( :unassigned_driver, evaluator.rz )
+      end
     end
 
     factory :voter_user do

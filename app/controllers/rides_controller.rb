@@ -52,11 +52,12 @@ class RidesController < ApplicationController
           name: user_params[:name],
           phone_number: user_params[:phone_number],
           ride_zone: @ride_zone,
+          ride_zone_id: @ride_zone.id,
           email: user_params[:email],
           password: user_params[:password] || SecureRandom.hex(8),
           address1: rp[:from_address],
           locale: @locale,
-          user_type: :voter,
+          user_type: 'voter',
       }
       if @ride.city_state.present? && @ride.from_city.blank? && @ride.from_state.blank?
         c_s_array = @ride.city_state.split(',')
