@@ -37,8 +37,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
       generated_password = Devise.friendly_token.first(8)
       resource.password = generated_password
     end
-
     resource.save
+
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
@@ -89,7 +89,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if user_signed_in? && current_user.has_role?(:admin)
       admin_users_path
     else
-      confirm_path
+      "#{confirm_path}?uid=#{resource.id}"
     end
   end
 
