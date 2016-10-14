@@ -4,7 +4,6 @@ RSpec.describe User, :type => :model do
 
   context 'validations' do
     it { should validate_presence_of :email }
-
     it { should validate_length_of(:phone_number).is_at_most(17)}
     it { should validate_length_of(:email).is_at_most(50)}
     it { should validate_length_of(:password).is_at_least(8).is_at_most(50)}
@@ -241,4 +240,74 @@ RSpec.describe User, :type => :model do
       expect(Conversation.find_by_id(cid)).to be_nil
     end
   end
+
+  describe 'role checks' do
+
+    describe 'for voters' do
+      let(:voter) { create :voter_user }
+      let(:non_voter) { create :user }
+
+      it "knows if you're a voter" do
+        expect( voter.is_voter? ).to eq(true)
+      end
+
+      it "knows if you're not a voter" do
+        expect( non_voter.is_voter? ).to eq(false)
+      end
+    end
+
+    describe 'for unassigned drivers' do
+      let(:unassigned_driver) { create :unassigned_driver_user }
+      let(:non_driver) { create :user }
+
+      it "knows if you're an unassigned driver" do
+        expect( unassigned_driver.is_unassigned_driver? ).to eq(true)
+      end
+
+      it "knows if you're not an unassigned driver" do
+        expect( non_driver.is_unassigned_driver? ).to eq(false)
+      end
+    end
+
+    describe 'for drivers' do
+      let(:driver) { create :driver_user }
+      let(:non_driver) { create :user }
+
+      it "knows if you're a driver" do
+        expect( driver.is_driver? ).to eq(true)
+      end
+
+      it "knows if you're not a driver" do
+        expect( non_driver.is_driver? ).to eq(false)
+      end
+    end
+
+    describe 'for dispatchers' do
+      let(:dispatcher) { create :dispatcher_user }
+      let(:non_dispatcher) { create :user }
+
+      it "knows if you're a dispatcher" do
+        expect( dispatcher.is_dispatcher? ).to eq(true)
+      end
+
+      it "knows if you're not a dispatcher" do
+        expect( non_dispatcher.is_dispatcher? ).to eq(false)
+      end
+    end
+
+    describe 'for zone admins' do
+      let(:zone_admin) { create :zoned_admin_user }
+      let(:non_zone_admin) { create :user }
+
+      it "knows if you're a zone admin" do
+        expect( zone_admin.is_zone_admin? ).to eq(true)
+      end
+
+      it "knows if you're not a zone admin" do
+        expect( non_zone_admin.is_zone_admin? ).to eq(false)
+      end
+    end
+
+  end
+
 end
