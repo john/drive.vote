@@ -75,6 +75,12 @@ RSpec.describe Ride, type: :model do
       expect(ride.status).to eq('driver_assigned')
     end
 
+    it 'assigns driver as needing acceptance' do
+      expect(ride.assign_driver(driver, false, true)).to be_truthy
+      expect(ride.reload.driver_id).to eq(driver.id)
+      expect(ride.status).to eq('waiting_acceptance')
+    end
+
     it 'does not assign driver if already has one' do
       expect(ride.assign_driver(driver)).to be_truthy
       expect(ride.reload.assign_driver(driver2)).to be_falsey

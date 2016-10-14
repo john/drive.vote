@@ -85,7 +85,7 @@ RSpec.describe RideZone, type: :model do
         total_drivers: 2,
         available_drivers: 1,
         completed_rides: 1,
-        active_rides: 3,
+        active_rides: 4,
         scheduled_rides: 1,
     }
     expect(rz.driving_stats).to eq(expected)

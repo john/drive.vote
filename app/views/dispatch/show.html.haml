@@ -45,6 +45,8 @@
           .conv-table-desc Voters that have been assigned a driver, are waiting for pickup, or are driving
           = link_to 'All', '#', 'data-table': 'haveDriverConversations', 'data-statuses': '*', class: 'btn-conv-filter'
           &nbsp; · &nbsp;
+          = link_to 'Waiting Accept', '#', 'data-table': 'haveDriverConversations', 'data-statuses': 'waiting_acceptance', class: 'btn-conv-filter'
+          &nbsp; · &nbsp;
           = link_to 'Waiting Pickup', '#', 'data-table': 'haveDriverConversations', 'data-statuses': 'waiting_pickup', class: 'btn-conv-filter'
           &nbsp; · &nbsp;
           = link_to 'Overdue', '#', 'data-table': 'haveDriverConversations', 'data-statuses': 'pickup_overdue completion_overdue', class: 'btn-conv-filter'
@@ -112,12 +114,10 @@
     });
 
     $(".conv-table").on( "mouseenter", ".conv-row", function() {
-      console.log('animate start ' + $(this).data('ride-id'));
       dispatchController.animateRide($(this).data('ride-id'));
     });
 
     $(".conv-table").on( "mouseleave", ".conv-row", function() {
-      console.log('animate stop');
       dispatchController.unanimateRide($(this).data('ride-id'));
     });
 
