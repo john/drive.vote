@@ -23,6 +23,10 @@
     = f.text_field :phone_number, class: 'form-control', required: true, maxlength: 17
 
   .col-sm-8.field
+    = f.label :email, "Email *"
+    = f.telephone_field :email, class: 'form-control', required: 'true', maxlength: 50
+
+  .col-sm-8.field
     = f.label :zip
     = f.text_field :zip, class: 'form-control', required: true, maxlength: 12
 
