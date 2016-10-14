@@ -55,7 +55,7 @@ module Api::V1
     def create_ride
       if driver = User.find( params[:driver_id] )
         if ride = Ride.create_from_conversation( @conversation )
-          ride.assign_driver( driver )
+          ride.assign_driver( driver, true, true )
           render json: {response: ride.reload.api_json}
         else
           render json: {error: "Could not create Ride from Conversation"}, status: 500

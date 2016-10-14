@@ -41,7 +41,7 @@ class DrivingController < ApplicationController
   end
 
   def accept_ride
-    if @active_ride
+    if @active_ride && (@active_ride.id != params[:ride_id].to_i || @active_ride.status != 'waiting_acceptance')
       render json: {error: 'Driver already on ride'}, status: 400
     else
       update = -> { r = Ride.find(params[:ride_id]); r && r.assign_driver(current_user) }
@@ -106,6 +106,7 @@ class DrivingController < ApplicationController
   # this routine executes function and renders OK response or error
   def perform_update func, error_msg
     if func.call
+      @active_ride.try(:reload)
       render json: {response: status_data}
     else
       render json: {error: error_msg}, status: 400

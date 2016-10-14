@@ -84,5 +84,5 @@
       $('#to_address').editable({ mode: 'inline'});
       $('#to_city').editable({ mode: 'inline'});
 
-      dispatchController.attachRideClick(#{@obj.id}, "#driver_select", "#{@action.downcase}");
+      dispatchController.attachRideClick(#{@obj.ride_zone_id}, #{@obj.id}, "#driver_select", "#{@action.downcase}");
     });

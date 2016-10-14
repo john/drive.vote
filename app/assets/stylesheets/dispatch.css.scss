@@ -79,6 +79,9 @@
 .conv-status-scheduled {
   visibility: visible;
 }
+.conv-status-waiting_acceptance {
+  visibility: visible;
+}
 .conv-status-waiting_assignment {
   visibility: visible;
 }
@@ -126,6 +129,10 @@
 }
 .conv-statdisp-waiting_assignment {
   background-color: #fbe500;
+}
+.conv-statdisp-waiting_acceptance {
+  color: white;
+  background-color: #0058bc;
 }
 .conv-statdisp-new_ride {
   background-color: #fbe500;

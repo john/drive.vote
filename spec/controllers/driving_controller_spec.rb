@@ -114,6 +114,13 @@ RSpec.describe DrivingController, :type => :controller do
       expect(ride.reload.status).to eq('driver_assigned')
     end
 
+    it 'allows accept of assigned waiting_acceptance ride' do
+      ride.assign_driver(driver, true, true)
+      post :accept_ride, params: {ride_id: ride.id}
+      expect(response).to be_successful
+      expect(ride.reload.status).to eq('driver_assigned')
+    end
+
     it 'does not allow stealing rides' do
       ride.assign_driver(create :driver_user, ride_zone: rz)
       post :accept_ride, params: {ride_id: ride.id}
