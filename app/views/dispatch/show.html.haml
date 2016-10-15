@@ -5,16 +5,16 @@
   .col-md-7
     %ul.nav.nav-tabs{role: "tablist", style: "margin-top: 30px;"}
       %li.active{role: "presentation"}
-        %a{href: "#need_driver", 'aria-controls': "home", role: "tab", 'data-toggle': "tab" }
+        %a{id: 'needDriverConversationsTab', href: "#need_driver", 'aria-controls': "home", role: "tab", 'data-toggle': "tab" }
           Need driver
       %li{role: "presentation"}
-        %a{href: "#talking", 'aria-controls': "home", role: "tab", 'data-toggle': "tab" }
+        %a{id: 'activeConversationsTab', href: "#talking", 'aria-controls': "home", role: "tab", 'data-toggle': "tab" }
           Talking
       %li{role: "presentation"}
-        %a{href: "#has_driver", 'aria-controls': "home", role: "tab", 'data-toggle': "tab" }
+        %a{id: 'haveDriverConversationsTab', href: "#has_driver", 'aria-controls': "home", role: "tab", 'data-toggle': "tab" }
           Has driver
       %li{role: "presentation"}
-        %a{href: "#inactive", 'aria-controls': "home", role: "tab", 'data-toggle': "tab" }
+        %a{id: 'inactiveConversationsTab', href: "#inactive", 'aria-controls': "home", role: "tab", 'data-toggle': "tab" }
           Inactive
 
     .tab-content
