@@ -2,28 +2,17 @@
   #user-filter { margin: 0 0 20px 0;}
   #user-search { display: inline;}
 
-= render 'admin/nav', {active: 'users'}
+= render 'admin/nav', {active: 'voters'}
 
 %h2
-  Users
-  &nbsp;
-  %small
-    = link_to 'New User', new_user_registration_path, class: 'btn btn-default btn-xs'
+  Voters
 
-Filter: &nbsp;
-%select#user-filter
-  - %w{all admin dispatcher driver unassigned_driver}.each do |role|
-    %option{value: role, selected: params[:"filter"] == role}
-      = role.gsub('_', ' ')
+Search: &nbsp;
+%form#user-search
+  %input#q{type: 'text', value: "#{@q}"}
 
-%span{style: "margin-left: 25px"}
-  Search: &nbsp;
-  %form#user-search
-    %input#q{type: 'text', value: "#{@q}"}
-
-  - if @q.present?
-    = link_to 'clear', admin_users_path, style: "font-size: 13px; color: #777; margin-left: 10px;"
-
+- if @q.present?
+  = link_to 'clear', admin_users_path, style: "font-size: 13px; color: #777; margin-left: 10px;"
 
 %table.table-hover.admin
   %thead
@@ -39,15 +28,13 @@ Filter: &nbsp;
       %tr
         %td{style: 'max-width: 250px;'}
           = link_to user.name, admin_user_path(user)
-          .small{style: "margin-top: -4px; color: #777"}
-            = user.phone_number.phony_formatted(normalize: :US, spaces: '-')
         %td
           = user.created_at.strftime("%-m/%-d, %-H:%M %P")
         %td
           #{[user.city, user.state, user.zip].reject(&:blank?).join(', ')}
         %td
           = user.roles.collect{|r| r.name.gsub('_', ' ')}.join(', ')
-        %td{style: "font-size: 12px;"}
+        %td{style: "font-size: 13px;"}
           = link_to 'Edit', edit_admin_user_path(user)
           &nbsp; &#183; &nbsp;
           = link_to 'Destroy', admin_user_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }
@@ -64,6 +51,6 @@ Filter: &nbsp;
   });
 
   $( "#user-search" ).submit(function( event ) {
-    window.location.href = "/admin/users?q=" + $('#q').val();
+    window.location.href = "/admin/voters?q=" + $('#q').val();
     event.preventDefault();
   });

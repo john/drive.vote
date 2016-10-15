@@ -59,10 +59,18 @@ class RideZone < ApplicationRecord
   end
 
   def drivers
+    User.with_role(:driver, self)
+  end
+
+  def nearby_drivers
     nearby_users.with_role(:driver, self)
   end
 
   def unassigned_drivers
+    User.with_role(:unassigned_driver, self)
+  end
+
+  def nearby_unassigned_drivers
     nearby_users.with_role(:unassigned_driver, self)
   end
 

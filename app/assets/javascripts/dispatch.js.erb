@@ -11,9 +11,9 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
   this.OVERDUE_COMPLETION = 30*60*1000;
   this.STILL_NEW_RIDE = 10*60*1000;
   this._statusStrings = {
-    messaging: 'MESSAGING', help_needed: 'HELP NEEDED', scheduled: 'SCHEDULED',
-    waiting_acceptance: 'WAIT ACCEPT',
-    waiting_assignment: 'NEEDS DRIVER', assignment_overdue: 'OVERDUE',
+    messaging: 'MESSAGING', help_needed: 'NEEDS&nbsp;HELP', scheduled: 'SCHEDULED',
+    waiting_acceptance: 'WAIT&nbsp;ACCEPT',
+    waiting_assignment: 'NEEDS&nbsp;DRIVER', assignment_overdue: 'OVERDUE',
     waiting_pickup: 'WAITING', pickup_overdue: 'OVERDUE', new_ride: 'NEW',
     driving: 'DRIVING', completion_overdue: 'OVERDUE', complete: 'COMPLETE'
   };
@@ -228,7 +228,7 @@ DispatchController.prototype = {
     }
 
     cells = cells + '</b></div>' + msg.truncate(100) + '</td>' +
-      '<td class="conv-status">' + '<span class="conv-statdisp conv-statdisp-'+status+'">' + this._statusStrings[status] + '</span></td>';
+      '<td class="conv-status"><span class="conv-statdisp conv-statdisp-'+status+'">' + this._statusStrings[status] + '</span></td>';
 
     if (status == 'complete' || status == 'driving') {
       cells = cells + '<td class="conv-time"></td>';

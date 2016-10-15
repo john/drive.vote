@@ -1,22 +1,17 @@
 
 %footer
+  %div{class: "container#{(@fluid.present?) ? '-fluid' : ''}"}
+    .center
+      %table
+        %tr
+          %td.fb
+            <div class="fb-share-button" data-href="https://www.drive.vote" data-layout="button" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.drive.vote%2F&amp;src=sdkpreparse">Share</a></div>
 
-  .center
-    %table
-      %tr
-        %td.fb
-          <div class="fb-share-button" data-href="https://www.drive.vote" data-layout="button" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.drive.vote%2F&amp;src=sdkpreparse">Share</a></div>
+          %td.tw
+            %a.twitter-share-button{href: "http://twitter.com/intent/tweet?text=Give%20or%20get%20free%20rides%20to%20the%20polls%20with%20Drive%20the%20Vote!&amp;url=https://www.drive.vote&amp;via=drivevote&amp;related=wordie", target: '_blank'}
 
-        %td.tw
-          %a.twitter-share-button{href: "http://twitter.com/intent/tweet?text=Give%20or%20get%20free%20rides%20to%20the%20polls%20with%20Drive%20the%20Vote!&amp;url=https://www.drive.vote&amp;via=drivevote&amp;related=wordie", target: '_blank'}
-
-        %td.email
-          contact #{mail_to 'hello@drive.vote'}
-
-        %td.devpro
-          made by #{link_to 'DevProgress.us', "https://devprogress.us/", target: "_blank"}
-
-
+          %td.email
+            #{mail_to 'hello@drive.vote', 'hello@drive.vote'}
 
 :javascript
   window.twttr = (function(d, s, id) {

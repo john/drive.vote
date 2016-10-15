@@ -29,7 +29,7 @@ module Api::V1
     end
 
     def drivers
-      render json: {response: @ride_zone.drivers.map(&:api_json)}
+      render json: {response: @ride_zone.nearby_drivers.map(&:api_json)}
     end
 
     def update
