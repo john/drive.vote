@@ -103,6 +103,7 @@ Rails.application.routes.draw do
   end
 
   match '/admin' => 'admin/admin#index', via: :get
+  match '/admin/voters' => 'admin/users#voters', via: :get
   namespace :admin do
     resources :conversations, only: [:index, :show] do
       member do
