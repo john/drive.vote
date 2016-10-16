@@ -178,7 +178,7 @@ DispatchController.prototype = {
 
   // Converts a conversation status to the table ID where it should live
   tableForStatus: function(status) {
-    var tableIds = Object.keys(this._tableStatuses)
+    var tableIds = Object.keys(this._tableStatuses);
     for (var i in tableIds) {
       if (this._tableStatuses[tableIds[i]].indexOf(status) != -1)
           return tableIds[i];
@@ -341,11 +341,11 @@ DispatchController.prototype = {
   // Counts the number of items that match the filters for each filter button
   // and updates their text to have (N) badge with count
   recalcBadges: function() {
+    var self = this;
     $('.btn-conv-filter').each(function() {
       var total = 0,
           tableId = $(this).data('table'),
-          statuses = $(this).data('statuses').split(' '),
-          curr_name = $(this).text();
+          statuses = $(this).data('statuses').split(' ');
       if (statuses[0] == '*') {
         total = $('#'+tableId+' .conv-row').length;
       } else {
@@ -353,14 +353,22 @@ DispatchController.prototype = {
           total = total + $('#'+tableId+' .conv-status-' + statuses[i]).length;
         }
       }
-      if (total == 0) {
-        if (curr_name.includes('(')) {
-          $(this).text(curr_name.replace(/ \(.*/, ''));
-        }
-      } else {
-        $(this).text(curr_name.replace(/ \(.*/, '') + ' (' + total + ')');
-      }
-    })
+      self.setTotal(this, total);
+    });
+    var tableIds = Object.keys(this._tableStatuses);
+    for (var i in tableIds) {
+      var total = $('#' + tableIds[i] + ' .conv-row').length,
+          tab = $('#' + tableIds[i] + 'Tab');
+      self.setTotal(tab, total);
+    }
+  },
+
+  setTotal: function(node, total) {
+    if (total == 0) {
+      $(node).text($(node).text().replace(/ \(.*/, ''));
+    } else {
+      $(node).text($(node).text().replace(/ \(.*/, '') + ' (' + total + ')');
+    }
   },
 
   // Sets the conv-status-xxx status for this row object and removes all other
