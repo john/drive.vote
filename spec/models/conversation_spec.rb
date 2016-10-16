@@ -144,6 +144,41 @@ RSpec.describe Conversation, type: :model do
     end
   end
 
+  describe 'notification of driver assigned' do
+    let(:rz) { create :ride_zone }
+    let(:user) { create :user, language: :en }
+    let(:driver) { create :driver_user, rz: rz, name: 'FOO', description: 'BAR' }
+    let(:convo) { create :complete_conversation, ride_zone: rz, user: user, pickup_time: 5.minutes.from_now }
+    let(:body) { 'FOO has been assigned - look for a BAR'}
+    let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid') }
+
+    before :each do
+      allow(TwilioService).to receive(:send_message).and_return(twilio_msg)
+    end
+
+    it 'calls twilio service' do
+      expect(TwilioService).to receive(:send_message).and_return(twilio_msg)
+      convo.notify_voter_of_assignment(driver)
+    end
+
+    it 'creates a message from bot' do
+      convo.notify_voter_of_assignment(driver)
+      expect(convo.reload.messages.last.sent_by).to eq('Bot')
+    end
+
+    it 'formats message with driver name and vehicle info' do
+      convo.notify_voter_of_assignment(driver)
+      expect(convo.reload.messages.last.body =~ /FOO.*BAR/).to_not be_nil
+    end
+
+    it 'uses cleared message with no driver' do
+      expect(TwilioService).to receive(:send_message) {|args|
+        expect(args[:body]).to eq(I18n.t(:driver_cleared, locale: :en))
+      }.and_return(twilio_msg)
+      convo.notify_voter_of_assignment(nil)
+    end
+  end
+
   describe 'event generation' do
     it 'sends new conversation event' do
       expect(RideZone).to receive(:event).with(anything, :new_conversation, anything)

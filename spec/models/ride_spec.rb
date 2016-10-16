@@ -35,6 +35,7 @@ RSpec.describe Ride, type: :model do
     end
 
     it 'sends driver update event on status change' do
+      allow_any_instance_of(Conversation).to receive(:notify_voter_of_assignment)
       r = create :ride, driver: driver, conversation: convo, ride_zone: convo.ride_zone
       expect(RideZone).to receive(:event).with(anything, :conversation_changed, anything)
       expect(RideZone).to receive(:event).with(anything, :driver_changed, anything, :driver)
@@ -42,9 +43,11 @@ RSpec.describe Ride, type: :model do
     end
 
     it 'sends driver update event on driver clear' do
+      allow_any_instance_of(Conversation).to receive(:notify_voter_of_assignment)
       r = create :ride, driver: driver, conversation: convo
       expect(RideZone).to receive(:event).with(anything, :conversation_changed, anything)
       expect(RideZone).to receive(:event).with(anything, :driver_changed, anything, :driver)
+      expect_any_instance_of(Conversation).to receive(:notify_voter_of_assignment).with(nil)
       r.clear_driver
     end
 
@@ -52,13 +55,16 @@ RSpec.describe Ride, type: :model do
       r = create :ride, conversation: convo
       expect(RideZone).to receive(:event).with(anything, :conversation_changed, anything)
       expect(RideZone).to receive(:event).with(anything, :driver_changed, anything, :driver)
+      expect_any_instance_of(Conversation).to receive(:notify_voter_of_assignment)
       r.assign_driver(driver)
     end
 
     it 'sends driver update event on driver reassignment' do
-      r = create :ride, conversation: convo, driver: driver
+      allow_any_instance_of(Conversation).to receive(:notify_voter_of_assignment)
+      r = create :ride, conversation: convo, driver: driver, status: 'driver_assigned'
       expect(RideZone).to receive(:event).with(anything, :conversation_changed, anything)
       expect(RideZone).to receive(:event).twice.with(anything, :driver_changed, anything, :driver)
+      expect_any_instance_of(Conversation).to receive(:notify_voter_of_assignment)
       r.reassign_driver(new_driver)
     end
   end
@@ -79,6 +85,13 @@ RSpec.describe Ride, type: :model do
       expect(ride.assign_driver(driver, false, true)).to be_truthy
       expect(ride.reload.driver_id).to eq(driver.id)
       expect(ride.status).to eq('waiting_acceptance')
+    end
+
+    it 'sends voter a text on driver assignment' do
+      convo = create :complete_conversation
+      ride = Ride.create_from_conversation(convo)
+      expect_any_instance_of(Conversation).to receive(:notify_voter_of_assignment)
+      ride.assign_driver(driver, false, false)
     end
 
     it 'does not assign driver if already has one' do

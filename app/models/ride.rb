@@ -35,6 +35,7 @@ class Ride < ApplicationRecord
 
   before_save :note_status_update
   before_save :check_waiting_assignment
+  before_save :notify_voter_about_driver
   around_save :notify_update
   before_save :close_conversation_when_complete
 
@@ -191,6 +192,12 @@ class Ride < ApplicationRecord
   def check_waiting_assignment
     if self.status == 'scheduled' && self.pickup_at && self.pickup_at < SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now
       self.status = :waiting_assignment
+    end
+  end
+
+  def notify_voter_about_driver
+    if (self.status_changed? && self.status == 'driver_assigned') || self.driver_id_changed?
+      self.conversation.notify_voter_of_assignment(self.driver) if self.conversation
     end
   end
 
