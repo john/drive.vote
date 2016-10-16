@@ -46,6 +46,10 @@
     = f.label :phone_number, "#{t(:phone_number)} *"
     = f.telephone_field :phone_number, class: 'form-control', required: 'true', maxlength: 17
 
+  .col-sm-8.field
+    = f.label :description, "#{t(:vehicle_description)} *"
+    = f.text_field :description, class: 'form-control', required: 'true', maxlength: 50
+
   - unless @ride_zone.present?
     .col-sm-8.field
       %label{for: 'user_city_state'}

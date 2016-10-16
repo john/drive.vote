@@ -141,6 +141,17 @@ class Conversation < ApplicationRecord
     end
   end
 
+  def notify_voter_of_assignment(driver)
+    if driver
+      body = I18n.t(:driver_assigned, locale: user.language, name: driver.name, vehicle: driver.description)
+    else
+      body = I18n.t(:driver_cleared, locale: user.language)
+    end
+    sms = Conversation.send_staff_sms(ride_zone, user, body, Rails.configuration.twilio_timeout)
+    return if sms.is_a?(String) # todo: track state and retry?
+    Message.create_from_bot(self, sms)
+  end
+
   def self.active_statuses
     Conversation.statuses.keys - ['closed']
   end
