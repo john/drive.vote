@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include States
 
   # TODO: when geocoding is enabled
   # acts_as_mappable :lat_column_name => :latitude, :lng_column_name => :longitude
@@ -14,7 +15,6 @@ class User < ApplicationRecord
     if geo = results.first
       user.latitude = geo.latitude
       user.longitude = geo.longitude
-      user.address1 = geo.address
       user.zip = geo.postal_code if geo.postal_code.present?
     end
   end
@@ -157,6 +157,31 @@ class User < ApplicationRecord
     [self.address1, self.address2, self.city, self.state, self.zip, self.country].reject(&:empty?).join(', ')
   end
 
+  def parse_city_state
+    if self.city_state.include?(',')
+      c_s_array = self.city_state.split(',').reject { |cs| cs.blank? }
+      if c_s_array.size > 1
+        self.city = c_s_array[0].strip
+        self.state = c_s_array[1].strip.upcase
+      elsif c_s_array.size == 1
+        self.state = c_s_array[0].strip.upcase
+      end
+    else
+      cs_array = self.city_state.split.reject { |cs| cs.blank? }
+
+      if cs_array.size > 1
+        if state = cs_array.pop
+          self.state = state.strip.upcase
+          self.city = cs_array.join
+        end
+      elsif cs_array.size == 1
+        if STATES.keys.include?(cs_array[0].to_sym)
+          self.state = cs_array[0].strip.upcase
+        end
+      end
+    end
+  end
+
   def qa_clear
     convos = Conversation.where(user_id: self.id)
     convos.each do |convo|
@@ -201,13 +226,6 @@ class User < ApplicationRecord
   end
 
   def full_address
-    if self.city_state.present? && self.city.blank? && self.state.blank?
-      c_s_array = self.city_state.split(',')
-      self.city = c_s_array[0].try(:strip)
-      self.state = c_s_array[1].try(:strip)
-      self.save
-    end
-
     [self.address1, self.address2, self.city, self.state, self.zip, self.country].compact.join(', ')
   end
 
