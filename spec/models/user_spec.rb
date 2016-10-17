@@ -57,14 +57,21 @@ RSpec.describe User, :type => :model do
         expect(user.state).to eq('')
       end
 
-      it "fails to parse ''" do
+      it "fails to parse 'Carnegie'" do
         user.city_state = 'Carnegie'
         user.parse_city_state
         expect(user.city).to eq('')
         expect(user.state).to eq('')
       end
 
-      it "doesn't parse an empty string" do
+      it "fails to parse a non-state" do
+        user.city_state = 'Lincolnville, PO'
+        user.parse_city_state
+        expect(user.city).to eq('')
+        expect(user.state).to eq('')
+      end
+
+      it "fails to parse an empty string" do
         expect(user.city_state).to eq('')
         user.parse_city_state
         expect(user.city).to eq('')

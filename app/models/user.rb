@@ -162,11 +162,13 @@ class User < ApplicationRecord
 
     if c_s_array.size > 1
       if state = c_s_array.pop
-        self.state = state.strip.upcase
-        self.city = c_s_array.join(' ').titlecase
+        if STATES.keys.include?(state.strip.upcase.to_sym)
+          self.city = c_s_array.join(' ').titlecase
+          self.state = state.strip.upcase
+        end
       end
     elsif c_s_array.size == 1
-      if STATES.keys.include?(c_s_array[0].to_sym)
+      if STATES.keys.include?(c_s_array[0].strip.upcase.to_sym)
         self.state = c_s_array[0].strip.upcase
       end
     end
