@@ -157,9 +157,14 @@ class User < ApplicationRecord
     [self.address1, self.address2, self.city, self.state, self.zip, self.country].reject(&:empty?).join(', ')
   end
 
+  def split_city_state(delim)
+    self.city_state.split(delim).reject { |cs| cs.blank? }
+  end
+
   def parse_city_state
     if self.city_state.include?(',')
-      c_s_array = self.city_state.split(',').reject { |cs| cs.blank? }
+      c_s_array = self.split_city_state(',')
+
       if c_s_array.size > 1
         self.city = c_s_array[0].strip
         self.state = c_s_array[1].strip.upcase
@@ -167,16 +172,16 @@ class User < ApplicationRecord
         self.state = c_s_array[0].strip.upcase
       end
     else
-      cs_array = self.city_state.split.reject { |cs| cs.blank? }
+      c_s_array = self.split_city_state(' ')
 
-      if cs_array.size > 1
-        if state = cs_array.pop
+      if c_s_array.size > 1
+        if state = c_s_array.pop
           self.state = state.strip.upcase
-          self.city = cs_array.join
+          self.city = c_s_array.join(' ').titlecase
         end
-      elsif cs_array.size == 1
-        if STATES.keys.include?(cs_array[0].to_sym)
-          self.state = cs_array[0].strip.upcase
+      elsif c_s_array.size == 1
+        if STATES.keys.include?(c_s_array[0].to_sym)
+          self.state = c_s_array[0].strip.upcase
         end
       end
     end

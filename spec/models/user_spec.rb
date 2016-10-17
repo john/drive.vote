@@ -5,38 +5,35 @@ RSpec.describe User, :type => :model do
     context 'valid city_state' do
       let(:user) {build :user, city_state: "Carnegie, PA", city: "", state: ""}
 
-      it "parses 'Carnegie, PA'" do
-        expect(user.state).to eq('')
-        expect(user.city).to eq('')
+      it "gets city and state from 'Carnegie, PA'" do
         user.parse_city_state
         expect(user.city).to eq('Carnegie')
         expect(user.state).to eq('PA')
       end
 
-      it "parses 'Carnegie PA" do
-        expect(user.state).to eq('')
-        expect(user.city).to eq('')
+      it "gets city and state from 'Carnegie PA" do
         user.parse_city_state
         expect(user.city).to eq('Carnegie')
         expect(user.state).to eq('PA')
       end
 
-      #if we can detect there's just one element, which is a state
-      it "parses just 'PA'" do
+      #if we can detect there's just one element, see if it's the state
+      it "gets the state from 'PA'" do
         user.city_state = 'PA'
-        expect(user.city_state).to eq('PA')
-        expect(user.state).to eq('')
-        expect(user.city).to eq('')
         user.parse_city_state
         expect(user.city).to eq('')
         expect(user.state).to eq('PA')
       end
 
-      it "parses ', PA'" do
+      it "gets the state from 'south bend ia'" do
+        user.city_state = 'south bend ia'
+        user.parse_city_state
+        expect(user.city).to eq('South Bend')
+        expect(user.state).to eq('IA')
+      end
+
+      it "gets the state from ', PA'" do
         user.city_state = ', PA'
-        expect(user.city_state).to eq(', PA')
-        expect(user.state).to eq('')
-        expect(user.city).to eq('')
         user.parse_city_state
         expect(user.city).to eq('')
         expect(user.state).to eq('PA')
@@ -48,9 +45,6 @@ RSpec.describe User, :type => :model do
 
       it "fails to parse 'Carnegie'" do
         user.city_state = 'Carnegie'
-        expect(user.city_state).to eq('Carnegie')
-        expect(user.state).to eq('')
-        expect(user.city).to eq('')
         user.parse_city_state
         expect(user.city).to eq('')
         expect(user.state).to eq('')
@@ -58,9 +52,13 @@ RSpec.describe User, :type => :model do
 
       it "fails to parse 'Carnegie, '" do
         user.city_state = 'Carnegie'
-        expect(user.city_state).to eq('Carnegie')
-        expect(user.state).to eq('')
+        user.parse_city_state
         expect(user.city).to eq('')
+        expect(user.state).to eq('')
+      end
+
+      it "fails to parse ''" do
+        user.city_state = 'Carnegie'
         user.parse_city_state
         expect(user.city).to eq('')
         expect(user.state).to eq('')
@@ -68,8 +66,6 @@ RSpec.describe User, :type => :model do
 
       it "doesn't parse an empty string" do
         expect(user.city_state).to eq('')
-        expect(user.state).to eq('')
-        expect(user.city).to eq('')
         user.parse_city_state
         expect(user.city).to eq('')
         expect(user.state).to eq('')
@@ -382,7 +378,5 @@ RSpec.describe User, :type => :model do
         expect( non_zone_admin.is_zone_admin? ).to eq(false)
       end
     end
-
   end
-
 end
