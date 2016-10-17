@@ -35,6 +35,7 @@ class TwilioService
   # for the status to become 'delivered' or have a non-nil error_code
   # returns the Twilio message object
   def self.send_message(args, timeout)
+    raise 'Do not call Twilio in test' if Rails.env.test?
     sms = nil
 
     Timeout::timeout(timeout) do

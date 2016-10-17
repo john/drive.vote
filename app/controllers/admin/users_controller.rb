@@ -3,6 +3,8 @@ class Admin::UsersController < Admin::AdminApplicationController
 
   before_action :set_user, only: [:show, :edit, :update, :destroy, :qa_clear]
 
+  USER_SEARCH = "(lower(users.name) LIKE ?) OR (users.phone_number LIKE ?) OR (users.email LIKE ?)".freeze
+
   def show
     @admin_zones = RideZone.with_role(:admin, @user)
     @dispatch_zones = RideZone.with_role(:dispatcher, @user)
@@ -13,14 +15,28 @@ class Admin::UsersController < Admin::AdminApplicationController
   def index
     page = params[:page] || 1
     per_page = params[:per_page] || 25
+    sort = params[:sort] || 'name'
     if params[:q].present?
-      @users = User.where("lower(name) LIKE ?", "%#{params[:q].downcase}%").paginate(page: page, per_page: per_page)
-      @q = params[:q]
+      @q = params[:q].downcase
+      @users = User.where(USER_SEARCH, "%#{@q}%", "%#{@q}%", "%#{@q}%").order("#{sort} DESC").paginate(page: page, per_page: per_page)
     elsif params[:filter].present?
-      @users = User.with_role(params[:filter].to_sym, :any).order(:name).paginate(page: page, per_page: per_page)
+      @users = User.with_role(params[:filter].to_sym, :any).order("#{sort} DESC").paginate(page: page, per_page: per_page)
     else
-      @users = User.non_voters.order(:name).paginate(page: page, per_page: per_page)
+      @users = User.non_voters.order("#{sort} DESC").paginate(page: page, per_page: per_page)
     end
+  end
+
+  def voters
+    page = params[:page] || 1
+    per_page = params[:per_page] || 25
+    sort = params[:sort] || 'users.name'
+    if params[:q].present?
+      @q = params[:q].downcase
+      @users = User.voters.where(USER_SEARCH, "%#{@q}%", "%#{@q}%", "%#{@q}%").order("#{sort} DESC").paginate(page: page, per_page: per_page)
+    else
+      @users = User.voters.order(:name).paginate(page: page, per_page: per_page)
+    end
+    render template: 'admin/users/voters'
   end
 
   def edit

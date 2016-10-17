@@ -11,8 +11,9 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
   this.OVERDUE_COMPLETION = 30*60*1000;
   this.STILL_NEW_RIDE = 10*60*1000;
   this._statusStrings = {
-    messaging: 'MESSAGING', help_needed: 'HELP NEEDED', scheduled: 'SCHEDULED',
-    waiting_assignment: 'NEEDS DRIVER', assignment_overdue: 'OVERDUE',
+    messaging: 'MESSAGING', help_needed: 'NEEDS&nbsp;HELP', scheduled: 'SCHEDULED',
+    waiting_acceptance: 'WAIT&nbsp;ACCEPT',
+    waiting_assignment: 'NEEDS&nbsp;DRIVER', assignment_overdue: 'OVERDUE',
     waiting_pickup: 'WAITING', pickup_overdue: 'OVERDUE', new_ride: 'NEW',
     driving: 'DRIVING', completion_overdue: 'OVERDUE', complete: 'COMPLETE'
   };
@@ -21,6 +22,7 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
     messaging: "<%= asset_path('rider-waiting-assignment.png')%>",
     help_needed: "<%= asset_path('rider-overdue-pickup.png')%>",
     scheduled: "<%= asset_path('rider-waiting-assignment.png')%>",
+    waiting_acceptance: "<%= asset_path('rider-waiting-assignment.png')%>",
     waiting_assignment: "<%= asset_path('rider-waiting-assignment.png')%>",
     new_ride: "<%= asset_path('rider-waiting-assignment.png')%>",
     assignment_overdue: "<%= asset_path('rider-overdue-assignment.png')%>",
@@ -34,7 +36,7 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
   // Maps the conversation statuses to the table they should appear in
   this._tableStatuses = {
     needDriverConversations: ['help_needed', 'scheduled', 'new_ride', 'waiting_assignment', 'assignment_overdue'],
-    haveDriverConversations: ['waiting_pickup', 'pickup_overdue', 'driving', 'completion_overdue'],
+    haveDriverConversations: ['waiting_acceptance', 'waiting_pickup', 'pickup_overdue', 'driving', 'completion_overdue'],
     inactiveConversations: ['complete'],
     activeConversations: ['messaging']
   };
@@ -96,7 +98,7 @@ DispatchController.prototype = {
     });
   },
 
-  attachRideClick: function (id, el, action) {
+  attachRideClick: function (rzid, id, el, action) {
     if (action === undefined) {
       action = 'create';
     }
@@ -104,7 +106,7 @@ DispatchController.prototype = {
 
       if((action=='edit') && (el == '#driver_select')) {
         // just change the driver, on the ride object
-        var url = '/api/1/rides/' + id + '/update_attribute?name=driver_id&value=' + $(el).val();
+        var url = '/api/1/ride_zones/' + rzid + '/assign_ride?driver_id=' + $(el).val() + '&ride_id=' + id;
         var msg = '';
       } else {
         // this copies everything over from the conversation
@@ -126,13 +128,15 @@ DispatchController.prototype = {
     });
   },
 
-  // If you add a status here, you also need to
+  // If you add a new synthesized status here, you also need to
   // a) add it into the list of statuses per table in _tableStatuses
   // b) add it to _statusPinURLs
-  // c) add it to one of the filters on the tables
+  // c) add it to one of the filters on the tables in views/dispatch/show.html.haml
   // d) add it to the _statusStrings
   // e) create a named conv-status-XX style in css
   // f) create a named conv-statdisp-XX style for the status display rectangle
+  // g) see if conversationCells needs to handle the new status
+  // h) check the processRide logic in dispatch_map_controller.js
   conversationStatus: function (c) {
     var ride = c.ride,
         desired_time = (ride !== undefined && ride !== null) ? new Date(ride.pickup_at*1000) : null,
@@ -158,7 +162,7 @@ DispatchController.prototype = {
             return 'assignment_overdue';
           return 'waiting_assignment';
         default:
-          return 'scheduled';
+          return ride.status;
       }
     }
     switch(status) {
@@ -174,7 +178,7 @@ DispatchController.prototype = {
 
   // Converts a conversation status to the table ID where it should live
   tableForStatus: function(status) {
-    var tableIds = Object.keys(this._tableStatuses)
+    var tableIds = Object.keys(this._tableStatuses);
     for (var i in tableIds) {
       if (this._tableStatuses[tableIds[i]].indexOf(status) != -1)
           return tableIds[i];
@@ -191,8 +195,12 @@ DispatchController.prototype = {
     switch(status) {
       case 'scheduled':
       case 'waiting_assignment':
+      case 'new_ride':
       case 'assignment_overdue':
         msg = 'Ride pickup time scheduled for ' + strftime('%l:%M %P', new Date(c.ride.pickup_at*1000));
+        break;
+      case 'waiting_acceptance':
+        msg = 'Ride assigned to driver ' + c.ride.driver_name + ' at ' + rideStatusChange;
         break;
       case 'waiting_pickup':
         msg = 'Ride accepted by driver ' + c.ride.driver_name + ' at ' + rideStatusChange;
@@ -220,7 +228,7 @@ DispatchController.prototype = {
     }
 
     cells = cells + '</b></div>' + msg.truncate(100) + '</td>' +
-      '<td class="conv-status">' + '<span class="conv-statdisp conv-statdisp-'+status+'">' + this._statusStrings[status] + '</span></td>';
+      '<td class="conv-status"><span class="conv-statdisp conv-statdisp-'+status+'">' + this._statusStrings[status] + '</span></td>';
 
     if (status == 'complete' || status == 'driving') {
       cells = cells + '<td class="conv-time"></td>';
@@ -333,11 +341,11 @@ DispatchController.prototype = {
   // Counts the number of items that match the filters for each filter button
   // and updates their text to have (N) badge with count
   recalcBadges: function() {
+    var self = this;
     $('.btn-conv-filter').each(function() {
       var total = 0,
           tableId = $(this).data('table'),
-          statuses = $(this).data('statuses').split(' '),
-          curr_name = $(this).text();
+          statuses = $(this).data('statuses').split(' ');
       if (statuses[0] == '*') {
         total = $('#'+tableId+' .conv-row').length;
       } else {
@@ -345,14 +353,22 @@ DispatchController.prototype = {
           total = total + $('#'+tableId+' .conv-status-' + statuses[i]).length;
         }
       }
-      if (total == 0) {
-        if (curr_name.includes('(')) {
-          $(this).text(curr_name.replace(/ \(.*/, ''));
-        }
-      } else {
-        $(this).text(curr_name.replace(/ \(.*/, '') + ' (' + total + ')');
-      }
-    })
+      self.setTotal(this, total);
+    });
+    var tableIds = Object.keys(this._tableStatuses);
+    for (var i in tableIds) {
+      var total = $('#' + tableIds[i] + ' .conv-row').length,
+          tab = $('#' + tableIds[i] + 'Tab');
+      self.setTotal(tab, total);
+    }
+  },
+
+  setTotal: function(node, total) {
+    if (total == 0) {
+      $(node).text($(node).text().replace(/ \(.*/, ''));
+    } else {
+      $(node).text($(node).text().replace(/ \(.*/, '') + ' (' + total + ')');
+    }
   },
 
   // Sets the conv-status-xxx status for this row object and removes all other

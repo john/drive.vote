@@ -82,7 +82,7 @@ if  Rails.env == "development"
       phone_number_normalized: '+12073328709',
       image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
       locale: 'en',
-      zip: '43606'
+      zip: '32601'
     }, {
       name: 'Doug Driver',
       available: false,
@@ -92,7 +92,7 @@ if  Rails.env == "development"
       phone_number_normalized: '+12073328709',
       image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
       locale: 'en',
-      zip: '43606'
+      zip: '32601'
     }
   ])
 

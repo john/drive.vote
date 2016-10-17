@@ -27,6 +27,7 @@ es:
   thanks: 'Gracias'
   name: 'Nombre'
   full_name: 'Nombre'
+  vehicle_description: 'Describir su vehículo (por ejemplo, blanco toyota camry)'
   save: 'Guardar'
   volunteer_to_drive: 'Voluntario para conducir'
   saving: 'Guardiendo'
@@ -143,6 +144,8 @@ es:
   additional_passengers: 'Pasajeros adicionales:'
   special_requests_label: 'Solicitudes especiales:'
   to_change_request: 'para cambiar su solicitud (sesión con la contraseña necesaria)'
+  driver_assigned: '%{name} será su conductor y está en camino - busque un %{vehicle}'
+  driver_cleared: 'Lo sentimos, el conductor tuvo que cancelar. Estamos en busca de otro conductor.'
 
   # https://gist.github.com/jordigg/30fe17c6328d5deab9ec
   devise:

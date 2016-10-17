@@ -102,7 +102,8 @@ Rails.application.routes.draw do
     end
   end
 
-  match '/admin' => 'admin/admin#index', via: :get
+  get '/admin', to: redirect('/admin/ride_zones')
+  match '/admin/voters' => 'admin/users#voters', via: :get
   namespace :admin do
     resources :conversations, only: [:index, :show] do
       member do

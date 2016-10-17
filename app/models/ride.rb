@@ -3,7 +3,15 @@ class Ride < ApplicationRecord
 
   SWITCH_TO_WAITING_ASSIGNMENT = 15 # how long in minutes before pickup time to change status to waiting_assignment
 
-  enum status: { incomplete_info: 0, scheduled: 1, waiting_assignment: 2, driver_assigned: 3, picked_up: 4, complete: 5 }
+  enum status: {
+    incomplete_info: 0,
+    scheduled: 1,
+    waiting_assignment: 2,
+    driver_assigned: 3,
+    picked_up: 4,
+    complete: 5,
+    waiting_acceptance: 6
+  }
 
   belongs_to :driver, class_name: 'User', foreign_key: :driver_id
   belongs_to :voter, class_name: 'User', foreign_key: :voter_id
@@ -27,6 +35,7 @@ class Ride < ApplicationRecord
 
   before_save :note_status_update
   before_save :check_waiting_assignment
+  before_save :notify_voter_about_driver
   around_save :notify_update
   before_save :close_conversation_when_complete
 
@@ -70,11 +79,11 @@ class Ride < ApplicationRecord
   end
 
   # returns true if assignment worked
-  def assign_driver driver, allow_reassign = false
+  def assign_driver driver, allow_reassign = false, needs_acceptance = false
     self.with_lock do # reloads record
-      return false if self.driver_id && !allow_reassign
+      return false if !allow_reassign && self.driver_id && self.driver_id != driver.id
       self.driver = driver
-      self.status = :driver_assigned
+      self.status = needs_acceptance ? :waiting_acceptance : :driver_assigned
       save!
     end
     true
@@ -161,7 +170,7 @@ class Ride < ApplicationRecord
   end
 
   def self.active_statuses
-    [:waiting_assignment, :driver_assigned, :picked_up]
+    [:waiting_acceptance, :waiting_assignment, :driver_assigned, :picked_up]
   end
 
   def self.active_status_values
@@ -183,6 +192,12 @@ class Ride < ApplicationRecord
   def check_waiting_assignment
     if self.status == 'scheduled' && self.pickup_at && self.pickup_at < SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now
       self.status = :waiting_assignment
+    end
+  end
+
+  def notify_voter_about_driver
+    if (self.status_changed? && self.status == 'driver_assigned') || self.driver_id_changed?
+      self.conversation.notify_voter_of_assignment(self.driver) if self.conversation
     end
   end
 

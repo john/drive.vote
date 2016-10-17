@@ -14,7 +14,7 @@ RSpec.describe ConversationBot do
 
   describe 'newly created conversation needing language' do
     it 'should thank and request language' do
-      expect(ConversationBot.new(convo, msg).response).to include('thanks')
+      expect(ConversationBot.new(convo, msg).response).to include('Thanks')
       expect(convo.reload.bot_counter).to eq(1)
     end
 

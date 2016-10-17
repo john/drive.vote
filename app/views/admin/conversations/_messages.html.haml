@@ -1,18 +1,17 @@
 .messages
   - @conversation.messages.order('created_at asc').each do |message|
     .message{style: "text-align: #{(message.sent_by == 'Voter') ? 'left' : 'right'}"}
-      %div{style: 'margin-bottom: 5px;'}
-        %code
-          #{message.created_at.localtime.strftime('%l:%M%P')},
-          = message.sent_by
+      %code
+        #{message.created_at.localtime.strftime('%l:%M%P')},
+        = message.sent_by
       .msg-body
         = message.body
 
 -# just to make the javascript below a little easier to read
 - msg_count = pluralize( @conversation.messages.count, 'message' )
-- close_button = j( link_to 'Close', close_admin_conversation_path(@conversation), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure? Conversations normally close themselves, only use this for orphans, bad actors, etc.' }, method: :POST )
+- close_button = j( link_to 'Close conversation', close_admin_conversation_path(@conversation), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure? Conversations normally close themselves, only use this for orphans, bad actors, etc.' }, method: :POST )
 
 :javascript
   // now that we have the conversation object, populate the modal header
-  $('#conversationModalLabel').html( "#{@conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')}" );
-  $('#msg-count').html( "#{msg_count} &nbsp;&nbsp; <span style='font-weight: normal;'>#{close_button}</span>" );
+  $('#conversationModalLabel').html( "#{@conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')} &nbsp;&nbsp; <span style='font-weight: normal;'>#{close_button}</span>" );
+  $('#msg-count').html( "#{msg_count}" );

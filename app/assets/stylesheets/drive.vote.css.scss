@@ -7,19 +7,29 @@ body {
   margin-bottom: 45px;
 }
 
+p, div {
+  font-size: 15px;
+}
+
+td {
+  vertical-align: top;
+  border: 0px solid gray;
+}
+
 footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 45px;
+  margin-top: 80px;
+  margin: auto;
 
   .center {
-    margin: 0 auto; width: 550px;
+    margin: 0 auto;
 
     table {
       display: inline;
       text-align: center;
-      width: 550px;
 
       .fb {
         padding: 5px 5px 10px 10px;
@@ -28,24 +38,42 @@ footer {
         padding: 10px 10px 10px 0;
       }
       .email {
-        padding: 5px 0 0 35px;
-      }
-      .devpro {
-        padding: 5px 0 0 25px;
+        font-size: 14px;
+        padding: 9px 0 0 5px;
       }
     }
   }
 }
-
 
 #logo {
   width: 90px;
   height: 47px;
 }
 
-.navbar { background-color: white; border: 0; box-shadow: none !important }
-.navbar-default { background-color: white; border: 0; box-shadow: none !important }
-.navbar-static-top { background-color: white; border: 0; box-shadow: none !important }
+h1.hed {
+  text-align: center;
+}
+h2.subhed {
+  text-align: center;
+}
+
+.navbar {
+  background-color: white;
+  border: 0;
+  box-shadow: none !important
+}
+
+.navbar-default {
+  background-color: white;
+  border: 0;
+  box-shadow: none !important
+}
+
+.navbar-static-top {
+  background-color: white;
+  border: 0;
+  box-shadow: none !important
+}
 
 .nav-links {
   margin-top: 10px;
@@ -64,13 +92,20 @@ footer {
   color: #aaa;
 }
 
-p, div {
-  font-size: 15px;
+.embed-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
 }
 
-td {
-  vertical-align: top;
-  border: 0px solid gray;
+.embed-container iframe, .embed-container object, .embed-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 // Errors when form validation fails
@@ -263,7 +298,7 @@ h3.dispatch { margin: 0 0 0 10px; }
   border-bottom: 1px solid #ddd;
   width: 95%;
   margin:5px;
-  padding: 5px;
+  padding: 5px 5px 10px 5px;
   font-size: 13px;
 }
 .msg-timestamp {
@@ -300,7 +335,7 @@ h3.dispatch { margin: 0 0 0 10px; }
 }
 
 #msg-count {
-  margin: 0px 240px 0 0;
+  margin: 10px 310px 0 0;
   color: #999;
   font-size: 18px;
   font-weight: bold;
@@ -329,15 +364,21 @@ h3.dispatch { margin: 0 0 0 10px; }
   font-size: 22px;
 }
 
-footer {
-  margin-top: 80px;
-  margin: auto;
-}
-
 @media(max-width:480px) {
+  body {
+    margin-bottom: 60px;
+  }
+
   #logo {
     width: 76px;
     height: 40px;
+  }
+
+  h1.hed {
+    font-size: 40px;
+  }
+  h2.subhed {
+    font-size: 16px;
   }
 
   .schedule {

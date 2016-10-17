@@ -36,7 +36,6 @@
 
   .col-sm-8.field
     = f.label :phone_number, "#{t(:phone_number)} *"
-    = f.telephone_field :phone_number, class: 'form-control', required: 'true'
     = f.telephone_field :phone_number, class: 'form-control', required: 'true', maxlength: 20
 
   .col-sm-8.field
@@ -51,15 +50,15 @@
 
   .col-sm-8.field
     = f.label :city, t(:city)
-    = f.text_field :city, class: 'form-control', required: 'true', maxlength: 50
+    = f.text_field :city, class: 'form-control', maxlength: 50
 
   .col-sm-8.field
     = f.label :state, t(:state)
-    = f.text_field :state, class: 'form-control', required: 'true', maxlength: 50
+    = f.text_field :state, class: 'form-control', maxlength: 50
 
   .col-sm-8.field
     = f.label :zip, t(:zip)
-    = f.text_field :zip, class: 'form-control', required: 'true'
+    = f.text_field :zip, class: 'form-control'
 
   .col-sm-8.field
     Available? &nbsp;
