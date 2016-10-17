@@ -1,7 +1,7 @@
 class ConversationBot
   NOW_TIME = /now|ahora/i.freeze
 
-  CALL_FOR_HELP = /\Asos|\?|h|assist|human|person|ayuda|wtf|wha|why\z/i.freeze
+  CALL_FOR_HELP = /\A(sos|\?|h|assist|human|person|ayuda|wtf)\Z/i.freeze
 
   NUMBER_STRINGS = {
       0 => [/0/, /zero/, /none/, /cero/, /nada/],
