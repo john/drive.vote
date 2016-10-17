@@ -12,6 +12,7 @@ RSpec.describe User, :type => :model do
       end
 
       it "gets city and state from 'Carnegie PA" do
+        user.city_state = 'Carnegie PA'
         user.parse_city_state
         expect(user.city).to eq('Carnegie')
         expect(user.state).to eq('PA')
@@ -25,7 +26,7 @@ RSpec.describe User, :type => :model do
         expect(user.state).to eq('PA')
       end
 
-      it "gets the state from 'south bend ia'" do
+      it "gets the city and state from 'south bend ia'" do
         user.city_state = 'south bend ia'
         user.parse_city_state
         expect(user.city).to eq('South Bend')
@@ -51,14 +52,7 @@ RSpec.describe User, :type => :model do
       end
 
       it "fails to parse 'Carnegie, '" do
-        user.city_state = 'Carnegie'
-        user.parse_city_state
-        expect(user.city).to eq('')
-        expect(user.state).to eq('')
-      end
-
-      it "fails to parse 'Carnegie'" do
-        user.city_state = 'Carnegie'
+        user.city_state = 'Carnegie, '
         user.parse_city_state
         expect(user.city).to eq('')
         expect(user.state).to eq('')
