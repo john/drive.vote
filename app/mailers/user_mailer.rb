@@ -16,12 +16,13 @@ class UserMailer < ApplicationMailer
 
   # http://templates.mailchimp.com/resources/inline-css/
 
-  def welcome_email_driver(user)
+  def welcome_email_driver(user, ride_zone)
     sendgrid_category "welcome_driver"
     @user = user
+    @ride_zone = ride_zone
 
     email_with_name = %("#{@user.name}" <#{@user.email}>)
-    mail(to: email_with_name, subject: 'Welcome to Drive the Vote, Driver!')
+    mail(to: email_with_name, subject: 'Thank you for volunteering to Drive the Vote!')
   end
 
   def welcome_email_voter(user)
