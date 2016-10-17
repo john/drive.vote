@@ -1,7 +1,7 @@
 class ConversationBot
   NOW_TIME = /now|ahora/i.freeze
 
-  CALL_FOR_HELP = /\Ahelp|ayuda\z/i.freeze
+  CALL_FOR_HELP = /\Asos|\?|h|assist|human|person|ayuda|wtf|wha|why\z/i.freeze
 
   NUMBER_STRINGS = {
       0 => [/0/, /zero/, /none/, /cero/, /nada/],
@@ -35,8 +35,8 @@ class ConversationBot
       new_counter = send(current_lifecycle.to_sym)
       # force update if counter doesn't change
       @conversation.update_attributes(bot_counter: new_counter, updated_at: Time.now)
-      @response
     end
+    @response
   end
 
   private
