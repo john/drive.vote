@@ -1,6 +1,78 @@
 require 'rails_helper'
 
 RSpec.describe User, :type => :model do
+  describe 'state_city parsing' do
+    context 'valid city_state' do
+      let(:user) {build :user, city_state: "Carnegie, PA", city: "", state: ""}
+
+      it "gets city and state from 'Carnegie, PA'" do
+        user.parse_city_state
+        expect(user.city).to eq('Carnegie')
+        expect(user.state).to eq('PA')
+      end
+
+      it "gets city and state from 'Carnegie PA" do
+        user.city_state = 'Carnegie PA'
+        user.parse_city_state
+        expect(user.city).to eq('Carnegie')
+        expect(user.state).to eq('PA')
+      end
+
+      #if we can detect there's just one element, see if it's the state
+      it "gets the state from 'PA'" do
+        user.city_state = 'PA'
+        user.parse_city_state
+        expect(user.city).to eq('')
+        expect(user.state).to eq('PA')
+      end
+
+      it "gets the city and state from 'south bend ia'" do
+        user.city_state = 'south bend ia'
+        user.parse_city_state
+        expect(user.city).to eq('South Bend')
+        expect(user.state).to eq('IA')
+      end
+
+      it "gets the state from ', PA'" do
+        user.city_state = ', PA'
+        user.parse_city_state
+        expect(user.city).to eq('')
+        expect(user.state).to eq('PA')
+      end
+    end
+
+    context 'invalid city_state' do
+      let(:user) {build :user, city_state: "", city: "", state: ""}
+
+      it "fails to parse 'Carnegie'" do
+        user.city_state = 'Carnegie'
+        user.parse_city_state
+        expect(user.city).to eq('')
+        expect(user.state).to eq('')
+      end
+
+      it "fails to parse 'Carnegie, '" do
+        user.city_state = 'Carnegie, '
+        user.parse_city_state
+        expect(user.city).to eq('')
+        expect(user.state).to eq('')
+      end
+
+      it "fails to parse a non-state" do
+        user.city_state = 'Lincolnville, PO'
+        user.parse_city_state
+        expect(user.city).to eq('')
+        expect(user.state).to eq('')
+      end
+
+      it "fails to parse an empty string" do
+        expect(user.city_state).to eq('')
+        user.parse_city_state
+        expect(user.city).to eq('')
+        expect(user.state).to eq('')
+      end
+    end
+  end
 
   context 'validations' do
     it { should validate_presence_of :email }
@@ -307,7 +379,5 @@ RSpec.describe User, :type => :model do
         expect( non_zone_admin.is_zone_admin? ).to eq(false)
       end
     end
-
   end
-
 end

@@ -1,0 +1,109 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=,%20,%20,%20,%2015106,%20&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 16 Oct 2016 19:18:25 GMT
+      Expires:
+      - Mon, 17 Oct 2016 19:18:25 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '505'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "Carnegie",
+                       "short_name" : "Carnegie",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Allegheny County",
+                       "short_name" : "Allegheny County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Carnegie, PA 15106, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.434948,
+                          "lng" : -80.0570259
+                       },
+                       "southwest" : {
+                          "lat" : 40.380127,
+                          "lng" : -80.1701448
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4088514,
+                       "lng" : -80.11494139999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.434948,
+                          "lng" : -80.0570259
+                       },
+                       "southwest" : {
+                          "lat" : 40.380127,
+                          "lng" : -80.1701448
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJ8Yhm7GNYNIgRQWpx-IVW-Dw",
+                 "postcode_localities" : [ "Carnegie", "Heidelberg" ],
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sun, 16 Oct 2016 19:18:25 GMT
+recorded_with: VCR 3.0.3
