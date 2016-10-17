@@ -1,7 +1,7 @@
 class ConversationBot
   NOW_TIME = /now|ahora/i.freeze
 
-  CALL_FOR_HELP = /\Ahelp|ayuda\z/i.freeze
+  CALL_FOR_HELP = /\A(sos|\?|h|assist|human|person|ayuda|wtf)\Z/i.freeze
 
   NUMBER_STRINGS = {
       0 => [/0/, /zero/, /none/, /cero/, /nada/],
@@ -35,8 +35,8 @@ class ConversationBot
       new_counter = send(current_lifecycle.to_sym)
       # force update if counter doesn't change
       @conversation.update_attributes(bot_counter: new_counter, updated_at: Time.now)
-      @response
     end
+    @response
   end
 
   private
@@ -46,7 +46,7 @@ class ConversationBot
     # Look for: language
     case @bot_counter
       when 0
-        @response = 'Hi, thanks for contacting us for a ride! This is an automated system. Reply "1" for English, Responder "2" para el español.'
+        @response = 'Thanks for requesting a ride! I\'m a bot, to chat with a human at any time type "human", para chatear con un ser humano txt "humano". Reply "1" to continue in English, responder "2" para el español.'
         return 1
       when 1..2
         lang = if @body =~ /1/ || @body.downcase =~ /eng/
@@ -59,7 +59,7 @@ class ConversationBot
           @response = I18n.t(:what_is_your_name, locale: lang)
           return 0
         end
-        @response = 'Sorry I did not understand. Reply help/ayuda to reach a person. Please reply with "1" for English. Responder "2" para el español.'
+        @response = 'Sorry I did not understand. Please reply with "1" for English, Responder "2" para el español, or human/humano to reach a person.'
         return @bot_counter + 1
       else
         @response = 'Someone will contact you soon - Alguien se pondrá en contacto en breve'
