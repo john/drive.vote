@@ -364,11 +364,7 @@ DispatchController.prototype = {
   },
 
   setTotal: function(node, total) {
-    if (total == 0) {
-      $(node).text($(node).text().replace(/ \(.*/, ''));
-    } else {
-      $(node).text($(node).text().replace(/ \(.*/, '') + ' (' + total + ')');
-    }
+    $(node).text($(node).text().replace(/ \(.*/, '') + ' (' + total + ')');
   },
 
   // Sets the conv-status-xxx status for this row object and removes all other
