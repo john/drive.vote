@@ -48,7 +48,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if resource.persisted?
       if resource.active_for_authentication?
         set_flash_message! :notice, :signed_up
-        # sign_up(resource_name, resource)
+
+        @ride_zone = RideZone.find(resource.ride_zone_id)
+        UserMailer.welcome_email_driver(resource, @ride_zone).deliver_later
+
         respond_with resource, location: after_sign_up_path_for(resource)
       else
         set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
