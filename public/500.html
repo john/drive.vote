@@ -1,66 +1,571 @@
+
 <!DOCTYPE html>
-<html>
-<head>
-  <title>We're sorry, but something went wrong (500)</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <style>
-  body {
-    background-color: #EFEFEF;
-    color: #2E2F30;
-    text-align: center;
-    font-family: arial, sans-serif;
-    margin: 0;
-  }
+<html lang='en'>
+  <head>
+    <meta charset='utf8'>
+    <title>500 - 🚕 the Vote</title>
+    <meta name="csrf-param" content="authenticity_token" />
+    <meta name="csrf-token" content="5LHqIXsM6UPt+ORxGdzyEG2ZRyK0qtcNNlJfNXVEbNA7/RL8Qinpz/kgCkPvV7w63nZ2EbgmAvvbk6N3i7vAqg==" />
+    <meta name="action-cable-url" content="ws://local.drive.vote:3000/cable" />
+    <meta content='width=device-width, initial-scale=1.0' name='viewport'>
+    <meta content='yes' name='apple-mobile-web-app-capable'>
+    <meta content='yes' name='mobile-web-app-capable'>
+    <meta content='Drive the Vote connects voters who need free rides with volunteer drivers. Voters text a local number to request a ride, and a driver arrives to take them to their voting place.' name='description'>
+    <meta content='DevProgress' name='author'>
+    <meta content='website' property='og:type'>
+    <meta content='Drive the Vote' property='og:title'>
+    <meta content='Drive the Vote' property='og:site_name'>
+    <meta content='https://drive.vote' property='og:url'>
+    <meta content='Drive the Vote connects voters who need free rides with volunteer drivers. Voters text a local number to request a ride, and a driver arrives to take them to their voting place.' property='og:description'>
 
-  div.dialog {
-    width: 95%;
-    max-width: 33em;
-    margin: 4em auto 0;
-  }
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-ujs/1.2.2/rails.min.js'></script>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker3.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/css/jqueryui-editable.css' rel='stylesheet'>
+    <link href='https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.min.css' rel='stylesheet'>
 
-  div.dialog > div {
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #BBB;
-    border-top: #B00100 solid 4px;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
-    background-color: white;
-    padding: 7px 12% 0;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-  }
 
-  h1 {
-    font-size: 100%;
-    color: #730E15;
-    line-height: 1.5em;
-  }
 
-  div.dialog > p {
-    margin: 0 0 1em;
-    padding: 1em;
-    background-color: #F7F7F7;
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #999;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-top-color: #DADADA;
-    color: #666;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-  }
-  </style>
-</head>
+    <style>
+    html {
+      position: relative;
+      min-height: 100%;
+    }
 
-<body>
-  <!-- This file lives in public/500.html -->
-  <div class="dialog">
-    <div>
-      <h1>We're sorry, but something went wrong.</h1>
+    body {
+      margin-bottom: 45px;
+    }
+
+    p, div {
+      font-size: 15px;
+    }
+
+    td {
+      vertical-align: top;
+      border: 0px solid gray;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 45px;
+      margin-top: 80px;
+      margin: auto;
+    }
+    footer .center {
+      margin: 0 auto;
+    }
+    footer .center table {
+      display: inline;
+      text-align: center;
+    }
+    footer .center table .fb {
+      padding: 5px 5px 10px 10px;
+    }
+    footer .center table .tw {
+      padding: 10px 10px 10px 0;
+    }
+    footer .center table .email {
+      font-size: 14px;
+      padding: 9px 0 0 5px;
+    }
+
+    #logo {
+      width: 90px;
+      height: 47px;
+    }
+
+    h1.hed {
+      text-align: center;
+    }
+
+    h2.subhed {
+      text-align: center;
+    }
+
+    .navbar {
+      background-color: white;
+      border: 0;
+      box-shadow: none !important;
+    }
+
+    .navbar-default {
+      background-color: white;
+      border: 0;
+      box-shadow: none !important;
+    }
+
+    .navbar-static-top {
+      background-color: white;
+      border: 0;
+      box-shadow: none !important;
+    }
+
+    .nav-links {
+      margin-top: 10px;
+      font-size: 12px;
+    }
+
+    .locale-active {
+      margin-top: 7px;
+      font-weight: bold;
+      color: #34495e;
+    }
+
+    .locale-inactive {
+      margin-top: 7px;
+      color: #aaa;
+    }
+
+    .embed-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      max-width: 100%;
+    }
+
+    .embed-container iframe, .embed-container object, .embed-container embed {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #error_explanation {
+      float: none;
+      display: block;
+      margin-top: 100px;
+      color: #f00;
+    }
+    #error_explanation ul {
+      list-style: none;
+      margin: 0 0 18px 0;
+    }
+
+    form .notify {
+      margin-bottom: 4px;
+    }
+    form .field, form .actions {
+      margin-top: 15px;
+    }
+    form .btn {
+      margin-bottom: 30px;
+    }
+    form td {
+      vertical-align: top;
+    }
+    form label {
+      margin-top: 10px;
+      font-weight: normal;
+    }
+
+    .admin {
+      width: 100%;
+    }
+    .admin small {
+      margin-left: 30px;
+    }
+    .admin td {
+      padding: 5px 20px 5px 0;
+    }
+    .admin th {
+      font-weight: normal;
+      margin-bottom: 10px;
+      padding-right: 20px;
+    }
+    .admin .msg {
+      width: 20px;
+    }
+
+    .admin-only {
+      background-color: #ffff99;
+    }
+
+    .description {
+      text-align: left;
+      font-size: 20px;
+      margin: 0 0 40px 0;
+    }
+    .description h1 h2 h3 {
+      text-align: center;
+    }
+    .description h1 {
+      font-size: 55px;
+      margin-bottom: 0;
+      margin-top: 0;
+    }
+    .description .how-it-works {
+      margin-top: 40px;
+    }
+    .description h2 {
+      text-align: center;
+      font-size: 20px;
+      margin-top: 5px;
+    }
+    .description h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .volunteer {
+      text-align: center;
+      margin: 40px 0 10px 0;
+    }
+
+    .btn-home {
+      width: 350px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .later {
+      margin: 30px 0 20px 0;
+    }
+
+    .sign_up {
+      margin: 10px 0 20px 0;
+      font-size: 11px;
+    }
+
+    h3.dispatch {
+      margin: 0 0 0 10px;
+    }
+
+    .dispatch-links {
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+      font-size: 13px;
+      font-weight: normal;
+      margin-left: 20px;
+      color: #444;
+    }
+
+    .dispatch-xtras {
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+      border: 0px solid red;
+      font-size: 18px;
+      color: #444;
+      opacity: 0.5;
+      margin-top: -3px;
+    }
+
+    .dispatch-filters {
+      font-weight: normal;
+      font-size: 13px;
+      padding: 4px 10px;
+      margin: 10px 0;
+    }
+
+    #conversations .nav {
+      float: right;
+      color: #ccc;
+      font-size: 12px;
+    }
+    #conversations .sm {
+      color: #ccc;
+      font-size: 12px;
+    }
+
+    #dispatch-map {
+      height: 500px;
+      margin: 1em 0;
+    }
+
+    .key {
+      border: 0px solid #ddd;
+    }
+
+    .key-pin-cell {
+      padding-right: 10px;
+    }
+
+    .key-pin-img {
+      width: 21px;
+      height: 34px;
+    }
+
+    .key-label {
+      font-size: 16px;
+      font-weight: bold;
+      padding-right: 40px;
+      padding-bottom: 30px;
+    }
+
+    #dispatch-map-lg {
+      margin: 1em 0;
+    }
+
+    #conversations, #rides {
+      font-size: 12px;
+    }
+    #conversations thead, #conversations th, #rides thead, #rides th {
+      border: none !important;
+    }
+    #conversations .btn-conv, #conversations .btn-ride, #rides .btn-conv, #rides .btn-ride {
+      padding-left: 14px !important;
+      padding-right: 14px !important;
+    }
+
+    .btn-filters {
+      margin: -10px 0 10px 0;
+      font-size: 12px;
+    }
+
+    #conv-modal-title {
+      font-size: 25px;
+      color: #777;
+    }
+    #conv-modal-title span {
+      font-size: 18px;
+    }
+
+    #archive-btn {
+      margin-right: 15px;
+    }
+
+    .messages {
+      border: 1px solid #ccc;
+      width: 400px;
+      max-height: 250px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+
+    .messages::-webkit-scrollbar {
+      -webkit-appearance: none;
+    }
+
+    .messages::-webkit-scrollbar:vertical {
+      width: 11px;
+    }
+
+    .messages::-webkit-scrollbar:horizontal {
+      height: 11px;
+    }
+
+    .messages::-webkit-scrollbar-thumb {
+      border-radius: 8px;
+      border: 2px solid white;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .messages::-webkit-scrollbar-track {
+      background-color: #fff;
+      border-radius: 8px;
+    }
+
+    .message {
+      border-bottom: 1px solid #ddd;
+      width: 95%;
+      margin: 5px;
+      padding: 5px 5px 10px 5px;
+      font-size: 13px;
+    }
+
+    .msg-timestamp {
+      font-style: italic;
+      color: #777;
+      font-size: 13px;
+    }
+
+    .msg-body {
+      margin: -5px 0 10px 0;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .msg-reply {
+      margin: 0 0 0 5px;
+    }
+    .msg-reply textarea {
+      width: 400px;
+    }
+
+    #msg-input {
+      -moz-appearance: textfield;
+      -webkit-appearance: textfield;
+      background-color: white;
+      background-color: -moz-field;
+      border: 1px solid darkgray;
+      box-shadow: 1px 1px 1px 0 lightgray inset;
+      font: -moz-field;
+      font: -webkit-small-control;
+      font-size: 14px;
+      margin: 5px 2px 10px 0;
+      padding: 2px 3px;
+      width: 400px;
+      height: 55px;
+    }
+
+    .conv-label {
+      height: 40px;
+      width: 135px;
+      color: #999;
+      font-size: 15px;
+      font-weight: bold;
+      padding-right: 20px;
+    }
+
+    .conv-field {
+      height: 40px;
+      margin-left: 20px;
+    }
+
+    .schedule {
+      margin: 10px 0 0 15px;
+    }
+
+    .to_or_from {
+      margin: 0 0 -10px 15px;
+      font-size: 22px;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        margin-bottom: 60px;
+      }
+
+      #logo {
+        width: 76px;
+        height: 40px;
+      }
+
+      h1.hed {
+        font-size: 40px;
+      }
+
+      h2.subhed {
+        font-size: 16px;
+      }
+
+      .schedule {
+        margin: 0px 0 0 15px;
+        font-size: 30px;
+      }
+
+      .to_or_from {
+        font-size: 20px;
+      }
+    }
+
+    </style>
+
+
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/datepair.js/0.4.14/datepair.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/js/jqueryui-editable.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.5.3/jquery.timeago.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/sugar/1.4.1/sugar.min.js'></script>
+    <script src='https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places&amp;key=AIzaSyDefFnLJQKoz1OQGjaqaJPHMISVcnXZNPc'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/dist/typeahead.bundle.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/typeahead-addresspicker/0.1.4/typeahead-addresspicker.min.js'></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-80989577-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=598384123655141";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+    <nav class='navbar navbar-default navbar-static-top'>
+      <div class='container'>
+
+        <div class='navbar-header' style='margin-top: 10px;'>
+
+          <a class='navbar-brand' href='/?locale=en' style='font-family: "Times New Roman", Times, serif'>
+            <img id="logo" src="http://i.imgur.com/7u7B2j7.png" alt="Dtv logo 260w eng" />
+          </a>
+        </div>
+
+      </div>
+    </nav>
+    <div class='container'>
+      <div class='row'>
+        <div class='col-sm-8 col-sm-offset-2 text-center'>
+          <div class='description'>
+            <h1 class='hed'>
+              Sorry
+            </h1>
+            <h2 class='subhed'>
+              A server error prevented the page from loading.<br>
+            </h2>
+
+            <h2 class='subhed' style="font-weight: normal;">
+              Please click the support button below for immediate help,<br>or email <a href="mailto:hello@drive.vote">hello@drive.vote</a>.
+            </h2>
+
+          </div>
+        </div>
+      </div>
     </div>
-    <p>If you are the application owner check the logs for more information.</p>
-  </div>
-</body>
+    <footer>
+      <div class='container'>
+        <div class='center'>
+          <table>
+            <tr>
+              <td class='fb'>
+                <div class="fb-share-button" data-href="https://www.drive.vote" data-layout="button" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.drive.vote%2F&amp;src=sdkpreparse">Share</a></div>
+              </td>
+              <td class='tw'>
+                <a class='twitter-share-button' href='http://twitter.com/intent/tweet?text=Give%20or%20get%20free%20rides%20to%20the%20polls%20with%20Drive%20the%20Vote!&amp;amp;url=https://www.drive.vote&amp;amp;via=drivevote&amp;amp;related=wordie' target='_blank'></a>
+              </td>
+              <td class='email'>
+                <a href="mailto:hello@drive.vote">hello@drive.vote</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </footer>
+    <script>
+      window.twttr = (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0],
+          t = window.twttr || {};
+        if (d.getElementById(id)) return t;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
+
+        t._e = [];
+        t.ready = function(f) {
+          t._e.push(f);
+        };
+
+        return t;
+      }(document, "script", "twitter-wjs"));
+    </script>
+  </body>
+
+  <script>
+    /*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var o=this.createElement("script");n&&(this.domain=n),o.id="js-iframe-async",o.src=e,this.t=+new Date,this.zendeskHost=t,this.zEQueue=a,this.body.appendChild(o)},o.write('<body onload="document._l();">'),o.close()}("https://assets.zendesk.com/embeddable_framework/main.js","drivethevote.zendesk.com");
+    /*]]>*/
+  </script>
 </html>
