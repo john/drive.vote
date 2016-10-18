@@ -1,33 +1,29 @@
+.modal-ride-status
+  = @conversation.ride.status
+
 %table
   %tr
     %td.conv-label
-      Ride created:
-    %td.conv-field
-      #{time_ago_in_words(@conversation.ride.created_at)} ago
-
-  %tr
-    %td.conv-label
-      From address:
+      FROM
     %td.conv-field
       = @conversation.ride.from_address
-
-  %tr
-    %td.conv-label
-      From city:
-    %td.conv-field
+      %br
       = @conversation.ride.from_city
 
-  %tr
-    %td.conv-label
-      To address:
-    %td.conv-field
-      = @conversation.ride.to_address
 
   %tr
     %td.conv-label
-      To city:
+      TO
     %td.conv-field
+      = @conversation.ride.to_address
+      %br
       = @conversation.ride.to_city
+
+  %tr
+    %td.conv-label
+      PICKUP TIME
+    %td.conv-field
+      = @conversation.pickup_time
 
   %tr
     %td.conv-label

@@ -1,40 +1,49 @@
 - url = send("update_attribute_api_v1_#{@obj.class.name.downcase}_path", @obj)
 
+.modal-ride-status
+  = Conversation::STATUS_STRINGS[ @conversation.ride.status.to_sym ].html_safe
+
 %table
-  - if @action == 'Edit'
-    %tr
-      %td.conv-label
-        Ride created:
-      %td.conv-field
-        #{time_ago_in_words(@conversation.ride.created_at)} ago
+  / - if @action == 'Edit'
+  /   %tr
+  /     %td.conv-label
+  /       Ride created:
+  /     %td.conv-field
+  /       #{time_ago_in_words(@conversation.ride.created_at)} ago
 
   %tr
     %td.conv-label
-      From address:
+      FROM
     %td.conv-field
       %a.to_from{href: '#', id:"from_address", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"From address"}
         = @obj.send(:from_address)
-
-  %tr
-    %td.conv-label
-      From city:
-    %td.conv-field
+      %br
       %a.to_from{href: '#', id:"from_city", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"From city"}
         = @obj.send(:from_city)
 
   %tr
     %td.conv-label
-      To address:
+      TO
     %td.conv-field
       %a.to_from{href: '#', id:"to_address", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"To address"}
         = @obj.send(:to_address)
+      %br
+      %a.to_from{href: '#', id:"to_city", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"To city"}
+        = @obj.send(:to_city)
 
   %tr
     %td.conv-label
-      To city:
+      PICKUP TIME
     %td.conv-field
-      %a.to_from{href: '#', id:"to_city", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"To city"}
-        = @obj.send(:to_city)
+      %a.to_from{href: '#', id:"pickup_time", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"Pickup time"}
+        = @obj.send(:pickup_time)
+
+  %tr
+    %td.conv-label
+      NUM PASSENGER
+    %td.conv-field
+      %a.to_from{href: '#', id:"additional_passengers", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"To address"}
+        = @obj.send(:additional_passengers)+1
 
   - if @action == 'Edit'
     %tr
@@ -83,6 +92,8 @@
       $('#from_city').editable({ mode: 'inline'});
       $('#to_address').editable({ mode: 'inline'});
       $('#to_city').editable({ mode: 'inline'});
+      $('#additional_passengers').editable({ mode: 'inline'});
+      $('#pickup_time').editable({ mode: 'inline'});
 
       dispatchController.attachRideClick(#{@obj.ride_zone_id}, #{@obj.id}, "#driver_select", "#{@action.downcase}");
     });

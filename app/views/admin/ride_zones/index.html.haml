@@ -25,7 +25,7 @@
     - @ride_zones.each do |ride_zone|
       %tr
         %td
-          = link_to ride_zone.name, admin_ride_zone_path(ride_zone)
+          = link_to ride_zone.name, admin_ride_zone_path(ride_zone.slug)
         %td
           = ride_zone.zip
         %td

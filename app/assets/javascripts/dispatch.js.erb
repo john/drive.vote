@@ -10,13 +10,7 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
   this.OVERDUE_PICKUP = 15*60*1000;
   this.OVERDUE_COMPLETION = 30*60*1000;
   this.STILL_NEW_RIDE = 10*60*1000;
-  this._statusStrings = {
-    messaging: 'MESSAGING', help_needed: 'NEEDS&nbsp;HELP', scheduled: 'SCHEDULED',
-    waiting_acceptance: 'WAIT&nbsp;ACCEPT',
-    waiting_assignment: 'NEEDS&nbsp;DRIVER', assignment_overdue: 'OVERDUE',
-    waiting_pickup: 'WAITING', pickup_overdue: 'OVERDUE', new_ride: 'NEW',
-    driving: 'DRIVING', completion_overdue: 'OVERDUE', complete: 'COMPLETE'
-  };
+  this._statusStrings = <%= Conversation::STATUS_STRINGS.to_json %>;
 
   this._statusPinURLs = {
     messaging: "<%= asset_path('rider-waiting-assignment.png')%>",
@@ -79,7 +73,7 @@ DispatchController.prototype = {
     if (action === undefined) {
       action = 'create';
     }
-    var url = '/admin/conversations/' + id + '/ride_pane';
+    var url = '/dispatch/' + id + '/ride_pane';
     if(action=='edit') {
       url += '?edit=true';
     }
@@ -92,7 +86,7 @@ DispatchController.prototype = {
   },
 
   loadConversationMessages: function (id) {
-    $('#conversation-messages').load('/admin/conversations/' + id + '/messages', function( response, status, xhr ) {
+    $('#conversation-messages').load('/dispatch/' + id + '/messages', function( response, status, xhr ) {
       var cont = $('.messages');
       cont[0].scrollTop = cont[0].scrollHeight;
     });

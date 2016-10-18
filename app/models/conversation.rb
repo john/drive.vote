@@ -1,4 +1,7 @@
 class Conversation < ApplicationRecord
+  include HasAddress
+  include ToFromAddressable
+
   belongs_to :ride_zone
   belongs_to :user
   has_many :messages, dependent: :destroy
@@ -10,9 +13,16 @@ class Conversation < ApplicationRecord
   after_create :notify_creation
   around_save :notify_update
 
+  STATUS_STRINGS = {
+    messaging: 'MESSAGING', help_needed: 'NEEDS&nbsp;HELP', scheduled: 'SCHEDULED',
+    waiting_acceptance: 'WAIT&nbsp;ACCEPT',
+    waiting_assignment: 'NEEDS&nbsp;DRIVER', assignment_overdue: 'OVERDUE',
+    waiting_pickup: 'WAITING', pickup_overdue: 'OVERDUE', new_ride: 'NEW',
+    driving: 'DRIVING', completion_overdue: 'OVERDUE', complete: 'COMPLETE'
+  }.freeze
+
+
   validate :phone_numbers_match_first_message
-  include HasAddress
-  include ToFromAddressable
 
   enum status: { sms_created: -1, in_progress: 0, ride_created: 1, closed: 2, help_needed: 3 }
   enum lifecycle: {

@@ -22,7 +22,14 @@
 %p
   Zip: #{@ride_zone.zip}
   %br
-  = link_to "Dispatch page", dispatch_path(@ride_zone.slug), target: "_blank"
+
+  = link_to "Dispatch page", dispatch_path(@ride_zone.slug)
+  &nbsp;&#183;&nbsp;
+
+  = link_to 'Schedule ride form', get_a_ride_url(@ride_zone.slug)
+  &nbsp;&#183;&nbsp;
+
+  = link_to 'Volunteer to drive form', volunteer_to_drive_for_zone_url(@ride_zone.slug)
 
 %h6
   Dispatchers

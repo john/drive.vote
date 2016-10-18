@@ -262,8 +262,29 @@ h3.dispatch { margin: 0 0 0 10px; }
   font-size: 12px;
 }
 
-.modal-title{
-  color: #777
+#conv-modal .modal-body {
+  max-height: 500px;
+  height: 500px;
+}
+
+#conv-modal-title {
+  font-size: 25px;
+  color: #777;
+  span {
+    font-size: 18px;
+  }
+}
+
+#archive-btn {
+  margin-right: 50px;
+}
+
+.modal-ride-status {
+  background-color: #d71e14;
+  color: white;
+  width: 150px;
+  padding: 4px;
+  margin-bottom: 20px;
 }
 
 // messages pane in conversation modal
@@ -334,18 +355,11 @@ h3.dispatch { margin: 0 0 0 10px; }
   height: 55px;
 }
 
-#msg-count {
-  margin: 10px 310px 0 0;
-  color: #999;
-  font-size: 18px;
-  font-weight: bold;
-}
-
 .conv-label {
   height: 40px;
   width: 135px;
   color: #999;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
   padding-right: 20px;
 }

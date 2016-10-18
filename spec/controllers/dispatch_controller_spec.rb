@@ -29,6 +29,55 @@ RSpec.describe DispatchController, :type => :controller do
     end
   end
 
+  describe 'GET #messages' do
+    let!(:convo) { create :conversation, ride_zone: rz }
+
+    it "redirects if not logged in" do
+      get :messages, params: {id: convo.to_param}
+      expect(response).to redirect_to('/404.html')
+    end
+
+    context "as admin" do
+      login_admin
+
+      it 'assigns the requested conversation as @conversation' do
+        get :messages, params: {id: convo.to_param}
+        expect(assigns(:conversation)).to eq(convo)
+      end
+    end
+  end
+
+  describe 'GET #ride_pane' do
+    let!(:convo) { create :conversation, ride_zone: rz }
+
+    it "redirects if not logged in" do
+      get :ride_pane, params: {id: convo.to_param}
+      expect(response).to redirect_to('/404.html')
+    end
+
+    context "as admin" do
+      login_admin
+
+      it 'assigns the requested conversation as @conversation' do
+        get :ride_pane, params: {id: convo.to_param}
+        expect(assigns(:conversation)).to eq(convo)
+      end
+
+      it 'renders ride_form partial if convo does not have a ride' do
+        get :ride_pane, params: {id: convo.to_param}
+        expect(response).to render_template(partial: '_ride_form')
+      end
+
+      it 'renders ride_info partial if convo has a ride' do
+        ride = create :ride
+        convo.ride = ride
+        convo.save
+        get :ride_pane, params: {id: convo.to_param}
+        expect(response).to render_template(partial: '_ride_info')
+      end
+    end
+  end
+
   describe "GET drivers" do
     it "redirects if not logged in" do
       get :drivers, params: {id: rz.id}
