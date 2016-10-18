@@ -37,7 +37,7 @@ class Simulation < ActiveRecord::Base
   end
 
   def self.can_start_new?
-    Simulation.where.not(status: [:failed, :completed]).count == 0
+    Simulation.where.not(status: [:stopped, :failed, :completed]).count == 0
   end
 
   def self.clear_all_data
