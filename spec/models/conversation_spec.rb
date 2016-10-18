@@ -94,6 +94,21 @@ RSpec.describe Conversation, type: :model do
     end
   end
 
+  describe 'user language' do
+    let(:rz) { create :ride_zone }
+    let(:user) { create :user, language: :es }
+    let(:convo) { create :complete_conversation, ride_zone: rz, user: user, pickup_time: 5.minutes.from_now }
+
+    it 'reports user language' do
+      expect(convo.user_language).to eq('es')
+    end
+
+    it 'reports language if unknown' do
+      user.update_attribute(:language, :unknown)
+      expect(convo.user_language).to eq('en')
+    end
+  end
+
   describe 'attempt confirmation' do
     let(:rz) { create :ride_zone }
     let(:user) { create :user, language: :en }
