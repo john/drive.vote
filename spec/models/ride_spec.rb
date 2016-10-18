@@ -17,6 +17,24 @@ RSpec.describe Ride, type: :model do
   it { should validate_length_of(:to_state).is_at_most(2)}
   it { should validate_length_of(:to_zip).is_at_most(12)}
 
+  describe 'radius validation', focus:true do
+    let!(:zone) { create :ride_zone, latitude: 40.409, longitude: -80.09, max_pickup_radius: 5 }
+
+    it 'allows a ride within radius' do
+      r = build :waiting_ride, from_address: '106 dunbar avenue', from_city: 'carnegie',
+                from_latitude: 40.410, from_longitude: -80.10, ride_zone: zone
+      expect(r).to be_valid
+      expect(r.errors.count).to eq(0)
+    end
+
+    it 'disallows a ride outside radius' do
+      r = build :waiting_ride, from_address: '106 dunbar avenue', from_city: 'carnegie',
+                from_latitude: 40.6, from_longitude: -80.5, ride_zone: zone
+      expect(r).to_not be_valid
+      expect(r.errors[:from_address].count).to eq(1)
+    end
+  end
+
   describe 'event generation' do
     let!(:driver) { create :driver_user }
     let!(:new_driver) { create :driver_user }
@@ -147,8 +165,8 @@ RSpec.describe Ride, type: :model do
   end
 
   describe 'waiting nearby' do
-    let!(:zone) { create :ride_zone }
-    let!(:other_zone) { create :ride_zone }
+    let!(:zone) { create :ride_zone, latitude: 35, longitude: -122, max_pickup_radius: 50 }
+    let!(:other_zone) { create :ride_zone, latitude: 35, longitude: -122 }
     let!(:empty_zone) { create :ride_zone }
     let!(:rnotwaiting) { create :ride, from_latitude: 35, from_longitude: -122, ride_zone: zone }
     let!(:rotherzone) { create :waiting_ride, from_latitude: 35, from_longitude: -122, ride_zone: other_zone }
