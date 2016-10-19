@@ -36,7 +36,7 @@ class RidesController < ApplicationController
     @ride = Ride.new(rp)
     if @ride.pickup_at.blank?
       if Chronic.parse(params[:pickup_day]) && Chronic.parse(params[:pickup_time])
-        from_date_time = Chronic.parse( [params[:pickup_day], params[:pickup_time]].join(' ') )
+        from_date_time = TimeZoneUtils.origin_time("#{params[:pickup_day]} #{params[:pickup_time]}", @ride_zone.time_zone)
         @ride.pickup_at =  from_date_time
       else
         @ride.errors.add(:pickup_at, :invalid)

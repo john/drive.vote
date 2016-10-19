@@ -32,6 +32,7 @@ class Ride < ApplicationRecord
   validates :to_zip, length: { maximum: 12 }
   validates :phone_number, length: { maximum: 17 }
   validates :email, length: { maximum: 17 }
+  validate :geocoded_and_in_radius
 
   before_save :note_status_update
   before_save :check_waiting_assignment
@@ -221,5 +222,15 @@ class Ride < ApplicationRecord
 
   def close_conversation_when_complete
     self.conversation.update_attribute(:status, 'closed') if self.conversation && status_changed? && status == 'complete'
+  end
+
+  def geocoded_and_in_radius
+    unless from_address.blank?
+      if from_latitude.nil? || from_longitude.nil?
+        errors.add(:from_address, 'could not be found')
+      elsif ride_zone && !ride_zone.is_within_pickup_radius?(from_latitude, from_longitude)
+        errors.add(:from_address, 'is too far away')
+      end
+    end
   end
 end

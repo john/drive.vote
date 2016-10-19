@@ -105,6 +105,7 @@ es:
   empty_need_name: 'Lo sentimos, por favor, responda con su nombre'
   bot_stalled: 'Alguien se pondrá en contacto en breve'
   what_is_pickup_location: 'Hola %{name}. ¿Dónde desea ser recogido - dirección y la ciudad?'
+  ride_too_far: 'Esa dirección es demasiado lejos. Por favor, inténtelo de nuevo.'
   too_many_addresses: 'Demasiados partidos! Por favor, responda todas las direcciones y ciudad específica o responder "no sé" o "omitir"'
   no_address_match: 'Dirección no encontrada. Por favor, responda todas las direcciones y ciudad específica o responder "no sé" o "omitir"'
   what_is_destination_location: '¿Dónde quieres ir - la dirección y la ciudad? Si no está seguro, responder "no sé" o "omitir"'
