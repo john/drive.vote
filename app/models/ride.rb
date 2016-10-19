@@ -36,7 +36,7 @@ class Ride < ApplicationRecord
 
   before_save :note_status_update
   before_save :check_waiting_assignment
-  before_save :notify_voter_about_driver
+  # before_save :notify_voter_about_driver
   around_save :notify_update
   before_save :close_conversation_when_complete
 

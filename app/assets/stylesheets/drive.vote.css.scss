@@ -357,16 +357,31 @@ h3.dispatch { margin: 0 0 0 10px; }
 
 .conv-label {
   height: 40px;
-  width: 135px;
+  width: 145px;
   color: #999;
   font-size: 14px;
   font-weight: bold;
   padding-right: 20px;
 }
+
 .conv-field {
   height: 40px;
   margin-left: 20px;
 }
+
+@keyframes yellowfade {
+  from {
+    background: yellow;
+  }
+  to {
+    background: transparent;
+  }
+}
+
+.item-highlight {
+  animation: yellowfade 1s;
+}
+
 
 
 .schedule {

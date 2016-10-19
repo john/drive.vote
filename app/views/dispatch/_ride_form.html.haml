@@ -1,6 +1,8 @@
 - url = send("update_attribute_api_v1_#{@obj.class.name.downcase}_path", @obj)
 
-.modal-ride-status
+%div{style: "font-size: 13px"}
+  status
+.modal-ride-status{style: "background-color: gray; text-align:center;"}
   = Conversation::STATUS_STRINGS[ @conversation.ride.status.to_sym ].html_safe
 
 %table
@@ -15,28 +17,33 @@
     %td.conv-label
       FROM
     %td.conv-field
-      %a.to_from{href: '#', id:"from_address", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"From address"}
-        = @obj.send(:from_address)
-      %br
-      %a.to_from{href: '#', id:"from_city", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"From city"}
-        = @obj.send(:from_city)
+      %div
+        %a.to_from{href: '#', id:"from_address", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"From address"}
+          = @obj.send(:from_address)
+      %div{style: "padding-bottom: 20px;"}
+        %a.to_from{href: '#', id:"from_city", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"From city"}
+          = @obj.send(:from_city)
 
   %tr
     %td.conv-label
       TO
     %td.conv-field
-      %a.to_from{href: '#', id:"to_address", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"To address"}
-        = @obj.send(:to_address)
-      %br
-      %a.to_from{href: '#', id:"to_city", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"To city"}
-        = @obj.send(:to_city)
+      %div
+        %a.to_from{href: '#', id:"to_address", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"To address"}
+          = @obj.send(:to_address)
+      %div{style: "padding-bottom: 20px;"}
+        %a.to_from{href: '#', id:"to_city", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"To city"}
+          = @obj.send(:to_city)
 
   %tr
     %td.conv-label
       PICKUP TIME
     %td.conv-field
-      %a.to_from{href: '#', id:"pickup_time", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"Pickup time"}
-        = @obj.send(:pickup_time)
+      / %a.to_from{href: '#', id:"pickup_time", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"Pickup time"}
+      /   = @obj.send(:pickup_time)
+      %p#pickupdaytime
+        %input.date.start#pickup_at_date{type: 'text', name: "pickup_day", value: "11/8/2016", maxlength: 10}
+        %input.time.start#pickup_at_time{type: 'text', name: "pickup_time", placeholder: "Select a time", required: 'true', maxlength: 8}
 
   %tr
     %td.conv-label
@@ -48,8 +55,8 @@
   - if @action == 'Edit'
     %tr
       %td.conv-label
-        Currrent Driver:
-      %td.conv-field
+        CURRENT DRIVER
+      %td.conv-field.current-driver
         - if driver = @obj.send(:driver)
           = driver.try(:name)
         - else
@@ -58,13 +65,14 @@
 
   %tr
     %td.conv-label
-      Driver:
+      SET DRIVER
     %td.conv-field
       - if @zone_driver_count == 0
         %i
           There are no drivers assigned to this zone.
       - else
         - if @available_drivers.present? || @action == 'Edit'
+
           %select{id: 'driver_select'}
             %option
               Select driver:
@@ -81,19 +89,35 @@
           %i
             None of the #{@zone_driver_count} drivers in this zone are currently available.
 
-%div
-  = link_to "#{@action} Ride", '#', id: "create_or_edit_ride", class: 'btn btn-primary', style: 'margin-top: 30px;'
+            / %div
+            /   = link_to "#{@action} Ride", '#', id: "create_or_edit_ride", class: 'btn btn-primary', style: 'margin-top: 30px;'
 
 
   :javascript
-
-    $(document).ready(function() {
-      $('#from_address').editable({ mode: 'inline' });
-      $('#from_city').editable({ mode: 'inline'});
-      $('#to_address').editable({ mode: 'inline'});
-      $('#to_city').editable({ mode: 'inline'});
+    $( function() {
+      $('#from_address').editable({ mode: 'inline', emptytext:'address' });
+      $('#from_city').editable({ mode: 'inline', emptytext:'city'});
+      $('#to_address').editable({ mode: 'inline', emptytext:'address' });
+      $('#to_city').editable({ mode: 'inline', emptytext:'city'});
       $('#additional_passengers').editable({ mode: 'inline'});
       $('#pickup_time').editable({ mode: 'inline'});
+      dispatchController.attachDriverSelect(#{@obj.ride_zone_id}, #{@obj.id}, "#driver_select", "#{@action.downcase}");
 
-      dispatchController.attachRideClick(#{@obj.ride_zone_id}, #{@obj.id}, "#driver_select", "#{@action.downcase}");
+      // initialize input widgets first
+      $('#pickupdaytime .time').timepicker({
+        'timeFormat': 'g:ia',
+        'minTime': '7:00am'
+      });
+
+      $('#pickupdaytime .date').datepicker({
+        'format': 'm/d/yyyy',
+        'autoclose': true
+      });
+
+      // initialize datepair
+      var dpEl = document.getElementById('pickupdaytime');
+      var datepair = new Datepair(dpEl);
+
+      locationAutocomplete.attach('#ride_city_state', '#ride_from_city', '#ride_from_state', '#ride_from_zip');
+
     });

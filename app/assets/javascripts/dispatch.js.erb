@@ -92,28 +92,29 @@ DispatchController.prototype = {
     });
   },
 
-  attachRideClick: function (rzid, id, el, action) {
+  attachDriverSelect: function (rzid, id, el, action) {
     if (action === undefined) {
       action = 'create';
     }
-    $( "#create_or_edit_ride" ).click( function(e) {
 
+    $( el ).change( function(e) {
+
+      console.log( 'ya clicked it');
       if((action=='edit') && (el == '#driver_select')) {
-        // just change the driver, on the ride object
+        // if it's an edit, there's already a ride, just change the driver, on the ride object
         var url = '/api/1/ride_zones/' + rzid + '/assign_ride?driver_id=' + $(el).val() + '&ride_id=' + id;
         var msg = '';
       } else {
-        // this copies everything over from the conversation
+        // on create, copy everything over from the conversation
         var url = '/api/1/conversations/' + id + '/rides?driver_id=' + $(el).val();
         var msg = 'A new ride was created! It should appear in the \'rides\' column, and on the map.';
       }
 
       $.post( url, function() {
-         $('#conv-modal').modal('hide');
-         $('body').removeClass('modal-open');
-         $('.modal-backdrop').remove();
+         var txt = $(el).find(":selected").text()
+         $('.current-driver').text( txt );
+         $('.current-driver').addClass('item-highlight');
 
-         humane.log(msg, { waitForMove: true });
         })
         .fail(function() {
           humane.log ('Something has gone horribly wrong.');

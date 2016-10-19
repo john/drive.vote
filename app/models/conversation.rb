@@ -1,6 +1,7 @@
 class Conversation < ApplicationRecord
   include HasAddress
   include ToFromAddressable
+  include GetDateFromPicker
 
   belongs_to :ride_zone
   belongs_to :user
@@ -13,6 +14,11 @@ class Conversation < ApplicationRecord
   after_create :notify_creation
   around_save :notify_update
 
+  validate :phone_numbers_match_first_message
+
+  attr_accessor :pickup_day
+  attr_accessor :pickup_time
+
   STATUS_STRINGS = {
     messaging: 'MESSAGING', help_needed: 'NEEDS&nbsp;HELP', scheduled: 'SCHEDULED',
     waiting_acceptance: 'WAIT&nbsp;ACCEPT',
@@ -20,9 +26,6 @@ class Conversation < ApplicationRecord
     waiting_pickup: 'WAITING', pickup_overdue: 'OVERDUE', new_ride: 'NEW',
     driving: 'DRIVING', completion_overdue: 'OVERDUE', complete: 'COMPLETE'
   }.freeze
-
-
-  validate :phone_numbers_match_first_message
 
   enum status: { sms_created: -1, in_progress: 0, ride_created: 1, closed: 2, help_needed: 3 }
   enum lifecycle: {
