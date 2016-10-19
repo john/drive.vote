@@ -71,10 +71,14 @@ class Conversation < ApplicationRecord
   end
 
   def self.send_staff_sms(ride_zone, user, body, timeout)
-    sms = TwilioService.send_message(
+    sms = begin
+      TwilioService.send_message(
         { from: ride_zone.phone_number_normalized, to: user.phone_number, body: body},
-        timeout
-    )
+        timeout)
+    rescue => e
+      logger.warn "TWILIO ERROR #{e.message} User id #{user.id} Message #{body}"
+      return "Twilio error #{e.message}"
+    end
     if sms.error_code
       logger.warn "TWILIO ERROR #{sms.error_code} User id #{user.id} Message #{body}"
       return "Communication error #{sms.error_code}"
