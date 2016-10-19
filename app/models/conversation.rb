@@ -126,9 +126,13 @@ class Conversation < ApplicationRecord
       self.ride_zone.bot_disabled
   end
 
+  def user_language
+    user.language == 'unknown' ? 'en' : user.language
+  end
+
   def attempt_confirmation
     if self.ride_confirmed.nil?
-      body = I18n.t(:confirm_ride, locale: user.language, time: ride.pickup_in_time_zone.strftime('%l:%M %P'))
+      body = I18n.t(:confirm_ride, locale: user_language, time: ride.pickup_in_time_zone.strftime('%l:%M %P'))
       sms = Conversation.send_staff_sms(ride_zone, user, body, Rails.configuration.twilio_timeout)
       return if sms.is_a?(String) # error sending, will try again
       ActiveRecord::Base.transaction do
@@ -143,9 +147,9 @@ class Conversation < ApplicationRecord
 
   def notify_voter_of_assignment(driver)
     if driver
-      body = I18n.t(:driver_assigned, locale: user.language, name: driver.name, vehicle: driver.description)
+      body = I18n.t(:driver_assigned, locale: user_language, name: driver.name, vehicle: driver.description)
     else
-      body = I18n.t(:driver_cleared, locale: user.language)
+      body = I18n.t(:driver_cleared, locale: user_language)
     end
     sms = Conversation.send_staff_sms(ride_zone, user, body, Rails.configuration.twilio_timeout)
     return if sms.is_a?(String) # todo: track state and retry?

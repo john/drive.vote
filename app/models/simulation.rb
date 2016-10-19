@@ -37,7 +37,7 @@ class Simulation < ActiveRecord::Base
   end
 
   def self.can_start_new?
-    Simulation.where.not(status: [:failed, :completed]).count == 0
+    Simulation.where.not(status: [:stopped, :failed, :completed]).count == 0
   end
 
   def self.clear_all_data
@@ -153,7 +153,7 @@ class Simulation < ActiveRecord::Base
     sim_def.rides.each_with_index do |ride, i|
       voter = User.create!(name: next_random_name, user_type: :voter, ride_zone: @ride_zone,
                    email: "simvoter#{i}@example.com", password: '123456789', city: @ride_zone.city,
-                   state: @ride_zone.state, zip: @ride_zone.zip,
+                   state: @ride_zone.state, zip: @ride_zone.zip, language: :en,
                    phone_number: '510-617-%03d7' % i )
       # simulate a conversation created by the staff person creating this ride
       convo = Conversation.create(user: voter, from_phone: @ride_zone.phone_number, to_phone: voter.phone_number,
