@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161013194854) do
+ActiveRecord::Schema.define(version: 20161018023648) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20161013194854) do
     t.boolean  "bot_disabled",                                      default: false,  null: false
     t.decimal  "nearby_radius",           precision: 6,  scale: 2,  default: "10.0"
     t.string   "email"
+    t.decimal  "max_pickup_radius",       precision: 6,  scale: 2,  default: "20.0"
     t.index ["phone_number"], name: "index_ride_zones_on_phone_number", unique: true, using: :btree
     t.index ["slug"], name: "index_ride_zones_on_slug", unique: true, using: :btree
   end

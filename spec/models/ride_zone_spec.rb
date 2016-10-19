@@ -71,6 +71,22 @@ RSpec.describe RideZone, type: :model do
      expect( rz.unavailable_drivers.first ).to eq(d)
   end
 
+  describe 'pickup radius' do
+    let(:rz) { create :ride_zone, max_pickup_radius: 1, latitude: 34, longitude: -122 }
+
+    it 'reports nearby points as within radius' do
+      expect(rz.is_within_pickup_radius?(34.001, -122.001)).to be_truthy
+    end
+
+    it 'reports farther points as outside radius' do
+      expect(rz.is_within_pickup_radius?(35, -123)).to be_falsey
+    end
+
+    it 'returns true if no ride zone lat/long' do
+      rz.update_attributes({latitude: nil, longitude: nil})
+      expect(rz.is_within_pickup_radius?(35, -123)).to be_truthy
+    end
+  end
 
   it 'calculates stats' do
     rz = create :ride_zone

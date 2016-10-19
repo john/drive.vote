@@ -13,7 +13,7 @@ module RideZoneParams
     params.require(:ride_zone).permit(:name, :description, :phone_number, :email, :short_code, :city, :county,
                                       :state, :zip, :country, :latitude, :longitude, :slug, :bot_disabled,
                                       :admin_name, :admin_email, :admin_phone_number, :admin_password,
-                                      :nearby_radius)
+                                      :nearby_radius, :max_pickup_radius)
   end
 
 end
