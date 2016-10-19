@@ -2,13 +2,13 @@ module ToFromAddressable
   extend ActiveSupport::Concern
 
   included do
-    after_validation :geocode_to, if: ->(obj){ (obj.to_address_changed? ||
+    before_validation :geocode_to, if: ->(obj){ (obj.to_address_changed? ||
         obj.to_city_changed? ||
         obj.to_state_changed?) &&
         !(obj.to_latitude_changed? || obj.to_longitude_changed?)
     }
 
-    after_validation :geocode_from, if: ->(obj){ (obj.from_address_changed? ||
+    before_validation :geocode_from, if: ->(obj){ (obj.from_address_changed? ||
         obj.from_city_changed? ||
         obj.from_state_changed?) &&
         !(obj.from_latitude_changed? ||

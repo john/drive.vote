@@ -31,7 +31,7 @@ class RideZone < ApplicationRecord
     end
   end
 
-  after_validation :geocode, if: ->(obj){ obj.zip.present? && obj.zip_changed? }
+  after_validation :geocode, if: ->(obj){ obj.zip.present? && obj.zip_changed? && !obj.latitude_changed? }
   after_validation :set_time_zone, if: ->(obj){ obj.latitude.present? && obj.latitude_changed? }
   after_validation :reverse_geocode, if: ->(obj){ (obj.latitude.present? && obj.latitude_changed?) || (obj.longitude.present? && obj.longitude_changed?) }
 
@@ -95,6 +95,13 @@ class RideZone < ApplicationRecord
 
   def current_time
     Time.use_zone(self.time_zone) do Time.current; end
+  end
+
+  def is_within_pickup_radius?(latitude, longitude)
+    return true unless self.latitude && self.longitude
+    pt = Geokit::LatLng.new(latitude, longitude)
+    rz_center = Geokit::LatLng.new(self.latitude, self.longitude)
+    pt.distance_to(rz_center) <= self.max_pickup_radius
   end
 
   # call this to broadcast an event for this ride zone

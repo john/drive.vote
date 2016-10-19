@@ -3,9 +3,10 @@ require 'rails_helper'
 RSpec.describe Conversation, type: :model do
   it_behaves_like 'to_from_addressable'
 
-  let(:ride_address_attrs) {{from_address: 'from', from_city: 'fcity', from_latitude: 1, from_longitude: 2,
+  let(:ride_address_attrs) {{from_address: '106 Dunbar Avenue', from_city: 'Carnegie',
+                             from_latitude: 40.409, from_longitude: -80.090,
                              to_address: 'to', to_city: 'tcity', to_latitude: 3, to_longitude: 4}}
-  let(:full_address_attrs) { {from_latitude: 34.5, from_longitude: -122.6, from_confirmed: true, to_latitude: 34.5, to_longitude: -122.6, to_confirmed: true} }
+  let(:full_address_attrs) { {from_latitude: 40.4, from_longitude: -80.1, from_confirmed: true, to_latitude: 40.4, to_longitude: -80.1, to_confirmed: true} }
 
   describe 'validations' do
     describe 'phone_numbers_match_first_message' do
@@ -91,6 +92,21 @@ RSpec.describe Conversation, type: :model do
       msg = Conversation.last.messages.last
       expect(msg.sent_by).to eq('Staff')
       expect(msg.body).to eq(body)
+    end
+  end
+
+  describe 'user language' do
+    let(:rz) { create :ride_zone }
+    let(:user) { create :user, language: :es }
+    let(:convo) { create :complete_conversation, ride_zone: rz, user: user, pickup_time: 5.minutes.from_now }
+
+    it 'reports user language' do
+      expect(convo.user_language).to eq('es')
+    end
+
+    it 'reports language if unknown' do
+      user.update_attribute(:language, :unknown)
+      expect(convo.user_language).to eq('en')
     end
   end
 
@@ -208,10 +224,10 @@ RSpec.describe Conversation, type: :model do
     expect(c.from_city).to eq('tcity')
     expect(c.from_latitude).to eq(3)
     expect(c.from_longitude).to eq(4)
-    expect(c.to_address).to eq('from')
-    expect(c.to_city).to eq('fcity')
-    expect(c.to_latitude).to eq(1)
-    expect(c.to_longitude).to eq(2)
+    expect(c.to_address).to eq('106 Dunbar Avenue')
+    expect(c.to_city).to eq('Carnegie')
+    expect(c.to_latitude.to_f).to eq(40.409)
+    expect(c.to_longitude.to_f).to eq(-80.090)
   end
 
   it 'updates status timestamp on create' do
