@@ -221,11 +221,14 @@ export function submitLocation(location) {
 }
 
 export function fetchWaitingRides(location) {
-
+    let url = '/waiting_rides';
+    if (location) {
+        url += `?latitude=${location.latitude}&longitude=${location.longitude}`;
+    }
     return function(dispatch) {
         dispatch(requestStatus())
             // fetch(`${api}/waiting_rides?latitude=28.532&longitude=-81.37`, {
-        fetch(`${api}/waiting_rides?latitude=${location.latitude}&longitude=${location.longitude}`, {
+        fetch(`${api}${url}`, {
                 credentials: 'include',
             })
             .then(parseJSON)
