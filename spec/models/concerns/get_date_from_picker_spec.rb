@@ -49,6 +49,5 @@ shared_examples_for 'get_date_from_picker' do
       end
     end
   end
-  end
 
 end
