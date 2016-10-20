@@ -100,7 +100,7 @@ export function attemptCancel() {
 export function cancelRideSuccess(ride) {
     return {
         type: 'RIDE_CANCELLED',
-        active_ride: {}
+        active_ride: null
     }
 }
 

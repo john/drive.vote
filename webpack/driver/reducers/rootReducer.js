@@ -29,7 +29,6 @@ function driverState(state = {
                 update_location_interval: action.update_location_interval * 100,
                 active_ride: action.active_ride,
             })
-
         case 'RECEIVE_RIDE_ZONE_STATS':
             return Object.assign({}, state, {
                 ride_zone_stats: {
@@ -44,7 +43,8 @@ function driverState(state = {
             return Object.assign({}, state, {
                 isFetching: false,
                 available: false,
-                active_ride: {}
+                active_ride: null,
+                completedRide: null
             })
         case 'DRIVER_AVAILABLE':
             return Object.assign({}, state, {
@@ -63,7 +63,7 @@ function driverState(state = {
                 isFetching: false,
                 waiting_rides_interval: 0,
                 active_ride: action.active_ride,
-                changePending: false
+                changePending: false,
             })
         case 'RIDE_CANCELLED':
             return Object.assign({}, state, {
@@ -76,7 +76,9 @@ function driverState(state = {
             return Object.assign({}, state, {
                 isFetching: false,
                 active_ride: action.active_ride,
-                changePending: false
+                changePending: false,
+                completedRide: null
+
             })
 
         case 'RIDE_COMPLETE':
@@ -90,7 +92,6 @@ function driverState(state = {
 
         case 'LOCATION_UPDATED':
             return Object.assign({}, state, {
-                isFetching: false,
                 location: {
                     latitude: action.location.latitude,
                     longitude: action.location.longitude
@@ -99,7 +100,6 @@ function driverState(state = {
 
         case 'LOCATION_SUBMITTED':
             return Object.assign({}, state, {
-                isFetching: false,
                 update_location_interval: action.update_location_interval * 100,
             })
         case 'API_ERROR':

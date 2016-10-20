@@ -1,16 +1,12 @@
 import React from 'react';
 import autobind from 'autobind-decorator';
-import { isObjectEqual } from '../helpers/Equal'
-
 import PendingRide from '../components/PendingRide';
 import ActiveRide from '../components/ActiveRide';
 import UnavailableButton from '../components/UnavailableButton';
-
 @autobind
 class RideListContainer extends React.Component {
 
     render() {
-        console.log('WaitingRidesContainer');
         const availableRides = this.props.state.driverState.rides;
         const isFetching = this.props.state.driverState.isFetching;
         let completedRide;

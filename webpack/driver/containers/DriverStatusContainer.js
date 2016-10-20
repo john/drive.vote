@@ -1,6 +1,5 @@
 import React from 'react';
 import autobind from 'autobind-decorator';
-import { isObjectEqual } from '../helpers/Equal'
 import RideContainer from '../containers/RideContainer';
 import Unavailable from '../components/Unavailable';
 import Loading from '../components/Loading';
