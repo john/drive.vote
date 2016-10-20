@@ -206,8 +206,8 @@ export function submitAvailable() {
 
 export function submitLocation(location) {
     return function(dispatch) {
-        // fetch(`${api}/location?latitude=28.532&longitude=-81.37`, {
-        fetch(`${api}/location?latitude=${location.latitude}&longitude=${location.longitude}`, {
+        fetch(`${api}/location?latitude=28.532&longitude=-81.37`, {
+                // fetch(`${api}/location?latitude=${location.latitude}&longitude=${location.longitude}`, {
                 credentials: 'include',
                 method: 'POST'
             })
@@ -224,8 +224,8 @@ export function fetchWaitingRides(location) {
 
     return function(dispatch) {
         dispatch(requestStatus())
-        // fetch(`${api}/waiting_rides?latitude=28.532&longitude=-81.37`, {
-        fetch(`${api}/waiting_rides?latitude=${location.latitude}&longitude=${location.longitude}`, {
+        fetch(`${api}/waiting_rides?latitude=28.532&longitude=-81.37`, {
+                // fetch(`${api}/waiting_rides?latitude=${location.latitude}&longitude=${location.longitude}`, {
                 credentials: 'include',
             })
             .then(parseJSON)
@@ -270,8 +270,8 @@ export function cancelRide(ride) {
 }
 
 export function pickupRider(ride) {
-    return function(dispatch) {;
-        dispatch(attemptPickup())
+    return function(dispatch) {
+        dispatch(attemptPickup());
         fetch(`${api}/pickup_ride?ride_id=${ride.id}`, {
                 credentials: 'include',
                 method: 'POST',
@@ -284,7 +284,6 @@ export function pickupRider(ride) {
             )
     }
 }
-
 
 export function completeRide(ride) {
     return function(dispatch) {

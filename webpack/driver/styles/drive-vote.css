@@ -207,13 +207,13 @@ label {
     background: #f2f2f2;
 }
 
-.fetching .btn-api:focus {
+.fetching .btn-api {
     opacity: .5;
     pointer-events: none;
     position: relative;
 }
 
-.fetching .btn-api:focus:after {
+.fetching .btn-api:after {
     content: "\f110";
     font-family: 'FontAwesome';
     animation: fa-spin 2s infinite linear;

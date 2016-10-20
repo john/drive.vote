@@ -10,9 +10,15 @@ function driverState(state = {
     switch (action.type) {
         case 'REQUEST_STATUS':
         case 'REQUEST_TOGGLE':
-        case 'RIDE_CLAIM_ATTEMPT':
             return Object.assign({}, state, {
                 isFetching: true,
+            })
+        case 'RIDE_CLAIM_ATTEMPT':
+        case 'RIDE_CANCEL_ATTEMPT':
+        case 'RIDER_PICKUP_ATTEMPT':
+        case 'RIDE_COMPLETE_ATTEMPT':
+            return Object.assign({}, state, {
+                changePending: true
             })
         case 'RECEIVE_STATUS':
             return Object.assign({}, state, {
@@ -56,25 +62,30 @@ function driverState(state = {
             return Object.assign({}, state, {
                 isFetching: false,
                 waiting_rides_interval: 0,
-                active_ride: action.active_ride
+                active_ride: action.active_ride,
+                changePending: false
             })
         case 'RIDE_CANCELLED':
             return Object.assign({}, state, {
                 isFetching: false,
-                active_ride: null
+                active_ride: null,
+                changePending: false
             })
         case 'RIDER_PICKUP':
             action.active_ride.status = 'picked_up';
             return Object.assign({}, state, {
                 isFetching: false,
-                active_ride: action.active_ride
+                active_ride: action.active_ride,
+                changePending: false
             })
 
         case 'RIDE_COMPLETE':
             action.active_ride.status = 'complete';
             return Object.assign({}, state, {
                 isFetching: false,
-                active_ride: action.active_ride
+                active_ride: null,
+                changePending: false,
+                completedRide: action.active_ride
             })
 
         case 'LOCATION_UPDATED':
@@ -96,7 +107,7 @@ function driverState(state = {
                 error: String(action.message),
                 isFetching: false
             })
-      case 'API_ERROR_CLEAR':
+        case 'API_ERROR_CLEAR':
             return Object.assign({}, state, {
                 error: '',
             })
