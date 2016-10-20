@@ -206,8 +206,8 @@ export function submitAvailable() {
 
 export function submitLocation(location) {
     return function(dispatch) {
-        fetch(`${api}/location?latitude=28.532&longitude=-81.37`, {
-                // fetch(`${api}/location?latitude=${location.latitude}&longitude=${location.longitude}`, {
+        // fetch(`${api}/location?latitude=28.532&longitude=-81.37`, {
+        fetch(`${api}/location?latitude=${location.latitude}&longitude=${location.longitude}`, {
                 credentials: 'include',
                 method: 'POST'
             })
@@ -224,8 +224,8 @@ export function fetchWaitingRides(location) {
 
     return function(dispatch) {
         dispatch(requestStatus())
-        fetch(`${api}/waiting_rides?latitude=28.532&longitude=-81.37`, {
-                // fetch(`${api}/waiting_rides?latitude=${location.latitude}&longitude=${location.longitude}`, {
+            // fetch(`${api}/waiting_rides?latitude=28.532&longitude=-81.37`, {
+        fetch(`${api}/waiting_rides?latitude=${location.latitude}&longitude=${location.longitude}`, {
                 credentials: 'include',
             })
             .then(parseJSON)

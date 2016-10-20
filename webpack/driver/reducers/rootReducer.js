@@ -87,7 +87,8 @@ function driverState(state = {
                 isFetching: false,
                 active_ride: null,
                 changePending: false,
-                completedRide: action.active_ride
+                completedRide: action.active_ride,
+                rides: []
             })
 
         case 'LOCATION_UPDATED':
