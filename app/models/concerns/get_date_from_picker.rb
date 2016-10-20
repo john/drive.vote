@@ -1,17 +1,28 @@
 module GetDateFromPicker
   extend ActiveSupport::Concern
 
-  def transfer_date_to_pickup_at
+  def transfer_date_to_pickup_at(time_zone, pickup_day, pickup_time)
     if self.pickup_at.blank?
-      if Chronic.parse(params[:pickup_day]) && Chronic.parse(params[:pickup_time])
-        from_date_time = Chronic.parse( [params[:pickup_day], params[:pickup_time]].join(' ') )
-        @ride.pickup_at =  from_date_time
+
+      # TODO: ditch Chronic?
+      if Chronic.parse(pickup_day) && Chronic.parse(pickup_time)
+
+        # Because this is simply the parsed version of the date/time they entered themselves,
+        # can we safely assume it already is in the local timezone, and we don't need to manipulate it?
+        concatenated_time = Chronic.parse( [pickup_day, pickup_time].join(', ') )
+        self.pickup_at =  concatenated_time
+        return true
       else
-        @ride.errors.add(:pickup_at, :invalid)
-        @msg = "Please fill in scheduled date and time."
-        flash[:notice] = @msg
-        redirect_back(fallback_location: root_path) and return
+        # TODO: normalize to pickup_at when possible
+        if self.class == Conversation
+          self.errors.add(:pickup_time, :invalid)
+        else
+          self.errors.add(:pickup_at, :invalid)
+        end
+        return false
       end
+    else
+      return false
     end
   end
 

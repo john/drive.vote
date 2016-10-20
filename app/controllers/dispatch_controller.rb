@@ -21,19 +21,23 @@ class DispatchController < ApplicationController
     @available_drivers = @conversation.ride_zone.available_drivers
 
     if @conversation.ride.present?
-      # if params[:edit].blank?
-      #   render partial: 'ride_info' # show ride info
-      # else
-        @action =  'Edit'
-        @obj = @conversation.ride
-        render partial: 'ride_form'
-      # end
-
+      @action =  'Edit'
+      @obj = @conversation.ride
     elsif @conversation.ride.blank? # create ride
       @action =  'Create'
       @obj = @conversation
-      render partial: 'ride_form'
     end
+
+    # TODO: refactor Conversation to also use pickup_at
+    if @obj.class == Ride
+      @obj.pickup_day = @obj.pickup_at.try(:strftime, "%-m/%-d/%Y") || '11/8/2016'
+      @obj.pickup_time = @obj.pickup_at.try(:strftime, "%l%P") || '7am'
+    else
+      @obj.pickup_day = @obj.pickup_time.try(:strftime, "%-m/%-d/%Y") || '11/8/2016'
+      @obj.pickup_time = @obj.pickup_time.try(:strftime, "%l%P") || '7am'
+    end
+
+    render partial: 'ride_form'
   end
 
   def drivers

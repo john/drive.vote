@@ -92,14 +92,29 @@ DispatchController.prototype = {
     });
   },
 
+  // url needs to be passed in because we may be hitting either the ride or conversation endpoint
+  attachDatePicker: function (url, pickup_at_date_el, pickup_at_time_el) {
+    $( pickup_at_date_el + ', ' + pickup_at_time_el ).change( function(e) {
+      if( $(pickup_at_date_el).val() && $(pickup_at_time_el).val() ) {
+        var value =  $(pickup_at_date_el).val() + $(pickup_at_time_el).val();
+
+        $.post( url, {name: 'pickup_at', value: value}, function() {
+          $('#pickupdaytime').addClass('item-highlight');
+        }).fail(function() {
+          humane.log ('Something has gone horribly wrong.');
+        });
+      }
+      e.preventDefault();
+    });
+
+  },
+
   attachDriverSelect: function (rzid, id, el, action) {
     if (action === undefined) {
       action = 'create';
     }
 
     $( el ).change( function(e) {
-
-      console.log( 'ya clicked it');
       if((action=='edit') && (el == '#driver_select')) {
         // if it's an edit, there's already a ride, just change the driver, on the ride object
         var url = '/api/1/ride_zones/' + rzid + '/assign_ride?driver_id=' + $(el).val() + '&ride_id=' + id;
@@ -110,15 +125,24 @@ DispatchController.prototype = {
         var msg = 'A new ride was created! It should appear in the \'rides\' column, and on the map.';
       }
 
-      $.post( url, function() {
+
+      // success: function(responseData, status, xhr) {
+      //   self._botDisabled = responseData.bot_disabled;
+
+
+      $.post( url, function(responseData, status, xhr) {
          var txt = $(el).find(":selected").text()
          $('.current-driver').text( txt );
          $('.current-driver').addClass('item-highlight');
 
-        })
-        .fail(function() {
-          humane.log ('Something has gone horribly wrong.');
-        });
+         // update status badge with current status
+         console.log( responseData ); //.conversation.ride.status)
+
+         $(".modal-ride-status").text('foo');
+
+      }).fail(function() {
+        humane.log ('Something has gone horribly wrong.');
+      });
       e.preventDefault();
     });
   },

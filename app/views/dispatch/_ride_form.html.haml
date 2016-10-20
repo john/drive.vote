@@ -1,9 +1,7 @@
-- url = send("update_attribute_api_v1_#{@obj.class.name.downcase}_path", @obj)
-
 %div{style: "font-size: 13px"}
   status
-.modal-ride-status{style: "background-color: gray; text-align:center;"}
-  = Conversation::STATUS_STRINGS[ @conversation.ride.status.to_sym ].html_safe
+.modal-ride-status
+  = Conversation::STATUS_STRINGS[ @obj.status.to_sym ].html_safe
 
 %table
   / - if @action == 'Edit'
@@ -12,6 +10,8 @@
   /       Ride created:
   /     %td.conv-field
   /       #{time_ago_in_words(@conversation.ride.created_at)} ago
+
+  - url = send("update_attribute_api_v1_#{@obj.class.name.downcase}_path", @obj)
 
   %tr
     %td.conv-label
@@ -39,11 +39,9 @@
     %td.conv-label
       PICKUP TIME
     %td.conv-field
-      / %a.to_from{href: '#', id:"pickup_time", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"Pickup time"}
-      /   = @obj.send(:pickup_time)
       %p#pickupdaytime
-        %input.date.start#pickup_at_date{type: 'text', name: "pickup_day", value: "11/8/2016", maxlength: 10}
-        %input.time.start#pickup_at_time{type: 'text', name: "pickup_time", placeholder: "Select a time", required: 'true', maxlength: 8}
+        %input.date.start#pickup_at_date{type: 'text', name: "pickup_day", value: "#{@obj.pickup_day}", maxlength: 10}
+        %input.time.start#pickup_at_time{type: 'text', name: "pickup_time", value: "#{@obj.pickup_time}", placeholder: "Select a time", required: 'true', maxlength: 8}
 
   %tr
     %td.conv-label
@@ -63,35 +61,32 @@
           %i
             Unassigned
 
-  %tr
-    %td.conv-label
-      SET DRIVER
-    %td.conv-field
-      - if @zone_driver_count == 0
-        %i
-          There are no drivers assigned to this zone.
-      - else
-        - if @available_drivers.present? || @action == 'Edit'
-
-          %select{id: 'driver_select'}
-            %option
-              Select driver:
-
-            - if @obj.class == Ride && driver = @obj.send(:driver)
-              - if driver_name = driver.try(:name)
-                %option{value: driver.id}
-                  = driver_name
-
-            - @available_drivers.each do |driver|
-              %option{value: driver.id}
-                = driver.name
-        - else
+  - unless @obj.status_before_type_cast > 2 # ie, it's assigned, picked up, complete, or done
+    %tr
+      %td.conv-label
+        SET DRIVER
+      %td.conv-field
+        - if @zone_driver_count == 0
           %i
-            None of the #{@zone_driver_count} drivers in this zone are currently available.
+            There are no drivers assigned to this zone.
+        - else
+          - if @available_drivers.present? || @action == 'Edit'
 
-            / %div
-            /   = link_to "#{@action} Ride", '#', id: "create_or_edit_ride", class: 'btn btn-primary', style: 'margin-top: 30px;'
+            %select{id: 'driver_select'}
+              %option
+                Select driver:
 
+              - if @obj.class == Ride && driver = @obj.send(:driver)
+                - if driver_name = driver.try(:name)
+                  %option{value: driver.id}
+                    = driver_name
+
+              - @available_drivers.each do |driver|
+                %option{value: driver.id}
+                  = driver.name
+          - else
+            %i
+              None of the #{@zone_driver_count} drivers in this zone are currently available.
 
   :javascript
     $( function() {
@@ -102,6 +97,8 @@
       $('#additional_passengers').editable({ mode: 'inline'});
       $('#pickup_time').editable({ mode: 'inline'});
       dispatchController.attachDriverSelect(#{@obj.ride_zone_id}, #{@obj.id}, "#driver_select", "#{@action.downcase}");
+
+      dispatchController.attachDatePicker("#{url}", "#pickup_at_date", "#pickup_at_time");
 
       // initialize input widgets first
       $('#pickupdaytime .time').timepicker({
@@ -117,6 +114,9 @@
       // initialize datepair
       var dpEl = document.getElementById('pickupdaytime');
       var datepair = new Datepair(dpEl);
+
+
+
 
       locationAutocomplete.attach('#ride_city_state', '#ride_from_city', '#ride_from_state', '#ride_from_zip');
 

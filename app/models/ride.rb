@@ -1,5 +1,5 @@
 class Ride < ApplicationRecord
-  belongs_to :ride_zone
+  include GetDateFromPicker
 
   SWITCH_TO_WAITING_ASSIGNMENT = 15 # how long in minutes before pickup time to change status to waiting_assignment
 
@@ -13,6 +13,7 @@ class Ride < ApplicationRecord
     waiting_acceptance: 6
   }
 
+  belongs_to :ride_zone
   belongs_to :driver, class_name: 'User', foreign_key: :driver_id
   belongs_to :voter, class_name: 'User', foreign_key: :voter_id
   belongs_to :ride_zone
@@ -36,7 +37,7 @@ class Ride < ApplicationRecord
 
   before_save :note_status_update
   before_save :check_waiting_assignment
-  # before_save :notify_voter_about_driver
+  before_save :notify_voter_about_driver
   around_save :notify_update
   before_save :close_conversation_when_complete
 
