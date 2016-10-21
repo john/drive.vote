@@ -80,6 +80,11 @@ class Ride < ApplicationRecord
     end
   end
 
+  # return true if ride can be assigned
+  def assignable?
+    %w(scheduled waiting_assignment ).include?(self.status)
+  end
+
   # returns true if assignment worked
   def assign_driver driver, allow_reassign = false, needs_acceptance = false
     self.with_lock do # reloads record

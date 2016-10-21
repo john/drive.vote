@@ -10,7 +10,14 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
   this.OVERDUE_PICKUP = 15*60*1000;
   this.OVERDUE_COMPLETION = 30*60*1000;
   this.STILL_NEW_RIDE = 10*60*1000;
-  this._statusStrings = <%= Conversation::STATUS_STRINGS.to_json %>;
+
+  this._statusStrings = {
+      messaging: 'MESSAGING', help_needed: 'NEEDS&nbsp;HELP', scheduled: 'SCHEDULED',
+      waiting_acceptance: 'WAIT&nbsp;ACCEPT',
+      waiting_assignment: 'NEEDS&nbsp;DRIVER', assignment_overdue: 'OVERDUE',
+      waiting_pickup: 'WAITING', pickup_overdue: 'OVERDUE', new_ride: 'NEW',
+      driving: 'DRIVING', completion_overdue: 'OVERDUE', complete: 'COMPLETE'
+    };
 
   this._statusPinURLs = {
     messaging: "<%= asset_path('rider-waiting-assignment.png')%>",
@@ -96,7 +103,7 @@ DispatchController.prototype = {
   attachDatePicker: function (url, pickup_at_date_el, pickup_at_time_el) {
     $( pickup_at_date_el + ', ' + pickup_at_time_el ).change( function(e) {
       if( $(pickup_at_date_el).val() && $(pickup_at_time_el).val() ) {
-        var value =  $(pickup_at_date_el).val() + $(pickup_at_time_el).val();
+        var value =  $(pickup_at_date_el).val() + ', ' + $(pickup_at_time_el).val();
 
         $.post( url, {name: 'pickup_at', value: value}, function() {
           $('#pickupdaytime').addClass('item-highlight');

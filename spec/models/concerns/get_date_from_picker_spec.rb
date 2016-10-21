@@ -4,8 +4,13 @@ shared_examples_for 'get_date_from_picker' do
 
   # TODO: implement soon
   describe 'for ride' do
-    let(:model) { described_class } # the class that includes the concern
-    let(:instance_to_get_date_from) { FactoryGirl.create(model.to_s.underscore.to_sym) }
+    # let(:model) { described_class } # the class that includes the concern
+    # let(:instance_to_get_date_from) { FactoryGirl.create(model.to_s.underscore.to_sym) }
+
+    context 'transfer_date_to_pickup_at parses web input' do
+      ride = create(:ride)
+
+    end
 
     context 'pickup_day or pickup_time have changed' do
       it "should change pickup_at" do

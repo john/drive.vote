@@ -8,7 +8,17 @@ module Api::V1
 
     def update_attribute
       if(params.has_key?(:name) && params.has_key?(:value))
-        if @ride.update_attribute( params[:name], params[:value] )
+
+        if params[:name] == 'pickup_at'
+          Time.use_zone(@ride.ride_zone.time_zone) do
+            Time.zone.strptime(params[:value], "%m/%d/%Y, %I:%M%p")
+          end
+          val = origin_time
+        else
+          val = params[:value]
+        end
+
+        if @ride.update_attribute( params[:name], val )
           render json: {response: @ride.reload.api_json}
         else
           render json: {error: @ride.errors}
