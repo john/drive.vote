@@ -193,6 +193,10 @@ class Conversation < ApplicationRecord
     Conversation.statuses.keys - ['closed']
   end
 
+  def voter_phone_blacklisted?
+    self.blacklisted_phone.nil? ? false : true
+  end
+
   def blacklist_voter_phone
     BlacklistedPhone.create!(phone: self.from_phone, conversation_id: self.id)
   end
