@@ -32,5 +32,12 @@
         - else
           %td Not yet
         %td= link_to 'Close', close_admin_conversation_path(conversation), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }, method: :POST
+        - if conversation.voter_phone_blacklisted?
+          %td
+            %span.btn-default.btn-xs Blacklisted
+        - else
+          %td= link_to 'Blacklist #', '#', class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }, method: :POST
+
+
         - if include_show
           %td= link_to 'Show', admin_conversation_path(conversation)
