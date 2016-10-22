@@ -12,7 +12,6 @@ class Unavilable extends React.Component {
 
     componentWillMount() {
         this.props.fetchRideZoneStats();
-
     }
 
     render() {

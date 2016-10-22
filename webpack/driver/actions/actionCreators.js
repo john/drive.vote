@@ -100,7 +100,7 @@ export function attemptCancel() {
 export function cancelRideSuccess(ride) {
     return {
         type: 'RIDE_CANCELLED',
-        active_ride: {}
+        active_ride: null
     }
 }
 
@@ -221,11 +221,14 @@ export function submitLocation(location) {
 }
 
 export function fetchWaitingRides(location) {
-
+    let url = '/waiting_rides';
+    if (location) {
+        url += `?latitude=${location.latitude}&longitude=${location.longitude}`;
+    }
     return function(dispatch) {
         dispatch(requestStatus())
-        // fetch(`${api}/waiting_rides?latitude=28.532&longitude=-81.37`, {
-        fetch(`${api}/waiting_rides?latitude=${location.latitude}&longitude=${location.longitude}`, {
+            // fetch(`${api}/waiting_rides?latitude=28.532&longitude=-81.37`, {
+        fetch(`${api}${url}`, {
                 credentials: 'include',
             })
             .then(parseJSON)
@@ -270,8 +273,8 @@ export function cancelRide(ride) {
 }
 
 export function pickupRider(ride) {
-    return function(dispatch) {;
-        dispatch(attemptPickup())
+    return function(dispatch) {
+        dispatch(attemptPickup());
         fetch(`${api}/pickup_ride?ride_id=${ride.id}`, {
                 credentials: 'include',
                 method: 'POST',
@@ -284,7 +287,6 @@ export function pickupRider(ride) {
             )
     }
 }
-
 
 export function completeRide(ride) {
     return function(dispatch) {

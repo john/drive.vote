@@ -11,8 +11,10 @@ class Main extends React.Component {
 
     render() {
         let fetchClass;
-        if (this.props.state.driverState.isFetching) {
+        if (this.props.state.driverState.changePending) {
             fetchClass = 'fetching';
+        } else {
+            fetchClass = '';
         }
         return (
             <div className={fetchClass}>

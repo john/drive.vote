@@ -47,8 +47,8 @@ class LocationManager extends React.Component {
     }
 
     componentDidMount() {
-        const locationInterval = setInterval(() => this.props.submitLocation(this.props.state.driverState.location), 5000);
-        const ridesInterval = setInterval(() => this.props.fetchWaitingRides(this.props.state.driverState.location), 5000);
+        const locationInterval = setInterval(() => this.props.submitLocation(this.props.state.driverState.location), 10000);
+        const ridesInterval = setInterval(() => this.props.fetchWaitingRides(this.props.state.driverState.location), 10000);
     }
 
     render() {
