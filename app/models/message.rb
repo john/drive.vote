@@ -55,7 +55,7 @@ class Message < ApplicationRecord
   end
 
   def sent_by
-    if self.to.phony_formatted == self.ride_zone.phone_number.phony_formatted
+    if self.to.phony_formatted(normalize: :US, spaces: '-') == self.ride_zone.phone_number.phony_formatted(normalize: :US, spaces: '-')
       if self.conversation.user.has_role?(:driver, self.ride_zone)
         'Driver'
       else
