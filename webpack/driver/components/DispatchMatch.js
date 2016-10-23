@@ -9,7 +9,7 @@ class DispatchMatch extends React.Component {
     render() {
         const ride = this.props.ride;
         const passengers = 1 + parseInt(ride.additional_passengers);
-        const mapLink = `https://www.google.com/maps?saddr=My+Location&daddr=${ride.from_address}, ${ride.from_city}, ${ride.from_state}`;
+        const mapLink = `http://maps.apple.com/?daddr=${ride.from_address}, ${ride.from_city}, ${ride.from_state}`;
         return (
             <div>
                 <ReactCSSTransitionGroup 
@@ -17,7 +17,7 @@ class DispatchMatch extends React.Component {
                 transitionAppear={true} 
                 transitionAppearTimeout={500}>
                     <div className="panel panel-full p-y-sm dispatcher-match">
-                        <h2 className="m-b-0">Ride Assigned</h2>
+                        <h2 className="m-b-0">Ride Assigned by Dispatch</h2>
                         <a className="directionsLink" target="_blank" href={mapLink}><i className="fa fa-map-marker"></i> Directions</a>
                         <label>Picking up:</label>
                         <h3>{ride.name}</h3>

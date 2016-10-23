@@ -7,11 +7,12 @@ class PendingRideDetail extends React.Component {
     render() {
         const ride = this.props.ride;
         const passengers = 1 + parseInt(ride.additional_passengers);
-        let fromMapLink = `https://www.google.com/maps?saddr=My+Location&daddr=${ride.from_address}, ${ride.from_city}, ${ride.from_state}`;
+        const mapLink = `http://maps.apple.com/?daddr=${ride.from_address}, ${ride.from_city}, ${ride.from_state}`;
+
         return (
             <div className="panel panel-full p-y-sm">
                     <div className="rideDetails">
-                        <a className="directionsLink" target="_blank" href={fromMapLink}><i className="fa fa-map-marker"></i> Directions</a>
+                        <a className="directionsLink" target="_blank" href={mapLink}><i className="fa fa-map-marker"></i> Directions</a>
                             <label>Accept Ride:</label>
                             <h3>{ride.name}</h3>
                         <p>
@@ -30,9 +31,7 @@ class PendingRideDetail extends React.Component {
                     </div>
             </div>
         )
-
     }
 }
-
 
 export default PendingRideDetail;
