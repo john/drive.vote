@@ -129,6 +129,10 @@ label {
     width: 50px;
 }
 
+.nav-links {
+    font-size: 12px;
+}
+
 .bottom-controls.fixed {
     position: fixed;
     bottom: 0;
