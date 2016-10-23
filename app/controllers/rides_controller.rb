@@ -35,8 +35,6 @@ class RidesController < ApplicationController
     rp = ride_params
     @ride = Ride.new(rp)
 
-    # transferred = @ride.transfer_date_to_pickup_at(params[:pickup_day], params[:pickup_time])
-    # if !transferred
     if @ride.pickup_at.blank?
       @msg = "Please fill in scheduled date and time."
       flash[:notice] = @msg
@@ -67,7 +65,6 @@ class RidesController < ApplicationController
       if @user.errors.any?
         @msg = "Problem creating a new user."
         flash[:notice] = @msg
-        # redirect_back(fallback_location: root_path) and return
         render :new and return
       end
     end

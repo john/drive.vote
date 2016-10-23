@@ -99,21 +99,20 @@ DispatchController.prototype = {
     });
   },
 
-  // url needs to be passed in because we may be hitting either the ride or conversation endpoint
-  attachDatePicker: function (url, pickup_at_date_el, pickup_at_time_el) {
-    $( pickup_at_date_el + ', ' + pickup_at_time_el ).change( function(e) {
-      if( $(pickup_at_date_el).val() && $(pickup_at_time_el).val() ) {
-        var value =  $(pickup_at_date_el).val() + ', ' + $(pickup_at_time_el).val();
+  attachRideCreate: function( conversation_id ) {
+    $('.create_ride').click(function(e) {
+      $.post( '/api/1/conversations/'+conversation_id+'/rides', function(responseData, status, xhr) {
+         $('.create_ride').text( 'Created!' );
+         $('.create_ride').addClass('item-highlight');
 
-        $.post( url, {name: 'pickup_at', value: value}, function() {
-          $('#pickupdaytime').addClass('item-highlight');
-        }).fail(function() {
-          humane.log ('Something has gone horribly wrong.');
-        });
-      }
+         // update status badge with current status
+         console.log( 'posted to conv.create_ride, got success' ); //.conversation.ride.status)
+
+      }).fail(function() {
+        humane.log ('Something has gone horribly wrong.');
+      });
       e.preventDefault();
     });
-
   },
 
   attachDriverSelect: function (rzid, id, el, action) {
@@ -131,11 +130,6 @@ DispatchController.prototype = {
         var url = '/api/1/conversations/' + id + '/rides?driver_id=' + $(el).val();
         var msg = 'A new ride was created! It should appear in the \'rides\' column, and on the map.';
       }
-
-
-      // success: function(responseData, status, xhr) {
-      //   self._botDisabled = responseData.bot_disabled;
-
 
       $.post( url, function(responseData, status, xhr) {
          var txt = $(el).find(":selected").text()

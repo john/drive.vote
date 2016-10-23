@@ -78,8 +78,12 @@ class RideZone < ApplicationRecord
     self.active_rides.map {|ar| ar.driver}
   end
 
-  def available_drivers
-    nearby_users.with_role(:driver, self) - unavailable_drivers
+  def available_drivers(all: false)
+    if all
+      User.with_role(:driver, self) - unavailable_drivers
+    else
+      nearby_users.with_role(:driver, self) - unavailable_drivers
+    end
   end
 
   def driving_stats

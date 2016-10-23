@@ -1,0 +1,204 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=,%20,%20New%20York,%20NY,%2015106,%20&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 23 Oct 2016 18:32:15 GMT
+      Expires:
+      - Mon, 24 Oct 2016 18:32:15 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '925'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "New York 25 Service",
+                       "short_name" : "New York 25 Service",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Forest Hills",
+                       "short_name" : "Forest Hills",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "Queens",
+                       "short_name" : "Queens",
+                       "types" : [ "political", "sublocality", "sublocality_level_1" ]
+                    },
+                    {
+                       "long_name" : "Queens County",
+                       "short_name" : "Queens County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New York",
+                       "short_name" : "NY",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "11375",
+                       "short_name" : "11375",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "15106 New York 25 Service, Forest Hills, NY 11375, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.7189679,
+                          "lng" : -73.8378563
+                       },
+                       "southwest" : {
+                          "lat" : 40.7189556,
+                          "lng" : -73.83786569999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.7189679,
+                       "lng" : -73.8378563
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.72031073029149,
+                          "lng" : -73.83651201970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.7176127697085,
+                          "lng" : -73.83920998029151
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "EjYxNTEwNiBOZXcgWW9yayAyNSBTZXJ2aWNlLCBGb3Jlc3QgSGlsbHMsIE5ZIDExMzc1LCBVU0E",
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Middle Road",
+                       "short_name" : "County Rd 48",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Cutchogue",
+                       "short_name" : "Cutchogue",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Southold",
+                       "short_name" : "Southold",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Suffolk County",
+                       "short_name" : "Suffolk County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New York",
+                       "short_name" : "NY",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "11935",
+                       "short_name" : "11935",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "1016",
+                       "short_name" : "1016",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "15106 Middle Rd, Cutchogue, NY 11935, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 41.0155829,
+                          "lng" : -72.5106842
+                       },
+                       "southwest" : {
+                          "lat" : 41.0155722,
+                          "lng" : -72.51069660000002
+                       }
+                    },
+                    "location" : {
+                       "lat" : 41.0155722,
+                       "lng" : -72.5106842
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.0169265302915,
+                          "lng" : -72.50934141970851
+                       },
+                       "southwest" : {
+                          "lat" : 41.0142285697085,
+                          "lng" : -72.51203938029153
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "EikxNTEwNiBNaWRkbGUgUmQsIEN1dGNob2d1ZSwgTlkgMTE5MzUsIFVTQQ",
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sun, 23 Oct 2016 18:32:15 GMT
+recorded_with: VCR 3.0.3

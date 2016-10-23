@@ -1,5 +1,8 @@
+- if current_user.is_super_admin?
+  %div{class: 'item-highlight', style: "font-size: 13px"}
+    @obj is a: #{@obj.class}
+
 -# TODO: sort out statuses of rides v. conversations; copy conversation cell logic in dispatch.js
-  / %div{style: "font-size: 13px"}
   /   status
   / .modal-ride-status
   /   - if @obj.class == Conversation
@@ -8,10 +11,10 @@
   /   - else
   /     foo
 
+
+- url = send("update_attribute_api_v1_#{@obj.class.name.downcase}_path", @obj)
+
 %table
-  - url = send("update_attribute_api_v1_#{@obj.class.name.downcase}_path", @obj)
-
-
   %tr
     %td.conv-label
       FROM
@@ -37,10 +40,10 @@
   %tr
     %td.conv-label
       PICKUP TIME
-    %td.conv-field
-      %p#pickupdaytime
-        %input.date.start#pickup_at_date{type: 'text', name: "pickup_day", value: "#{@obj.pickup_day}", maxlength: 10}
-        %input.time.start#pickup_at_time{type: 'text', name: "pickup_time", value: "#{@obj.pickup_time}", placeholder: "Select a time", required: 'true', maxlength: 8}
+    %td.conv-field#pickup_at
+      -# data-utc=true
+      -# <input type='text' class='flatpickr' data-default-date="#{@pickup_at}" data-enable-time=true>
+      %input{type: 'text', class: 'flatpickr', 'data-default-date': @pickup_at, 'data-enable-time': true}
 
   %tr
     %td.conv-label
@@ -49,6 +52,19 @@
       %a.to_from{href: '#', id:"additional_passengers", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"To address"}
         - passengers = @obj.send(:additional_passengers) || 0
         = passengers + 1
+
+  %tr
+    %td.conv-label
+      - if @obj.class == Conversation && @obj.has_fields_for_ride
+        %a.create_ride{href: '#', class: 'btn btn-sm btn-info', style: 'margin-top: 30px;'}
+          CREATE RIDE
+
+      - else
+        %i
+
+    %td.conv-field
+
+
 
   - if @obj.class == Ride
     %tr
@@ -74,12 +90,6 @@
             %select{id: 'driver_select'}
               %option
                 Select driver:
-
-              / - if driver = @obj.send(:driver)
-              /   - if driver_name = driver.try(:name)
-              /     %option{value: driver.id}
-              /       = driver_name
-
               - @available_drivers.each do |driver|
                 %option{value: driver.id}
                   = driver.name
@@ -94,27 +104,23 @@
       $('#to_address').editable({ mode: 'inline', emptytext:'address' });
       $('#to_city').editable({ mode: 'inline', emptytext:'city'});
       $('#additional_passengers').editable({ mode: 'inline'});
-      $('#pickup_time').editable({ mode: 'inline'});
 
+      // only pertains to conversations
+      dispatchController.attachRideCreate(#{@obj.id});
+
+      // only pertains to Rides
       dispatchController.attachDriverSelect(#{@obj.ride_zone_id}, #{@obj.id}, "#driver_select", "#{@action.downcase}");
 
-      dispatchController.attachDatePicker("#{url}", "#pickup_at_date", "#pickup_at_time");
+      // i think this is old cruft
+      // locationAutocomplete.attach('#ride_city_state', '#ride_from_city', '#ride_from_state', '#ride_from_zip');
 
-      // initialize input widgets first
-      $('#pickupdaytime .time').timepicker({
-        'timeFormat': 'g:ia',
-        'minTime': '7:00am'
+      $(".flatpickr").flatpickr({
+        onClose: function(dateObj, dateStr, instance){
+          $.post( "#{url}", {name: 'pickup_at', value: dateStr}, function() {
+            $('#pickup_at').addClass('item-highlight');
+          }).fail(function() {
+            humane.log ('Something has gone horribly wrong.');
+          });
+        }
       });
-
-      $('#pickupdaytime .date').datepicker({
-        'format': 'm/d/yyyy',
-        'autoclose': true
-      });
-
-      // initialize datepair
-      var dpEl = document.getElementById('pickupdaytime');
-      var datepair = new Datepair(dpEl);
-
-      locationAutocomplete.attach('#ride_city_state', '#ride_from_city', '#ride_from_state', '#ride_from_zip');
-
     });

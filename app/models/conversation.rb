@@ -16,9 +16,6 @@ class Conversation < ApplicationRecord
 
   validate :phone_numbers_match_first_message
 
-  attr_accessor :pickup_day
-  attr_accessor :pickup_time
-
   STATUS_STRINGS = {
     messaging: 'MESSAGING', help_needed: 'NEEDS&nbsp;HELP', scheduled: 'SCHEDULED',
     waiting_acceptance: 'WAIT&nbsp;ACCEPT',
@@ -63,6 +60,21 @@ class Conversation < ApplicationRecord
     j['name'] = username
     j['ride'] = ride.api_json if ride
     j
+  end
+
+  # have language and name and confirmed origin and destination and confirmed time and passengers
+  def has_fields_for_ride
+    if self.user.blank? ||
+      self.user.name.blank? ||
+      self.from_address.blank? ||
+      self.from_city.blank? ||
+      self.from_latitude.blank? ||
+      self.from_longitude.blank? ||
+      self.pickup_time.blank?
+      false
+    else
+      true
+    end
   end
 
   # send a new SMS from staff on this conversation. returns the Message

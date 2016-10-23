@@ -1,0 +1,704 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=,%20,%20Orlando,%20FL,%2015106,%20&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 23 Oct 2016 18:32:53 GMT
+      Expires:
+      - Mon, 24 Oct 2016 18:32:53 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '2010'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Florida Avenue",
+                       "short_name" : "Florida Ave",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Astatula",
+                       "short_name" : "Astatula",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Lake County",
+                       "short_name" : "Lake County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "34705",
+                       "short_name" : "34705",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "15106 Florida Ave, Astatula, FL 34705, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 28.710019,
+                          "lng" : -81.72431379999999
+                       },
+                       "southwest" : {
+                          "lat" : 28.7100025,
+                          "lng" : -81.7243139
+                       }
+                    },
+                    "location" : {
+                       "lat" : 28.7100025,
+                       "lng" : -81.72431379999999
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 28.7113597302915,
+                          "lng" : -81.72296486970849
+                       },
+                       "southwest" : {
+                          "lat" : 28.7086617697085,
+                          "lng" : -81.7256628302915
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "EioxNTEwNiBGbG9yaWRhIEF2ZSwgQXN0YXR1bGEsIEZMIDM0NzA1LCBVU0E",
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Florida Rock Road",
+                       "short_name" : "Florida Rock Rd",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Orlando",
+                       "short_name" : "Orlando",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Orange County",
+                       "short_name" : "Orange County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "32824",
+                       "short_name" : "32824",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "15106 Florida Rock Rd, Orlando, FL 32824, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 28.4399133,
+                          "lng" : -81.3733883
+                       },
+                       "southwest" : {
+                          "lat" : 28.4399133,
+                          "lng" : -81.37340709999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 28.4399133,
+                       "lng" : -81.3733883
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 28.4412622802915,
+                          "lng" : -81.3720487197085
+                       },
+                       "southwest" : {
+                          "lat" : 28.4385643197085,
+                          "lng" : -81.37474668029151
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "Ei0xNTEwNiBGbG9yaWRhIFJvY2sgUmQsIE9ybGFuZG8sIEZMIDMyODI0LCBVU0E",
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Olde Florida Boulevard",
+                       "short_name" : "Olde Florida Blvd",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Orlando",
+                       "short_name" : "Orlando",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Orange County",
+                       "short_name" : "Orange County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "32821",
+                       "short_name" : "32821",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "15106 Olde Florida Blvd, Orlando, FL 32821, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 28.4053273,
+                          "lng" : -81.4747874
+                       },
+                       "southwest" : {
+                          "lat" : 28.4053108,
+                          "lng" : -81.47478749999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 28.4053108,
+                       "lng" : -81.4747874
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 28.4066680302915,
+                          "lng" : -81.4734384697085
+                       },
+                       "southwest" : {
+                          "lat" : 28.4039700697085,
+                          "lng" : -81.4761364302915
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "Ei8xNTEwNiBPbGRlIEZsb3JpZGEgQmx2ZCwgT3JsYW5kbywgRkwgMzI4MjEsIFVTQQ",
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Orlando Avenue",
+                       "short_name" : "Orlando Ave",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Northside",
+                       "short_name" : "Northside",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "Jacksonville",
+                       "short_name" : "Jacksonville",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Duval County",
+                       "short_name" : "Duval County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "32208",
+                       "short_name" : "32208",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "3143",
+                       "short_name" : "3143",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "15106 Orlando Ave, Jacksonville, FL 32208, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 30.3917307,
+                          "lng" : -81.68485780000002
+                       },
+                       "southwest" : {
+                          "lat" : 30.3917236,
+                          "lng" : -81.6848748
+                       }
+                    },
+                    "location" : {
+                       "lat" : 30.3917236,
+                       "lng" : -81.6848748
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 30.3930761302915,
+                          "lng" : -81.6835173197085
+                       },
+                       "southwest" : {
+                          "lat" : 30.3903781697085,
+                          "lng" : -81.68621528029151
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "Ei4xNTEwNiBPcmxhbmRvIEF2ZSwgSmFja3NvbnZpbGxlLCBGTCAzMjIwOCwgVVNB",
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Florida Trail",
+                       "short_name" : "Florida Trail",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Lake Mary",
+                       "short_name" : "Lake Mary",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Seminole County",
+                       "short_name" : "Seminole County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "32746",
+                       "short_name" : "32746",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "15106 Florida Trail, Lake Mary, FL 32746, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 28.7525523,
+                          "lng" : -81.34717689999999
+                       },
+                       "southwest" : {
+                          "lat" : 28.7525445,
+                          "lng" : -81.34719340000001
+                       }
+                    },
+                    "location" : {
+                       "lat" : 28.7525523,
+                       "lng" : -81.34719340000001
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 28.75389738029149,
+                          "lng" : -81.34583616970851
+                       },
+                       "southwest" : {
+                          "lat" : 28.7511994197085,
+                          "lng" : -81.34853413029153
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "Ei0xNTEwNiBGbG9yaWRhIFRyYWlsLCBMYWtlIE1hcnksIEZMIDMyNzQ2LCBVU0E",
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Orlando Street",
+                       "short_name" : "Orlando St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Dunnellon",
+                       "short_name" : "Dunnellon",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Marion County",
+                       "short_name" : "Marion County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "34431",
+                       "short_name" : "34431",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "15106 Orlando St, Dunnellon, FL 34431, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 29.0553539,
+                          "lng" : -82.46632769999999
+                       },
+                       "southwest" : {
+                          "lat" : 29.0553538,
+                          "lng" : -82.4663465
+                       }
+                    },
+                    "location" : {
+                       "lat" : 29.0553538,
+                       "lng" : -82.4663465
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 29.0567028302915,
+                          "lng" : -82.46498811970849
+                       },
+                       "southwest" : {
+                          "lat" : 29.0540048697085,
+                          "lng" : -82.46768608029151
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "EioxNTEwNiBPcmxhbmRvIFN0LCBEdW5uZWxsb24sIEZMIDM0NDMxLCBVU0E",
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Florida Avenue",
+                       "short_name" : "Florida Ave",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Leesburg",
+                       "short_name" : "Leesburg",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Lake County",
+                       "short_name" : "Lake County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "34788",
+                       "short_name" : "34788",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "8190",
+                       "short_name" : "8190",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "15106 Florida Ave, Leesburg, FL 34788, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 28.90613249999999,
+                          "lng" : -81.7660755
+                       },
+                       "southwest" : {
+                          "lat" : 28.906116,
+                          "lng" : -81.7660764
+                       }
+                    },
+                    "location" : {
+                       "lat" : 28.90613249999999,
+                       "lng" : -81.7660755
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 28.90747323029149,
+                          "lng" : -81.76472696970851
+                       },
+                       "southwest" : {
+                          "lat" : 28.90477526970849,
+                          "lng" : -81.76742493029151
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "EioxNTEwNiBGbG9yaWRhIEF2ZSwgTGVlc2J1cmcsIEZMIDM0Nzg4LCBVU0E",
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Orlando Avenue",
+                       "short_name" : "Orlando Ave",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Navarre",
+                       "short_name" : "Navarre",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Santa Rosa County",
+                       "short_name" : "Santa Rosa County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "32566",
+                       "short_name" : "32566",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "2992",
+                       "short_name" : "2992",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "15106 Orlando Ave, Navarre, FL 32566, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 30.4082295,
+                          "lng" : -86.84098639999999
+                       },
+                       "southwest" : {
+                          "lat" : 30.4082133,
+                          "lng" : -86.8409865
+                       }
+                    },
+                    "location" : {
+                       "lat" : 30.4082295,
+                       "lng" : -86.84098639999999
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 30.40957038029149,
+                          "lng" : -86.83963746970848
+                       },
+                       "southwest" : {
+                          "lat" : 30.4068724197085,
+                          "lng" : -86.8423354302915
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "EikxNTEwNiBPcmxhbmRvIEF2ZSwgTmF2YXJyZSwgRkwgMzI1NjYsIFVTQQ",
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Orlando Road",
+                       "short_name" : "Orlando Rd",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Fort Myers",
+                       "short_name" : "Fort Myers",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Lee County",
+                       "short_name" : "Lee County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "33967",
+                       "short_name" : "33967",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "3570",
+                       "short_name" : "3570",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "15106 Orlando Rd, Fort Myers, FL 33967, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 26.4704176,
+                          "lng" : -81.800462
+                       },
+                       "southwest" : {
+                          "lat" : 26.4704176,
+                          "lng" : -81.8004808
+                       }
+                    },
+                    "location" : {
+                       "lat" : 26.4704176,
+                       "lng" : -81.8004808
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 26.4717665802915,
+                          "lng" : -81.7991224197085
+                       },
+                       "southwest" : {
+                          "lat" : 26.4690686197085,
+                          "lng" : -81.8018203802915
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "EisxNTEwNiBPcmxhbmRvIFJkLCBGb3J0IE15ZXJzLCBGTCAzMzk2NywgVVNB",
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sun, 23 Oct 2016 18:32:53 GMT
+recorded_with: VCR 3.0.3

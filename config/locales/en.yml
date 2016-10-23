@@ -103,7 +103,7 @@ en:
 
   what_is_your_name: 'Thanks! What is your name?'
   empty_need_name: "Sorry, I didn't get a response. What is your name?"
-  bot_stalled: 'Someone will contact you soon'
+  bot_stalled: "I'm sorry, I don't understand. Someone will contact you soon"
   what_is_pickup_location: 'Hello %{name}. Where do you want to be picked up - address and city?'
   ride_too_far: 'That address is too far away. Please try again.'
   too_many_addresses: "Too many matches! Please reply with specific address and city or reply \"don't know\" or \"skip\"."
