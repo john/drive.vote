@@ -5,7 +5,19 @@ import autobind from 'autobind-decorator';
 class LocationManager extends React.Component {
 
     componentWillMount() {
-        this.setupLocationStatus();
+        const queryArgs = this.props.location.query;
+        if (queryArgs.latitude && queryArgs.longitude) {
+            const testLocation = {
+                coords: {
+                    latitude: queryArgs.latitude,
+                    longitude: queryArgs.longitude
+                }
+            };
+            this.props.setLocation(testLocation);
+            this.updateLocationState(true);
+        } else {
+            this.setupLocationStatus();
+        }
     }
 
     setupLocationStatus() {
