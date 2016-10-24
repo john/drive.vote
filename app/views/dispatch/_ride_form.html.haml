@@ -1,0 +1,125 @@
+- if current_user.is_super_admin?
+  %div{class: 'item-highlight', style: "font-size: 13px"}
+    @obj is a: #{@obj.class}
+
+-# TODO: sort out statuses of rides v. conversations; copy conversation cell logic in dispatch.js
+  /   status
+  / .modal-ride-status
+  /   - if @obj.class == Conversation
+  /     = @obj.status
+  /     -#= Conversation::STATUS_STRINGS[ @obj.status.to_sym ].html_safe
+  /   - else
+  /     foo
+
+
+- url = send("update_attribute_api_v1_#{@obj.class.name.downcase}_path", @obj)
+
+%table
+  %tr
+    %td.conv-label
+      FROM
+    %td.conv-field
+      %div
+        %a.to_from{href: '#', id:"from_address", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"From address"}
+          = @obj.send(:from_address)
+      %div{style: "padding-bottom: 20px;"}
+        %a.to_from{href: '#', id:"from_city", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"From city"}
+          = @obj.send(:from_city)
+
+  %tr
+    %td.conv-label
+      TO
+    %td.conv-field
+      %div
+        %a.to_from{href: '#', id:"to_address", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"To address"}
+          = @obj.send(:to_address)
+      %div{style: "padding-bottom: 20px;"}
+        %a.to_from{href: '#', id:"to_city", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"To city"}
+          = @obj.send(:to_city)
+
+  %tr
+    %td.conv-label
+      PICKUP TIME
+    %td.conv-field#pickup_at
+      -# data-utc=true
+      -# <input type='text' class='flatpickr' data-default-date="#{@pickup_at}" data-enable-time=true>
+      %input{type: 'text', class: 'flatpickr', 'data-default-date': @pickup_at, 'data-enable-time': true}
+
+  %tr
+    %td.conv-label
+      ADDITIONAL PASSENGERS
+    %td.conv-field
+      %a.to_from{href: '#', id:"additional_passengers", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"To address"}
+        = @obj.send(:additional_passengers) || 0
+
+  %tr
+    %td.conv-label
+      - if @obj.class == Conversation && @obj.has_fields_for_ride
+        %a.create_ride{href: '#', class: 'btn btn-sm btn-info', style: 'margin-top: 30px;'}
+          CREATE RIDE
+
+      - else
+        %i
+
+    %td.conv-field
+
+
+
+  - if @obj.class == Ride
+    %tr
+      %td.conv-label
+        CURRENT DRIVER
+      %td.conv-field.current-driver
+        - if @obj.driver.present?
+          = driver.try(:name)
+        - else
+          %i
+            Unassigned
+
+    %tr
+      %td.conv-label
+        SET DRIVER
+      %td.conv-field
+        - if @zone_driver_count == 0
+          %i
+            There are no drivers assigned to this zone.
+        - else
+          - if @available_drivers.present?
+
+            %select{id: 'driver_select'}
+              %option
+                Select driver:
+              - @available_drivers.each do |driver|
+                %option{value: driver.id}
+                  = driver.name
+          - else
+            %i
+              None of the #{@zone_driver_count} drivers in this zone are currently available.
+
+  :javascript
+    $( function() {
+      $('#from_address').editable({ mode: 'inline', emptytext:'address' });
+      $('#from_city').editable({ mode: 'inline', emptytext:'city'});
+      $('#to_address').editable({ mode: 'inline', emptytext:'address' });
+      $('#to_city').editable({ mode: 'inline', emptytext:'city'});
+      $('#additional_passengers').editable({ mode: 'inline'});
+
+      // only pertains to conversations
+      dispatchController.attachRideCreate(#{@obj.id});
+
+      // only pertains to Rides
+      dispatchController.attachDriverSelect(#{@obj.ride_zone_id}, #{@obj.id}, "#driver_select", "#{@action.downcase}");
+
+      // i think this is old cruft
+      // locationAutocomplete.attach('#ride_city_state', '#ride_from_city', '#ride_from_state', '#ride_from_zip');
+
+      $(".flatpickr").flatpickr({
+        onClose: function(dateObj, dateStr, instance){
+          $.post( "#{url}", {name: 'pickup_at', value: dateStr}, function() {
+            $('#pickup_at').addClass('item-highlight');
+          }).fail(function() {
+            humane.log ('Something has gone horribly wrong.');
+          });
+        }
+      });
+    });

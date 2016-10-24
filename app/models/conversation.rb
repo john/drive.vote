@@ -1,4 +1,7 @@
 class Conversation < ApplicationRecord
+  include HasAddress
+  include ToFromAddressable
+
   belongs_to :ride_zone
   belongs_to :user
   has_many :messages, dependent: :destroy
@@ -11,8 +14,6 @@ class Conversation < ApplicationRecord
   around_save :notify_update
 
   validate :phone_numbers_match_first_message
-  include HasAddress
-  include ToFromAddressable
 
   enum status: { sms_created: -1, in_progress: 0, ride_created: 1, closed: 2, help_needed: 3 }
   enum lifecycle: {
@@ -50,6 +51,21 @@ class Conversation < ApplicationRecord
     j['name'] = username
     j['ride'] = ride.api_json if ride
     j
+  end
+
+  # have language and name and confirmed origin and destination and confirmed time and passengers
+  def has_fields_for_ride
+    if self.user.blank? ||
+      self.user.name.blank? ||
+      self.from_address.blank? ||
+      self.from_city.blank? ||
+      self.from_latitude.blank? ||
+      self.from_longitude.blank? ||
+      self.pickup_time.blank?
+      false
+    else
+      true
+    end
   end
 
   # send a new SMS from staff on this conversation. returns the Message

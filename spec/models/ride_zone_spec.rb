@@ -63,6 +63,27 @@ RSpec.describe RideZone, type: :model do
     expect( rz.active_rides.first ).to be_nil
   end
 
+  it 'returns nearby available drivers' do
+    driver = create :zoned_driver_user
+    rz = RideZone.with_role(:driver, driver).first
+
+     expect( rz.available_drivers(all: true).first ).to eq(driver)
+  end
+
+  it 'do not return distant drivers' do
+    driver = create( :zoned_driver_user, city: 'Orlando', state: 'FL' )
+    rz = RideZone.with_role(:driver, driver).first
+
+     expect( rz.available_drivers.first ).to eq(nil)
+  end
+
+  it 'returns all available drivers' do
+    driver = create( :zoned_driver_user, city: 'Orlando', state: 'FL' )
+    rz = RideZone.with_role(:driver, driver).first
+
+     expect( rz.available_drivers(all: true).first ).to eq(driver)
+  end
+
   it 'returns unavailable_drivers' do
     d = create :zoned_driver_user
     rz = RideZone.with_role(:driver, d).first

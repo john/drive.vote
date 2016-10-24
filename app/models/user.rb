@@ -66,8 +66,6 @@ class User < ApplicationRecord
   validates :state, length: { maximum: 2 }
   validates :zip, length: { maximum: 12 }
   validates :country, length: { maximum: 50 }
-  validates :password, presence: true, length: { in: 8..50 }, on: :create
-  # validates :password, length: { in: 8..50 }, on: :update, allow_blank: true
 
   # scope that gets Users, of any/all roles, close to a particular RideZone
   scope :nearby_ride_zone, ->(rz) { near(rz.zip, GEO_NEARBY_DISTANCE) }

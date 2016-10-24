@@ -38,6 +38,13 @@ Rails.application.routes.draw do
 
   resources :dispatch, only: [:show] do
     member do
+      get 'messages' => 'dispatch#messages'
+      get 'ride_pane' => 'dispatch#ride_pane'
+
+      # get 'messages' => 'conversations#messages'
+      # get 'ride_pane' => 'conversations#ride_pane'
+
+
       get 'drivers' => 'dispatch#drivers'
       get 'flyer' => 'dispatch#flyer'
       get 'map' => 'dispatch#map'
@@ -107,8 +114,8 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :conversations, only: [:index, :show] do
       member do
-        get 'messages' => 'conversations#messages'
-        get 'ride_pane' => 'conversations#ride_pane'
+        # get 'messages' => 'conversations#messages'
+        # get 'ride_pane' => 'conversations#ride_pane'
         post 'close' => 'conversations#close'
       end
     end

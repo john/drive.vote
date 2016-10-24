@@ -17,6 +17,18 @@ RSpec.describe Ride, type: :model do
   it { should validate_length_of(:to_state).is_at_most(2)}
   it { should validate_length_of(:to_zip).is_at_most(12)}
 
+  describe 'assignable?' do
+    it 'returns true if assignable' do
+      r = build :waiting_ride
+      expect(r.assignable?).to be_truthy
+    end
+
+    it 'returns false if not assignable' do
+      r = build :complete_ride
+      expect(r.assignable?).to be_falsey
+    end
+  end
+
   describe 'radius validation', focus:true do
     let!(:zone) { create :ride_zone, latitude: 40.409, longitude: -80.09, max_pickup_radius: 5 }
 

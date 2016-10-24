@@ -27,7 +27,17 @@ module Api::V1
 
     def update_attribute
       if(params.has_key?(:name) && params.has_key?(:value))
-        if @conversation.update_attribute( params[:name], params[:value] )
+
+        # this is a conversation, so we need to change the field name to pickup_time
+        if params[:name] == 'pickup_at'
+          name = 'pickup_time'
+          val = TimeZoneUtils.origin_time(params[:value], @conversation.ride_zone.time_zone)
+        else
+          name = params[:name]
+          val = params[:value]
+        end
+
+        if @conversation.update_attributes( name.to_sym => val )
           render json: {response: @conversation.reload.api_json(false)}
         else
           render json: {error: @conversation.errors}
@@ -53,16 +63,29 @@ module Api::V1
     end
 
     def create_ride
-      if driver = User.find( params[:driver_id] )
+      # if driver_id is present, make sure they can be added before doing anything
+      if params[:driver_id].present?
+        if driver = User.find( params[:driver_id] )
+          if ride = Ride.create_from_conversation( @conversation )
+            ride.assign_driver( driver, true, true )
+            render json: {response: ride.reload.api_json}
+          else
+            render json: {error: "Could not create Ride from Conversation"}, status: 500
+          end
+        else
+          render json: {error: "Could not find driver"}, status: 500
+        end
+      else
+
+        # if no driver_id, go ahead and create the ride
         if ride = Ride.create_from_conversation( @conversation )
-          ride.assign_driver( driver, true, true )
           render json: {response: ride.reload.api_json}
         else
           render json: {error: "Could not create Ride from Conversation"}, status: 500
         end
-      else
-        render json: {error: "Could not find driver"}, status: 500
+
       end
+
     end
 
     private

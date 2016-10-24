@@ -25,6 +25,9 @@ FactoryGirl.define do
     end
 
     factory :complete_conversation do
+      from_phone '2073328709'
+      from_address 'fake_address'
+      from_city 'fake_city'
       from_latitude 40.409
       from_longitude -80.090
       from_confirmed true

@@ -1,16 +1,60 @@
 require 'rails_helper'
 
 RSpec.describe Conversation, type: :model do
-  it_behaves_like 'to_from_addressable'
+  #it_behaves_like 'to_from_addressable'
 
   let(:ride_address_attrs) {{from_address: '106 Dunbar Avenue', from_city: 'Carnegie',
                              from_latitude: 40.409, from_longitude: -80.090,
                              to_address: 'to', to_city: 'tcity', to_latitude: 3, to_longitude: 4}}
   let(:full_address_attrs) { {from_latitude: 40.4, from_longitude: -80.1, from_confirmed: true, to_latitude: 40.4, to_longitude: -80.1, to_confirmed: true} }
 
+  describe 'has_fields_for_ride' do
+    context 'has what it needs to create a ride' do
+      let(:convo) { create :complete_conversation }
+      it 'return true' do
+        expect(convo.has_fields_for_ride).to eq(true)
+      end
+    end
+
+    context 'is missing from_address' do
+      let(:convo) { create :complete_conversation, from_address: nil }
+      it 'return false' do
+        expect(convo.has_fields_for_ride).to eq(false)
+      end
+    end
+
+    context 'is missing from_city' do
+      let(:convo) { create :complete_conversation, from_city: nil }
+      it 'return false' do
+        expect(convo.has_fields_for_ride).to eq(false)
+      end
+    end
+
+    context 'is missing from_latitude' do
+      let(:convo) { create :complete_conversation, from_latitude: nil }
+      it 'return false' do
+        expect(convo.has_fields_for_ride).to eq(false)
+      end
+    end
+
+    context 'is missing from_longitude' do
+      let(:convo) { create :complete_conversation, from_longitude: nil }
+      it 'return false' do
+        expect(convo.has_fields_for_ride).to eq(false)
+      end
+    end
+
+    context 'is missing pickup_time' do
+      let(:convo) { create :complete_conversation, pickup_time: nil }
+      it 'return false' do
+        expect(convo.has_fields_for_ride).to eq(false)
+      end
+    end
+  end
+
   describe 'validations' do
     describe 'phone_numbers_match_first_message' do
-      let(:convo) { create :conversation}
+      let(:convo) { create :conversation }
 
       context 'Conversation has no messages' do
         it 'should be valid' do
