@@ -1,0 +1,5 @@
+version: 1
+cron:
+ - name: "confirm-scheduled-rides"
+   url: "/api/1/rides/confirm_scheduled"
+   schedule: "* * * * *"
