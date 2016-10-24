@@ -182,9 +182,14 @@ class Ride < ApplicationRecord
   end
 
   def self.confirm_scheduled_rides
+    count = 0
     Ride.where(status: :scheduled).where('pickup_at < ?', SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now).each do |ride|
-      ride.conversation.attempt_confirmation
+      if ride.conversation
+        ride.conversation.attempt_confirmation
+        count += 1
+      end
     end
+    logger.warn "Note: Attempted to confirm #{count} scheduled rides"
   end
 
   def passenger_count
