@@ -47,11 +47,10 @@
 
   %tr
     %td.conv-label
-      NUMBER OF PASSENGERS
+      ADDITIONAL PASSENGERS
     %td.conv-field
       %a.to_from{href: '#', id:"additional_passengers", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"To address"}
-        - passengers = @obj.send(:additional_passengers) || 0
-        = passengers + 1
+        = @obj.send(:additional_passengers) || 0
 
   %tr
     %td.conv-label

@@ -38,7 +38,6 @@ module Api::V1
         end
 
         if @conversation.update_attributes( name.to_sym => val )
-          @conversation.validate
           render json: {response: @conversation.reload.api_json(false)}
         else
           render json: {error: @conversation.errors}

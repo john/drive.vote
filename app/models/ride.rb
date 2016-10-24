@@ -1,5 +1,4 @@
 class Ride < ApplicationRecord
-  include GetDateFromPicker
 
   SWITCH_TO_WAITING_ASSIGNMENT = 15 # how long in minutes before pickup time to change status to waiting_assignment
 
