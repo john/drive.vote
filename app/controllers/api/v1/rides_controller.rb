@@ -3,8 +3,9 @@ module Api::V1
     include RideParams
     include AccessMethods
 
-    before_action :find_ride
-    before_action :require_ride_access
+    before_action :find_ride, except: [:confirm_scheduled]
+    before_action :require_ride_access, except: [:confirm_scheduled]
+    skip_before_action :verify_authenticity_token, only: [:confirm_scheduled]
 
     def update_attribute
       if(params.has_key?(:name) && params.has_key?(:value))
@@ -19,5 +20,9 @@ module Api::V1
       end
     end
 
+    def confirm_scheduled
+      Ride.confirm_scheduled_rides
+      render text: 'ok'
+    end
   end
 end

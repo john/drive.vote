@@ -91,6 +91,11 @@ Rails.application.routes.draw do
       end
 
       resources :rides, only: [:update_attribute] do
+        collection do
+          if ENV['DTV_IS_WORKER'] == 'TRUE' || Rails.env.test?
+            post 'confirm_scheduled' => 'rides#confirm_scheduled'
+          end
+        end
         member do
           post 'update_attribute' => 'rides#update_attribute'
         end
