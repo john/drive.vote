@@ -9,8 +9,9 @@ Rails.application.routes.draw do
   }
 
   devise_scope :user do
+    get '/volunteer/:id', :to => 'users/registrations#new', :as => 'volunteer_to_drive_for_zone'
+    get 'volunteer_to_drive/:id', to: redirect("/volunteer/%{id}")
     get '/volunteer_to_drive', :to => 'users/registrations#new', :as => 'volunteer_to_drive'
-    get '/volunteer_to_drive/:id', :to => 'users/registrations#new', :as => 'volunteer_to_drive_for_zone'
     get "/users/sign_out" => "devise/sessions#destroy", :as => :get_destroy_user_session
   end
 
@@ -67,7 +68,8 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'get_a_ride/:ride_zone_id' => 'rides#new', as: 'get_a_ride'
+  get 'ride/:ride_zone_id' => 'rides#new', as: 'get_a_ride'
+  get 'get_a_ride/:ride_zone_id', to: redirect("/ride/%{ride_zone_id}")
   get 'conseguir_un_paseo/:ride_zone_id' => 'rides#new'
 
   resources :rides, only: [:create, :edit, :update]

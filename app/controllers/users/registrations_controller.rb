@@ -7,7 +7,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def new
     resource = build_resource({})
 
-    if request.path.include?('volunteer_to_drive')
+    if request.path.include?('volunteer')
       @volunteer = true
       resource.user_type = 'unassigned_driver'
     end
