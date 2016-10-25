@@ -36,8 +36,8 @@ module Api::V1
           name = params[:name]
           val = params[:value]
         end
-
-        if @conversation.update_attributes( name.to_sym => val )
+        new_status = %w(sms_created in_progress).include?(@conversation.status) ? 'help_needed' : @conversation.status
+        if @conversation.update_attributes( name.to_sym => val, status: new_status )
           render json: {response: @conversation.reload.api_json(false)}
         else
           render json: {error: @conversation.errors}
