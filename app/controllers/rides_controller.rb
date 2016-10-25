@@ -32,8 +32,8 @@ class RidesController < ApplicationController
     end
 
     # create user if not found
-    rp = ride_params
-    @ride = Ride.new(rp)
+    # rp = ride_params
+    @ride = Ride.new(ride_params)
 
     if @ride.pickup_at.blank?
       @msg = "Please fill in scheduled date and time."
@@ -41,27 +41,38 @@ class RidesController < ApplicationController
       redirect_back(fallback_location: root_path) and return
     end
 
+
+
+    if @ride.city_state.present? && @ride.from_city.blank? && @ride.from_state.blank?
+      logger.debug "-------------> Ride city_state: #{@ride.city_state}"
+      city_state_array = @ride.city_state.split(',')
+      @ride.from_city = city_state_array[0].try(:strip)
+      @ride.from_state = city_state_array[1].try(:strip)
+    end
+
+
+
     unless @user
+      logger.debug "------------> NEW USER: "
       user_params = params.require(:ride).permit(:phone_number, :email, :name, :password)
-      attrs = {
+      user_attrs = {
           name: user_params[:name],
           phone_number: user_params[:phone_number],
           ride_zone: @ride_zone,
           ride_zone_id: @ride_zone.id,
           email: user_params[:email],
           password: user_params[:password] || SecureRandom.hex(8),
-          address1: rp[:from_address],
+          address1: ride_params[:from_address],
+          city: @ride.from_city,
+          state: @ride.from_state,
           locale: @locale,
           user_type: 'voter',
       }
-      if @ride.city_state.present? && @ride.from_city.blank? && @ride.from_state.blank?
-        c_s_array = @ride.city_state.split(',')
-        attrs[:city] = c_s_array[0].try(:strip)
-        attrs[:state] = c_s_array[1].try(:strip)
-      end
 
       # TODO: better error handling
-      @user = User.create(attrs)
+      logger.debug "-------------> user_attrs: #{user_attrs.inspect}"
+      logger.debug "-------------> ABOUT TO CREATE USER"
+      @user = User.create(user_attrs)
       if @user.errors.any?
         @msg = "Problem creating a new user."
         flash[:notice] = @msg
@@ -70,14 +81,17 @@ class RidesController < ApplicationController
     end
 
     @ride.voter = @user
+    @ride.from_zip = @user.zip
     @ride.status = :scheduled
     @ride.ride_zone = @ride_zone
+    logger.debug "-------------> ABOUT TO CREATE RIDE"
     if @ride.save
       Conversation.create_from_staff(@ride_zone, @user, thanks_msg, Rails.configuration.twilio_timeout,
                                      {status: :ride_created, ride: @ride})
       UserMailer.welcome_email_voter_ride(@user, @ride).deliver_later
       render :success
     else
+      logger.debug "---------> Ride errors: #{@ride.errors.inspect}"
       flash[:notice] = "Problem creating a ride."
       redirect_back(fallback_location: root_path) and return
     end
@@ -101,7 +115,7 @@ class RidesController < ApplicationController
 
   private
   def thanks_msg
-    I18n.t(:thanks_for_requesting, locale: (@ride.voter.locale ||= 'en'), time: @ride.pickup_at.strftime('%m/%d %l:%M %P'), email: 'hello@drive.vote')
+    I18n.t(:thanks_for_requesting, locale: (@ride.voter.locale ||= 'en'), time: @ride.pickup_at.strftime('%m/%d %l:%M %P'), email: @ride.ride_zone.email)
   end
 
   def require_session

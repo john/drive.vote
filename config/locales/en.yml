@@ -115,7 +115,7 @@ en:
   confirm_address: 'Please confirm the address is %{address}. Yes/no?'
   confirm_the_time: 'Please confirm pickup today at %{time}. Yes/no?'
   invalid_time: "That doesn't look like a good time or it's passed. Enter something like 4:30pm or 'now'"
-  how_many_additional: 'How many additional people need a ride (0-4)?'
+  how_many_additional: 'Besides you, how many additional people need a ride (0-4)?'
   invalid_passengers: 'Please reply with number of additional passengers (0-4)'
   any_special_requests: 'What are your special requests (like wheelchair, car seats)? Or reply none.'
   thanks_will_contact: 'Thank you! We have your info and will contact you before your ride.'
@@ -139,7 +139,7 @@ en:
   email_address: 'What is your email address?'
   request_saved: 'We have saved your ride request with the details below:'
   found_active_request: 'We found an active request - rescheduling'
-  thanks_for_requesting: 'Thank you for requesting a ride on %{time}. Text this number with questions, or email %{email}.'
+  thanks_for_requesting: "Thank you for requesting a ride on %{time}. We'll send a reminder text before you ride arrives. Email %{email} if you have questions."
   pickup_location: 'Pickup location:'
   pickup_time: 'Pickup time:'
   additional_passengers: 'Additional passengers:'

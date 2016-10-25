@@ -99,6 +99,14 @@ DispatchController.prototype = {
     });
   },
 
+  attachInlineEditables: function() {
+    $('#from_address').editable({ mode: 'inline', emptytext:'address' });
+    $('#from_city').editable({ mode: 'inline', emptytext:'city'});
+    $('#to_address').editable({ mode: 'inline', emptytext:'address' });
+    $('#to_city').editable({ mode: 'inline', emptytext:'city'});
+    $('#additional_passengers').editable({ mode: 'inline'});
+  },
+
   attachRideCreate: function( conversation_id ) {
     $('.create_ride').click(function(e) {
       $.post( '/api/1/conversations/'+conversation_id+'/rides', function(responseData, status, xhr) {

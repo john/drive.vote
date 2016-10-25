@@ -63,18 +63,18 @@ RSpec.describe DispatchController, :type => :controller do
         expect(assigns(:conversation)).to eq(convo)
       end
 
-      it 'renders ride_form partial if convo does not have a ride' do
+      it 'renders _form partial if convo does not have a ride' do
         get :ride_pane, params: {id: convo.to_param}
-        expect(response).to render_template(partial: '_ride_form')
+        expect(response).to render_template(partial: '_form')
       end
 
-      it 'renders ride_form partial if convo has a ride' do
+      it 'renders _form partial if convo has a ride' do
         rz = create :ride_zone
         ride = create :ride, ride_zone: rz
         convo.ride = ride
         convo.save
         get :ride_pane, params: {id: convo.to_param}
-        expect(response).to render_template(partial: '_ride_form')
+        expect(response).to render_template(partial: '_form')
       end
     end
   end

@@ -34,7 +34,7 @@ FactoryGirl.define do
       to_latitude 41.410
       to_longitude -80.190
       to_confirmed true
-      pickup_time Time.now
+      pickup_at Time.now
       time_confirmed true
       additional_passengers 0
       special_requests 'None'
