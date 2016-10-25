@@ -320,7 +320,7 @@ class Simulation < ActiveRecord::Base
     Conversation.where(ride_zone: ride_zone).delete_all
     user_ids = user_ids | User.where("name like '%#{sim_def.user_identifier}%'").pluck(:id)
     UsersRoles.where(user_id: user_ids).delete_all
-    User.where(id: user_ids).delete_all
+    User.where(id: user_ids).destroy_all
   end
 
   def next_random_name
