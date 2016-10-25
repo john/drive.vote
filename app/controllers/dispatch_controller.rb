@@ -28,15 +28,8 @@ class DispatchController < ApplicationController
       @obj = @conversation
     end
 
-    # TODO: refactor Conversation to also use pickup_at
-    # convert to ride zone's tz
-    if @obj.class == Ride
-      @pickup_at = @obj.pickup_at.in_time_zone(@obj.ride_zone.time_zone)
-    else
-      @pickup_at = @obj.try(:pickup_time).try(:in_time_zone, @obj.ride_zone.time_zone) || '' #Time.parse('2016-11-08 7am')
-    end
-
-    render partial: 'ride_form'
+    @pickup_at = @obj.try(:pickup_at).try(:in_time_zone, @obj.ride_zone.time_zone) || "Tues, 08 Nov 2016 07:00:00"
+    render partial: 'dispatch/form'
   end
 
   def drivers

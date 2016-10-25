@@ -28,16 +28,13 @@ module Api::V1
     def update_attribute
       if(params.has_key?(:name) && params.has_key?(:value))
 
-        # this is a conversation, so we need to change the field name to pickup_time
         if params[:name] == 'pickup_at'
-          name = 'pickup_time'
           val = TimeZoneUtils.origin_time(params[:value], @conversation.ride_zone.time_zone)
         else
-          name = params[:name]
           val = params[:value]
         end
         new_status = %w(sms_created in_progress).include?(@conversation.status) ? 'help_needed' : @conversation.status
-        if @conversation.update_attributes( name.to_sym => val, status: new_status )
+        if @conversation.update_attributes( params[:name] => val, status: new_status )
           render json: {response: @conversation.reload.api_json(false)}
         else
           render json: {error: @conversation.errors}

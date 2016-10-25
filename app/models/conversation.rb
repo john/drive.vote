@@ -61,7 +61,7 @@ class Conversation < ApplicationRecord
       self.from_city.blank? ||
       self.from_latitude.blank? ||
       self.from_longitude.blank? ||
-      self.pickup_time.blank?
+      self.pickup_at.blank?
       false
     else
       true
@@ -159,7 +159,7 @@ class Conversation < ApplicationRecord
         Message.create_from_bot(self, sms)
         update_attributes(ride_confirmed: false, bot_counter: 0)
       end
-    elsif self.ride_confirmed == false && Time.now > self.pickup_time
+    elsif self.ride_confirmed == false && Time.now > self.pickup_at
       # ride has not been confirmed and pickup time has passed, bump to needs_help
       update_attribute(:status, :help_needed)
     end
@@ -219,13 +219,13 @@ class Conversation < ApplicationRecord
       lckey = :have_name
     elsif !from_confirmed
       lckey = :have_origin
-    elsif has_unknown_destination? && pickup_time.nil? && !time_confirmed
+    elsif has_unknown_destination? && pickup_at.nil? && !time_confirmed
       lckey = :have_confirmed_destination
     elsif (to_latitude.nil? || to_longitude.nil?) && !has_unknown_destination?
       lckey = :have_confirmed_origin
     elsif !to_confirmed
       lckey = :have_destination
-    elsif pickup_time.nil?
+    elsif pickup_at.nil?
       lckey = :have_confirmed_destination
     elsif !time_confirmed
       lckey = :have_time

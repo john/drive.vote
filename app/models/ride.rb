@@ -1,4 +1,6 @@
 class Ride < ApplicationRecord
+  include HasAddress
+  include ToFromAddressable
 
   SWITCH_TO_WAITING_ASSIGNMENT = 15 # how long in minutes before pickup time to change status to waiting_assignment
 
@@ -48,16 +50,13 @@ class Ride < ApplicationRecord
   # transient for returning distance to voter
   attr_accessor :distance_to_voter
 
-  include HasAddress
-  include ToFromAddressable
-
   # create a new ride from the data in a conversation
   def self.create_from_conversation conversation
     attrs = {
       ride_zone: conversation.ride_zone,
       voter: conversation.user,
       name: conversation.username,
-      pickup_at: conversation.pickup_time,
+      pickup_at: conversation.pickup_at,
       status: :scheduled,
       from_address: conversation.from_address,
       from_city: conversation.from_city,
