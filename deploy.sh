@@ -62,3 +62,4 @@ zip -ru "${ARTIFACT_FILE}" public/assets
 zip -ru "${ARTIFACT_FILE}" public/webpack
 
 eb deploy "${EB_ENVNAME}"
+eb deploy "${EB_ENVNAME}"-worker

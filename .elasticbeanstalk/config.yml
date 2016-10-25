@@ -3,8 +3,6 @@ branch-defaults:
     environment: drivevote-dev
   production:
     environment: drivevote-prod
-  worker_tier:
-    environment: drivevote-worker
 deploy:
   artifact: tmp/deploy_artifact.zip
 global:
