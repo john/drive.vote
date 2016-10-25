@@ -50,17 +50,28 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
       login_voter
 
       it "redirects to 404" do
-        get :update_attribute, params: {id: convo.to_param}
+        post :update_attribute, params: {id: convo.to_param}
         expect(response).to redirect_to('/404.html')
       end
     end
 
-    context "logged in as a driver" do
-      login_driver
+    context "logged in as a dispatcher" do
+      login_dispatcher
 
       it 'assigns the requested conversation as @conversation' do
-        get :update_attribute, params: {id: convo.to_param}
+        post :update_attribute, params: {id: convo.to_param}
         expect(assigns(:conversation)).to eq(convo)
+      end
+
+      it 'does the update' do
+        post :update_attribute, params: {id: convo.to_param, name: 'from_address', value: 'foo'}
+        expect(convo.reload.from_address).to eq('foo')
+      end
+
+      it 'updates conversation status to help_needed' do
+        convo.update_attribute(:status, :in_progress)
+        post :update_attribute, params: {id: convo.to_param, name: 'from_address', value: 'foo'}
+        expect(convo.reload.status).to eq('help_needed')
       end
     end
   end
