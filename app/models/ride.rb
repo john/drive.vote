@@ -189,7 +189,7 @@ class Ride < ApplicationRecord
           ride.conversation.attempt_confirmation
           count += 1
         rescue => e
-          logger.warn "Got error trying to confirm conversation #{ride.conversation.id}: #{e.message}"
+          logger.error "Got error trying to confirm conversation #{ride.conversation.id}: #{e.message}"
           errors += 1
         end
       end
