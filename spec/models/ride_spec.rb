@@ -280,7 +280,7 @@ RSpec.describe Ride, type: :model do
 
     it 'handles conversations with missing user' do
       stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 10)
-      c1 = create :complete_conversation, pickup_time: 20.minutes.from_now
+      c1 = create :complete_conversation, pickup_at: 20.minutes.from_now
       Ride.create_from_conversation(c1)
       User.find(c1.user.id).delete # no callbacks
       stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 30)
