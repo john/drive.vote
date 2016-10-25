@@ -41,19 +41,13 @@ class RidesController < ApplicationController
       redirect_back(fallback_location: root_path) and return
     end
 
-
-
     if @ride.city_state.present? && @ride.from_city.blank? && @ride.from_state.blank?
-      logger.debug "-------------> Ride city_state: #{@ride.city_state}"
       city_state_array = @ride.city_state.split(',')
       @ride.from_city = city_state_array[0].try(:strip)
       @ride.from_state = city_state_array[1].try(:strip)
     end
 
-
-
     unless @user
-      logger.debug "------------> NEW USER: "
       user_params = params.require(:ride).permit(:phone_number, :email, :name, :password)
       user_attrs = {
           name: user_params[:name],
@@ -62,7 +56,6 @@ class RidesController < ApplicationController
           ride_zone_id: @ride_zone.id,
           email: user_params[:email],
           password: user_params[:password] || SecureRandom.hex(8),
-          address1: ride_params[:from_address],
           city: @ride.from_city,
           state: @ride.from_state,
           locale: @locale,
@@ -70,8 +63,6 @@ class RidesController < ApplicationController
       }
 
       # TODO: better error handling
-      logger.debug "-------------> user_attrs: #{user_attrs.inspect}"
-      logger.debug "-------------> ABOUT TO CREATE USER"
       @user = User.create(user_attrs)
       if @user.errors.any?
         @msg = "Problem creating a new user."
@@ -84,14 +75,12 @@ class RidesController < ApplicationController
     @ride.from_zip = @user.zip
     @ride.status = :scheduled
     @ride.ride_zone = @ride_zone
-    logger.debug "-------------> ABOUT TO CREATE RIDE"
     if @ride.save
       Conversation.create_from_staff(@ride_zone, @user, thanks_msg, Rails.configuration.twilio_timeout,
                                      {status: :ride_created, ride: @ride})
       UserMailer.welcome_email_voter_ride(@user, @ride).deliver_later
       render :success
     else
-      logger.debug "---------> Ride errors: #{@ride.errors.inspect}"
       flash[:notice] = "Problem creating a ride."
       redirect_back(fallback_location: root_path) and return
     end
