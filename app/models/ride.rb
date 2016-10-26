@@ -27,13 +27,13 @@ class Ride < ApplicationRecord
   validates :from_address, length: { maximum: 100 }
   validates :from_city, length: { maximum: 50 }
   validates :from_state, length: { maximum: 2 }
-  validates :from_zip, length: { maximum: 50 }
+  validates :from_zip, length: { maximum: 15 }
   validates :to_address, length: { maximum: 100 }
   validates :to_city, length: { maximum: 50 }
   validates :to_state, length: { maximum: 2 }
-  validates :to_zip, length: { maximum: 12 }
+  validates :to_zip, length: { maximum: 15 }
   validates :phone_number, length: { maximum: 17 }
-  validates :email, length: { maximum: 17 }
+  validates :email, length: { maximum: 50 }
   validate :geocoded_and_in_radius
 
   before_save :note_status_update
@@ -241,7 +241,7 @@ class Ride < ApplicationRecord
       if from_latitude.nil? || from_longitude.nil?
         errors.add(:from_address, 'could not be found')
       elsif ride_zone && !ride_zone.is_within_pickup_radius?(from_latitude, from_longitude)
-        errors.add(:from_address, 'is too far away')
+        errors.add(:from_address, 'is outside the coverage area')
       end
     end
   end

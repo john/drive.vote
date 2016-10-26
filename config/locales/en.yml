@@ -20,6 +20,11 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  activerecord:
+    attributes:
+      ride:
+        from_address: "Address for pickup"
+
   yes: 'Yes'
   no: 'No'
   or: 'not sure?'

@@ -1,0 +1,27 @@
+:css
+  .setting { margin-bottom: 5px; }
+  .setting-value { font-weight: bold; }
+  .description { font-style: oblique; }
+
+= render 'admin/nav', {active: 'site'}
+
+%h2
+  Site
+  - if current_user.has_role?(:admin)
+    &nbsp;
+    %small
+      = link_to 'Edit', edit_admin_site_path, class: 'btn btn-default'
+
+%p.description Site-wide configuration
+
+.setting
+  Update location interval:
+  %span.setting-value
+    = @site.update_location_interval
+  seconds
+
+.setting
+  Waiting rides interval:
+  %span.setting-value
+    = @site.waiting_rides_interval
+  seconds
