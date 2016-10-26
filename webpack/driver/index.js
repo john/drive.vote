@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import  store, { history } from './store';
 
 import App from './containers/App';
-import DriverStatusContainer from './containers/DriverStatusContainer';
+import LocationManager from './containers/LocationManager';
 
 require('./styles/drive-vote.css');
 
@@ -13,7 +13,7 @@ const router = (
 	<Provider store={store}>
 		<Router history={history}>
 			<Route path="/driving"  component={App}>
-				<IndexRoute component={DriverStatusContainer}></IndexRoute>
+				<IndexRoute component={LocationManager}></IndexRoute>
 			</Route>
 		</Router>
 	</Provider>
