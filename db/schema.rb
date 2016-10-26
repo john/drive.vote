@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161024190318) do
+ActiveRecord::Schema.define(version: 20161025050425) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -135,6 +135,15 @@ ActiveRecord::Schema.define(version: 20161024190318) do
     t.string   "name",                   null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+  end
+
+  create_table "sites", force: :cascade do |t|
+    t.integer  "singleton_guard"
+    t.integer  "update_location_interval", default: 60
+    t.integer  "waiting_rides_interval",   default: 15
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.index ["singleton_guard"], name: "index_sites_on_singleton_guard", unique: true, using: :btree
   end
 
   create_table "users", force: :cascade do |t|

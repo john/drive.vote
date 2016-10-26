@@ -7,8 +7,6 @@ class DrivingController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   RIDES_LIMIT = 3
-  UPDATE_LOCATION_INTERVAL = 60 # seconds
-  WAITING_RIDES_INTERVAL = 15 # seconds
 
   def index
     unless current_user
@@ -120,13 +118,11 @@ class DrivingController < ApplicationController
   end
 
   def update_location_interval
-    # todo: be able to throttle with this interval (redis?)
-    UPDATE_LOCATION_INTERVAL
+    Site.instance.update_location_interval
   end
 
   def waiting_rides_interval
-    # todo: be able to throttle with this interval (redis?)
-    WAITING_RIDES_INTERVAL
+    Site.instance.waiting_rides_interval
   end
 
   def status_data
