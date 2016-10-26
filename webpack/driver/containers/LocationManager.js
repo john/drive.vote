@@ -68,12 +68,12 @@ class LocationManager extends React.Component {
             case 'prompt':
                 return (
                     <div className="container">
-                    <div className="panel panel-default panel-full text-center">
-                    <h1><i className="fa fa-map-marker text-info"></i></h1>
-                    <h6>Enable Location.</h6>
-                    <p>Get started by allowing Drive the Vote access to your location</p>
-                    <button className="btn btn-success" onClick={this.setupLocationStatus}>Ok</button>
-                    </div>
+                        <div className="panel panel-default panel-full text-center">
+                            <h1 className="m-y"><i className="fa fa-map-marker text-info"></i></h1>
+                            <h6>Enable Location</h6>
+                            <p>Get started by allowing Drive the Vote access to your location.</p>
+                            <button className="btn btn-success" onClick={this.setupLocationStatus}>Ok</button>
+                        </div>
                     </div>
                 )
                 break;
@@ -82,9 +82,9 @@ class LocationManager extends React.Component {
                 return (
                     <div className="container">
                         <div className="panel panel-default panel-full text-center">
-                            <h1><i className="fa fa-map-marker text-info"></i></h1>
-                            <h6>Enable Location.</h6>
-                            <p>Get started by allowing Drive the Vote access to your location</p>
+                            <h1 className="m-y"><i className="fa fa-map-marker text-info"></i></h1>
+                            <h6>Enable Location</h6>
+                            <p>Get started by allowing Drive the Vote access to your location.</p>
                             <button className="btn btn-success disabled">Getting Location <i className="m-l fa fa-spinner fa-spin"></i></button>
                         </div>
                     </div>
