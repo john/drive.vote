@@ -90,6 +90,7 @@ class LocationManager extends React.Component {
                     </div>
                 )
                 break;
+
             case 'error':
                 return (
                     <div className="container">
@@ -106,6 +107,7 @@ class LocationManager extends React.Component {
                     </div>
                 )
                 break;
+
             case 'denied':
                 return (
                     <div className="container">
@@ -118,7 +120,9 @@ class LocationManager extends React.Component {
                             </h1>
                             <h6>Location Access Denied</h6>
                             <p>Sharing your location is required to drive.</p>
-                            <p>Please refresh the page to try again</p>
+                            <p><strong><i className="fa fa-android fa-fw"></i> Android:</strong> For more information on how to re-enable access, visit: <a href="https://support.google.com/chrome/answer/142065?hl=en" target="_blank">https://support.google.com/chrome/answer/142065?hl=en</a></p>
+                            <p><strong><i className="fa fa-apple fa-fw"></i> iOS:</strong> Please refresh the page to try again, if that fails you will need to reset location warnings via the Settings App</p>
+                            <p><code>Settings -> General -> Reset -> Reset Location Warnings / Reset Location & Privacy </code></p>
                         </div>
                     </div>
                 )
