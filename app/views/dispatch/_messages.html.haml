@@ -2,8 +2,9 @@
   - @conversation.messages.order('created_at asc').each do |message|
     .message{style: "text-align: #{(message.sent_by == 'Voter') ? 'left' : 'right'}"}
       %code
-        #{message.created_at.localtime.strftime('%l:%M%P')},
-        = message.sent_by
+        %span.msg-epoch
+          = message.created_at.to_i
+        , #{message.sent_by}
       .msg-body
         = message.body
 
@@ -19,4 +20,10 @@
 :javascript
   // now that we have the conversation object, populate the modal header
   $('#conv-modal-title').html( "#{title}" );
+
+  // convert epoch times to human-readable local times
+  $('.msg-epoch').each(function(index) {
+    $(this).text( strftime('%l:%M%P', new Date( $(this).text()*1000)) );
+  });
+
   $('#archive-btn').html("<span style='font-weight: normal;'>#{close_button}</span>")
