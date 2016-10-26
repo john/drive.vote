@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe RidesController, type: :routing do
   it 'routes to #new' do
-    expect(get: '/get_a_ride/42').to route_to('rides#new', ride_zone_id: '42')
+    expect(get: '/ride/42').to route_to('rides#new', ride_zone_id: '42')
   end
 
   it 'routes to #create' do
