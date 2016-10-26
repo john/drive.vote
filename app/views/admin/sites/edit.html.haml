@@ -1,0 +1,14 @@
+= render 'admin/nav', {active: 'site'}
+
+%h2
+  Edit site-wide configuration
+
+= form_for [:admin, @site], :url => { action: 'update' }, :html => { :class => 'form-horizontal' } do |f|
+  .field
+    = f.label :update_location_interval
+    = f.telephone_field :update_location_interval
+  .field
+    = f.label :waiting_rides_interval
+    = f.telephone_field :waiting_rides_interval
+
+  = f.submit t(:save), class: 'btn btn-primary'
