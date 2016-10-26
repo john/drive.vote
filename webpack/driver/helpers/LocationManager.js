@@ -4,6 +4,12 @@ import autobind from 'autobind-decorator';
 @autobind
 class LocationManager extends React.Component {
 
+
+    constructor(props) {
+        super(props);
+        this.state = { location: false };
+    }
+
     componentWillMount() {
         const queryArgs = this.props.location.query;
         if (queryArgs.latitude && queryArgs.longitude) {
@@ -15,8 +21,6 @@ class LocationManager extends React.Component {
             };
             this.props.setLocation(testLocation);
             this.updateLocationState(true);
-        } else {
-            this.setupLocationStatus();
         }
     }
 
@@ -59,8 +63,10 @@ class LocationManager extends React.Component {
     }
 
     componentDidMount() {
-        const locationInterval = setInterval(() => this.props.submitLocation(this.props.state.driverState.location), 10000);
-        const ridesInterval = setInterval(() => this.props.fetchWaitingRides(this.props.state.driverState.location), 10000);
+        if (this.state.location) {
+            const locationInterval = setInterval(() => this.props.submitLocation(this.props.state.driverState.location), 60000);
+            const ridesInterval = setInterval(() => this.props.fetchWaitingRides(this.props.state.driverState.location), 10000);
+        }
     }
 
     render() {
@@ -69,9 +75,11 @@ class LocationManager extends React.Component {
         } else {
             return (
                 <div className="container">
-                <div className="panel panel-default panel-ride">
-                  <h6>Drive the Vote requires you to share your location.</h6>
-                  <p>Please reload to start sharing your location</p>
+                <div className="panel panel-default panel-full text-center">
+                <h1><i className="fa fa-map-marker text-info"></i></h1>
+                  <h6>Enable Location.</h6>
+                  <p>Get started by allowing Drive the Vote access to your location</p>
+                  <button className="btn btn-success p-x-lg" onClick={this.setupLocationStatus}>Ok</button>
                 </div>
               </div>
             )
