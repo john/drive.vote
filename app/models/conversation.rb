@@ -15,6 +15,7 @@ class Conversation < ApplicationRecord
   around_save :notify_update
 
   validate :phone_numbers_match_first_message
+  validate :validate_voter_phone_not_blacklisted
 
   enum status: { sms_created: -1, in_progress: 0, ride_created: 1, closed: 2, help_needed: 3 }
   enum lifecycle: {
@@ -275,6 +276,12 @@ class Conversation < ApplicationRecord
       unless self.from_phone == first_message.from
         errors.add(:from_phone, 'must match :from attribute of first Message')
       end
+    end
+  end
+
+  def validate_voter_phone_not_blacklisted
+    if self.new_record? && BlacklistedPhone.has_voter_phone?(self.from_phone)
+      errors.add(:from_phone, 'has been blacklisted')
     end
   end
 end
