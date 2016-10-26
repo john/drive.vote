@@ -25,8 +25,7 @@ class RidesController < ApplicationController
       existing = @user.open_ride
       if existing
         # after sign-in voters are redirected to edit their existing open ride
-        @msg = t(:sign_in_to_edit)
-        flash[:notify] = @msg
+        flash[:notify] = t(:sign_in_to_edit)
         redirect_to "/users/sign_in?locale=#{locale}" and return
       end
     end
@@ -36,8 +35,7 @@ class RidesController < ApplicationController
     @ride = Ride.new(ride_params)
 
     if @ride.pickup_at.blank?
-      @msg = "Please fill in scheduled date and time."
-      flash[:notice] = @msg
+      flash[:notice] = "Please fill in scheduled date and time."
       redirect_back(fallback_location: root_path) and return
     end
 
@@ -65,8 +63,7 @@ class RidesController < ApplicationController
       # TODO: better error handling
       @user = User.create(user_attrs)
       if @user.errors.any?
-        @msg = "Problem creating a new user."
-        flash[:notice] = @msg
+        flash[:notice] = "Problem creating a new user."
         render :new and return
       end
     end
@@ -75,6 +72,7 @@ class RidesController < ApplicationController
     @ride.from_zip = @user.zip
     @ride.status = :scheduled
     @ride.ride_zone = @ride_zone
+
     if @ride.save
       Conversation.create_from_staff(@ride_zone, @user, thanks_msg, Rails.configuration.twilio_timeout,
                                      {status: :ride_created, ride: @ride})
@@ -82,7 +80,8 @@ class RidesController < ApplicationController
       render :success
     else
       flash[:notice] = "Problem creating a ride."
-      redirect_back(fallback_location: root_path) and return
+      # redirect_back(fallback_location: root_path) and return
+      render :new and return
     end
   end
 
