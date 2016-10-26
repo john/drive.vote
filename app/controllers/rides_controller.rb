@@ -36,7 +36,7 @@ class RidesController < ApplicationController
 
     if @ride.pickup_at.blank?
       flash[:notice] = "Please fill in scheduled date and time."
-      redirect_back(fallback_location: root_path) and return
+      render :new and return
     end
 
     if @ride.city_state.present? && @ride.from_city.blank? && @ride.from_state.blank?
