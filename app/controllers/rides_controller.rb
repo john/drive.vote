@@ -25,7 +25,8 @@ class RidesController < ApplicationController
       existing = @user.open_ride
       if existing
         # after sign-in voters are redirected to edit their existing open ride
-        flash[:notify] = t(:sign_in_to_edit)
+        # flash[:notice] = t(:sign_in_to_edit)
+        flash[:notice] = "Sorry that number or email is already in the system. Contact hello@drive.vote if you need help."
         redirect_to "/users/sign_in?locale=#{locale}" and return
       end
     end
