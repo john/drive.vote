@@ -380,4 +380,9 @@ RSpec.describe User, :type => :model do
       end
     end
   end
+
+  it 'produces safe html' do
+    u = create :user, name: '&'
+    expect(u.api_json['name']).to eq('&amp;')
+  end
 end

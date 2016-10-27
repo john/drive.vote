@@ -49,7 +49,7 @@ class Message < ApplicationRecord
       'from_phone' => self.from,
       'to_phone' => self.to,
       'sent_by' => self.sent_by,
-      'body' => self.body,
+      'body' => CGI::escape_html(self.body || ''),
       'created_at' => self.created_at.to_i,
     }
   end
