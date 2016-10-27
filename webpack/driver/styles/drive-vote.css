@@ -125,6 +125,12 @@ label {
     animation: fa-spin 9s infinite linear;
 }
 
+.position-error {
+    font-size: 30px;
+    left: 15px;
+    bottom: -10px;
+}
+
 .logo {
     width: 50px;
 }
