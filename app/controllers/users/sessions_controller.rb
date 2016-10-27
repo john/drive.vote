@@ -7,9 +7,14 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   # POST /resource/sign_in
-  # def create
-  #   super
-  # end
+  def create
+    super
+
+    if resource.is_only_unassigned_driver?
+      sign_out
+      flash[:notice] = "Driver application not yet approved, please contact area admin."
+    end
+  end
 
   # DELETE /resource/sign_out
   # def destroy

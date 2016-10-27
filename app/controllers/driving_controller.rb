@@ -9,8 +9,9 @@ class DrivingController < ApplicationController
   RIDES_LIMIT = 3
 
   def index
-    unless current_user
-      redirect_to "/users/sign_in" and return
+    unless current_user && current_user.is_driver?
+      sign_out
+      redirect_to root_path and return
     else
       render :layout => false
     end

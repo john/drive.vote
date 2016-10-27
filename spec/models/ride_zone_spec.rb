@@ -71,14 +71,14 @@ RSpec.describe RideZone, type: :model do
   end
 
   it 'do not return distant drivers' do
-    driver = create( :zoned_driver_user, city: 'Orlando', state: 'FL' )
+    driver = create( :zoned_driver_user, city: 'Philadelphia', state: 'PA' )
     rz = RideZone.with_role(:driver, driver).first
 
      expect( rz.available_drivers.first ).to eq(nil)
   end
 
   it 'returns all available drivers' do
-    driver = create( :zoned_driver_user, city: 'Orlando', state: 'FL' )
+    driver = create( :zoned_driver_user, city: 'Pittsburgh', state: 'PA' )
     rz = RideZone.with_role(:driver, driver).first
 
      expect( rz.available_drivers(all: true).first ).to eq(driver)

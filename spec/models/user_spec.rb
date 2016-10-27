@@ -339,6 +339,14 @@ RSpec.describe User, :type => :model do
       it "knows if you're not an unassigned driver" do
         expect( non_driver.is_unassigned_driver? ).to eq(false)
       end
+
+      it "knows a non-driver is not just an unassigned driver" do
+        expect( non_driver.is_only_unassigned_driver? ).to eq(false)
+      end
+
+      it "knows if an unassigned driver has only that role" do
+        expect( unassigned_driver.is_only_unassigned_driver? ).to eq(true)
+      end
     end
 
     describe 'for drivers' do
@@ -352,6 +360,10 @@ RSpec.describe User, :type => :model do
       it "knows if you're not a driver" do
         expect( non_driver.is_driver? ).to eq(false)
       end
+
+      it "knows a driver fails is_only_unassigned_driver?" do
+        expect( driver.is_only_unassigned_driver? ).to eq(false)
+      end
     end
 
     describe 'for dispatchers' do
@@ -364,6 +376,10 @@ RSpec.describe User, :type => :model do
 
       it "knows if you're not a dispatcher" do
         expect( non_dispatcher.is_dispatcher? ).to eq(false)
+      end
+
+      it "knows a dispatcher fails is_only_unassigned_driver?" do
+        expect( dispatcher.is_only_unassigned_driver? ).to eq(false)
       end
     end
 
