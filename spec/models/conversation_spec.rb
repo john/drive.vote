@@ -123,10 +123,12 @@ RSpec.describe Conversation, type: :model do
       Conversation.create_from_staff(rz, user, body, 5)
     end
 
-    it 'handles twilio error' do
+    it 'handles twilio error and creates conversation' do
       expect(TwilioService).to receive(:send_message).and_return(OpenStruct.new(error_code: 123))
-      expect(Conversation.create_from_staff(rz, user, body, 5) =~ /Communication error/).to be_truthy
-      expect(Conversation.count).to eq(0)
+      expect(Conversation.create_from_staff(rz, user, body, 5).class).to eq(Conversation)
+      msg = Conversation.last.messages.last
+      expect(msg.sent_by).to eq('Staff')
+      expect(msg.body =~ /#{body}/).to be_truthy
     end
 
     it 'creates a conversation and message' do
