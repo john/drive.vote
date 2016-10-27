@@ -9,16 +9,25 @@ function parseJSON(response) {
     } else {
         return response.json()
             .then(function(response) {
-                console.log(response.error);
                 throw new Error(response.error);
             });
     }
 }
 
 export function apiError(message) {
-    return {
-        type: 'API_ERROR',
-        message,
+    // The Fetch API leaves you in a lurch for detecting generic network errors,
+    // Not sure if there's any way to catch this besides a RegExp
+    const pattern = new RegExp(`TypeError: Failed to fetch`);
+    if (pattern.test(message)) {
+        return {
+            type: 'CONNECTION_ERROR',
+            message,
+        }
+    } else {
+        return {
+            type: 'API_ERROR',
+            message,
+        }
     }
 }
 

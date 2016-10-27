@@ -26,7 +26,7 @@ class User < ApplicationRecord
   # end
 
   VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
-  VALID_STATES = {'FL' => 'Florida', 'NV' => 'Nevada', 'PA' =>'Pennsylvania', 'UT' => 'Utah'}
+  VALID_STATES = {'NV' => 'Nevada', 'PA' =>'Pennsylvania', 'UT' => 'Utah'}
   has_many :rides, foreign_key: :voter_id, dependent: :destroy
   has_many :conversations, foreign_key: :user_id, dependent: :destroy
 
@@ -120,6 +120,18 @@ class User < ApplicationRecord
 
   def is_unassigned_driver?
     RideZone.find_roles(:unassigned_driver, self).present?
+  end
+
+  def is_only_unassigned_driver?
+    if RideZone.find_roles(:unassigned_driver, self).present? &&
+      !self.is_super_admin? &&
+      !self.is_zone_admin? &&
+      !self.is_dispatcher? &&
+      !self.is_driver?
+      true
+    else
+      false
+    end
   end
 
   def is_voter?

@@ -5,7 +5,7 @@ name: testing
 ride_zone:
   name: rztest
   slug: rztest
-  zip: 32805
+  zip: 15201
 drivers:
   -
     events:
