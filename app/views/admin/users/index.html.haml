@@ -29,6 +29,7 @@ Filter: &nbsp;
   %thead
     %tr
       %th Name
+      %th Email
       %th Created
       %th Location
       %th Roles
@@ -37,10 +38,13 @@ Filter: &nbsp;
   %tbody
     - @users.each do |user|
       %tr
-        %td{style: 'max-width: 250px;'}
+        %td{style: 'font-size: 16px; max-width: 250px;'}
           = link_to user.name, admin_user_path(user)
-          .small{style: "margin-top: -4px; color: #777"}
+          &nbsp;
+          %div{style: 'font-size: 12px; margin-top: 0px; color: #999'}
             = user.phone_number.phony_formatted(normalize: :US, spaces: '-')
+        %td
+          = mail_to user.email, user.email, target: "_blank"
         %td
           = user.created_at.strftime("%-m/%-d, %-H:%M %P")
         %td

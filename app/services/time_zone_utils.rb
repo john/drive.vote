@@ -1,5 +1,5 @@
 class TimeZoneUtils
-  TIME_STRINGS = /now|ahora|min|hr|in|en|hour|hora/.freeze
+  TIME_STRINGS = /now|ahora|min|hr|in|en|hour|hora/i.freeze
 
   def self.origin_time(human_input, origin_time_zone)
     if human_input =~ TIME_STRINGS # now, 10 minutes or 2 hours
