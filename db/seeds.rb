@@ -40,17 +40,16 @@ if  Rails.env == "development"
 
     },
     {
-      name: 'Toledo, OH',
+      name: 'Moab, UT',
       phone_number: '+14193860121',
-      city: 'Toledo',
-      state: 'OH',
-      zip: '43601',
+      city: 'Moab',
+      state: 'UT',
+      zip: '84532',
       country: 'us',
-      latitude: 41.6411077,
-      longitude: -83.5436626,
-      slug: 'toledo',
-      time_zone: 'America/New_York',
-
+      latitude: 38.5733,
+      longitude: 109.5498,
+      slug: 'moab',
+      time_zone: 'America/Chihuahua',
     },
     {
       slug: 'tampa_fl',
@@ -82,7 +81,7 @@ if  Rails.env == "development"
       phone_number_normalized: '+12073328709',
       image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
       locale: 'en',
-      zip: '43606'
+      zip: '84532'
     }, {
       name: 'Doug Driver',
       available: false,
@@ -92,7 +91,7 @@ if  Rails.env == "development"
       phone_number_normalized: '+12073328709',
       image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
       locale: 'en',
-      zip: '43606'
+      zip: '84532'
     }
   ])
 
