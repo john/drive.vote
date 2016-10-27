@@ -80,11 +80,14 @@ class Conversation < ApplicationRecord
   # create a new conversation initiated by staff
   # returns conversation if successful otherwise an error message
   def self.create_from_staff(ride_zone, user, body, timeout, attrs = {})
-    sms = send_staff_sms(ride_zone, user, body, timeout)
-    return sms if sms.is_a?(String)
     c = Conversation.create({ride_zone: ride_zone, user: user, from_phone: ride_zone.phone_number_normalized,
                             to_phone: user.phone_number_normalized, status: :in_progress}.merge(attrs))
-    msg = Message.create_from_staff(c, sms)
+    sms = send_staff_sms(ride_zone, user, body, timeout)
+    if sms.is_a?(String)
+      # create dummy message so we know what we intended to send
+      sms = OpenStruct.new(sid: 'n/a', status: 'failed', body: "(Failed to send) #{body}")
+    end
+    Message.create_from_staff(c, sms)
     c
   end
 
