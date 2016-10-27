@@ -143,9 +143,7 @@ class Ride < ApplicationRecord
   end
 
   def pickup_in_time_zone
-    Time.use_zone(self.ride_zone.time_zone) do
-      Time.at self.pickup_at
-    end
+    self.pickup_at.in_time_zone(self.ride_zone.time_zone)
   end
 
   def set_distance_to_voter(latitude, longitude)
