@@ -62,6 +62,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'rails-controller-testing'
   gem 'timecop'
+  gem 'watir', require: false
 end
 
 gem 'foreman'

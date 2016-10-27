@@ -1,0 +1,4 @@
+#! /usr/bin/env ruby
+
+require File.expand_path '../end_to_end_helper.rb', __FILE__
+EndToEnd::Runner.new(ARGV).parse!.run
