@@ -121,7 +121,8 @@ class Ride < ApplicationRecord
 
   # returns json suitable for exposing in the API
   def api_json
-    j = self.as_json(except: [:voter_id, :driver_id, :pickup_at, :created_at, :updated_at], methods: [:conversation_id, :driver_name])
+    j = self.as_json(except: [:voter_id, :driver_id, :pickup_at, :created_at, :updated_at], methods: [:conversation_id])
+    j['driver_name'] = CGI::escape_html(driver_name || '')
     j['pickup_at'] = self.pickup_at.try(:to_i)
     j['created_at'] = self.created_at.try(:to_i)
     j['status_updated_at'] = self.status_updated_at.to_i

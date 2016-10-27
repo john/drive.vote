@@ -29,7 +29,7 @@ RSpec.describe Ride, type: :model do
     end
   end
 
-  describe 'radius validation', focus:true do
+  describe 'radius validation' do
     let!(:zone) { create :ride_zone, latitude: 40.409, longitude: -80.09, max_pickup_radius: 5 }
 
     it 'allows a ride within radius' do
@@ -294,5 +294,10 @@ RSpec.describe Ride, type: :model do
       expect(Conversation).to_not receive(:send_staff_sms)
       Ride.confirm_scheduled_rides
     end
+  end
+
+  it 'produces safe api text' do
+    r = create :ride, driver: (create :user, name: '&')
+    expect(r.api_json['driver_name']).to eq('&amp;')
   end
 end

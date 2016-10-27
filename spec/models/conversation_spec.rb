@@ -407,4 +407,16 @@ RSpec.describe Conversation, type: :model do
       end
     end
   end
+
+  it 'escapes api json' do
+    str = 'So & and <img>'
+    safe = CGI::escape_html(str)
+    u = create :user, name: str
+    c = create :conversation, user: u, from_address: str, from_city: str, to_address: str, to_city: str, special_requests: str
+    m = create :message, conversation: c, body: str, from: c.from_phone, to: c.to_phone
+    j = c.api_json
+    %w(from_address from_city to_address to_city special_requests last_message_body name).each do |field|
+      expect(j[field]).to eq(safe)
+    end
+  end
 end

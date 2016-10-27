@@ -97,7 +97,8 @@ class User < ApplicationRecord
   end
 
   def api_json
-    data = self.as_json(only: [:id, :name, :available, :latitude, :longitude], methods: [:phone, :location_timestamp])
+    data = self.as_json(only: [:id, :available, :latitude, :longitude], methods: [:phone, :location_timestamp])
+    data['name'] = CGI::escape_html(name || '')
     data.merge('active_ride' => self.active_ride.try(:api_json))
   end
 
