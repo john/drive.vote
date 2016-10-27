@@ -90,13 +90,13 @@ DispatchMapController.prototype = {
     }
 
     if (lat == undefined || lat == null || lon == undefined || lon == null) { return }
-    if (ride.status == 'waiting_assignment') {
+    if (ride.status == 'waiting_assignment' || ride.status == 'new_ride') {
       if (pickupWarning != undefined && now > pickupWarning) {
         // this ride is overdue for a driver
         icon = Map.icons.overdue_assignment;
         label = label + ' Pickup time: ' + strftime('%l:%M%P', new Date(ride.pickup_at*1000))
       }
-    } else if (ride.status == 'driver_assigned') {
+    } else if (ride.status == 'driver_assigned' || ride.status == 'waiting_acceptance') {
       // this ride has an assigned driver
       if (notPickedUpWarning != undefined && now > notPickedUpWarning) {
         // this ride is overdue to be picked up

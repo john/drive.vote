@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe ConversationBot do
   let(:convo) { create :conversation_with_messages }
   let(:msg) { create :message, conversation: convo }
-  let(:ride_address_attrs) {{from_address: 'from', from_city: 'fcity', from_latitude: 1, from_longitude: 2,
+  let(:ride_address_attrs) {{from_address: '106 Dunbar Avenue', from_city: 'Carnegie',
+                             from_latitude: 40.409, from_longitude: -80.090,
                              to_address: 'to', to_city: 'tcity', to_latitude: 3, to_longitude: 4}}
 
   it 'has methods for each conversation lifecycle' do
@@ -14,7 +15,7 @@ RSpec.describe ConversationBot do
 
   describe 'newly created conversation needing language' do
     it 'should thank and request language' do
-      expect(ConversationBot.new(convo, msg).response).to include('thanks')
+      expect(ConversationBot.new(convo, msg).response).to include('Thanks')
       expect(convo.reload.bot_counter).to eq(1)
     end
 
@@ -138,23 +139,39 @@ RSpec.describe ConversationBot do
         expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:no_dest_when_do_you_want_pickup, locale: :en))
       end
     end
+
+    it 'should reject too far away' do
+      allow(GooglePlaces).to receive(:search).and_return([good_geocode])
+      allow_any_instance_of(RideZone).to receive(:is_within_pickup_radius?).and_return(false)
+      reply = create :message, conversation: convo, body: 'fake address'
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:ride_too_far, locale: :en))
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:ride_too_far, locale: :en))
+      if type == :from
+        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:ride_too_far, locale: :en))
+        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
+        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:bot_stalled, locale: :en))
+      else
+        expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:no_dest_when_do_you_want_pickup, locale: :en))
+      end
+    end
   end
 
   describe 'getting to confirmed origin' do
     let(:user) { create :user, language: :en, name: 'foo' }
     let(:convo) { create :conversation_with_messages, user: user }
-    let(:good_geocode) { {'formatted_address' => '100 Main, Cleveland, OH 21921, United States', 'geometry' => {'location' => {'lat' => 1, 'lng' => 2}} } }
+    let(:good_geocode) { {'formatted_address' => '106 Dunbar Avenue, Carnegie, PA 15106, United States', 'geometry' => {'location' => {'lat' => 1, 'lng' => 2}} } }
 
     before :each do
       allow(GooglePlaces).to receive(:search).and_return([good_geocode])
+      allow_any_instance_of(RideZone).to receive(:is_within_pickup_radius?).and_return(true)
     end
 
     it 'should accept valid address, update conversation, and confirm' do
       reply = create :message, conversation: convo, body: 'fake address'
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_address, locale: :en, address: '100 Main, Cleveland'))
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_address, locale: :en, address: '106 Dunbar Avenue, Carnegie'))
       expect(convo.reload.lifecycle).to eq('have_origin')
-      expect(convo.from_address).to eq('100 Main, Cleveland')
-      expect(convo.from_city).to eq('Cleveland')
+      expect(convo.from_address).to eq('106 Dunbar Avenue, Carnegie')
+      expect(convo.from_city).to eq('Carnegie')
       expect(convo.from_latitude).to eq(1)
       expect(convo.from_longitude).to eq(2)
     end
@@ -162,7 +179,7 @@ RSpec.describe ConversationBot do
     it 'should echo name if present' do
       allow(GooglePlaces).to receive(:search).and_return([good_geocode.merge('name' => 'school')])
       reply = create :message, conversation: convo, body: 'fake address'
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_address, locale: :en, address: 'school - 100 Main, Cleveland'))
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_address, locale: :en, address: 'school - 106 Dunbar Avenue, Carnegie'))
     end
 
     it 'should confirm address' do
@@ -192,8 +209,8 @@ RSpec.describe ConversationBot do
 
   describe 'getting to confirmed destination' do
     let(:user) { create :user, language: :en, name: 'foo' }
-    let(:convo) { create :conversation_with_messages, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true }
-    let(:good_geocode) { {'formatted_address' => '100 Main, Cleveland, OH 21921, United States', 'geometry' => {'location' => {'lat' => 3, 'lng' => 4}} } }
+    let(:convo) { create :conversation_with_messages, user: user, from_latitude: 40.409, from_longitude: -80.090, from_confirmed: true }
+    let(:good_geocode) { {'formatted_address' => '106 Dunbar Avenue, Carnegie, PA 15106, United States', 'geometry' => {'location' => {'lat' => 40.4, 'lng' => -80.1}} } }
 
     before :each do
       allow(GooglePlaces).to receive(:search).and_return([good_geocode])
@@ -201,18 +218,18 @@ RSpec.describe ConversationBot do
 
     it 'should accept valid address, update conversation, and confirm' do
       reply = create :message, conversation: convo, body: 'fake address'
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_address, locale: :en, address: '100 Main, Cleveland'))
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_address, locale: :en, address: '106 Dunbar Avenue, Carnegie'))
       expect(convo.reload.lifecycle).to eq('have_destination')
-      expect(convo.to_address).to eq('100 Main, Cleveland')
-      expect(convo.to_city).to eq('Cleveland')
-      expect(convo.to_latitude).to eq(3)
-      expect(convo.to_longitude).to eq(4)
+      expect(convo.to_address).to eq('106 Dunbar Avenue, Carnegie')
+      expect(convo.to_city).to eq('Carnegie')
+      expect(convo.to_latitude.to_f).to eq(40.4)
+      expect(convo.to_longitude.to_f).to eq(-80.1)
     end
 
     it 'should echo name if present' do
       allow(GooglePlaces).to receive(:search).and_return([good_geocode.merge('name' => 'school')])
       reply = create :message, conversation: convo, body: 'fake address'
-      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_address, locale: :en, address: 'school - 100 Main, Cleveland'))
+      expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_address, locale: :en, address: 'school - 106 Dunbar Avenue, Carnegie'))
     end
 
     it 'should confirm address' do
@@ -250,7 +267,7 @@ RSpec.describe ConversationBot do
 
   describe 'getting to confirmed time' do
     let(:user) { create :user, language: :en, name: 'foo' }
-    let(:convo) { create :conversation_with_messages, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true }
+    let(:convo) { create :conversation_with_messages, user: user, from_latitude: 40.409, from_longitude: -80.090, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true }
     let(:voter_time) { Time.use_zone(convo.ride_zone.time_zone) do 10.minutes.from_now.change(sec:0, usec:0); end }
     let(:voter_formatted) { voter_time.strftime('%l:%M %P')}
 
@@ -265,7 +282,7 @@ RSpec.describe ConversationBot do
         reply = create :message, conversation: convo, body: voter_formatted
         expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:confirm_the_time, locale: :en, time: voter_formatted))
         expect(convo.reload.lifecycle).to eq('have_time')
-        expect(convo.pickup_time.to_i).to eq(voter_time.to_i)
+        expect(convo.pickup_at.to_i).to eq(voter_time.to_i)
       end
 
       it 'should confirm time' do
@@ -283,7 +300,7 @@ RSpec.describe ConversationBot do
         reply = create :message, conversation: convo, body: 'n'
         expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:when_do_you_want_pickup, locale: :en))
         expect(convo.reload.lifecycle).to eq('have_confirmed_destination')
-        expect(convo.pickup_time).to be_nil
+        expect(convo.pickup_at).to be_nil
         expect(convo.time_confirmed).to be_falsey
       end
     end
@@ -292,13 +309,13 @@ RSpec.describe ConversationBot do
       reply = create :message, conversation: convo, body: 'huh'
       expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:invalid_time, locale: :en))
       expect(convo.reload.lifecycle).to eq('have_confirmed_destination')
-      expect(convo.pickup_time).to be_nil
+      expect(convo.pickup_at).to be_nil
     end
   end
 
   describe 'additional passengers' do
     let!(:user) { create :user, language: :en, name: 'foo' }
-    let!(:convo) { create :conversation_with_messages, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true, pickup_time: Time.now, time_confirmed: true }
+    let!(:convo) { create :conversation_with_messages, user: user, from_latitude: 40.409, from_longitude: -80.090, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true, pickup_at: Time.now, time_confirmed: true }
 
     ConversationBot::NUMBER_STRINGS.each do |num, list|
       list.each do |regexp|
@@ -322,7 +339,7 @@ RSpec.describe ConversationBot do
 
   describe 'special requests' do
     let!(:user) { create :user, language: :en, name: 'foo' }
-    let!(:convo) { create :conversation_with_messages, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true, pickup_time: Time.now, time_confirmed: true, additional_passengers:0 }
+    let!(:convo) { create :conversation_with_messages, user: user, from_latitude: 40.409, from_longitude: -80.090, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true, pickup_at: Time.now, time_confirmed: true, additional_passengers:0 }
 
     it 'should accept special requests' do
       reply = create :message, conversation: convo, body: 'wheelchair'
@@ -393,7 +410,7 @@ RSpec.describe ConversationBot do
 
   describe 'unexpected after all done' do
     let!(:user) { create :user, language: :en, name: 'foo' }
-    let!(:convo) { create :conversation_with_messages, user: user, from_latitude: 1, from_longitude: 2, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true, pickup_time: Time.now, time_confirmed: true, additional_passengers:0, special_requests: 'none' }
+    let!(:convo) { create :conversation_with_messages, user: user, from_latitude: 40.409, from_longitude: -80.090, from_confirmed: true, to_latitude: 1, to_longitude: 2, to_confirmed: true, pickup_at: Time.now, time_confirmed: true, additional_passengers:0, special_requests: 'none' }
 
     it 'should signal for help' do
       reply = create :message, conversation: convo, body: 'wait i made a mistake'

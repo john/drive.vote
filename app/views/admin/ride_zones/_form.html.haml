@@ -23,12 +23,20 @@
     = f.text_field :phone_number, class: 'form-control', required: true, maxlength: 17
 
   .col-sm-8.field
+    = f.label :email, "Email *"
+    = f.telephone_field :email, class: 'form-control', required: 'true', maxlength: 50
+
+  .col-sm-8.field
     = f.label :zip
     = f.text_field :zip, class: 'form-control', required: true, maxlength: 12
 
   .col-sm-8.field
     = f.label :nearby_radius
     = f.text_field :nearby_radius, class: 'form-control', required: true, maxlength: 7
+
+  .col-sm-8.field
+    = f.label :max_pickup_radius
+    = f.text_field :max_pickup_radius, class: 'form-control', required: true, maxlength: 7
 
   .col-sm-8.actions
     = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."

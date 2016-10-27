@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include States
 
   # TODO: when geocoding is enabled
   # acts_as_mappable :lat_column_name => :latitude, :lng_column_name => :longitude
@@ -14,7 +15,6 @@ class User < ApplicationRecord
     if geo = results.first
       user.latitude = geo.latitude
       user.longitude = geo.longitude
-      user.address1 = geo.address
       user.zip = geo.postal_code if geo.postal_code.present?
     end
   end
@@ -26,7 +26,7 @@ class User < ApplicationRecord
   # end
 
   VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
-  VALID_STATES = {'FL' => 'Florida', 'NV' => 'Nevada', 'PA' =>'Pennsylvania', 'UT' => 'Utah'}
+  VALID_STATES = {'NV' => 'Nevada', 'PA' =>'Pennsylvania', 'UT' => 'Utah'}
   has_many :rides, foreign_key: :voter_id, dependent: :destroy
   has_many :conversations, foreign_key: :user_id, dependent: :destroy
 
@@ -66,11 +66,14 @@ class User < ApplicationRecord
   validates :state, length: { maximum: 2 }
   validates :zip, length: { maximum: 12 }
   validates :country, length: { maximum: 50 }
-  validates :password, presence: true, length: { in: 8..50 }, on: :create
-  # validates :password, length: { in: 8..50 }, on: :update, allow_blank: true
 
   # scope that gets Users, of any/all roles, close to a particular RideZone
   scope :nearby_ride_zone, ->(rz) { near(rz.zip, GEO_NEARBY_DISTANCE) }
+
+
+  def self.voters
+    User.with_role(:voter)
+  end
 
   def self.non_voters
     User.where.not(id: User.with_role(:voter))
@@ -94,7 +97,8 @@ class User < ApplicationRecord
   end
 
   def api_json
-    data = self.as_json(only: [:id, :name, :available, :latitude, :longitude], methods: [:phone, :location_timestamp])
+    data = self.as_json(only: [:id, :available, :latitude, :longitude], methods: [:phone, :location_timestamp])
+    data['name'] = CGI::escape_html(name || '')
     data.merge('active_ride' => self.active_ride.try(:api_json))
   end
 
@@ -114,9 +118,32 @@ class User < ApplicationRecord
     RideZone.find_roles(:driver, self).present?
   end
 
+  def is_unassigned_driver?
+    RideZone.find_roles(:unassigned_driver, self).present?
+  end
+
+  def is_only_unassigned_driver?
+    if RideZone.find_roles(:unassigned_driver, self).present? &&
+      !self.is_super_admin? &&
+      !self.is_zone_admin? &&
+      !self.is_dispatcher? &&
+      !self.is_driver?
+      true
+    else
+      false
+    end
+  end
+
+  def is_voter?
+    RideZone.find_roles(:voter, self).present?
+  end
+
   def driver_ride_zone_id
     # the roles table has entries for driver with resource id = ride zone id
     driver_role = self.roles.where(name: 'driver').first
+    if driver_role.blank?
+      driver_role = self.roles.where(name: 'unassigned_driver').first
+    end
     driver_role.try(:resource_id)
   end
 
@@ -139,6 +166,23 @@ class User < ApplicationRecord
 
   def full_street_address
     [self.address1, self.address2, self.city, self.state, self.zip, self.country].reject(&:empty?).join(', ')
+  end
+
+  def parse_city_state
+    c_s_array = self.city_state.split(/ |,/).reject { |cs| cs.blank? }
+
+    if c_s_array.size > 1
+      if state = c_s_array.pop
+        if STATES.keys.include?(state.strip.upcase.to_sym)
+          self.city = c_s_array.join(' ').titlecase
+          self.state = state.strip.upcase
+        end
+      end
+    elsif c_s_array.size == 1
+      if STATES.keys.include?(c_s_array[0].strip.upcase.to_sym)
+        self.state = c_s_array[0].strip.upcase
+      end
+    end
   end
 
   def qa_clear
@@ -185,13 +229,6 @@ class User < ApplicationRecord
   end
 
   def full_address
-    if self.city_state.present? && self.city.blank? && self.state.blank?
-      c_s_array = self.city_state.split(',')
-      self.city = c_s_array[0].try(:strip)
-      self.state = c_s_array[1].try(:strip)
-      self.save
-    end
-
     [self.address1, self.address2, self.city, self.state, self.zip, self.country].compact.join(', ')
   end
 
@@ -254,6 +291,11 @@ class User < ApplicationRecord
     # don't create super admins
     if self.ride_zone.blank? && self.user_type == 'admin'
       raise "Bad role, model."
+    end
+
+    if self.ride_zone.blank? && self.ride_zone_id.present?
+      rz = RideZone.find( self.ride_zone_id )
+      self.ride_zone = rz
     end
 
     if self.user_type.present?

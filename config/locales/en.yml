@@ -20,13 +20,19 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  activerecord:
+    attributes:
+      ride:
+        from_address: "Address for pickup"
+
   yes: 'Yes'
   no: 'No'
   or: 'not sure?'
   hi: 'Hi'
   thanks: 'Thanks'
-  name: 'name'
+  name: 'Name'
   full_name: 'Full name'
+  vehicle_description: 'Describe your vehicle (e.g. white toyota camry)'
   save: 'Save'
   volunteer_to_drive: 'Volunteer to drive'
   saving: 'Saving'
@@ -77,7 +83,7 @@ en:
   agree_to: 'Agree to'
 
   need_more_info: 'We need a little more info to match you with a ride'
-  by_saving: 'By saving your are agreeing to the'
+  by_saving: 'By saving you are agreeing to the'
   terms_of_service: 'terms of service'
 
   almost_done: 'Almost done'
@@ -102,18 +108,19 @@ en:
 
   what_is_your_name: 'Thanks! What is your name?'
   empty_need_name: "Sorry, I didn't get a response. What is your name?"
-  bot_stalled: 'Someone will contact you soon'
+  bot_stalled: "I'm sorry, I don't understand. Someone will contact you soon"
   what_is_pickup_location: 'Hello %{name}. Where do you want to be picked up - address and city?'
+  ride_too_far: 'That address is too far away. Please try again.'
   too_many_addresses: "Too many matches! Please reply with specific address and city or reply \"don't know\" or \"skip\"."
   no_address_match: "Address not found. Please reply with specific address and city or reply \"don't know\" or \"skip\"."
   what_is_destination_location: "Where do you want to go - address and city? If not sure, reply \"don't know\" or \"skip\"."
-  are_you_going_from_to: 'Welcome back! Reply "help" at any time. Are you going from %{from} to %{to}?'
+  are_you_going_from_to: 'Welcome back! Reply "human" at any time to chat with a person. Are you going from %{from} to %{to}?'
   when_do_you_want_pickup: 'When do you want to be picked up (HH:MM am/pm)?'
   no_dest_when_do_you_want_pickup: 'You can work out destination with your driver. When do you want to be picked up (HH:MM am/pm or "now")?'
   confirm_address: 'Please confirm the address is %{address}. Yes/no?'
   confirm_the_time: 'Please confirm pickup today at %{time}. Yes/no?'
   invalid_time: "That doesn't look like a good time or it's passed. Enter something like 4:30pm or 'now'"
-  how_many_additional: 'How many additional people need a ride (0-4)?'
+  how_many_additional: 'Besides you, how many additional people need a ride (0-4)?'
   invalid_passengers: 'Please reply with number of additional passengers (0-4)'
   any_special_requests: 'What are your special requests (like wheelchair, car seats)? Or reply none.'
   thanks_will_contact: 'Thank you! We have your info and will contact you before your ride.'
@@ -137,9 +144,11 @@ en:
   email_address: 'What is your email address?'
   request_saved: 'We have saved your ride request with the details below:'
   found_active_request: 'We found an active request - rescheduling'
-  thanks_for_requesting: 'Thank you for requesting a ride on %{time}. Text this number with questions, or email %{email}.'
+  thanks_for_requesting: "Thank you for requesting a ride on %{time}. We'll send a reminder text before you ride arrives. Email %{email} if you have questions."
   pickup_location: 'Pickup location:'
   pickup_time: 'Pickup time:'
   additional_passengers: 'Additional passengers:'
   special_requests_label: 'Special requests:'
   to_change_request: 'to change your request (sign in with password required)'
+  driver_assigned: '%{name} will be your driver and is on the way - look for a %{vehicle}'
+  driver_cleared: 'Sorry, your driver had to cancel. We are looking for another driver.'

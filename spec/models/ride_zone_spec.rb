@@ -2,8 +2,9 @@ require 'rails_helper'
 
 RSpec.describe RideZone, type: :model do
 
+  it { should have_many(:conversations) }
   it { should have_many(:messages) }
-
+  it { should have_many(:rides) }
 
   describe 'lifecycle hooks' do
     # note we cannot rely on VCR for http calls to timezone b/c it adds a timestamp
@@ -62,6 +63,27 @@ RSpec.describe RideZone, type: :model do
     expect( rz.active_rides.first ).to be_nil
   end
 
+  it 'returns nearby available drivers' do
+    driver = create :zoned_driver_user
+    rz = RideZone.with_role(:driver, driver).first
+
+     expect( rz.available_drivers(all: true).first ).to eq(driver)
+  end
+
+  it 'do not return distant drivers' do
+    driver = create( :zoned_driver_user, city: 'Philadelphia', state: 'PA' )
+    rz = RideZone.with_role(:driver, driver).first
+
+     expect( rz.available_drivers.first ).to eq(nil)
+  end
+
+  it 'returns all available drivers' do
+    driver = create( :zoned_driver_user, city: 'Pittsburgh', state: 'PA' )
+    rz = RideZone.with_role(:driver, driver).first
+
+     expect( rz.available_drivers(all: true).first ).to eq(driver)
+  end
+
   it 'returns unavailable_drivers' do
     d = create :zoned_driver_user
     rz = RideZone.with_role(:driver, d).first
@@ -70,6 +92,22 @@ RSpec.describe RideZone, type: :model do
      expect( rz.unavailable_drivers.first ).to eq(d)
   end
 
+  describe 'pickup radius' do
+    let(:rz) { create :ride_zone, max_pickup_radius: 1, latitude: 34, longitude: -122 }
+
+    it 'reports nearby points as within radius' do
+      expect(rz.is_within_pickup_radius?(34.001, -122.001)).to be_truthy
+    end
+
+    it 'reports farther points as outside radius' do
+      expect(rz.is_within_pickup_radius?(35, -123)).to be_falsey
+    end
+
+    it 'returns true if no ride zone lat/long' do
+      rz.update_attributes({latitude: nil, longitude: nil})
+      expect(rz.is_within_pickup_radius?(35, -123)).to be_truthy
+    end
+  end
 
   it 'calculates stats' do
     rz = create :ride_zone
@@ -84,7 +122,7 @@ RSpec.describe RideZone, type: :model do
         total_drivers: 2,
         available_drivers: 1,
         completed_rides: 1,
-        active_rides: 3,
+        active_rides: 4,
         scheduled_rides: 1,
     }
     expect(rz.driving_stats).to eq(expected)

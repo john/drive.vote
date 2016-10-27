@@ -27,6 +27,7 @@ es:
   thanks: 'Gracias'
   name: 'Nombre'
   full_name: 'Nombre'
+  vehicle_description: 'Describir su vehículo (por ejemplo, blanco toyota camry)'
   save: 'Guardar'
   volunteer_to_drive: 'Voluntario para conducir'
   saving: 'Guardiendo'
@@ -102,8 +103,9 @@ es:
 
   what_is_your_name: '¡Gracias! ¿Cuál es su nombre?'
   empty_need_name: 'Lo sentimos, por favor, responda con su nombre'
-  bot_stalled: 'Alguien se pondrá en contacto en breve'
+  bot_stalled: 'Lo siento, no compredo. Alguien se pondrá en contacto en breve'
   what_is_pickup_location: 'Hola %{name}. ¿Dónde desea ser recogido - dirección y la ciudad?'
+  ride_too_far: 'Esa dirección es demasiado lejos. Por favor, inténtelo de nuevo.'
   too_many_addresses: 'Demasiados partidos! Por favor, responda todas las direcciones y ciudad específica o responder "no sé" o "omitir"'
   no_address_match: 'Dirección no encontrada. Por favor, responda todas las direcciones y ciudad específica o responder "no sé" o "omitir"'
   what_is_destination_location: '¿Dónde quieres ir - la dirección y la ciudad? Si no está seguro, responder "no sé" o "omitir"'
@@ -143,6 +145,8 @@ es:
   additional_passengers: 'Pasajeros adicionales:'
   special_requests_label: 'Solicitudes especiales:'
   to_change_request: 'para cambiar su solicitud (sesión con la contraseña necesaria)'
+  driver_assigned: '%{name} será su conductor y está en camino - busque un %{vehicle}'
+  driver_cleared: 'Lo sentimos, el conductor tuvo que cancelar. Estamos en busca de otro conductor.'
 
   # https://gist.github.com/jordigg/30fe17c6328d5deab9ec
   devise:

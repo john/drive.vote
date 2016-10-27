@@ -7,7 +7,8 @@ RSpec.describe Users::RegistrationsController, type: :routing do
     end
 
     it 'routes specific ride zone to #new' do
-      expect(get: '/volunteer_to_drive/1').to route_to('users/registrations#new', id: '1')
+      # expect(get: '/volunteer_to_drive/1').to route_to('users/registrations#new', id: '1')
+      expect(get: '/volunteer/1').to route_to('users/registrations#new', id: '1')
     end
   end
 end

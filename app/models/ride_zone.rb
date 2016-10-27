@@ -31,7 +31,7 @@ class RideZone < ApplicationRecord
     end
   end
 
-  after_validation :geocode, if: ->(obj){ obj.zip.present? && obj.zip_changed? }
+  after_validation :geocode, if: ->(obj){ obj.zip.present? && obj.zip_changed? && !obj.latitude_changed? }
   after_validation :set_time_zone, if: ->(obj){ obj.latitude.present? && obj.latitude_changed? }
   after_validation :reverse_geocode, if: ->(obj){ (obj.latitude.present? && obj.latitude_changed?) || (obj.longitude.present? && obj.longitude_changed?) }
 
@@ -59,10 +59,18 @@ class RideZone < ApplicationRecord
   end
 
   def drivers
+    User.with_role(:driver, self)
+  end
+
+  def nearby_drivers
     nearby_users.with_role(:driver, self)
   end
 
   def unassigned_drivers
+    User.with_role(:unassigned_driver, self)
+  end
+
+  def nearby_unassigned_drivers
     nearby_users.with_role(:unassigned_driver, self)
   end
 
@@ -70,8 +78,12 @@ class RideZone < ApplicationRecord
     self.active_rides.map {|ar| ar.driver}
   end
 
-  def available_drivers
-    nearby_users.with_role(:driver, self) - unavailable_drivers
+  def available_drivers(all: false)
+    if all
+      User.with_role(:driver, self) - unavailable_drivers
+    else
+      nearby_users.with_role(:driver, self) - unavailable_drivers
+    end
   end
 
   def driving_stats
@@ -87,6 +99,13 @@ class RideZone < ApplicationRecord
 
   def current_time
     Time.use_zone(self.time_zone) do Time.current; end
+  end
+
+  def is_within_pickup_radius?(latitude, longitude)
+    return true unless self.latitude && self.longitude
+    pt = Geokit::LatLng.new(latitude, longitude)
+    rz_center = Geokit::LatLng.new(self.latitude, self.longitude)
+    pt.distance_to(rz_center) <= self.max_pickup_radius
   end
 
   # call this to broadcast an event for this ride zone

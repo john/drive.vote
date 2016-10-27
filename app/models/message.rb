@@ -49,13 +49,13 @@ class Message < ApplicationRecord
       'from_phone' => self.from,
       'to_phone' => self.to,
       'sent_by' => self.sent_by,
-      'body' => self.body,
+      'body' => CGI::escape_html(self.body || ''),
       'created_at' => self.created_at.to_i,
     }
   end
 
   def sent_by
-    if self.to.phony_formatted == self.ride_zone.phone_number.phony_formatted
+    if self.to.phony_formatted(normalize: :US, spaces: '-') == self.ride_zone.phone_number.phony_formatted(normalize: :US, spaces: '-')
       if self.conversation.user.has_role?(:driver, self.ride_zone)
         'Driver'
       else

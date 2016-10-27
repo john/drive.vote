@@ -118,4 +118,10 @@ RSpec.describe Message, type: :model do
     msg = create :message, conversation: convo, from: convo.to_phone, to: convo.from_phone
     expect(msg.sent_by).to eq('Bot')
   end
+
+  it 'escapes html in body' do
+    convo = create :conversation_with_messages
+    msg = create :message, conversation: convo, body: 'Test <img>'
+    expect(msg.api_json['body']).to eq('Test &lt;img&gt;')
+  end
 end

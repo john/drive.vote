@@ -1,13 +1,84 @@
 require 'rails_helper'
 
 RSpec.describe User, :type => :model do
+  describe 'state_city parsing' do
+    context 'valid city_state' do
+      let(:user) {build :user, city_state: "Carnegie, PA", city: "", state: ""}
+
+      it "gets city and state from 'Carnegie, PA'" do
+        user.parse_city_state
+        expect(user.city).to eq('Carnegie')
+        expect(user.state).to eq('PA')
+      end
+
+      it "gets city and state from 'Carnegie PA" do
+        user.city_state = 'Carnegie PA'
+        user.parse_city_state
+        expect(user.city).to eq('Carnegie')
+        expect(user.state).to eq('PA')
+      end
+
+      #if we can detect there's just one element, see if it's the state
+      it "gets the state from 'PA'" do
+        user.city_state = 'PA'
+        user.parse_city_state
+        expect(user.city).to eq('')
+        expect(user.state).to eq('PA')
+      end
+
+      it "gets the city and state from 'south bend ia'" do
+        user.city_state = 'south bend ia'
+        user.parse_city_state
+        expect(user.city).to eq('South Bend')
+        expect(user.state).to eq('IA')
+      end
+
+      it "gets the state from ', PA'" do
+        user.city_state = ', PA'
+        user.parse_city_state
+        expect(user.city).to eq('')
+        expect(user.state).to eq('PA')
+      end
+    end
+
+    context 'invalid city_state' do
+      let(:user) {build :user, city_state: "", city: "", state: ""}
+
+      it "fails to parse 'Carnegie'" do
+        user.city_state = 'Carnegie'
+        user.parse_city_state
+        expect(user.city).to eq('')
+        expect(user.state).to eq('')
+      end
+
+      it "fails to parse 'Carnegie, '" do
+        user.city_state = 'Carnegie, '
+        user.parse_city_state
+        expect(user.city).to eq('')
+        expect(user.state).to eq('')
+      end
+
+      it "fails to parse a non-state" do
+        user.city_state = 'Lincolnville, PO'
+        user.parse_city_state
+        expect(user.city).to eq('')
+        expect(user.state).to eq('')
+      end
+
+      it "fails to parse an empty string" do
+        expect(user.city_state).to eq('')
+        user.parse_city_state
+        expect(user.city).to eq('')
+        expect(user.state).to eq('')
+      end
+    end
+  end
 
   context 'validations' do
     it { should validate_presence_of :email }
-
     it { should validate_length_of(:phone_number).is_at_most(17)}
     it { should validate_length_of(:email).is_at_most(50)}
-    it { should validate_length_of(:password).is_at_least(8).is_at_most(50)}
+    it { should validate_length_of(:password).is_at_least(8).is_at_most(128)}
     it { should validate_length_of(:city).is_at_most(50)}
     it { should validate_length_of(:state).is_at_most(2)}
     it { should validate_length_of(:zip).is_at_most(12)}
@@ -240,5 +311,94 @@ RSpec.describe User, :type => :model do
       expect(Message.where(conversation_id: cid).count).to eq(0)
       expect(Conversation.find_by_id(cid)).to be_nil
     end
+  end
+
+  describe 'role checks' do
+
+    describe 'for voters' do
+      let(:voter) { create :voter_user }
+      let(:non_voter) { create :user }
+
+      it "knows if you're a voter" do
+        expect( voter.is_voter? ).to eq(true)
+      end
+
+      it "knows if you're not a voter" do
+        expect( non_voter.is_voter? ).to eq(false)
+      end
+    end
+
+    describe 'for unassigned drivers' do
+      let(:unassigned_driver) { create :unassigned_driver_user }
+      let(:non_driver) { create :user }
+
+      it "knows if you're an unassigned driver" do
+        expect( unassigned_driver.is_unassigned_driver? ).to eq(true)
+      end
+
+      it "knows if you're not an unassigned driver" do
+        expect( non_driver.is_unassigned_driver? ).to eq(false)
+      end
+
+      it "knows a non-driver is not just an unassigned driver" do
+        expect( non_driver.is_only_unassigned_driver? ).to eq(false)
+      end
+
+      it "knows if an unassigned driver has only that role" do
+        expect( unassigned_driver.is_only_unassigned_driver? ).to eq(true)
+      end
+    end
+
+    describe 'for drivers' do
+      let(:driver) { create :driver_user }
+      let(:non_driver) { create :user }
+
+      it "knows if you're a driver" do
+        expect( driver.is_driver? ).to eq(true)
+      end
+
+      it "knows if you're not a driver" do
+        expect( non_driver.is_driver? ).to eq(false)
+      end
+
+      it "knows a driver fails is_only_unassigned_driver?" do
+        expect( driver.is_only_unassigned_driver? ).to eq(false)
+      end
+    end
+
+    describe 'for dispatchers' do
+      let(:dispatcher) { create :dispatcher_user }
+      let(:non_dispatcher) { create :user }
+
+      it "knows if you're a dispatcher" do
+        expect( dispatcher.is_dispatcher? ).to eq(true)
+      end
+
+      it "knows if you're not a dispatcher" do
+        expect( non_dispatcher.is_dispatcher? ).to eq(false)
+      end
+
+      it "knows a dispatcher fails is_only_unassigned_driver?" do
+        expect( dispatcher.is_only_unassigned_driver? ).to eq(false)
+      end
+    end
+
+    describe 'for zone admins' do
+      let(:zone_admin) { create :zoned_admin_user }
+      let(:non_zone_admin) { create :user }
+
+      it "knows if you're a zone admin" do
+        expect( zone_admin.is_zone_admin? ).to eq(true)
+      end
+
+      it "knows if you're not a zone admin" do
+        expect( non_zone_admin.is_zone_admin? ).to eq(false)
+      end
+    end
+  end
+
+  it 'produces safe html' do
+    u = create :user, name: '&'
+    expect(u.api_json['name']).to eq('&amp;')
   end
 end

@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
       return edit_ride_path(existing) if existing
 
       # TODO: handle es path
-      return "/get_a_ride/#{resource.voter_ride_zone_id}"
+      return "/ride/#{resource.voter_ride_zone_id}"
     end
     root_path
   end
@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:user_type, :name, :email, :phone_number, :zip, :city, :state, :city_state, :ride_zone_id])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:user_type, :name, :description, :email, :phone_number, :zip, :city, :state, :city_state, :ride_zone_id])
   end
 
 end

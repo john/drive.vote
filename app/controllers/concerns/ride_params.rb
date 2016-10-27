@@ -22,8 +22,6 @@ module RideParams
                                  :to_city,
                                  :to_state,
                                  :to_zip,
-                                 :pickup_day, # concatenated into pickup_at
-                                 :pickup_time, # concatenated into pickup_at
                                  :pickup_at,
                                  :name,
                                  :phone_number, # this is a pass-thru to user

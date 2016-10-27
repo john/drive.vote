@@ -4,9 +4,13 @@
 
 %ul.nav.nav-tabs
   %li{class: (active == 'ride_zones') ? 'active' : ''}= link_to 'Ride Zones', admin_ride_zones_path
-  %li{class: (active == 'users') ? 'active' : ''}= link_to 'Users', admin_users_path
-  %li{class: (active == 'rides') ? 'active' : ''}= link_to 'Rides', admin_rides_path
-  %li{class: (active == 'conversations') ? 'active' : ''}= link_to 'Conversations', admin_conversations_path
-  %li{class: (active == 'drivers') ? 'active' : ''}= link_to 'Drivers', admin_drivers_path
-  %li{class: (active == 'metrics') ? 'active' : ''}= link_to 'Metrics', admin_metrics_path
-  %li{class: (active == 'simulations') ? 'active' : ''}= link_to 'Simulations', admin_simulations_path
+
+  - if current_user && current_user.is_super_admin?
+    %li{class: (active == 'users') ? 'active' : ''}= link_to 'Users', admin_users_path
+    %li{class: (active == 'voters') ? 'active' : ''}= link_to 'Voters', admin_voters_path
+    %li{class: (active == 'rides') ? 'active' : ''}= link_to 'Rides', admin_rides_path
+    %li{class: (active == 'conversations') ? 'active' : ''}= link_to 'Conversations', admin_conversations_path
+    %li{class: (active == 'drivers') ? 'active' : ''}= link_to 'Drivers', admin_drivers_path
+    %li{class: (active == 'metrics') ? 'active' : ''}= link_to 'Metrics', admin_metrics_path
+    %li{class: (active == 'simulations') ? 'active' : ''}= link_to 'Simulations', admin_simulations_path
+    %li{class: (active == 'site') ? 'active' : ''}= link_to 'Site', admin_site_path

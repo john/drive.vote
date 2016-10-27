@@ -29,7 +29,7 @@ module Api::V1
     end
 
     def drivers
-      render json: {response: @ride_zone.drivers.map(&:api_json)}
+      render json: {response: @ride_zone.nearby_drivers.map(&:api_json)}
     end
 
     def update
@@ -48,9 +48,10 @@ module Api::V1
     def assign_ride
       driver = User.find_by_id(params[:driver_id])
       ride = Ride.find_by_id(params[:ride_id])
-      if driver && ride
-        ride.clear_driver if ride.driver
-        ride.assign_driver(driver)
+      if driver && driver.active_ride
+        render json: {error: 'Driver already has a ride', status: :conflict }
+      elsif driver && ride
+        ride.assign_driver(driver, true, true)
         render json: {response: driver.reload.api_json}
       else
         render json: {error: 'Driver or ride not found'}, status: :not_found

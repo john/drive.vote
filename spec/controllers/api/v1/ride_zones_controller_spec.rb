@@ -129,6 +129,11 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
         expect(u1.reload.active_ride).to_not be_nil
       end
 
+      it 'marks the ride needing acceptance' do
+        post :assign_ride, params: {id: rz.id, driver_id: u1.id, ride_id: ride.id}
+        expect(ride.reload.status).to eq('waiting_acceptance')
+      end
+
       it 'removes if already assigned' do
         ride.assign_driver(u2)
         post :assign_ride, params: {id: rz.id, driver_id: u1.id, ride_id: ride.id}

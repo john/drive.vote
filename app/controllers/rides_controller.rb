@@ -25,57 +25,52 @@ class RidesController < ApplicationController
       existing = @user.open_ride
       if existing
         # after sign-in voters are redirected to edit their existing open ride
-        @msg = t(:sign_in_to_edit)
-        flash[:notify] = @msg
+        # flash[:notice] = t(:sign_in_to_edit)
+        flash[:notice] = "Sorry that number or email is already in the system. Contact hello@drive.vote if you need help."
         redirect_to "/users/sign_in?locale=#{locale}" and return
       end
     end
 
     # create user if not found
-    rp = ride_params
-    @ride = Ride.new(rp)
+    # rp = ride_params
+    @ride = Ride.new(ride_params)
+
     if @ride.pickup_at.blank?
-      if Chronic.parse(params[:pickup_day]) && Chronic.parse(params[:pickup_time])
-        from_date_time = Chronic.parse( [params[:pickup_day], params[:pickup_time]].join(' ') )
-        @ride.pickup_at =  from_date_time
-      else
-        @ride.errors.add(:pickup_at, :invalid)
-        @msg = "Please fill in scheduled date and time."
-        flash[:notice] = @msg
-        redirect_back(fallback_location: root_path) and return
-      end
+      flash[:notice] = "Please fill in scheduled date and time."
+      render :new and return
+    end
+
+    if @ride.city_state.present? && @ride.from_city.blank? && @ride.from_state.blank?
+      city_state_array = @ride.city_state.split(',')
+      @ride.from_city = city_state_array[0].try(:strip)
+      @ride.from_state = city_state_array[1].try(:strip)
     end
 
     unless @user
       user_params = params.require(:ride).permit(:phone_number, :email, :name, :password)
-      attrs = {
+      user_attrs = {
           name: user_params[:name],
           phone_number: user_params[:phone_number],
           ride_zone: @ride_zone,
+          ride_zone_id: @ride_zone.id,
           email: user_params[:email],
           password: user_params[:password] || SecureRandom.hex(8),
-          address1: rp[:from_address],
+          city: @ride.from_city,
+          state: @ride.from_state,
           locale: @locale,
-          user_type: :voter,
+          user_type: 'voter',
       }
-      if @ride.city_state.present? && @ride.from_city.blank? && @ride.from_state.blank?
-        c_s_array = @ride.city_state.split(',')
-        attrs[:city] = c_s_array[0].try(:strip)
-        attrs[:state] = c_s_array[1].try(:strip)
-      end
 
-      # todo: better error handling
-      @user = User.create(attrs)
+      # TODO: better error handling
+      @user = User.create(user_attrs)
       if @user.errors.any?
-        @msg = "Problem creating a new user."
-        flash[:notice] = @msg
-        # redirect_back(fallback_location: root_path) and return
+        flash[:notice] = "Problem creating a new user."
         render :new and return
       end
-
     end
 
     @ride.voter = @user
+    @ride.from_zip = @user.zip
     @ride.status = :scheduled
     @ride.ride_zone = @ride_zone
 
@@ -86,7 +81,8 @@ class RidesController < ApplicationController
       render :success
     else
       flash[:notice] = "Problem creating a ride."
-      redirect_back(fallback_location: root_path) and return
+      # redirect_back(fallback_location: root_path) and return
+      render :new and return
     end
   end
 
@@ -108,7 +104,7 @@ class RidesController < ApplicationController
 
   private
   def thanks_msg
-    I18n.t(:thanks_for_requesting, locale: (@ride.voter.locale ||= 'en'), time: @ride.pickup_at.strftime('%m/%d %l:%M %P'), email: 'hello@drive.vote')
+    I18n.t(:thanks_for_requesting, locale: (@ride.voter.locale ||= 'en'), time: @ride.pickup_at.strftime('%m/%d %l:%M %P'), email: @ride.ride_zone.email)
   end
 
   def require_session

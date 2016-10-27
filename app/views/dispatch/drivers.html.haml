@@ -28,7 +28,7 @@
 
   - if current_user.has_role?(:admin, @ride_zone)
     %h2
-      Unassigned drivers
+      Unapproved drivers
     %table.table{style: 'margin-top: 40px;'}
       - @unassigned_drivers.each do |driver|
         %tr

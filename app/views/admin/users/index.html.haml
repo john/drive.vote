@@ -29,6 +29,7 @@ Filter: &nbsp;
   %thead
     %tr
       %th Name
+      %th Email
       %th Created
       %th Location
       %th Roles
@@ -37,11 +38,20 @@ Filter: &nbsp;
   %tbody
     - @users.each do |user|
       %tr
-        %td{style: 'max-width: 250px;'}= link_to user.name, admin_user_path(user)
-        %td= user.created_at.strftime("%-m/%-d, %-H:%M %P")
-        %td #{[user.city, user.state, user.zip].reject(&:blank?).join(', ')}
-        %td= user.roles.collect{|r| r.name.gsub('_', ' ')}.join(', ')
+        %td{style: 'font-size: 16px; max-width: 250px;'}
+          = link_to user.name, admin_user_path(user)
+          &nbsp;
+          %div{style: 'font-size: 12px; margin-top: 0px; color: #999'}
+            = user.phone_number.phony_formatted(normalize: :US, spaces: '-')
         %td
+          = mail_to user.email, user.email, target: "_blank"
+        %td
+          = user.created_at.strftime("%-m/%-d, %-H:%M %P")
+        %td
+          #{[user.city, user.state, user.zip].reject(&:blank?).join(', ')}
+        %td
+          = user.roles.collect{|r| r.name.gsub('_', ' ')}.join(', ')
+        %td{style: "font-size: 12px;"}
           = link_to 'Edit', edit_admin_user_path(user)
           &nbsp; &#183; &nbsp;
           = link_to 'Destroy', admin_user_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }

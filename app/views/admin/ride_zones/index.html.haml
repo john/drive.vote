@@ -25,26 +25,23 @@
     - @ride_zones.each do |ride_zone|
       %tr
         %td
-          = link_to ride_zone.name, admin_ride_zone_path(ride_zone)
+          = link_to ride_zone.name, admin_ride_zone_path(ride_zone.slug)
         %td
           = ride_zone.zip
         %td
           = ride_zone.description
         %td
-          = ride_zone.phone_number
+          = ride_zone.phone_number.phony_formatted(normalize: :US, spaces: '-')
 
         %td{style: 'font-size: 13px; color: #999;'}
           = link_to 'Dispatch', dispatch_path(ride_zone.slug), target: '_blank'
           &nbsp &#183; &nbsp;
 
-          = link_to "Drivers", drivers_dispatch_path(ride_zone)
-          &nbsp &#183; &nbsp;
-
-          = link_to 'Schedule form', get_a_ride_path(ride_zone.slug), target: '_blank'
+          = link_to 'Schedule', get_a_ride_path(ride_zone.slug), target: '_blank'
           = link_to ' ⓘ', '#', class: 'pop', 'data-title': "#{sanitize ride_zone.name}", 'data-content': "The public URL for scheduling rides:<br>#{get_a_ride_url(ride_zone.slug)}", onclick: "return false;"
           &nbsp &#183; &nbsp;
 
-          = link_to 'Volunteer form', volunteer_to_drive_for_zone_path(ride_zone.slug), target: '_blank'
+          = link_to 'Volunteer', volunteer_to_drive_for_zone_path(ride_zone.slug), target: '_blank'
           = link_to ' ⓘ', '#', class: 'pop', 'data-title': "#{sanitize ride_zone.name}", 'data-content': "The public URL for recruiting drivers:<br>#{volunteer_to_drive_for_zone_url(ride_zone.slug)}", onclick: "return false;"
           &nbsp &#183; &nbsp;
 

@@ -2,7 +2,7 @@ import React from 'react';
 import autobind from 'autobind-decorator';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 @autobind
-class ErrorContainer extends React.Component {
+class AppError extends React.Component {
 
     render() {
         if (this.props.errorState) {
@@ -29,4 +29,4 @@ class ErrorContainer extends React.Component {
     }
 };
 
-export default ErrorContainer;
+export default AppError;

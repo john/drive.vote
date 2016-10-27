@@ -1,11 +1,8 @@
 import React from 'react';
-import { isObjectEqual } from '../helpers/Equal';
 import h from '../helpers/helpers';
-
 import autobind from 'autobind-decorator';
-
 import PendingRideDetail from '../components/PendingRideDetail';
-
+import DispatchMatch from '../components/DispatchMatch';
 
 @autobind
 class PendingRide extends React.Component {
@@ -14,10 +11,6 @@ class PendingRide extends React.Component {
         super(props);
         this.state = { clicked: false };
     }
-
-    // shouldComponentUpdate(nextProps) {
-    //     return !isObjectEqual(this.props.ride, nextProps.ride);
-    // }
 
     handleClick() {
         this.setState({
@@ -32,19 +25,21 @@ class PendingRide extends React.Component {
     }
 
     render() {
-        //Setup time display
         const ride = this.props.ride;
-        const time = h.formatTime(this.props.ride.pickup_at);
-        const passengers = 1 + parseInt(ride.additional_passengers);
-        let name;
-        if (ride.name) {
-            name = ride.name;
+        if (ride.status === 'waiting_acceptance') {
+            return <DispatchMatch ride={this.ride} {...this.props} />
         } else {
-            name = ride.voter_phone_number;
-        }
-        if (!this.state.clicked) {
-            return (
-                <div className="panel pending-ride row p-x-0" onClick={()=>this.handleClick()}>
+            const time = h.formatTime(this.props.ride.pickup_at);
+            const passengers = 1 + parseInt(ride.additional_passengers);
+            let name;
+            if (ride.name) {
+                name = ride.name;
+            } else {
+                name = ride.voter_phone_number;
+            }
+            if (!this.state.clicked) {
+                return (
+                    <div className="panel pending-ride row p-x-0" onClick={()=>this.handleClick()}>
                     <div className="col-xs-7">
                         <h3>{name}</h3> 
                         <p>Total Passengers: {passengers}</p>
@@ -57,12 +52,12 @@ class PendingRide extends React.Component {
                     </div>  
                     <i className="fa fa-angle-right pendingArrow"></i>
                 </div>
-            )
-        } else {
-            return <PendingRideDetail {...this.props} declineRide={this.declineRide} />
+                )
+            } else {
+                return <PendingRideDetail {...this.props} declineRide={this.declineRide} />
+            }
         }
     }
-
 };
 
 export default PendingRide;

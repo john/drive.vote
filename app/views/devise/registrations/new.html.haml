@@ -46,6 +46,10 @@
     = f.label :phone_number, "#{t(:phone_number)} *"
     = f.telephone_field :phone_number, class: 'form-control', required: 'true', maxlength: 17
 
+  .col-sm-8.field
+    = f.label :description, "#{t(:vehicle_description)} *"
+    = f.text_field :description, class: 'form-control', required: 'true', maxlength: 50
+
   - unless @ride_zone.present?
     .col-sm-8.field
       %label{for: 'user_city_state'}
@@ -73,7 +77,7 @@
     = f.submit t(:volunteer_to_drive), class: 'btn btn-primary', style: 'width: 100%; margin: 10px 0 0 0', disable_with: "#{t(:saving)}..."
 
     .small{style: 'margin-top: -10px 0 0 0;'}
-      By saving your are agreeing to the #{link_to t(:terms_of_service), terms_of_service_path, target: '_blank'}.
+      By saving you are agreeing to the #{link_to t(:terms_of_service), terms_of_service_path, target: '_blank'}.
     %br
 
 :javascript
