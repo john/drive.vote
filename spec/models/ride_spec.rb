@@ -47,6 +47,13 @@ RSpec.describe Ride, type: :model do
     end
   end
 
+  describe 'time zone' do
+    it 'returns a pickup time that is in correct zone' do
+      r = create :ride
+      expect(r.pickup_in_time_zone.time_zone).to eq(ActiveSupport::TimeZone.new(r.ride_zone.time_zone))
+    end
+  end
+
   describe 'event generation' do
     let!(:driver) { create :driver_user }
     let!(:new_driver) { create :driver_user }
