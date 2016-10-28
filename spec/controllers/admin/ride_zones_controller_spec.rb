@@ -329,6 +329,15 @@ RSpec.describe Admin::RideZonesController, type: :controller do
           post :change_role, params: { id: rz.id, driver: user.id, to_role: 'driver' }
         }.to change{ rz.drivers.count(:all) }.by(1)
       end
+
+      # TODO: implement these once the fix to rolify is in place
+      # context "handles both kinds of unassigned_driver roles" do
+      #   it "removes a scoped unassigned_driver role" do
+      #   end
+      #
+      #   it "removes unscoped unassigned_driver role" do
+      #   end
+      # end
     end
   end
 
