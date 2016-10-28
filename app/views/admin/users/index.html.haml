@@ -1,6 +1,7 @@
 :css
   #user-filter { margin: 0 0 20px 0;}
   #user-search { display: inline;}
+  td { font-size: 14px; }
 
 = render 'admin/nav', {active: 'users'}
 
@@ -23,7 +24,6 @@ Filter: &nbsp;
 
   - if @q.present?
     = link_to 'clear', admin_users_path, style: "font-size: 13px; color: #777; margin-left: 10px;"
-
 
 %table.table-hover.admin
   %thead
@@ -50,7 +50,8 @@ Filter: &nbsp;
         %td
           #{[user.city, user.state, user.zip].reject(&:blank?).join(', ')}
         %td
-          = user.roles.collect{|r| r.name.gsub('_', ' ')}.join(', ')
+          = user.role_names
+
         %td{style: "font-size: 12px;"}
           = link_to 'Edit', edit_admin_user_path(user)
           &nbsp; &#183; &nbsp;

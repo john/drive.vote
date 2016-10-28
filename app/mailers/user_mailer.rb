@@ -16,7 +16,7 @@ class UserMailer < ApplicationMailer
 
   # http://templates.mailchimp.com/resources/inline-css/
 
-  def welcome_email_driver(user, ride_zone)
+  def welcome_email_driver(user, ride_zone=nil)
     sendgrid_category "welcome_driver"
     @user = user
     @ride_zone = ride_zone

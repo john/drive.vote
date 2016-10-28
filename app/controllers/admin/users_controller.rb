@@ -18,11 +18,11 @@ class Admin::UsersController < Admin::AdminApplicationController
     sort = params[:sort] || 'name'
     if params[:q].present?
       @q = params[:q].downcase
-      @users = User.where(USER_SEARCH, "%#{@q}%", "%#{@q}%", "%#{@q}%").order("#{sort} DESC").paginate(page: page, per_page: per_page)
-    elsif params[:filter].present?
+      @users = User.where(USER_SEARCH, "%#{@q}%", "%#{@q}%", "%#{@q}%").order("UPPER(#{sort}) DESC").paginate(page: page, per_page: per_page)
+    elsif params[:filter].present? && params[:filter].downcase != 'all'
       @users = User.with_role(params[:filter].to_sym, :any).order("#{sort} DESC").paginate(page: page, per_page: per_page)
     else
-      @users = User.non_voters.order("#{sort} DESC").paginate(page: page, per_page: per_page)
+      @users = User.non_voters.order("UPPER(#{sort}) ASC").paginate(page: page, per_page: per_page)
     end
   end
 
