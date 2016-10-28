@@ -4,13 +4,21 @@
 
 <p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 16px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">
 
+
+<% if @ride_zone.present? %>
   Thank you for volunteering to drive for <b><%= @ride_zone.name %></b>. Someone will be in touch with you prior to November 8 with further instructions.
 </p>
+<% else %>
+  Thank you for volunteering to drive. Someone will be in touch with you prior to November 8 with further instructions.
+<% end %>
 
 <p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 16px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">
 
-  <!--If you need to reschedule first <a href="https://drive.vote/users/password/new">create a password for your account</a>.--> Email <a href="mailto:<%= @ride_zone.email %>"><%= @ride_zone.email %></a> if you have questions or need help.
-
+<% if @ride_zone.present? %>
+  Email <a href="mailto:<%= @ride_zone.email %>"><%= @ride_zone.email %></a> if you have questions or need help.
+<% else %>
+  Email <a href="mailto:hello@drive.vote">hello@drive.vote</a> if you have questions or need help.
+<% end %>
 </p>
 
 <p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 16px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">

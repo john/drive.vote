@@ -49,8 +49,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
       if resource.active_for_authentication?
         set_flash_message! :notice, :signed_up
 
-        @ride_zone = RideZone.find(resource.ride_zone_id)
-        UserMailer.welcome_email_driver(resource, @ride_zone).deliver_later
+        if resource.ride_zone_id.present?
+          @ride_zone = RideZone.find(resource.ride_zone_id)
+          UserMailer.welcome_email_driver(resource, @ride_zone).deliver_later
+        else
+          UserMailer.welcome_email_driver(resource).deliver_later
+        end
 
         respond_with resource, location: after_sign_up_path_for(resource)
       else
@@ -73,7 +77,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if user_signed_in? && current_user.has_role?(:admin)
       admin_users_path
     else
-      "#{confirm_path}?uid=#{resource.id}"
+      confirm_path
     end
   end
 

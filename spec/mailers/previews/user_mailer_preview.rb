@@ -18,4 +18,15 @@ class UserMailerPreview < ActionMailer::Preview
     UserMailer.welcome_email_voter_ride(user, ride)
   end
 
+  def welcome_email_driver
+    user = User.first
+    UserMailer.welcome_email_driver(user)
+  end
+
+  def welcome_email_driver_rz
+    user = User.first
+    rz = RideZone.create(name: 'Tampa', slug: 'tampa')
+    UserMailer.welcome_email_driver(user, rz)
+  end
+
 end

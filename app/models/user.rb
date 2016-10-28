@@ -138,6 +138,18 @@ class User < ApplicationRecord
     RideZone.find_roles(:voter, self).present?
   end
 
+  def role_names
+    self.roles.collect do |r|
+
+      if r.name == 'unassigned_driver' && r.resource_id.present?
+        name = "#{r.name} (rz: #{r.resource_id})"
+      else
+        name = r.name
+      end
+      name.gsub('_', ' ')
+    end.join(', ')
+  end
+
   def driver_ride_zone_id
     # the roles table has entries for driver with resource id = ride zone id
     driver_role = self.roles.where(name: 'driver').first
