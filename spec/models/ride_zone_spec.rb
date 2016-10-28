@@ -49,6 +49,28 @@ RSpec.describe RideZone, type: :model do
     end
   end
 
+  it 'returns only its drivers' do
+    rz = create :ride_zone
+    rzd1 = create :driver_user, rz: rz
+    rzd2 = create :driver_user, rz: rz
+    d3 = create :driver_user # different ride zone
+    d4 = create :user
+    d4.add_role(:driver) # not scoped to a ride zone
+
+    expect(rz.drivers.count).to eq(2)
+    expect(rz.drivers.map(&:id)).to eq([rzd1.id, rzd2.id])
+  end
+
+  it 'returns ride zones with a user in a role' do
+    rz1, rz2, rz3 = create(:ride_zone), create(:ride_zone), create(:ride_zone)
+    d1 = create :user
+    d1.add_role(:driver, rz1)
+    d1.add_role(:driver, rz3)
+
+    expect(RideZone.with_user_in_role(d1, :driver).count).to eq(2)
+    expect(RideZone.with_user_in_role(d1, :driver).map(&:id)).to eq([rz1.id, rz3.id])
+  end
+
   it 'active_rides returns active rides' do
     rz = create :ride_zone
     r = create :waiting_ride, ride_zone_id: rz.id
@@ -65,28 +87,28 @@ RSpec.describe RideZone, type: :model do
 
   it 'returns nearby available drivers' do
     driver = create :zoned_driver_user
-    rz = RideZone.with_role(:driver, driver).first
+    rz = RideZone.with_user_in_role(driver, :driver).first
 
      expect( rz.available_drivers(all: true).first ).to eq(driver)
   end
 
   it 'do not return distant drivers' do
     driver = create( :zoned_driver_user, city: 'Philadelphia', state: 'PA' )
-    rz = RideZone.with_role(:driver, driver).first
+    rz = RideZone.with_user_in_role(driver, :driver).first
 
      expect( rz.available_drivers.first ).to eq(nil)
   end
 
   it 'returns all available drivers' do
     driver = create( :zoned_driver_user, city: 'Pittsburgh', state: 'PA' )
-    rz = RideZone.with_role(:driver, driver).first
+    rz = RideZone.with_user_in_role(driver, :driver).first
 
      expect( rz.available_drivers(all: true).first ).to eq(driver)
   end
 
   it 'returns unavailable_drivers' do
     d = create :zoned_driver_user
-    rz = RideZone.with_role(:driver, d).first
+    rz = RideZone.with_user_in_role(d, :driver).first
     cr = create :assigned_ride, ride_zone_id: rz.id, driver_id: d.id
 
      expect( rz.unavailable_drivers.first ).to eq(d)
@@ -112,9 +134,9 @@ RSpec.describe RideZone, type: :model do
   it 'calculates stats' do
     rz = create :ride_zone
     rz2 = create :ride_zone
-    d1 = create :driver_user, available: true, ride_zone: rz
-    d2 = create :driver_user, available: false, ride_zone: rz
-    d3 = create :driver_user, ride_zone: rz2
+    d1 = create :driver_user, available: true, rz: rz
+    d2 = create :driver_user, available: false, rz: rz
+    d3 = create :driver_user, rz: rz2
 
     Ride.statuses.each { |s| create :ride, ride_zone: rz, status: s[0]}
     Ride.statuses.each { |s| create :ride, ride_zone: rz2, status: s[0]} # should not be in counts

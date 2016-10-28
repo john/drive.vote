@@ -41,6 +41,14 @@ class RideZone < ApplicationRecord
   attr_accessor :admin_phone_number
   attr_accessor :admin_password
 
+  def self.with_user_in_role(user, role)
+    role_ids = Role.where(resource_type: 'RideZone', name: role).where.not(resource_id: nil).pluck(:id)
+    return RideZone.none if role_ids.empty?
+    users_roles = UsersRoles.where(user_id: user.id, role_id: role_ids).distinct(:role_id).pluck(:role_id)
+    zone_ids = Role.where(id: users_roles).pluck(:resource_id)
+    RideZone.where(id: zone_ids)
+  end
+
   def nearby_users
     User.nearby_ride_zone self
   end
@@ -51,27 +59,32 @@ class RideZone < ApplicationRecord
   end
 
   def admins
-    User.with_role(:admin, self)
+    named_role(:admin)&.users || User.none
   end
 
   def dispatchers
-    User.with_role(:dispatcher, self)
+    named_role(:dispatcher)&.users || User.none
   end
 
   def drivers
-    User.with_role(:driver, self)
+    named_role(:driver)&.users || User.none
   end
 
   def nearby_drivers
-    nearby_users.with_role(:driver, self)
+    return User.none unless role = named_role(:driver)
+    zone_driver_ids = role.users.pluck(:id)
+    nearby_users.where(id: zone_driver_ids)
   end
 
   def unassigned_drivers
-    User.with_role(:unassigned_driver, self)
+    named_role(:unassigned_driver)&.users || User.none
   end
 
   def nearby_unassigned_drivers
-    nearby_users.with_role(:unassigned_driver, self)
+    role = Role.where(name: :unassigned_driver, resource_id: nil).first
+    return User.none unless role
+    unassigned_driver_ids = role.users.pluck(:id)
+    nearby_users.where(id: unassigned_driver_ids)
   end
 
   def unavailable_drivers
@@ -80,17 +93,17 @@ class RideZone < ApplicationRecord
 
   def available_drivers(all: false)
     if all
-      User.with_role(:driver, self) - unavailable_drivers
+      drivers - unavailable_drivers
     else
-      nearby_users.with_role(:driver, self) - unavailable_drivers
+      nearby_drivers - unavailable_drivers
     end
   end
 
   def driving_stats
     # todo: cache this (redis? memcache?) to avoid excessive db queries
     {
-      total_drivers: User.with_role(:driver, self).count,
-      available_drivers: User.with_role(:driver, self).where(available: true).count,
+      total_drivers: drivers.count,
+      available_drivers: drivers.where(available: true).count,
       completed_rides: Ride.where(ride_zone_id: self.id, status: :complete).count,
       active_rides: Ride.where(ride_zone_id: self.id, status: Ride.active_statuses).count,
       scheduled_rides: Ride.where(ride_zone_id: self.id, status: :scheduled).count,
@@ -123,5 +136,10 @@ class RideZone < ApplicationRecord
     return unless self.latitude && self.longitude
     tz = Timezone.lookup(self.latitude, self.longitude) rescue nil
     self.time_zone = tz.name unless tz.nil?
+  end
+
+  private
+  def named_role(name)
+    Role.where(resource_type: 'RideZone', resource_id: self.id, name: name).first
   end
 end

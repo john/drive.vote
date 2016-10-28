@@ -13,7 +13,7 @@
 
 Filter: &nbsp;
 %select#user-filter
-  - %w{all admin dispatcher driver unassigned_driver}.each do |role|
+  - %w{all admin dispatcher}.each do |role|
     %option{value: role, selected: params[:"filter"] == role}
       = role.gsub('_', ' ')
 

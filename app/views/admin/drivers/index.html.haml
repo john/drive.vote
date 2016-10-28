@@ -27,7 +27,7 @@
       %th Email
       %th Cell
       %th Zip
-      %th Unassigned?
+      %th Roles
 
   %tbody
     - @drivers.each do |driver|
@@ -37,4 +37,4 @@
         %td= driver.email
         %td= driver.phone_number
         %td= driver.zip
-        %td= driver.has_role?(:unassigned_driver)
+        %td= driver.role_names

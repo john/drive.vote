@@ -30,7 +30,6 @@ FactoryGirl.define do
     end
 
     factory :driver_user do
-      user_type :driver
       transient do
         rz { create( :ride_zone ) }
       end
@@ -61,7 +60,6 @@ FactoryGirl.define do
     end
 
     factory :unassigned_driver_user do
-      user_type :unassigned_driver
       transient do
         rz { create( :ride_zone ) }
       end

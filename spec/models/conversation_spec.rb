@@ -110,7 +110,7 @@ RSpec.describe Conversation, type: :model do
 
   describe 'new conversation from staff' do
     let(:rz) { create :ride_zone }
-    let(:user) { create :driver_user, ride_zone: rz }
+    let(:user) { create :driver_user, rz: rz }
     let(:body) { 'can you go to south side?' }
     let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid') }
 
