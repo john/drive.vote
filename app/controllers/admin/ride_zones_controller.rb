@@ -113,10 +113,7 @@ class Admin::RideZonesController < Admin::AdminApplicationController
 
       if params[:to_role] == 'driver'
         driver.add_role(:driver, @ride_zone)
-        driver.remove_role(:unassigned_driver, @ride_zone)
-        driver.remove_role(:unassigned_driver)
       else
-        driver.add_role(:unassigned_driver, @ride_zone)
         driver.remove_role(:driver, @ride_zone)
       end
     else

@@ -222,7 +222,7 @@ RSpec.describe User, :type => :model do
 
     u.remove_role(:driver, rz)
 
-    expect( u.has_role?(:unassigned_driver) ).to be_truthy
+    expect( u.has_role?(:unassigned_driver, rz) ).to be_truthy
     expect( u.has_role?(:driver, rz) ).to be_falsy
   end
 

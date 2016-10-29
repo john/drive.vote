@@ -239,7 +239,7 @@ class User < ApplicationRecord
 
   def make_unassigned(removed_role)
     if removed_role.name == 'driver' && !self.is_unassigned_driver?
-      self.add_role(:unassigned_driver)
+      self.add_role(:unassigned_driver, RideZone.find(removed_role.resource_id))
     end
   end
 
