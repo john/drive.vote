@@ -17,7 +17,7 @@ class DispatchController < ApplicationController
 
   def ride_pane
     @conversation = Conversation.find(params[:id])
-    @zone_driver_count = User.with_role(:driver, @conversation.ride_zone).count
+    @zone_driver_count = @conversation.ride_zone.drivers.count
     @available_drivers = @conversation.ride_zone.available_drivers
 
     if @conversation.ride.present?
@@ -34,8 +34,9 @@ class DispatchController < ApplicationController
 
   def drivers
     @drivers = @ride_zone.drivers.order(:name)
-    if current_user.has_role?(:admin, @ride_zone)
+    if current_user.has_role?(:admin, @ride_zone) || current_user.has_role?(:admin)
       @unassigned_drivers = @ride_zone.unassigned_drivers.order(:name)
+      @nearby_drivers = @ride_zone.nearby_unassigned_drivers.order(:name)
     end
   end
 

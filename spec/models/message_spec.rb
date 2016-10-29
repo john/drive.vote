@@ -62,7 +62,7 @@ RSpec.describe Message, type: :model do
   describe 'staff messages' do
     let(:twilio_msg) { OpenStruct.new(sid: 'sid', status: 'status', body: 'hello') }
     let(:ride_zone) { create :ride_zone }
-    let(:user) { create :driver_user, ride_zone: ride_zone }
+    let(:user) { create :driver_user, rz: ride_zone }
     let(:convo) { create :conversation, user: user, ride_zone: ride_zone }
 
     it 'should create the message' do

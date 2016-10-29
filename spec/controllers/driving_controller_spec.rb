@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe DrivingController, :type => :controller do
   let(:rz) { create :ride_zone }
-  let(:driver) { create :driver_user, ride_zone: rz }
+  let(:driver) { create :driver_user, rz: rz }
   let(:car_location) { {latitude: 35, longitude: -122} }
 
   before :each do
@@ -122,7 +122,7 @@ RSpec.describe DrivingController, :type => :controller do
     end
 
     it 'does not allow stealing rides' do
-      ride.assign_driver(create :driver_user, ride_zone: rz)
+      ride.assign_driver(create :driver_user, rz: rz)
       post :accept_ride, params: {ride_id: ride.id}
       expect(response).to_not be_successful
       expect(response.status).to eq(400)

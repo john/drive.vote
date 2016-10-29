@@ -11,7 +11,7 @@ class Admin::RideZonesController < Admin::AdminApplicationController
       if current_user.has_role?(:admin)
         @ride_zones = RideZone.all
       elsif current_user.is_zone_admin?
-        @ride_zones = RideZone.with_role(:admin, current_user)
+        @ride_zones = RideZone.with_user_in_role(current_user, :admin)
       else
         redirect_to '/404.html'
       end
@@ -36,10 +36,10 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   def setup_edit
     @zone_dispatchers = @ride_zone.dispatchers
     @zone_drivers = @ride_zone.drivers
-    @zone_admins = User.with_role(:admin, @ride_zone)
+    @zone_admins = @ride_zone.admins
 
     # TODO: scope to nearby when adding proximity
-    @local_users = User.where.not(id: User.with_role(:voter))
+    @local_users = User.non_voters
   end
 
   def create
@@ -113,10 +113,7 @@ class Admin::RideZonesController < Admin::AdminApplicationController
 
       if params[:to_role] == 'driver'
         driver.add_role(:driver, @ride_zone)
-        driver.remove_role(:unassigned_driver, @ride_zone)
-        driver.remove_role(:unassigned_driver)
       else
-        driver.add_role(:unassigned_driver, @ride_zone)
         driver.remove_role(:driver, @ride_zone)
       end
     else

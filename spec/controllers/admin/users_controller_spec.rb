@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Admin::UsersController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
-  # Ride. As you add validations to Ride, be sure to
+  # User. As you add validations to Ride, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
     {name: 'Joe Test User', email: 'foo@bar.com', password: '12345abcde', phone_number: '2073328712', zip: ''}
@@ -13,7 +13,7 @@ RSpec.describe Admin::UsersController, type: :controller do
     skip("Add a hash of attributes invalid for your model")
   }
 
-  let(:user) { create :user }
+  let!(:user) { create :dispatcher_user }
 
   describe "GET index" do
     it "redirects if not logged in" do
@@ -25,7 +25,6 @@ RSpec.describe Admin::UsersController, type: :controller do
       login_admin
 
       it "assigns all users as @users" do
-        User.create! valid_attributes # add a second user in addition to user logged in for testing
         users = User.all
         get :index, params: {}
         expect(assigns(:users)).to match_array(users)

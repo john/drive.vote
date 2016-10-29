@@ -199,16 +199,16 @@ RSpec.describe User, :type => :model do
     expect( build(:user, user_type: 'bad_role') ).to_not be_valid
   end
 
-  it 'removes :unassigned_driver role when made :driver' do
-    u = create :unassigned_driver_user
+  it 'removes :unassigned_driver role when made :driver', focus:true do
     rz = create :ride_zone
+    u = create :unassigned_driver_user, rz: rz
 
-    expect( u.has_role?(:unassigned_driver) ).to be_truthy
+    expect( u.has_role?(:unassigned_driver, :any) ).to be_truthy
     expect( u.has_role?(:driver, rz) ).to be_falsy
 
     u.add_role(:driver, rz)
 
-    expect( u.has_role?(:unassigned_driver) ).to be_falsy
+    expect( u.has_role?(:unassigned_driver, :any) ).to be_falsy
     expect( u.has_role?(:driver, rz) ).to be_truthy
   end
 
@@ -222,7 +222,7 @@ RSpec.describe User, :type => :model do
 
     u.remove_role(:driver, rz)
 
-    expect( u.has_role?(:unassigned_driver) ).to be_truthy
+    expect( u.has_role?(:unassigned_driver, rz) ).to be_truthy
     expect( u.has_role?(:driver, rz) ).to be_falsy
   end
 
@@ -232,7 +232,7 @@ RSpec.describe User, :type => :model do
 
   it 'returns driver ride zone' do
     rz = create :ride_zone
-    u = create :driver_user, ride_zone: rz
+    u = create :driver_user, rz: rz
     expect(u.reload.driver_ride_zone_id).to eq(rz.id)
   end
 
@@ -254,7 +254,7 @@ RSpec.describe User, :type => :model do
 
     it 'sends driver email for web registration' do
       expect(UserMailer).to receive(:welcome_email_driver) { dummy_mailer }
-      create :driver_user
+      create :driver_user, user_type: :driver
     end
 
     it 'does not send email for sms voter' do
@@ -268,11 +268,11 @@ RSpec.describe User, :type => :model do
 
     it 'does not send event for new voter' do
       expect(RideZone).to_not receive(:event)
-      create :voter_user, ride_zone: rz
+      create :voter_user, rz: rz
     end
 
     it 'does not send event for updated voter' do
-      u = create :voter_user, ride_zone: rz
+      u = create :voter_user, rz: rz
       expect(RideZone).to_not receive(:event)
       u.update_attribute(:name, 'foobar')
     end
@@ -285,7 +285,7 @@ RSpec.describe User, :type => :model do
     end
 
     it 'sends driver update event on change' do
-      d = create :driver_user, ride_zone: rz
+      d = create :driver_user, rz: rz
       expect(RideZone).to receive(:event).with(rz.id, :driver_changed, anything, :driver)
       d.update_attribute(:name, 'foo bar')
     end

@@ -5,12 +5,8 @@
 
 .col-md-12
 
-  - if current_user.has_role?(:admin, @ride_zone)
-    %h2
-      Approved drivers
+  %h2 Approved drivers
   %table.table{style: 'margin-top: 40px;'}
-
-
     - @drivers.each do |driver|
       %tr
         %td
@@ -26,11 +22,23 @@
           %td
             = link_to 'demote', change_role_admin_ride_zone_path(@ride_zone, to_role: 'unassigned_driver', driver: driver.id), method: :post
 
-  - if current_user.has_role?(:admin, @ride_zone)
-    %h2
-      Unapproved drivers
+  - if current_user.has_role?(:admin, @ride_zone) || current_user.has_role?(:admin)
+    %h2 Unapproved drivers
     %table.table{style: 'margin-top: 40px;'}
       - @unassigned_drivers.each do |driver|
+        %tr
+          %td
+            = driver.name
+          %td
+            = mail_to driver.email
+          %td
+            = tel_to  driver.phone_number.phony_formatted(normalize: :US, spaces: '-')
+          %td
+            = link_to 'promote', change_role_admin_ride_zone_path(@ride_zone, to_role: 'driver', driver: driver.id), method: :post
+
+    %h2 Nearby unapproved drivers
+    %table.table{style: 'margin-top: 40px;'}
+      - @nearby_drivers.each do |driver|
         %tr
           %td
             = driver.name

@@ -182,7 +182,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
 
         expect {
           post :add_role, params: {id: rz.to_param, user_id: user.to_param, role: 'dispatcher'}
-        }.to change(rz.dispatchers, :count).by(1)
+        }.to change{ rz.dispatchers.count }.by(1)
       end
 
       it "adds a driver to a ride zone" do
@@ -190,7 +190,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
 
         expect {
           post :add_role, params: {id: rz.to_param, user_id: user.to_param, role: 'driver'}
-        }.to change{ rz.drivers.count(:all) }.by(1)
+        }.to change{ rz.drivers.count }.by(1)
       end
     end
 
@@ -202,7 +202,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
 
         expect {
           post :add_role, params: {id: rz.to_param, user_id: user.to_param, role: 'dispatcher'}
-        }.to change(rz.dispatchers, :count).by(1)
+        }.to change{ rz.dispatchers.count }.by(1)
       end
 
       it "adds a driver to a ride zone" do
@@ -210,7 +210,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
 
         expect {
           post :add_role, params: {id: rz.to_param, user_id: user.to_param, role: 'driver'}
-        }.to change{ rz.drivers.count(:all) }.by(1)
+        }.to change{ rz.drivers.count }.by(1)
       end
     end
 
