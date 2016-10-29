@@ -150,10 +150,6 @@ Rails.application.routes.draw do
     end
     resource :site, only: [:show, :edit, :update]
     resources :users, only: [:show, :edit, :update, :index, :destroy] do
-      collection do
-        get 'assign' => 'users#assign'
-        post 'assign' => 'users#re_assign'
-      end
       member do
         post 'qa_clear' => 'users#qa_clear'
       end

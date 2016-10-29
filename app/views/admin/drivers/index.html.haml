@@ -69,7 +69,8 @@
   $('.drive-for-rz').change(function() {
     var uid = $(this).data('uid')
     $.post( "/api/1/ride_zones/" +  $(this).val() + "/change_role?uid=" + uid + "&to_role=driver", function() {
-      $( ".row-" + uid ).toggle('blind');
+      alert( "Success!" );
+      window.location.reload()
     }).fail(function() {
       alert( "FAIL!" );
   });
