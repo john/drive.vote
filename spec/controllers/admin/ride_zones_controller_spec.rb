@@ -47,7 +47,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
       it "assigns all ride_zones as @ride_zones" do
         get :index, params: {}
 
-        expect(assigns(:ride_zones)).to eq([rz, rz2])
+        expect(assigns(:ride_zones)).to match_array([rz, rz2])
         expect( assigns(:ride_zones).length).to eq(2)
         expect( assigns(:ride_zones).collect(&:id)).to include(rz.id)
         expect( assigns(:ride_zones).collect(&:id)).to include(rz2.id)
