@@ -48,6 +48,7 @@ export function receiveStatus(status) {
         available: status.available,
         waiting_rides_interval: status.waiting_rides_interval,
         update_location_interval: status.update_location_interval,
+        ride_zone_id: status.ride_zone_id,
         active_ride: status.active_ride
     }
 }

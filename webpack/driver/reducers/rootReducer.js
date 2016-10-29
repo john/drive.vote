@@ -25,6 +25,7 @@ function driverState(state = {
                 initialFetch: false,
                 isFetching: false,
                 available: action.available,
+                ride_zone_id: action.ride_zone_id,
                 waiting_rides_interval: action.waiting_rides_interval * 100,
                 update_location_interval: action.update_location_interval * 100,
                 active_ride: action.active_ride,
