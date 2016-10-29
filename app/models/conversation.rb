@@ -162,7 +162,7 @@ class Conversation < ApplicationRecord
       return if sms.is_a?(String) # error sending, will try again
       ActiveRecord::Base.transaction do
         Message.create_from_bot(self, sms)
-        update_attributes(ride_confirmed: false, bot_counter: 0)
+        update_attributes(ride_confirmed: false, bot_counter: 0, status: :ride_created)
       end
     elsif self.ride_confirmed == false && Time.now > self.pickup_at
       # ride has not been confirmed and pickup time has passed, bump to needs_help
