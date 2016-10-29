@@ -111,6 +111,7 @@ Rails.application.routes.draw do
           get 'drivers' => 'ride_zones#drivers'
           get 'rides' => 'ride_zones#rides'
           post 'rides' => 'ride_zones#create_ride'
+          post 'change_role'
         end
       end
     end

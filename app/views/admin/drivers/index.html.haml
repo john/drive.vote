@@ -1,3 +1,12 @@
+:css
+  h4 { margin: 30px 0 20px 0;}
+  #user-filter { margin: 0 0 20px 0;}
+  #user-search { display: inline;}
+  th { font-weight: bold; }
+  td { font-size: 14px; }
+  .name { font-size: 16px; max-width: 250px; font-weight: bold; }
+  .contact-info { font-size: 12px; margin-top: -5px; color: #999 }
+
 = render 'admin/nav', {active: 'drivers'}
 
 %h1
@@ -19,22 +28,51 @@
     - else
       %option{value: 'all'} All
 
-%table.admin
+
+%table.table-hover.admin
   %thead
     %tr
-      %th ID
       %th Name
-      %th Email
-      %th Cell
-      %th Zip
-      %th Roles
+      %th Location
+      %th CurrentRoles
+      %th
 
   %tbody
-    - @drivers.each do |driver|
-      %tr
-        %td= driver.id
-        %td= link_to driver.name, user_path(driver)
-        %td= driver.email
-        %td= driver.phone_number
-        %td= driver.zip
-        %td= driver.role_names
+    - @drivers.each do |user|
+      %tr{class: "row-#{user.id}"}
+        %td.name
+          = link_to user.name, admin_user_path(user)
+          &nbsp;
+          .contact-info
+            = user.phone_number.phony_formatted(normalize: :US, spaces: '-')
+          .contact-info
+            = user.email
+        %td
+          #{[user.city, user.state, user.zip].reject(&:blank?).join(', ')}
+        %td
+          = user.role_names
+        %td
+          - if user.role_names.include?('unassigned')
+            %select.drive-for-rz{'data-uid': user.id}
+              %option
+                Promote to driver for:
+              - RideZone.all.each do |rz|
+                %option{value: rz.id}
+                  = rz.name
+        %td{style: "font-size: 12px;"}
+          = link_to 'Edit', edit_admin_user_path(user)
+          &nbsp; &#183; &nbsp;
+          = link_to 'Destroy', admin_user_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+:javascript
+
+  $('.drive-for-rz').change(function() {
+    var uid = $(this).data('uid')
+    $.post( "/api/1/ride_zones/" +  $(this).val() + "/change_role?uid=" + uid + "&to_role=driver", function() {
+      alert( "Success!" );
+      window.location.reload()
+    }).fail(function() {
+      alert( "FAIL!" );
+  });
+
+  });
