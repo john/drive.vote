@@ -97,14 +97,14 @@ class Conversation < ApplicationRecord
         { from: ride_zone.phone_number_normalized, to: user.phone_number, body: body},
         timeout)
     rescue => e
-      logger.warn "TWILIO ERROR #{e.message} User id #{user.id} Message #{body}"
+      logger.error "TWILIO ERROR #{e.message} User id #{user.id} Message #{body}"
       return "Twilio error #{e.message}"
     end
     if sms.error_code
-      logger.warn "TWILIO ERROR #{sms.error_code} User id #{user.id} Message #{body}"
+      logger.error "TWILIO ERROR #{sms.error_code} User id #{user.id} Message #{body}"
       return "Communication error #{sms.error_code}"
     elsif sms.status.to_s != 'delivered'
-      logger.warn "TWILIO ERROR Timeout User id #{user.id} Message #{body}"
+      logger.error "TWILIO ERROR Timeout User id #{user.id} Message #{body}"
       return 'Timeout in delivery'
     end
     sms
