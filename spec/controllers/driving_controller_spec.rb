@@ -71,7 +71,15 @@ RSpec.describe DrivingController, :type => :controller do
   end
 
   describe 'get status' do
-    let(:expected) { {'available' => true, 'active_ride' => nil, 'waiting_rides_interval' => 24, 'update_location_interval' => 42} }
+    let(:expected) do
+      {
+        'available' => true,
+        'active_ride' => nil,
+        'ride_zone_id' => rz.id,
+        'waiting_rides_interval' => 24,
+        'update_location_interval' => 42
+      }
+    end
     before :each do
       driver.update_attributes(available: true, latitude: 34, longitude: -122)
       allow(controller).to receive(:update_location_interval).and_return(expected['update_location_interval'])

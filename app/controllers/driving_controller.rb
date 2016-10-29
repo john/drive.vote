@@ -130,6 +130,7 @@ class DrivingController < ApplicationController
     {
       available: current_user.available,
       active_ride: @active_ride.try(:api_json),
+      ride_zone_id: current_user.driver_ride_zone_id,
       waiting_rides_interval: waiting_rides_interval,
       update_location_interval: update_location_interval
     }
