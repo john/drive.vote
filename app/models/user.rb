@@ -75,8 +75,8 @@ class User < ApplicationRecord
     User.with_role(:voter, :any)
   end
 
-  def self.non_voters
-    User.where.not(id: User.with_role(:voter, :any))
+  def self.non_voters(order: 'name', sort: 'ASC')
+    User.where.not(id: User.with_role(:voter, :any)).order("#{order} #{sort}")
   end
 
   def self.users
