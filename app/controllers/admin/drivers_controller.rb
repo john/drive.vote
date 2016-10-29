@@ -1,6 +1,5 @@
 class Admin::DriversController < Admin::AdminApplicationController
 
-  # GET /admin/drivers
   def index
     if params[:rz_id].present?
       @drivers = RideZone.find(params[:rz_id])&.drivers&.to_a || []
