@@ -2,6 +2,8 @@ version: '2'
 services:
   db:
     image: postgres
+  redis:
+    image: redis
   web:
     build:
       context: ./
@@ -10,6 +12,7 @@ services:
     environment:
       - OVERRIDE_DB_HOST=db
       - OVERRIDE_DB_PASSWORD=
+      - REDIS_URL=redis://redis:6379
     working_dir: /myapp
     volumes:
       - .:/myapp
