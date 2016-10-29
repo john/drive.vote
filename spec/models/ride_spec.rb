@@ -274,7 +274,7 @@ RSpec.describe Ride, type: :model do
   describe 'confirming scheduled rides' do
     it 'confirms only scheduled rides that are soon' do
       stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 10)
-      c1 = create :complete_conversation, pickup_at: 20.minutes.from_now
+      c1 = create :complete_conversation, pickup_at: 20.minutes.from_now, status: :help_needed
       c2 = create :complete_conversation, pickup_at: 20.minutes.from_now
       c3 = create :complete_conversation, pickup_at: 40.minutes.from_now
       Ride.create_from_conversation(c1)
@@ -283,6 +283,7 @@ RSpec.describe Ride, type: :model do
       stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 30) # only c1 should now match
       expect_any_instance_of(Conversation).to receive(:attempt_confirmation).once
       Ride.confirm_scheduled_rides
+      expect(c1.reload.status).to eq('ride_created')
     end
 
     it 'handles conversations with missing user' do
@@ -290,6 +291,16 @@ RSpec.describe Ride, type: :model do
       c1 = create :complete_conversation, pickup_at: 20.minutes.from_now
       Ride.create_from_conversation(c1)
       User.find(c1.user.id).delete # no callbacks
+      stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 30)
+      expect(Conversation).to_not receive(:send_staff_sms)
+      Ride.confirm_scheduled_rides
+    end
+
+    it 'does not attempt if bot is disabled' do
+      stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 10)
+      c1 = create :complete_conversation, pickup_at: 20.minutes.from_now
+      r = Ride.create_from_conversation(c1)
+      r.ride_zone.update_attribute(:bot_disabled, true)
       stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 30)
       expect(Conversation).to_not receive(:send_staff_sms)
       Ride.confirm_scheduled_rides
