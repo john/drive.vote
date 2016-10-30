@@ -150,6 +150,34 @@ RSpec.describe User, :type => :model do
     end
   end
 
+  describe '#all_driver_roles' do
+    let(:driver_user) { create :driver_user }
+    let(:unassigned_driver) { create :unassigned_driver_user }
+    let(:non_driver_user) { create :user }
+
+    it 'includes users with the role of driver' do
+      expect(User.all_driver_roles).to include(driver_user)
+    end
+
+    it 'includes users with the role of unassigned driver' do
+      expect(User.all_driver_roles).to include(unassigned_driver)
+    end
+
+    it 'does not include non driver users' do
+      expect(User.all_driver_roles).to_not include(non_driver_user)
+    end
+  end
+
+  describe '#voters' do
+    let(:voter_user) { create(:voter_user) }
+    let(:non_voter_user) { create(:user) }
+
+    it 'includes all users with the role of voter' do
+      expect(User.voters).to include(voter_user)
+      expect(User.voters).to_not include(non_voter_user)
+    end
+  end
+
   describe '#add_rolify_role' do
     let(:valid_attributes) {
       {name: 'Rolify Test Uaer', email: 'foo@bar.com', password: '12345abcde', phone_number: '2073328710', city: 'Tolendo', state: 'PA', zip: '15106'}

@@ -84,6 +84,10 @@ class User < ApplicationRecord
     User.where(id: ids)
   end
 
+  def self.voters
+    User.with_role(:voter)
+  end
+
   def self.assigned_drivers
     User.with_role(:driver, :any)
   end
@@ -94,6 +98,10 @@ class User < ApplicationRecord
 
   def self.all_drivers
     User.assigned_drivers + User.unassigned_drivers
+  end
+
+  def self.all_driver_roles
+    self.with_role( :driver ).or(self.with_role :unassigned_driver)
   end
 
   def self.sms_name(phone_number)
