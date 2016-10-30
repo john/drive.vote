@@ -15,7 +15,7 @@
 - if @conversation.user.name.include?('via sms')
   - title = @conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')
 - else
-  - title = "#{@conversation.user.name} <span>#{@conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')}</span>"
+  - title = "#{@conversation.user.name} <span>#{@conversation.user.phone_number.phony_formatted(normalize: :US, spaces: '-')}</span>"
 
 :javascript
   // now that we have the conversation object, populate the modal header
