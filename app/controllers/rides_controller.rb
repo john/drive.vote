@@ -10,7 +10,6 @@ class RidesController < ApplicationController
   def new
     @locale = params[:locale]
     @ride = Ride.new
-    @ride.pickup_at = @ride_zone.current_time
   end
 
   def create
@@ -39,6 +38,7 @@ class RidesController < ApplicationController
       flash[:notice] = "Please fill in scheduled date and time."
       render :new and return
     end
+    @pickup_at = @ride.pickup_at
 
     if @ride.city_state.present? && @ride.from_city.blank? && @ride.from_state.blank?
       city_state_array = @ride.city_state.split(',')
@@ -89,6 +89,7 @@ class RidesController < ApplicationController
   def edit
     I18n.locale = @ride.voter.locale
     @ride_zone = @ride.ride_zone
+    @pickup_at = @ride.pickup_in_time_zone
   end
 
   def update
