@@ -145,7 +145,7 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
       end
     end
 
-    context "logged in as a driver", focus:true do
+    context "logged in as a driver" do
       login_driver
 
       it 'is successful' do
