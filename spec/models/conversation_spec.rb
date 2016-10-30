@@ -193,7 +193,7 @@ RSpec.describe Conversation, type: :model do
 
     it 'bumps to help_needed when time goes by' do
       convo.attempt_confirmation
-      convo.update_attribute(:pickup_at, 5.minutes.ago)
+      ride.update_attribute(:pickup_at, 5.minutes.ago)
       expect(TwilioService).to_not receive(:send_message)
       convo.attempt_confirmation
       expect(convo.reload.status).to eq('help_needed')
