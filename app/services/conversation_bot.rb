@@ -230,8 +230,8 @@ class ConversationBot
       when 0..1
         case @body
           when '1'
-            @conversation.update_attribute(:ride_confirmed, true)
-            @conversation.ride.update_attribute(:status, :waiting_assignment)
+            @conversation.update_attributes(ride_confirmed: true)
+            @conversation.ride.update_attributes(status: :waiting_assignment)
             @response = I18n.t(:thanks_wait_for_driver, locale: @locale)
             return 0
           when '2'
@@ -240,8 +240,8 @@ class ConversationBot
             @response = I18n.t(:when_do_you_want_pickup, locale: @locale)
             return 0
           when '3'
-            @conversation.update_attribute(:status, :closed)
-            @conversation.ride.update_attribute(:status, :complete) if @conversation.ride
+            @conversation.update_attributes(status: :closed)
+            @conversation.ride.update_attributes(status: :complete) if @conversation.ride
             @response = I18n.t(:thanks_for_using, locale: @locale)
             return 0
           when '4'
