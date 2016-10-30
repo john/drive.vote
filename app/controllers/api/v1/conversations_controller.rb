@@ -45,16 +45,10 @@ module Api::V1
     end
 
     def create_message
-      sms = TwilioService.send_message(
-        { from: @conversation.to_phone, to: @conversation.from_phone, body: params[:message][:body]} ,
-        Rails.configuration.twilio_timeout
-      )
-      if sms.error_code
-        render json: {error: "Communication error #{sms.error_code}"}, status: 500
-      elsif sms.status.to_s != 'delivered'
-        render json: {error: 'Timeout in delivery'}, status: 503
+      msg = @conversation.send_from_staff(params[:message][:body], Rails.configuration.twilio_timeout)
+      if msg.is_a?(String)
+        render json: {error: msg}, status: 500
       else
-        msg = Message.create_conversation_reply(@conversation, sms)
         render json: {response: {message: {sent_at: I18n.localize(msg.created_at, format: '%-m/%-d  %l:%M%P'), body: "#{msg.body}" }}}, status: 200
       end
     end

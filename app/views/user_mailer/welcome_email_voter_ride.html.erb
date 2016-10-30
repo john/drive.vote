@@ -5,7 +5,7 @@
 <p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 16px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">
 
   Your ride to the polls is scheduled for
-  <br><b><%= @ride.pickup_at.strftime('%m/%d %l:%M %P') %></b>
+  <br><b><%= @ride.pickup_in_time_zone.strftime('%m/%d %l:%M %P') %></b>
 </p>
 
 <p style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 16px;line-height: 1.6em;margin: 0;padding: 0;font-weight: normal;margin-bottom: 12px;">

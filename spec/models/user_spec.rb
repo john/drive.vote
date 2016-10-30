@@ -199,7 +199,7 @@ RSpec.describe User, :type => :model do
     expect( build(:user, user_type: 'bad_role') ).to_not be_valid
   end
 
-  it 'removes :unassigned_driver role when made :driver', focus:true do
+  it 'removes :unassigned_driver role when made :driver' do
     rz = create :ride_zone
     u = create :unassigned_driver_user, rz: rz
 
