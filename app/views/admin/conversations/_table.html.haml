@@ -22,8 +22,8 @@
           %td= link_to conversation.ride_zone.name, admin_ride_zone_path(conversation.ride_zone)
         - else
           %td None Set
-        %td= conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')
-        %td= conversation.to_phone.phony_formatted(normalize: :US, spaces: '-')
+        %td= conversation&.user.phone_number&.phony_formatted(normalize: :US, spaces: '-')
+        %td= conversation&.ride_zone&.phone_number&.phony_formatted(normalize: :US, spaces: '-')
         %td= conversation.status.nil? ? 'None Set' : conversation.status
         %td= conversation.lifecycle
         %td= conversation.pickup_at.nil? ? 'None Set' : conversation.pickup_at.localtime.strftime('%m/%d %l:%M%P')

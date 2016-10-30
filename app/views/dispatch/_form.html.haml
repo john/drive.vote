@@ -1,6 +1,7 @@
-- if current_user.is_super_admin?
-  %div{class: 'item-highlight', style: "font-size: 13px"}
-    @obj is a: #{@obj.class}
+- if @obj.is_a?(Conversation)
+  Active conversation with voter
+- else
+  Ride has been scheduled for voter
 
 -# TODO: sort out statuses of rides v. conversations; copy conversation cell logic in dispatch.js
   /   status
@@ -66,7 +67,7 @@
         CURRENT DRIVER
       %td.conv-field.current-driver
         - if @obj.driver.present?
-          = driver.try(:name)
+          = @obj.driver.name
         - else
           %i
             Unassigned
