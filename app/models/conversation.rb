@@ -100,6 +100,7 @@ class Conversation < ApplicationRecord
       logger.error "TWILIO ERROR #{e.message} User id #{user.id} Message #{body}"
       return "Twilio error #{e.message}"
     end
+    logger.info "TWILIO sent staff sms to #{user.phone_number} from #{ride_zone.phone_number_normalized}: #{body} code: #{sms.error_code} status: #{sms.status}"
     if sms.error_code
       logger.error "TWILIO ERROR #{sms.error_code} User id #{user.id} Message #{body}"
       return "Communication error #{sms.error_code}"
@@ -165,7 +166,7 @@ class Conversation < ApplicationRecord
         Message.create_from_bot(self, sms)
         update_attributes(ride_confirmed: false, bot_counter: 0, status: :ride_created)
       end
-    elsif self.ride_confirmed == false && Time.now > self.pickup_at
+    elsif self.ride_confirmed == false && Time.now > ride.pickup_at
       # ride has not been confirmed and pickup time has passed, bump to needs_help
       update_attribute(:status, :help_needed)
     end
