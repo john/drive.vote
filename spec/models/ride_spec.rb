@@ -305,6 +305,16 @@ RSpec.describe Ride, type: :model do
       expect(Conversation).to_not receive(:send_staff_sms)
       Ride.confirm_scheduled_rides
     end
+
+    it 'does not attempt if no ride zone' do
+      stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 10)
+      c1 = create :complete_conversation, pickup_at: 20.minutes.from_now
+      r = Ride.create_from_conversation(c1)
+      r.ride_zone = nil; r.save
+      stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 30)
+      expect(Conversation).to_not receive(:send_staff_sms)
+      Ride.confirm_scheduled_rides
+    end
   end
 
   it 'produces safe api text' do

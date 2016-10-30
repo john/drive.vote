@@ -186,10 +186,10 @@ class Ride < ApplicationRecord
   def self.confirm_scheduled_rides
     count, errors = 0, 0
     Ride.where(status: :scheduled).where('pickup_at < ?', SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now).each do |ride|
-      if ride.conversation && !ride.ride_zone.bot_disabled
+      if ride.conversation && ride.ride_zone && !ride.ride_zone.bot_disabled
+        count += 1
         begin
           ride.conversation.attempt_confirmation
-          count += 1
         rescue => e
           logger.error "Got error trying to confirm conversation #{ride.conversation.id}: #{e.message}"
           errors += 1
