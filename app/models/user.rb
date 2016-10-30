@@ -26,7 +26,7 @@ class User < ApplicationRecord
   # end
 
   VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
-  VALID_STATES = {'NV' => 'Nevada', 'PA' =>'Pennsylvania', 'UT' => 'Utah'}
+  VALID_STATES = {'OH' => 'Ohio', 'NV' => 'Nevada', 'PA' =>'Pennsylvania', 'UT' => 'Utah'}
   has_many :rides, foreign_key: :voter_id, dependent: :destroy
   has_many :conversations, foreign_key: :user_id, dependent: :destroy
 
