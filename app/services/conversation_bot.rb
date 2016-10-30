@@ -46,7 +46,7 @@ class ConversationBot
     # Look for: language
     case @bot_counter
       when 0
-        @response = 'Thanks for requesting a ride! I\'m a bot, to chat with a human at any time type "human", para chatear con un ser humano txt "humano". Reply "1" to continue in English, responder "2" para el español.'
+        @response = 'Thanks for requesting a ride! I\'m a bot, to chat with a human any time type "human", para chatear con un ser humano txt "humano". Reply "1" for English, responder "2" para el español.'
         return 1
       when 1..2
         lang = if @body =~ /1/ || @body.downcase =~ /eng/
@@ -160,11 +160,11 @@ class ConversationBot
     # Look for: time of day
     case @bot_counter
       when 0..1
-        pickup_time = TimeZoneUtils.origin_time(@body, @conversation.ride_zone.time_zone)
-        if pickup_time
-          @conversation.update_attribute(:pickup_time, pickup_time)
+        pickup_at = TimeZoneUtils.origin_time(@body, @conversation.ride_zone.time_zone)
+        if pickup_at
+          @conversation.update_attribute(:pickup_at, pickup_at)
           # when echoing back to user we use server's local time which is how it was parsed
-          @response = I18n.t(:confirm_the_time, locale: @locale, time: pickup_time.strftime('%l:%M %P'))
+          @response = I18n.t(:confirm_the_time, locale: @locale, time: pickup_at.strftime('%l:%M %P'))
           return 0
         end
         @response = I18n.t(:invalid_time, locale: @locale)
@@ -181,7 +181,7 @@ class ConversationBot
       @conversation.update_attribute(:time_confirmed, true)
       if @conversation.ride
         # this is a reschedule of an existing ride
-        @conversation.ride.update_attribute(:pickup_at, @conversation.pickup_time)
+        @conversation.ride.update_attribute(:pickup_at, @conversation.pickup_at)
         @conversation.update_attribute(:ride_confirmed, nil)
         set_wait_response
       else
@@ -190,7 +190,7 @@ class ConversationBot
       return 0
     end
     # Go back to asking for time
-    @conversation.update_attribute(:pickup_time, nil)
+    @conversation.update_attribute(:pickup_at, nil)
     @response = I18n.t(:when_do_you_want_pickup, locale: @locale)
     return 0
   end
@@ -236,7 +236,7 @@ class ConversationBot
             return 0
           when '2'
             # reschedule - reset pickup time and confirmed flag
-            @conversation.update_attributes(pickup_time: nil, time_confirmed: nil)
+            @conversation.update_attributes(pickup_at: nil, time_confirmed: nil)
             @response = I18n.t(:when_do_you_want_pickup, locale: @locale)
             return 0
           when '3'
@@ -277,14 +277,20 @@ class ConversationBot
         results = GooglePlaces.search(@body + ' ' + @conversation.ride_zone.state)
         if results.count == 1
           result = results.first
+          lat = result['geometry']['location']['lat']
+          long = result['geometry']['location']['lng']
+          unless @conversation.ride_zone.is_within_pickup_radius?(lat, long)
+            @response = I18n.t(:ride_too_far, locale: @locale)
+            return @bot_counter + 1
+          end
           formatted = result['formatted_address'].sub(/, USA|, United States/, '')
           st_zip_matcher = formatted.match(/, ([A-Z]{2}) ([0-9-]*)\z/)
           city_matcher = formatted.match(/, (.*), ([A-Z]{2}) ([0-9-]*)\z/)
           formatted = formatted.sub(/#{st_zip_matcher}/, '') if st_zip_matcher
           @conversation.send("#{from_or_to}_address=".to_sym, formatted)
           @conversation.send("#{from_or_to}_city=".to_sym, city_matcher[1]) if city_matcher
-          @conversation.send("#{from_or_to}_latitude=".to_sym, result['geometry']['location']['lat'])
-          @conversation.send("#{from_or_to}_longitude=".to_sym, result['geometry']['location']['lng'])
+          @conversation.send("#{from_or_to}_latitude=".to_sym, lat)
+          @conversation.send("#{from_or_to}_longitude=".to_sym, long)
           name = result['name']
           formatted = "#{name} - #{formatted}" unless name.blank? || formatted.include?(name)
           @response = I18n.t(:confirm_address, locale: @locale, address: formatted)

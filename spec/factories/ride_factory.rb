@@ -6,6 +6,7 @@ FactoryGirl.define do
     association :voter, factory: :voter_user
     name "Doug's ride"
     description 'Needs to get to work before 9am'
+    pickup_at Time.now + 1.day
 
     factory :scheduled_ride do
       status Ride.statuses[:scheduled]

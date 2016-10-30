@@ -4,15 +4,21 @@
   = hidden_field_tag(:locale, @locale || 'en')
   = hidden_field_tag(:user_id, @user.try(:id))
 
-  - if @ride.errors.any? || (@user && @user.errors.any?)
+  - if @ride && @ride.errors.any?
     #error_explanation
-      %h5= t(:problem_saving_ride)
+      %h5
+        Error creating ride
       %ul
         - @ride.errors.full_messages.each do |msg|
           %li= msg
-        - if @user
-          - @user.errors.full_messages.each do |msg|
-            %li= msg
+
+  - if @user && @user.errors.any?
+    #error_explanation
+      %h5
+        Error creating user
+      %ul
+        - @user.errors.full_messages.each do |msg|
+          %li= msg
 
   - if !rescheduling && (!@user || @user.new_record?)
     .col-sm-8.field
@@ -25,7 +31,7 @@
 
   .col-sm-8.field
     = f.label t(:city_for_pickup)
-    = f.text_field :city_state, class: 'form-control', required: 'true', autocomplete: :off, maxlength: 40
+    = f.text_field :city_state, class: 'form-control', required: 'true', autocomplete: :off, maxlength: 40, pattern: "^.*( PA| pa| UT | ut| NV| nv| OH| oh| FL| fl| WI| wi)\s*$"
 
     -# populated by location_autocomplete from city_state, which is populated by google places api
     = f.hidden_field :from_city, :value => ''
@@ -35,8 +41,7 @@
   .col-sm-8.field
     = f.label t(:what_time_pickup)
     %p#pickupdaytime
-      %input.date.start#pickup_at_date{type: 'text', name: "pickup_day", value: "11/8/2016", maxlength: 10}
-      %input.time.start#pickup_at_time{type: 'text', name: "pickup_time", placeholder: "Select a time", required: 'true', maxlength: 8}
+      %input{type: 'text', class: 'flatpickr', 'data-default-date': @pickup_at, 'data-date-format': "F j, h:iK", 'data-enable-time': true, name: "ride[pickup_at]", id: "ride_name"}
 
   .col-sm-8.field
     = f.label t(:how_many_additional)
@@ -61,20 +66,13 @@
 
 :javascript
   $( function() {
-    // initialize input widgets first
-    $('#pickupdaytime .time').timepicker({
-      'timeFormat': 'g:ia',
-      'minTime': '7:00am'
+    $(".flatpickr").flatpickr({
+  		enable: [{
+        from: "today",
+        to: "2016-11-08",
+      }],
+      defaultDate: "Tues, 08 Nov 2016 07:00:00"
     });
-
-    $('#pickupdaytime .date').datepicker({
-      'format': 'm/d/yyyy',
-      'autoclose': true
-    });
-
-    // initialize datepair
-    var dpEl = document.getElementById('pickupdaytime');
-    var datepair = new Datepair(dpEl);
 
     locationAutocomplete.attach('#ride_city_state', '#ride_from_city', '#ride_from_state', '#ride_from_zip');
   });

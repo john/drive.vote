@@ -11,11 +11,48 @@ RSpec.describe Ride, type: :model do
   it { should validate_length_of(:from_address).is_at_most(100)}
   it { should validate_length_of(:from_city).is_at_most(50)}
   it { should validate_length_of(:from_state).is_at_most(2)}
-  it { should validate_length_of(:from_zip).is_at_most(50)}
+  it { should validate_length_of(:from_zip).is_at_most(15)}
   it { should validate_length_of(:to_address).is_at_most(100)}
   it { should validate_length_of(:to_city).is_at_most(50)}
   it { should validate_length_of(:to_state).is_at_most(2)}
-  it { should validate_length_of(:to_zip).is_at_most(12)}
+  it { should validate_length_of(:to_zip).is_at_most(15)}
+
+  describe 'assignable?' do
+    it 'returns true if assignable' do
+      r = build :waiting_ride
+      expect(r.assignable?).to be_truthy
+    end
+
+    it 'returns false if not assignable' do
+      r = build :complete_ride
+      expect(r.assignable?).to be_falsey
+    end
+  end
+
+  describe 'radius validation' do
+    let!(:zone) { create :ride_zone, latitude: 40.409, longitude: -80.09, max_pickup_radius: 5 }
+
+    it 'allows a ride within radius' do
+      r = build :waiting_ride, from_address: '106 dunbar avenue', from_city: 'carnegie',
+                from_latitude: 40.410, from_longitude: -80.10, ride_zone: zone
+      expect(r).to be_valid
+      expect(r.errors.count).to eq(0)
+    end
+
+    it 'disallows a ride outside radius' do
+      r = build :waiting_ride, from_address: '106 dunbar avenue', from_city: 'carnegie',
+                from_latitude: 40.6, from_longitude: -80.5, ride_zone: zone
+      expect(r).to_not be_valid
+      expect(r.errors[:from_address].count).to eq(1)
+    end
+  end
+
+  describe 'time zone' do
+    it 'returns a pickup time that is in correct zone' do
+      r = create :ride
+      expect(r.pickup_in_time_zone.time_zone).to eq(ActiveSupport::TimeZone.new(r.ride_zone.time_zone))
+    end
+  end
 
   describe 'event generation' do
     let!(:driver) { create :driver_user }
@@ -147,8 +184,8 @@ RSpec.describe Ride, type: :model do
   end
 
   describe 'waiting nearby' do
-    let!(:zone) { create :ride_zone }
-    let!(:other_zone) { create :ride_zone }
+    let!(:zone) { create :ride_zone, latitude: 35, longitude: -122, max_pickup_radius: 50 }
+    let!(:other_zone) { create :ride_zone, latitude: 35, longitude: -122 }
     let!(:empty_zone) { create :ride_zone }
     let!(:rnotwaiting) { create :ride, from_latitude: 35, from_longitude: -122, ride_zone: zone }
     let!(:rotherzone) { create :waiting_ride, from_latitude: 35, from_longitude: -122, ride_zone: other_zone }
@@ -237,15 +274,41 @@ RSpec.describe Ride, type: :model do
   describe 'confirming scheduled rides' do
     it 'confirms only scheduled rides that are soon' do
       stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 10)
-      c1 = create :complete_conversation, pickup_time: 20.minutes.from_now
-      c2 = create :complete_conversation, pickup_time: 20.minutes.from_now
-      c3 = create :complete_conversation, pickup_time: 40.minutes.from_now
+      c1 = create :complete_conversation, pickup_at: 20.minutes.from_now, status: :help_needed
+      c2 = create :complete_conversation, pickup_at: 20.minutes.from_now
+      c3 = create :complete_conversation, pickup_at: 40.minutes.from_now
       Ride.create_from_conversation(c1)
       Ride.create_from_conversation(c2).update_attribute(:status, :waiting_assignment)
       Ride.create_from_conversation(c3)
       stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 30) # only c1 should now match
       expect_any_instance_of(Conversation).to receive(:attempt_confirmation).once
       Ride.confirm_scheduled_rides
+      expect(c1.reload.status).to eq('ride_created')
     end
+
+    it 'handles conversations with missing user' do
+      stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 10)
+      c1 = create :complete_conversation, pickup_at: 20.minutes.from_now
+      Ride.create_from_conversation(c1)
+      User.find(c1.user.id).delete # no callbacks
+      stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 30)
+      expect(Conversation).to_not receive(:send_staff_sms)
+      Ride.confirm_scheduled_rides
+    end
+
+    it 'does not attempt if bot is disabled' do
+      stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 10)
+      c1 = create :complete_conversation, pickup_at: 20.minutes.from_now
+      r = Ride.create_from_conversation(c1)
+      r.ride_zone.update_attribute(:bot_disabled, true)
+      stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 30)
+      expect(Conversation).to_not receive(:send_staff_sms)
+      Ride.confirm_scheduled_rides
+    end
+  end
+
+  it 'produces safe api text' do
+    r = create :ride, driver: (create :user, name: '&')
+    expect(r.api_json['driver_name']).to eq('&amp;')
   end
 end

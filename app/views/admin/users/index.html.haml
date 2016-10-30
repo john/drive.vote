@@ -1,18 +1,16 @@
 :css
   #user-filter { margin: 0 0 20px 0;}
   #user-search { display: inline;}
+  td { font-size: 14px; }
 
 = render 'admin/nav', {active: 'users'}
 
 %h2
   Users
-  &nbsp;
-  %small
-    = link_to 'New User', new_user_registration_path, class: 'btn btn-default btn-xs'
 
 Filter: &nbsp;
 %select#user-filter
-  - %w{all admin dispatcher driver unassigned_driver}.each do |role|
+  - %w{all admin dispatcher}.each do |role|
     %option{value: role, selected: params[:"filter"] == role}
       = role.gsub('_', ' ')
 
@@ -24,11 +22,11 @@ Filter: &nbsp;
   - if @q.present?
     = link_to 'clear', admin_users_path, style: "font-size: 13px; color: #777; margin-left: 10px;"
 
-
 %table.table-hover.admin
   %thead
     %tr
       %th Name
+      %th Email
       %th Created
       %th Location
       %th Roles
@@ -37,16 +35,20 @@ Filter: &nbsp;
   %tbody
     - @users.each do |user|
       %tr
-        %td{style: 'max-width: 250px;'}
+        %td{style: 'font-size: 16px; max-width: 250px;'}
           = link_to user.name, admin_user_path(user)
-          .small{style: "margin-top: -4px; color: #777"}
+          &nbsp;
+          %div{style: 'font-size: 12px; margin-top: 0px; color: #999'}
             = user.phone_number.phony_formatted(normalize: :US, spaces: '-')
+        %td
+          = mail_to user.email, user.email, target: "_blank"
         %td
           = user.created_at.strftime("%-m/%-d, %-H:%M %P")
         %td
           #{[user.city, user.state, user.zip].reject(&:blank?).join(', ')}
         %td
-          = user.roles.collect{|r| r.name.gsub('_', ' ')}.join(', ')
+          = user.role_names
+
         %td{style: "font-size: 12px;"}
           = link_to 'Edit', edit_admin_user_path(user)
           &nbsp; &#183; &nbsp;

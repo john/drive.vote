@@ -17,11 +17,21 @@
   %h3
     = t(:how_to_help)
   %p
-    = t(:how_to_help_copy1)
-    = User::VALID_STATES.map{|s| "<b>#{s[1]}</b>"}.to_sentence(last_word_connector: ', or ').html_safe
-    = t(:how_to_help_copy2)
+    -# = t(:how_to_help_copy1)
+    If you have a car and can be in <b>Salt Lake City</b> or <b>Philadelphia</b>
+    -# = User::VALID_STATES.map{|s| "<b>#{s[1]}</b>"}.to_sentence(last_word_connector: ', or ').html_safe
+    -# = t(:how_to_help_copy2)
+    on election day, volunteer to be a driver! Help get voters to the polls on November 8th and make sure everyone has a vote.
 
   .volunteer
-    = link_to volunteer_to_drive_path(locale: I18n.locale.to_s) do
+    -# = link_to volunteer_to_drive_path(locale: I18n.locale.to_s) do
+    -#   %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
+    -#     = t(:will_drive)
+    = link_to '/volunteer/salt_lake_county' do
       %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
-        = t(:will_drive)
+        Volunteer for Salt Lake City, UT
+
+    %br
+    = link_to '/volunteer/philadelphia' do
+      %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
+        Volunteer for Philadelphia, PA

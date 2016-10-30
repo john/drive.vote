@@ -6,31 +6,31 @@
     %ul.nav.nav-tabs{role: "tablist", style: "margin-top: 30px;"}
       %li.active{role: "presentation"}
         %a{id: 'needDriverConversationsTab', href: "#need_driver", 'aria-controls': "home", role: "tab", 'data-toggle': "tab" }
-          Need driver
+          Need driver (0)
       %li{role: "presentation"}
         %a{id: 'activeConversationsTab', href: "#talking", 'aria-controls': "home", role: "tab", 'data-toggle': "tab" }
-          Talking
+          Talking (0)
       %li{role: "presentation"}
         %a{id: 'haveDriverConversationsTab', href: "#has_driver", 'aria-controls': "home", role: "tab", 'data-toggle': "tab" }
-          Has driver
+          Has driver (0)
       %li{role: "presentation"}
         %a{id: 'inactiveConversationsTab', href: "#inactive", 'aria-controls': "home", role: "tab", 'data-toggle': "tab" }
-          Inactive
+          Inactive (0)
 
     .tab-content
       .tab-pane.active#need_driver{role: "tabpanel"}
         .dispatch-filters
           .conv-table-desc
             Voters who need help, have scheduled a ride, or are waiting for a driver
-          = link_to 'All', '#', 'data-table': 'needDriverConversations', 'data-statuses': '*', class: 'btn-conv-filter'
+          = link_to 'All (0)', '#', 'data-table': 'needDriverConversations', 'data-statuses': '*', class: 'btn-conv-filter'
           &nbsp; · &nbsp;
-          = link_to 'Need Help', '#', 'data-table': 'needDriverConversations', 'data-statuses': 'help_needed', class: 'btn-conv-filter'
+          = link_to 'Need Help (0)', '#', 'data-table': 'needDriverConversations', 'data-statuses': 'help_needed', class: 'btn-conv-filter'
           &nbsp; · &nbsp;
-          = link_to 'Need Driver', '#', 'data-table': 'needDriverConversations', 'data-statuses': 'new_ride waiting_assignment', class: 'btn-conv-filter'
+          = link_to 'Need Driver (0)', '#', 'data-table': 'needDriverConversations', 'data-statuses': 'new_ride waiting_assignment', class: 'btn-conv-filter'
           &nbsp; · &nbsp;
-          = link_to 'Overdue', '#', 'data-table': 'needDriverConversations', 'data-statuses': 'assignment_overdue', class: 'btn-conv-filter'
+          = link_to 'Overdue (0)', '#', 'data-table': 'needDriverConversations', 'data-statuses': 'assignment_overdue', class: 'btn-conv-filter'
           &nbsp; · &nbsp;
-          = link_to 'Scheduled', '#', 'data-table': 'needDriverConversations', 'data-statuses': 'scheduled', class: 'btn-conv-filter'
+          = link_to 'Scheduled (0)', '#', 'data-table': 'needDriverConversations', 'data-statuses': 'scheduled', class: 'btn-conv-filter'
 
         %table.table.admin.conv-table{id: 'needDriverConversations'}
 
@@ -43,15 +43,15 @@
       .tab-pane#has_driver{role: "tabpanel"}
         .dispatch-filters
           .conv-table-desc Voters that have been assigned a driver, are waiting for pickup, or are driving
-          = link_to 'All', '#', 'data-table': 'haveDriverConversations', 'data-statuses': '*', class: 'btn-conv-filter'
+          = link_to 'All (0)', '#', 'data-table': 'haveDriverConversations', 'data-statuses': '*', class: 'btn-conv-filter'
           &nbsp; · &nbsp;
-          = link_to 'Waiting Accept', '#', 'data-table': 'haveDriverConversations', 'data-statuses': 'waiting_acceptance', class: 'btn-conv-filter'
+          = link_to 'Waiting Accept (0)', '#', 'data-table': 'haveDriverConversations', 'data-statuses': 'waiting_acceptance', class: 'btn-conv-filter'
           &nbsp; · &nbsp;
-          = link_to 'Waiting Pickup', '#', 'data-table': 'haveDriverConversations', 'data-statuses': 'waiting_pickup', class: 'btn-conv-filter'
+          = link_to 'Waiting Pickup (0)', '#', 'data-table': 'haveDriverConversations', 'data-statuses': 'waiting_pickup', class: 'btn-conv-filter'
           &nbsp; · &nbsp;
-          = link_to 'Overdue', '#', 'data-table': 'haveDriverConversations', 'data-statuses': 'pickup_overdue completion_overdue', class: 'btn-conv-filter'
+          = link_to 'Overdue (0)', '#', 'data-table': 'haveDriverConversations', 'data-statuses': 'pickup_overdue completion_overdue', class: 'btn-conv-filter'
           &nbsp; · &nbsp;
-          = link_to 'Driving', '#', 'data-table': 'haveDriverConversations', 'data-statuses': 'driving', class: 'btn-conv-filter'
+          = link_to 'Driving (0)', '#', 'data-table': 'haveDriverConversations', 'data-statuses': 'driving', class: 'btn-conv-filter'
 
         %table.table.admin.conv-table{id: 'haveDriverConversations'}
 

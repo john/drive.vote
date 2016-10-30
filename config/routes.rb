@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   devise_for :users, controllers: {
-    session: 'users/sessions',
+    sessions: 'users/sessions',
     registrations: 'users/registrations',
     confirmations: 'users/confirmations',
     passwords: 'users/passwords',
@@ -9,8 +9,9 @@ Rails.application.routes.draw do
   }
 
   devise_scope :user do
+    get '/volunteer/:id', :to => 'users/registrations#new', :as => 'volunteer_to_drive_for_zone'
+    get '/volunteer_to_drive/:id', to: redirect("/volunteer/%{id}")
     get '/volunteer_to_drive', :to => 'users/registrations#new', :as => 'volunteer_to_drive'
-    get '/volunteer_to_drive/:id', :to => 'users/registrations#new', :as => 'volunteer_to_drive_for_zone'
     get "/users/sign_out" => "devise/sessions#destroy", :as => :get_destroy_user_session
   end
 
@@ -38,6 +39,13 @@ Rails.application.routes.draw do
 
   resources :dispatch, only: [:show] do
     member do
+      get 'messages' => 'dispatch#messages'
+      get 'ride_pane' => 'dispatch#ride_pane'
+
+      # get 'messages' => 'conversations#messages'
+      # get 'ride_pane' => 'conversations#ride_pane'
+
+
       get 'drivers' => 'dispatch#drivers'
       get 'flyer' => 'dispatch#flyer'
       get 'map' => 'dispatch#map'
@@ -60,7 +68,8 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'get_a_ride/:ride_zone_id' => 'rides#new', as: 'get_a_ride'
+  get 'ride/:ride_zone_id' => 'rides#new', as: 'get_a_ride'
+  get 'get_a_ride/:ride_zone_id', to: redirect("/ride/%{ride_zone_id}")
   get 'conseguir_un_paseo/:ride_zone_id' => 'rides#new'
 
   resources :rides, only: [:create, :edit, :update]
@@ -84,6 +93,11 @@ Rails.application.routes.draw do
       end
 
       resources :rides, only: [:update_attribute] do
+        collection do
+          if ENV['DTV_IS_WORKER'] == 'TRUE' || Rails.env.test?
+            post 'confirm_scheduled' => 'rides#confirm_scheduled'
+          end
+        end
         member do
           post 'update_attribute' => 'rides#update_attribute'
         end
@@ -97,6 +111,7 @@ Rails.application.routes.draw do
           get 'drivers' => 'ride_zones#drivers'
           get 'rides' => 'ride_zones#rides'
           post 'rides' => 'ride_zones#create_ride'
+          post 'change_role'
         end
       end
     end
@@ -107,8 +122,8 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :conversations, only: [:index, :show] do
       member do
-        get 'messages' => 'conversations#messages'
-        get 'ride_pane' => 'conversations#ride_pane'
+        # get 'messages' => 'conversations#messages'
+        # get 'ride_pane' => 'conversations#ride_pane'
         post 'close' => 'conversations#close'
       end
     end
@@ -133,6 +148,7 @@ Rails.application.routes.draw do
         delete 'delete' => 'simulations#delete'
       end
     end
+    resource :site, only: [:show, :edit, :update]
     resources :users, only: [:show, :edit, :update, :index, :destroy] do
       member do
         post 'qa_clear' => 'users#qa_clear'

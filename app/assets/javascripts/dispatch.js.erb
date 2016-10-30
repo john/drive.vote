@@ -10,13 +10,14 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
   this.OVERDUE_PICKUP = 15*60*1000;
   this.OVERDUE_COMPLETION = 30*60*1000;
   this.STILL_NEW_RIDE = 10*60*1000;
+
   this._statusStrings = {
-    messaging: 'MESSAGING', help_needed: 'NEEDS&nbsp;HELP', scheduled: 'SCHEDULED',
-    waiting_acceptance: 'WAIT&nbsp;ACCEPT',
-    waiting_assignment: 'NEEDS&nbsp;DRIVER', assignment_overdue: 'OVERDUE',
-    waiting_pickup: 'WAITING', pickup_overdue: 'OVERDUE', new_ride: 'NEW',
-    driving: 'DRIVING', completion_overdue: 'OVERDUE', complete: 'COMPLETE'
-  };
+      messaging: 'MESSAGING', help_needed: 'NEEDS&nbsp;HELP', scheduled: 'SCHEDULED',
+      waiting_acceptance: 'WAIT&nbsp;ACCEPT',
+      waiting_assignment: 'NEEDS&nbsp;DRIVER', assignment_overdue: 'OVERDUE',
+      waiting_pickup: 'WAITING', pickup_overdue: 'OVERDUE', new_ride: 'NEW',
+      driving: 'DRIVING', completion_overdue: 'OVERDUE', complete: 'COMPLETE'
+    };
 
   this._statusPinURLs = {
     messaging: "<%= asset_path('rider-waiting-assignment.png')%>",
@@ -79,7 +80,7 @@ DispatchController.prototype = {
     if (action === undefined) {
       action = 'create';
     }
-    var url = '/admin/conversations/' + id + '/ride_pane';
+    var url = '/dispatch/' + id + '/ride_pane';
     if(action=='edit') {
       url += '?edit=true';
     }
@@ -92,38 +93,65 @@ DispatchController.prototype = {
   },
 
   loadConversationMessages: function (id) {
-    $('#conversation-messages').load('/admin/conversations/' + id + '/messages', function( response, status, xhr ) {
+    $('#conversation-messages').load('/dispatch/' + id + '/messages', function( response, status, xhr ) {
       var cont = $('.messages');
       cont[0].scrollTop = cont[0].scrollHeight;
     });
   },
 
-  attachRideClick: function (rzid, id, el, action) {
+  attachInlineEditables: function() {
+    $('#from_address').editable({ mode: 'inline', emptytext:'address' });
+    $('#from_city').editable({ mode: 'inline', emptytext:'city'});
+    $('#to_address').editable({ mode: 'inline', emptytext:'address' });
+    $('#to_city').editable({ mode: 'inline', emptytext:'city'});
+    $('#additional_passengers').editable({ mode: 'inline'});
+  },
+
+  attachRideCreate: function( conversation_id ) {
+    $('.create_ride').click(function(e) {
+      $.post( '/api/1/conversations/'+conversation_id+'/rides', function(responseData, status, xhr) {
+         $('.create_ride').text( 'Created!' );
+         $('.create_ride').addClass('item-highlight');
+
+         // update status badge with current status
+         console.log( 'posted to conv.create_ride, got success' ); //.conversation.ride.status)
+
+      }).fail(function() {
+        humane.log ('Something has gone horribly wrong.');
+      });
+      e.preventDefault();
+    });
+  },
+
+  attachDriverSelect: function (rzid, id, el, action) {
     if (action === undefined) {
       action = 'create';
     }
-    $( "#create_or_edit_ride" ).click( function(e) {
 
+    $( el ).change( function(e) {
       if((action=='edit') && (el == '#driver_select')) {
-        // just change the driver, on the ride object
+        // if it's an edit, there's already a ride, just change the driver, on the ride object
         var url = '/api/1/ride_zones/' + rzid + '/assign_ride?driver_id=' + $(el).val() + '&ride_id=' + id;
         var msg = '';
       } else {
-        // this copies everything over from the conversation
+        // on create, copy everything over from the conversation
         var url = '/api/1/conversations/' + id + '/rides?driver_id=' + $(el).val();
         var msg = 'A new ride was created! It should appear in the \'rides\' column, and on the map.';
       }
 
-      $.post( url, function() {
-         $('#conv-modal').modal('hide');
-         $('body').removeClass('modal-open');
-         $('.modal-backdrop').remove();
+      $.post( url, function(responseData, status, xhr) {
+         var txt = $(el).find(":selected").text()
+         $('.current-driver').text( txt );
+         $('.current-driver').addClass('item-highlight');
 
-         humane.log(msg, { waitForMove: true });
-        })
-        .fail(function() {
-          humane.log ('Something has gone horribly wrong.');
-        });
+         // update status badge with current status
+         console.log( responseData ); //.conversation.ride.status)
+
+         $(".modal-ride-status").text('foo');
+
+      }).fail(function() {
+        humane.log ('Something has gone horribly wrong.');
+      });
       e.preventDefault();
     });
   },
@@ -364,11 +392,7 @@ DispatchController.prototype = {
   },
 
   setTotal: function(node, total) {
-    if (total == 0) {
-      $(node).text($(node).text().replace(/ \(.*/, ''));
-    } else {
-      $(node).text($(node).text().replace(/ \(.*/, '') + ' (' + total + ')');
-    }
+    $(node).text($(node).text().replace(/ \(.*/, '') + ' (' + total + ')');
   },
 
   // Sets the conv-status-xxx status for this row object and removes all other

@@ -15,9 +15,9 @@ john = User.create!(
   # phone_number_normalized: '+12073328709',
   image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
   locale: 'en',
-  address1: '330 Cabrillo St.',
-  city: 'Orlando',
-  state: 'FL'
+  address1: '1100 Nugget Ave',
+  city: 'Sparks',
+  state: 'NV'
 )
 
 roles = Role.create( [{name: 'admin'}, {name: 'dispatcher'}, {name: 'driver'}, {name: 'rider'}] )
@@ -82,7 +82,7 @@ if  Rails.env == "development"
       phone_number_normalized: '+12073328709',
       image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
       locale: 'en',
-      zip: '32601'
+      zip: '84122'
     }, {
       name: 'Doug Driver',
       available: false,
@@ -92,7 +92,7 @@ if  Rails.env == "development"
       phone_number_normalized: '+12073328709',
       image_url: 'http://graph.facebook.com/v2.6/10155022838063242/picture',
       locale: 'en',
-      zip: '32601'
+      zip: '84122'
     }
   ])
 

@@ -1,0 +1,29 @@
+.messages
+  - @conversation.messages.order('created_at asc').each do |message|
+    .message{style: "text-align: #{(message.sent_by == 'Voter') ? 'left' : 'right'}"}
+      %code
+        %span.msg-epoch
+          = message.created_at.to_i
+        , #{message.sent_by}
+      .msg-body
+        = message.body
+
+-# just to make the javascript below a little easier to read
+- close_button = j( link_to 'Archive', close_admin_conversation_path(@conversation), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure? Conversations normally close themselves, only use this for orphans, bad actors, etc.' }, method: :POST )
+
+
+- if @conversation.user.name.include?('via sms')
+  - title = @conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')
+- else
+  - title = "#{@conversation.user.name} <span>#{@conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')}</span>"
+
+:javascript
+  // now that we have the conversation object, populate the modal header
+  $('#conv-modal-title').html( "#{title}" );
+
+  // convert epoch times to human-readable local times
+  $('.msg-epoch').each(function(index) {
+    $(this).text( strftime('%l:%M%P', new Date( $(this).text()*1000)) );
+  });
+
+  $('#archive-btn').html("<span style='font-weight: normal;'>#{close_button}</span>")

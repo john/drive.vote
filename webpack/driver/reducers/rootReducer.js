@@ -10,20 +10,26 @@ function driverState(state = {
     switch (action.type) {
         case 'REQUEST_STATUS':
         case 'REQUEST_TOGGLE':
-        case 'RIDE_CLAIM_ATTEMPT':
             return Object.assign({}, state, {
                 isFetching: true,
+            })
+        case 'RIDE_CLAIM_ATTEMPT':
+        case 'RIDE_CANCEL_ATTEMPT':
+        case 'RIDER_PICKUP_ATTEMPT':
+        case 'RIDE_COMPLETE_ATTEMPT':
+            return Object.assign({}, state, {
+                changePending: true
             })
         case 'RECEIVE_STATUS':
             return Object.assign({}, state, {
                 initialFetch: false,
                 isFetching: false,
                 available: action.available,
+                ride_zone_id: action.ride_zone_id,
                 waiting_rides_interval: action.waiting_rides_interval * 100,
                 update_location_interval: action.update_location_interval * 100,
                 active_ride: action.active_ride,
             })
-
         case 'RECEIVE_RIDE_ZONE_STATS':
             return Object.assign({}, state, {
                 ride_zone_stats: {
@@ -38,7 +44,8 @@ function driverState(state = {
             return Object.assign({}, state, {
                 isFetching: false,
                 available: false,
-                active_ride: {}
+                active_ride: null,
+                completedRide: null
             })
         case 'DRIVER_AVAILABLE':
             return Object.assign({}, state, {
@@ -56,30 +63,37 @@ function driverState(state = {
             return Object.assign({}, state, {
                 isFetching: false,
                 waiting_rides_interval: 0,
-                active_ride: action.active_ride
+                active_ride: action.active_ride,
+                changePending: false,
             })
         case 'RIDE_CANCELLED':
             return Object.assign({}, state, {
                 isFetching: false,
-                active_ride: null
+                active_ride: null,
+                changePending: false
             })
         case 'RIDER_PICKUP':
             action.active_ride.status = 'picked_up';
             return Object.assign({}, state, {
                 isFetching: false,
-                active_ride: action.active_ride
+                active_ride: action.active_ride,
+                changePending: false,
+                completedRide: null
+
             })
 
         case 'RIDE_COMPLETE':
             action.active_ride.status = 'complete';
             return Object.assign({}, state, {
                 isFetching: false,
-                active_ride: action.active_ride
+                active_ride: null,
+                changePending: false,
+                completedRide: action.active_ride,
+                rides: []
             })
 
         case 'LOCATION_UPDATED':
             return Object.assign({}, state, {
-                isFetching: false,
                 location: {
                     latitude: action.location.latitude,
                     longitude: action.location.longitude
@@ -88,15 +102,21 @@ function driverState(state = {
 
         case 'LOCATION_SUBMITTED':
             return Object.assign({}, state, {
-                isFetching: false,
                 update_location_interval: action.update_location_interval * 100,
             })
         case 'API_ERROR':
             return Object.assign({}, state, {
                 error: String(action.message),
-                isFetching: false
+                isFetching: false,
+                changePending: false
             })
-      case 'API_ERROR_CLEAR':
+        case 'CONNECTION_ERROR':
+            return Object.assign({}, state, {
+                connectionError: String(action.message),
+                isFetching: false,
+                changePending: false
+            })
+        case 'API_ERROR_CLEAR':
             return Object.assign({}, state, {
                 error: '',
             })

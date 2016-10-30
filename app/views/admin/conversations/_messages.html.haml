@@ -1,3 +1,5 @@
+-# USED in /admin/conversations/:id, not the dispatcher modal
+
 .messages
   - @conversation.messages.order('created_at asc').each do |message|
     .message{style: "text-align: #{(message.sent_by == 'Voter') ? 'left' : 'right'}"}
@@ -9,9 +11,11 @@
 
 -# just to make the javascript below a little easier to read
 - msg_count = pluralize( @conversation.messages.count, 'message' )
-- close_button = j( link_to 'Close conversation', close_admin_conversation_path(@conversation), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure? Conversations normally close themselves, only use this for orphans, bad actors, etc.' }, method: :POST )
+
+- close_button = j( link_to 'Archive', close_admin_conversation_path(@conversation), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure? Conversations normally close themselves, only use this for orphans, bad actors, etc.' }, method: :POST )
 
 :javascript
   // now that we have the conversation object, populate the modal header
-  $('#conversationModalLabel').html( "#{@conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')} &nbsp;&nbsp; <span style='font-weight: normal;'>#{close_button}</span>" );
+  $('#conv-modal-title').html( "#{@conversation.id} <span>#{@conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')}</span>" );
+  $('#archive-btn').html("<span style='font-weight: normal;'>#{close_button}</span>")
   $('#msg-count').html( "#{msg_count}" );

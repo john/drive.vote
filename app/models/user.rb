@@ -9,7 +9,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  rolify after_add: :if_driver_remove_unassigned, after_remove: :make_unassigned
+  rolify strict: true, after_add: :if_driver_remove_unassigned, after_remove: :make_unassigned
 
   geocoded_by :full_address do |user, results|
     if geo = results.first
@@ -26,7 +26,7 @@ class User < ApplicationRecord
   # end
 
   VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
-  VALID_STATES = {'FL' => 'Florida', 'NV' => 'Nevada', 'PA' =>'Pennsylvania', 'UT' => 'Utah'}
+  VALID_STATES = {'NV' => 'Nevada', 'PA' =>'Pennsylvania', 'UT' => 'Utah'}
   has_many :rides, foreign_key: :voter_id, dependent: :destroy
   has_many :conversations, foreign_key: :user_id, dependent: :destroy
 
@@ -66,19 +66,22 @@ class User < ApplicationRecord
   validates :state, length: { maximum: 2 }
   validates :zip, length: { maximum: 12 }
   validates :country, length: { maximum: 50 }
-  validates :password, presence: true, length: { in: 8..50 }, on: :create
-  # validates :password, length: { in: 8..50 }, on: :update, allow_blank: true
 
   # scope that gets Users, of any/all roles, close to a particular RideZone
   scope :nearby_ride_zone, ->(rz) { near(rz.zip, GEO_NEARBY_DISTANCE) }
 
 
   def self.voters
-    User.with_role(:voter)
+    User.with_role(:voter, :any)
   end
 
-  def self.non_voters
-    User.where.not(id: User.with_role(:voter))
+  def self.non_voters(order: 'name', sort: 'ASC')
+    User.where.not(id: User.with_role(:voter, :any)).order("#{order} #{sort}")
+  end
+
+  def self.users
+    ids = User.with_any_role({name: :admin, resource: :any}, {name: :dispatcher, resource: :any}).pluck(:id)
+    User.where(id: ids)
   end
 
   def self.voters
@@ -86,16 +89,15 @@ class User < ApplicationRecord
   end
 
   def self.assigned_drivers
-    User.find_by_sql("SELECT users.* FROM users \
-        INNER JOIN users_roles ON users_roles.user_id = users.id \
-        INNER JOIN roles ON roles.id = users_roles.role_id \
-          WHERE roles.name = 'driver' \
-          AND roles.resource_type = 'RideZone' \
-          AND roles.resource_id IS NOT NULL")
+    User.with_role(:driver, :any)
+  end
+
+  def self.unassigned_drivers
+    User.with_role( :unassigned_driver, :any )
   end
 
   def self.all_drivers
-    self.assigned_drivers + self.with_role( :unassigned_driver )
+    User.assigned_drivers + User.unassigned_drivers
   end
 
   def self.all_driver_roles
@@ -107,7 +109,8 @@ class User < ApplicationRecord
   end
 
   def api_json
-    data = self.as_json(only: [:id, :name, :available, :latitude, :longitude], methods: [:phone, :location_timestamp])
+    data = self.as_json(only: [:id, :available, :latitude, :longitude], methods: [:phone, :location_timestamp])
+    data['name'] = CGI::escape_html(name || '')
     data.merge('active_ride' => self.active_ride.try(:api_json))
   end
 
@@ -131,8 +134,31 @@ class User < ApplicationRecord
     RideZone.find_roles(:unassigned_driver, self).present?
   end
 
+  def is_only_unassigned_driver?
+    if RideZone.find_roles(:unassigned_driver, self).present? &&
+      !self.is_super_admin? &&
+      !self.is_zone_admin? &&
+      !self.is_dispatcher? &&
+      !self.is_driver?
+      true
+    else
+      false
+    end
+  end
+
   def is_voter?
     RideZone.find_roles(:voter, self).present?
+  end
+
+  def role_names
+    self.roles.collect do |r|
+      if r.resource_id.present?
+        name = "#{r.name} (#{RideZone.find(r.resource_id).name})"
+      else
+        name = r.name
+      end
+      name.gsub('_', ' ')
+    end.join(', ')
   end
 
   def driver_ride_zone_id
@@ -214,14 +240,14 @@ class User < ApplicationRecord
   private
 
   def if_driver_remove_unassigned(added_role)
-    if self.is_driver?
+    if self.is_driver? && added_role.name != 'unassigned_driver'
       self.remove_role(:unassigned_driver)
     end
   end
 
   def make_unassigned(removed_role)
-    if removed_role.name == 'driver'
-      self.add_role(:unassigned_driver)
+    if removed_role.name == 'driver' && !self.is_unassigned_driver?
+      self.add_role(:unassigned_driver, RideZone.find(removed_role.resource_id))
     end
   end
 
@@ -308,7 +334,7 @@ class User < ApplicationRecord
 
   def send_welcome_email
     return if has_sms_name? || @@sim_mode
-    if self.has_role? 'driver', :any
+    if self.has_role?('driver', :any)
       UserMailer.welcome_email_driver(self).deliver_later
     end
   end

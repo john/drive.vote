@@ -81,7 +81,24 @@ module Api::V1
       end
     end
 
+    def change_role
+      if params[:uid].present?
+        user = User.find(params[:uid])
+        if params[:to_role] == 'driver'
+          user.add_role(:driver, @ride_zone)
+          render json: {response: 'success?'}
+        else
+          user.remove_role(:driver, @ride_zone)
+          render json: {error: 'missing required param'}, status: 422
+        end
+      else
+        render json: {error: 'missing required param'}, status: 422
+      end
+    end
+
+
     private
+
     def require_ride_zone
       set_ride_zone
       render json: {error: 'RideZone not found'}, status: :not_found unless @ride_zone

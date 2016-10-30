@@ -46,7 +46,7 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
 
   describe 'create conversation' do
     let(:rz) { create :ride_zone }
-    let(:user) { create :driver_user, ride_zone: rz }
+    let(:user) { create :driver_user, rz: rz }
     let(:body) { 'can you go to south side?' }
     let(:convo) { create :conversation }
 
@@ -94,11 +94,11 @@ RSpec.describe Api::V1::RideZonesController, :type => :controller do
 
   describe 'drivers' do
     let!(:rz) { create :ride_zone }
-    let!(:u1) { create :driver_user, ride_zone: rz }
-    let!(:u2) { create :driver_user, ride_zone: rz }
+    let!(:u1) { create :driver_user, rz: rz }
+    let!(:u2) { create :driver_user, rz: rz }
     let!(:ride) { create :ride, ride_zone: rz }
     let(:rz2) { create :ride_zone }
-    let!(:notinrz) { create :driver_user, ride_zone: rz2 }
+    let!(:notinrz) { create :driver_user, rz: rz2 }
 
     it "redirects if not logged in" do
       get :drivers, params: {id: rz.id}

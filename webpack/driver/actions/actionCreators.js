@@ -9,16 +9,25 @@ function parseJSON(response) {
     } else {
         return response.json()
             .then(function(response) {
-                console.log(response.error);
                 throw new Error(response.error);
             });
     }
 }
 
 export function apiError(message) {
-    return {
-        type: 'API_ERROR',
-        message,
+    // The Fetch API leaves you in a lurch for detecting generic network errors,
+    // Not sure if there's any way to catch this besides a RegExp
+    const pattern = new RegExp(`TypeError: Failed to fetch`);
+    if (pattern.test(message)) {
+        return {
+            type: 'CONNECTION_ERROR',
+            message,
+        }
+    } else {
+        return {
+            type: 'API_ERROR',
+            message,
+        }
     }
 }
 
@@ -39,6 +48,7 @@ export function receiveStatus(status) {
         available: status.available,
         waiting_rides_interval: status.waiting_rides_interval,
         update_location_interval: status.update_location_interval,
+        ride_zone_id: status.ride_zone_id,
         active_ride: status.active_ride
     }
 }
@@ -100,7 +110,7 @@ export function attemptCancel() {
 export function cancelRideSuccess(ride) {
     return {
         type: 'RIDE_CANCELLED',
-        active_ride: {}
+        active_ride: null
     }
 }
 
@@ -206,7 +216,6 @@ export function submitAvailable() {
 
 export function submitLocation(location) {
     return function(dispatch) {
-        // fetch(`${api}/location?latitude=28.532&longitude=-81.37`, {
         fetch(`${api}/location?latitude=${location.latitude}&longitude=${location.longitude}`, {
                 credentials: 'include',
                 method: 'POST'
@@ -221,11 +230,13 @@ export function submitLocation(location) {
 }
 
 export function fetchWaitingRides(location) {
-
+    let url = '/waiting_rides';
+    if (location) {
+        url += `?latitude=${location.latitude}&longitude=${location.longitude}`;
+    }
     return function(dispatch) {
         dispatch(requestStatus())
-        // fetch(`${api}/waiting_rides?latitude=28.532&longitude=-81.37`, {
-        fetch(`${api}/waiting_rides?latitude=${location.latitude}&longitude=${location.longitude}`, {
+        fetch(`${api}${url}`, {
                 credentials: 'include',
             })
             .then(parseJSON)
@@ -270,8 +281,8 @@ export function cancelRide(ride) {
 }
 
 export function pickupRider(ride) {
-    return function(dispatch) {;
-        dispatch(attemptPickup())
+    return function(dispatch) {
+        dispatch(attemptPickup());
         fetch(`${api}/pickup_ride?ride_id=${ride.id}`, {
                 credentials: 'include',
                 method: 'POST',
@@ -284,7 +295,6 @@ export function pickupRider(ride) {
             )
     }
 }
-
 
 export function completeRide(ride) {
     return function(dispatch) {

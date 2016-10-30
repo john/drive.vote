@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
       return edit_ride_path(existing) if existing
 
       # TODO: handle es path
-      return "/get_a_ride/#{resource.voter_ride_zone_id}"
+      return "/ride/#{resource.voter_ride_zone_id}"
     end
     root_path
   end

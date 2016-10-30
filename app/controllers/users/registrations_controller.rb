@@ -7,7 +7,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def new
     resource = build_resource({})
 
-    if request.path.include?('volunteer_to_drive')
+    if request.path.include?('volunteer')
       @volunteer = true
       resource.user_type = 'unassigned_driver'
     end
@@ -48,7 +48,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if resource.persisted?
       if resource.active_for_authentication?
         set_flash_message! :notice, :signed_up
-        # sign_up(resource_name, resource)
+
+        if resource.ride_zone_id.present?
+          @ride_zone = RideZone.find(resource.ride_zone_id)
+          UserMailer.welcome_email_driver(resource, @ride_zone).deliver_later
+        else
+          UserMailer.welcome_email_driver(resource).deliver_later
+        end
+
         respond_with resource, location: after_sign_up_path_for(resource)
       else
         set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
@@ -70,7 +77,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if user_signed_in? && current_user.has_role?(:admin)
       admin_users_path
     else
-      "#{confirm_path}?uid=#{resource.id}"
+      confirm_path
     end
   end
 

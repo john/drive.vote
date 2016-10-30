@@ -68,7 +68,7 @@ This event indicates a new conversation has been created in the subscribed ride 
                 "to_latitude" : decimal,
                 "to_longitude" : decimal,
                 "num_passengers" : integer,
-                "pickup_time" : integer_unix_epoch_time,
+                "pickup_at" : integer_unix_epoch_time,
                 "special_requests" : "any requests from voter, e.g. wheelchair, car seat"
             }
 		}

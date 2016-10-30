@@ -47,7 +47,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
       it "assigns all ride_zones as @ride_zones" do
         get :index, params: {}
 
-        expect(assigns(:ride_zones)).to eq([rz, rz2])
+        expect(assigns(:ride_zones)).to match_array([rz, rz2])
         expect( assigns(:ride_zones).length).to eq(2)
         expect( assigns(:ride_zones).collect(&:id)).to include(rz.id)
         expect( assigns(:ride_zones).collect(&:id)).to include(rz2.id)
@@ -182,7 +182,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
 
         expect {
           post :add_role, params: {id: rz.to_param, user_id: user.to_param, role: 'dispatcher'}
-        }.to change(rz.dispatchers, :count).by(1)
+        }.to change{ rz.dispatchers.count }.by(1)
       end
 
       it "adds a driver to a ride zone" do
@@ -190,7 +190,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
 
         expect {
           post :add_role, params: {id: rz.to_param, user_id: user.to_param, role: 'driver'}
-        }.to change{ rz.drivers.count(:all) }.by(1)
+        }.to change{ rz.drivers.count }.by(1)
       end
     end
 
@@ -202,7 +202,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
 
         expect {
           post :add_role, params: {id: rz.to_param, user_id: user.to_param, role: 'dispatcher'}
-        }.to change(rz.dispatchers, :count).by(1)
+        }.to change{ rz.dispatchers.count }.by(1)
       end
 
       it "adds a driver to a ride zone" do
@@ -210,7 +210,7 @@ RSpec.describe Admin::RideZonesController, type: :controller do
 
         expect {
           post :add_role, params: {id: rz.to_param, user_id: user.to_param, role: 'driver'}
-        }.to change{ rz.drivers.count(:all) }.by(1)
+        }.to change{ rz.drivers.count }.by(1)
       end
     end
 
@@ -329,6 +329,15 @@ RSpec.describe Admin::RideZonesController, type: :controller do
           post :change_role, params: { id: rz.id, driver: user.id, to_role: 'driver' }
         }.to change{ rz.drivers.count(:all) }.by(1)
       end
+
+      # TODO: implement these once the fix to rolify is in place
+      # context "handles both kinds of unassigned_driver roles" do
+      #   it "removes a scoped unassigned_driver role" do
+      #   end
+      #
+      #   it "removes unscoped unassigned_driver role" do
+      #   end
+      # end
     end
   end
 

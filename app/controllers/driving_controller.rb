@@ -7,12 +7,11 @@ class DrivingController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   RIDES_LIMIT = 3
-  UPDATE_LOCATION_INTERVAL = 60 # seconds
-  WAITING_RIDES_INTERVAL = 15 # seconds
 
   def index
-    unless current_user
-      redirect_to "/users/sign_in" and return
+    unless current_user && current_user.is_driver?
+      sign_out
+      redirect_to root_path and return
     else
       render :layout => false
     end
@@ -120,19 +119,18 @@ class DrivingController < ApplicationController
   end
 
   def update_location_interval
-    # todo: be able to throttle with this interval (redis?)
-    UPDATE_LOCATION_INTERVAL
+    Site.instance.update_location_interval
   end
 
   def waiting_rides_interval
-    # todo: be able to throttle with this interval (redis?)
-    WAITING_RIDES_INTERVAL
+    Site.instance.waiting_rides_interval
   end
 
   def status_data
     {
       available: current_user.available,
       active_ride: @active_ride.try(:api_json),
+      ride_zone_id: current_user.driver_ride_zone_id,
       waiting_rides_interval: waiting_rides_interval,
       update_location_interval: update_location_interval
     }

@@ -1,4 +1,7 @@
 class Conversation < ApplicationRecord
+  include HasAddress
+  include ToFromAddressable
+
   belongs_to :ride_zone
   belongs_to :user
   has_many :messages, dependent: :destroy
@@ -11,8 +14,6 @@ class Conversation < ApplicationRecord
   around_save :notify_update
 
   validate :phone_numbers_match_first_message
-  include HasAddress
-  include ToFromAddressable
 
   enum status: { sms_created: -1, in_progress: 0, ride_created: 1, closed: 2, help_needed: 3 }
   enum lifecycle: {
@@ -32,24 +33,41 @@ class Conversation < ApplicationRecord
   }
 
   def api_json(include_messages = false)
-    fields = [:id, :user_id, :pickup_at, :status, :lifecycle, :from_phone, :from_address, :from_city,
-              :from_latitude, :from_longitude, :to_address, :to_city,
-              :to_latitude, :to_longitude, :additional_passengers, :special_requests]
+    fields = [:id, :user_id, :pickup_at, :status, :lifecycle, :from_phone,
+              :from_latitude, :from_longitude, :to_latitude, :to_longitude, :additional_passengers]
     j = self.as_json(only: fields, methods: [:message_count])
     if include_messages
       j['messages'] = self.messages.map(&:api_json)
+    end
+    %w(from_address from_city to_address to_city special_requests).each do |field|
+      j[field] = CGI::escape_html(send(field) || '')
     end
     last_msg = self.messages.order('created_at ASC').last
     if last_msg
       j['last_message_time'] = last_msg.created_at.to_i
       j['last_message_sent_by'] = last_msg.sent_by
-      j['last_message_body'] = last_msg.body
+      j['last_message_body'] = CGI::escape_html(last_msg.body || '')
     end
     j['from_phone'] = self.from_phone.phony_formatted(normalize: :US, spaces: '-')
     j['status_updated_at'] = self.status_updated_at.to_i
-    j['name'] = username
+    j['name'] = CGI::escape_html(username || '')
     j['ride'] = ride.api_json if ride
     j
+  end
+
+  # have language and name and confirmed origin and destination and confirmed time and passengers
+  def has_fields_for_ride
+    if self.user.blank? ||
+      self.user.name.blank? ||
+      self.from_address.blank? ||
+      self.from_city.blank? ||
+      self.from_latitude.blank? ||
+      self.from_longitude.blank? ||
+      self.pickup_at.blank?
+      false
+    else
+      true
+    end
   end
 
   # send a new SMS from staff on this conversation. returns the Message
@@ -62,24 +80,31 @@ class Conversation < ApplicationRecord
   # create a new conversation initiated by staff
   # returns conversation if successful otherwise an error message
   def self.create_from_staff(ride_zone, user, body, timeout, attrs = {})
-    sms = send_staff_sms(ride_zone, user, body, timeout)
-    return sms if sms.is_a?(String)
     c = Conversation.create({ride_zone: ride_zone, user: user, from_phone: ride_zone.phone_number_normalized,
                             to_phone: user.phone_number_normalized, status: :in_progress}.merge(attrs))
-    msg = Message.create_from_staff(c, sms)
+    sms = send_staff_sms(ride_zone, user, body, timeout)
+    if sms.is_a?(String)
+      # create dummy message so we know what we intended to send
+      sms = OpenStruct.new(sid: 'n/a', status: 'failed', body: "(Failed to send) #{body}")
+    end
+    Message.create_from_staff(c, sms)
     c
   end
 
   def self.send_staff_sms(ride_zone, user, body, timeout)
-    sms = TwilioService.send_message(
+    sms = begin
+      TwilioService.send_message(
         { from: ride_zone.phone_number_normalized, to: user.phone_number, body: body},
-        timeout
-    )
+        timeout)
+    rescue => e
+      logger.error "TWILIO ERROR #{e.message} User id #{user.id} Message #{body}"
+      return "Twilio error #{e.message}"
+    end
     if sms.error_code
-      logger.warn "TWILIO ERROR #{sms.error_code} User id #{user.id} Message #{body}"
+      logger.error "TWILIO ERROR #{sms.error_code} User id #{user.id} Message #{body}"
       return "Communication error #{sms.error_code}"
     elsif sms.status.to_s != 'delivered'
-      logger.warn "TWILIO ERROR Timeout User id #{user.id} Message #{body}"
+      logger.error "TWILIO ERROR Timeout User id #{user.id} Message #{body}"
       return 'Timeout in delivery'
     end
     sms
@@ -126,16 +151,20 @@ class Conversation < ApplicationRecord
       self.ride_zone.bot_disabled
   end
 
+  def user_language
+    user.language == 'unknown' ? 'en' : user.language
+  end
+
   def attempt_confirmation
-    if self.ride_confirmed.nil?
-      body = I18n.t(:confirm_ride, locale: user.language, time: ride.pickup_in_time_zone.strftime('%l:%M %P'))
+    if self.ride_confirmed.nil? && self.user
+      body = I18n.t(:confirm_ride, locale: user_language, time: ride.pickup_in_time_zone.strftime('%l:%M %P'))
       sms = Conversation.send_staff_sms(ride_zone, user, body, Rails.configuration.twilio_timeout)
       return if sms.is_a?(String) # error sending, will try again
       ActiveRecord::Base.transaction do
         Message.create_from_bot(self, sms)
-        update_attributes(ride_confirmed: false, bot_counter: 0)
+        update_attributes(ride_confirmed: false, bot_counter: 0, status: :ride_created)
       end
-    elsif self.ride_confirmed == false && Time.now > self.pickup_time
+    elsif self.ride_confirmed == false && Time.now > self.pickup_at
       # ride has not been confirmed and pickup time has passed, bump to needs_help
       update_attribute(:status, :help_needed)
     end
@@ -143,9 +172,9 @@ class Conversation < ApplicationRecord
 
   def notify_voter_of_assignment(driver)
     if driver
-      body = I18n.t(:driver_assigned, locale: user.language, name: driver.name, vehicle: driver.description)
+      body = I18n.t(:driver_assigned, locale: user_language, name: driver.name, vehicle: driver.description)
     else
-      body = I18n.t(:driver_cleared, locale: user.language)
+      body = I18n.t(:driver_cleared, locale: user_language)
     end
     sms = Conversation.send_staff_sms(ride_zone, user, body, Rails.configuration.twilio_timeout)
     return if sms.is_a?(String) # todo: track state and retry?
@@ -195,13 +224,13 @@ class Conversation < ApplicationRecord
       lckey = :have_name
     elsif !from_confirmed
       lckey = :have_origin
-    elsif has_unknown_destination? && pickup_time.nil? && !time_confirmed
+    elsif has_unknown_destination? && pickup_at.nil? && !time_confirmed
       lckey = :have_confirmed_destination
     elsif (to_latitude.nil? || to_longitude.nil?) && !has_unknown_destination?
       lckey = :have_confirmed_origin
     elsif !to_confirmed
       lckey = :have_destination
-    elsif pickup_time.nil?
+    elsif pickup_at.nil?
       lckey = :have_confirmed_destination
     elsif !time_confirmed
       lckey = :have_time

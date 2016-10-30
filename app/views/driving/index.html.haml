@@ -11,12 +11,11 @@
     %link{href: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', rel: 'stylesheet'}
     %link{href: 'https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css', rel: 'stylesheet'}
     %link{href: 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css', rel: 'stylesheet'}
-    %link{href: 'https://drive-vote-driver.herokuapp.com/static/css/main.css', rel: 'stylesheet'}
   %body
 
   #root
-    %nav.container.text-center.p-y
-      = image_tag("dtv_logo_120x83.png", class: 'logo')
+    %nav.container.text-left.p-y
+      = image_tag(t(:logo_filename), id: 'logo', width: '60')
     .container
       .jumbotron.text-center
         %h1

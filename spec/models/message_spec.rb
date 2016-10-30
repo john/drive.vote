@@ -62,7 +62,7 @@ RSpec.describe Message, type: :model do
   describe 'staff messages' do
     let(:twilio_msg) { OpenStruct.new(sid: 'sid', status: 'status', body: 'hello') }
     let(:ride_zone) { create :ride_zone }
-    let(:user) { create :driver_user, ride_zone: ride_zone }
+    let(:user) { create :driver_user, rz: ride_zone }
     let(:convo) { create :conversation, user: user, ride_zone: ride_zone }
 
     it 'should create the message' do
@@ -117,5 +117,11 @@ RSpec.describe Message, type: :model do
     convo = create :conversation_with_messages
     msg = create :message, conversation: convo, from: convo.to_phone, to: convo.from_phone
     expect(msg.sent_by).to eq('Bot')
+  end
+
+  it 'escapes html in body' do
+    convo = create :conversation_with_messages
+    msg = create :message, conversation: convo, body: 'Test <img>'
+    expect(msg.api_json['body']).to eq('Test &lt;img&gt;')
   end
 end

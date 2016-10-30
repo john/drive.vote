@@ -1,5 +1,6 @@
 class Ride < ApplicationRecord
-  belongs_to :ride_zone
+  include HasAddress
+  include ToFromAddressable
 
   SWITCH_TO_WAITING_ASSIGNMENT = 15 # how long in minutes before pickup time to change status to waiting_assignment
 
@@ -13,6 +14,7 @@ class Ride < ApplicationRecord
     waiting_acceptance: 6
   }
 
+  belongs_to :ride_zone
   belongs_to :driver, class_name: 'User', foreign_key: :driver_id
   belongs_to :voter, class_name: 'User', foreign_key: :voter_id
   belongs_to :ride_zone
@@ -25,13 +27,14 @@ class Ride < ApplicationRecord
   validates :from_address, length: { maximum: 100 }
   validates :from_city, length: { maximum: 50 }
   validates :from_state, length: { maximum: 2 }
-  validates :from_zip, length: { maximum: 50 }
+  validates :from_zip, length: { maximum: 15 }
   validates :to_address, length: { maximum: 100 }
   validates :to_city, length: { maximum: 50 }
   validates :to_state, length: { maximum: 2 }
-  validates :to_zip, length: { maximum: 12 }
+  validates :to_zip, length: { maximum: 15 }
   validates :phone_number, length: { maximum: 17 }
-  validates :email, length: { maximum: 17 }
+  validates :email, length: { maximum: 50 }
+  validate :geocoded_and_in_radius
 
   before_save :note_status_update
   before_save :check_waiting_assignment
@@ -43,14 +46,9 @@ class Ride < ApplicationRecord
   attr_accessor :phone_number
   attr_accessor :email
   attr_accessor :city_state
-  attr_accessor :pickup_day
-  attr_accessor :pickup_time
 
   # transient for returning distance to voter
   attr_accessor :distance_to_voter
-
-  include HasAddress
-  include ToFromAddressable
 
   # create a new ride from the data in a conversation
   def self.create_from_conversation conversation
@@ -58,7 +56,7 @@ class Ride < ApplicationRecord
       ride_zone: conversation.ride_zone,
       voter: conversation.user,
       name: conversation.username,
-      pickup_at: conversation.pickup_time,
+      pickup_at: conversation.pickup_at,
       status: :scheduled,
       from_address: conversation.from_address,
       from_city: conversation.from_city,
@@ -76,6 +74,11 @@ class Ride < ApplicationRecord
       conversation.update_attribute(:status, :ride_created)
       Ride.create!(attrs)
     end
+  end
+
+  # return true if ride can be assigned
+  def assignable?
+    %w(scheduled waiting_assignment ).include?(self.status)
   end
 
   # returns true if assignment worked
@@ -118,7 +121,8 @@ class Ride < ApplicationRecord
 
   # returns json suitable for exposing in the API
   def api_json
-    j = self.as_json(except: [:voter_id, :driver_id, :pickup_at, :created_at, :updated_at], methods: [:conversation_id, :driver_name])
+    j = self.as_json(except: [:voter_id, :driver_id, :pickup_at, :created_at, :updated_at], methods: [:conversation_id])
+    j['driver_name'] = CGI::escape_html(driver_name || '')
     j['pickup_at'] = self.pickup_at.try(:to_i)
     j['created_at'] = self.created_at.try(:to_i)
     j['status_updated_at'] = self.status_updated_at.to_i
@@ -140,8 +144,10 @@ class Ride < ApplicationRecord
   end
 
   def pickup_in_time_zone
-    Time.use_zone(self.ride_zone.time_zone) do
-      Time.at self.pickup_at
+    if self.ride_zone
+      self.pickup_at.in_time_zone(self.ride_zone.time_zone)
+    else
+      self.pickup_at
     end
   end
 
@@ -178,9 +184,19 @@ class Ride < ApplicationRecord
   end
 
   def self.confirm_scheduled_rides
+    count, errors = 0, 0
     Ride.where(status: :scheduled).where('pickup_at < ?', SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now).each do |ride|
-      ride.conversation.attempt_confirmation
+      if ride.conversation && !ride.ride_zone.bot_disabled
+        begin
+          ride.conversation.attempt_confirmation
+          count += 1
+        rescue => e
+          logger.error "Got error trying to confirm conversation #{ride.conversation.id}: #{e.message}"
+          errors += 1
+        end
+      end
     end
+    logger.warn "Note: Attempted to confirm #{count} scheduled rides (#{errors} errors)"
   end
 
   def passenger_count
@@ -221,5 +237,15 @@ class Ride < ApplicationRecord
 
   def close_conversation_when_complete
     self.conversation.update_attribute(:status, 'closed') if self.conversation && status_changed? && status == 'complete'
+  end
+
+  def geocoded_and_in_radius
+    unless from_address.blank?
+      if from_latitude.nil? || from_longitude.nil?
+        errors.add(:from_address, 'could not be found')
+      elsif ride_zone && !ride_zone.is_within_pickup_radius?(from_latitude, from_longitude)
+        errors.add(:from_address, 'is outside the coverage area')
+      end
+    end
   end
 end

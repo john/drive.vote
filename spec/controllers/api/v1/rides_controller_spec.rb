@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::RidesController, :type => :controller do
-
-  let!(:ride) { create :ride, to_city: 'Toledo, OH' }
+  let(:rz) { create :ride_zone }
+  let!(:ride) { create :ride, to_city: 'Toledo, OH', ride_zone: rz }
   let(:dispatcher) { create :dispatcher_user }
 
   it "redirects if not logged in" do

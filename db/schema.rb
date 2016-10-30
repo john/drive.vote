@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161013194854) do
+ActiveRecord::Schema.define(version: 20161025050425) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20161013194854) do
     t.string   "to_state",                                        default: ""
     t.decimal  "to_latitude",           precision: 15, scale: 10
     t.decimal  "to_longitude",          precision: 15, scale: 10
-    t.datetime "pickup_time"
+    t.datetime "pickup_at"
     t.integer  "ride_id"
     t.datetime "created_at",                                                   null: false
     t.datetime "updated_at",                                                   null: false
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20161013194854) do
     t.boolean  "bot_disabled",                                      default: false,  null: false
     t.decimal  "nearby_radius",           precision: 6,  scale: 2,  default: "10.0"
     t.string   "email"
+    t.decimal  "max_pickup_radius",       precision: 6,  scale: 2,  default: "20.0"
     t.index ["phone_number"], name: "index_ride_zones_on_phone_number", unique: true, using: :btree
     t.index ["slug"], name: "index_ride_zones_on_slug", unique: true, using: :btree
   end
@@ -134,6 +135,15 @@ ActiveRecord::Schema.define(version: 20161013194854) do
     t.string   "name",                   null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+  end
+
+  create_table "sites", force: :cascade do |t|
+    t.integer  "singleton_guard"
+    t.integer  "update_location_interval", default: 60
+    t.integer  "waiting_rides_interval",   default: 15
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.index ["singleton_guard"], name: "index_sites_on_singleton_guard", unique: true, using: :btree
   end
 
   create_table "users", force: :cascade do |t|

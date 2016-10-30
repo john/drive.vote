@@ -16,15 +16,6 @@
     #navbar.collapse.navbar-collapse
       .pull-right.nav-links
 
-        - if show_languages
-          %a{href: '?locale=en', class: "locale-#{(locale.to_s == 'en') ? 'active' : 'inactive'}"}
-            English
-          &nbsp; &#183; &nbsp;
-
-          %a{href: '?locale=es', class: "locale-#{(locale.to_s == 'es') ? 'active' : 'inactive'}"}
-            Español
-          &nbsp; &#183; &nbsp;
-
         - unless user_signed_in?
           = link_to t(:sign_in), new_user_session_path
 
@@ -38,7 +29,7 @@
             = link_to 'admin', admin_ride_zones_path, style: 'color: red;'
 
           - elsif current_user.is_dispatcher?
-            = link_to 'dispatch', dispatch_path( RideZone.with_role(:dispatcher, current_user ).first.slug), target: '_blank'
+            = link_to 'dispatch', dispatch_path( RideZone.with_user_in_role(current_user, :dispatcher).first.slug), target: '_blank'
 
           - elsif current_user.is_driver?
             = link_to 'driving app', driving_index_path

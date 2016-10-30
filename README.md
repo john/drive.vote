@@ -24,14 +24,14 @@ Create a .env file in the app root and add:
 ### Running it via docker (in dev only!)
 1. Install docker. For mac, make sure to use the [Docker Mac Beta](https://docs.docker.com/engine/installation/mac/#/docker-for-mac) and not Docker Toolbox.
 1. Run `docker-compose up`. This will start 2 containers: one for postgres, and one that runs rails + webpack dev server.
-1. If necessary, run `docker-compose exec bundle exec rails db:create db:migrate db:seed` to setup the database.
+1. If necessary, run `docker-compose exec web bundle exec rails db:create db:migrate db:seed` to setup the database.
 
 Your current directory will be mounted into the docker instances so changes to the files should go live immediately without restarting the envrionment. If you need to restart the rails server, just run `docker-compose up` again.
 
 To get a shell on the current docker instance, run:
 
 ```
-docker-compose exec bash -l
+docker-compose exec web bash -l
 ```
 
 This shouldn't be necessary most of the time.
@@ -103,10 +103,18 @@ This is to stand up an entirely new environment, it's done infrequently and gene
 If you define profile sections in your ~/.aws/credentials file for drivevote.prod (or dev), then you can set the `AWS_EB_PROFILE` env var before calling the following command in order to use the right set of credentials. Open a termal, start a venv, and run:
 
 ```
-RAILS_ENV=production NODE_ENV=production  AWS_EB_PROFILE=drivevote.prod eb create drivevote-prod -db -p 'Ruby 2.3 (Puma)' -db.engine postgres -db.i db.t2.micro -i t2.micro --elb-type application -k aws-eb -r us-west-2 -db.user drivevoteprod --envvars RAILS_SECRET=[somesecret],RAILS_SKIP_ASSET_COMPILATION=true
+RAILS_ENV=production NODE_ENV=production  AWS_EB_PROFILE=drivevote.prod eb create drivevote-prod -db -p 'Ruby 2.3 (Puma)' -db.engine postgres -db.i db.t2.micro -i t2.micro --elb-type application -k aws-eb -r us-west-2 -db.user drivevoteprod --envvars SECRET_KEY_BASE=[somesecret],RAILS_SKIP_ASSET_COMPILATION=true,DTV_ACTION_CABLE_ORIGIN=www.drive.vote,PAPERTRAIL_HOST=logs4.papertrailapp.com,PAPERTRAIL_PORT=46774
 ```
 
-Then do a deploy via
+This will configure the main web environment and database.  After this, open up the RDS console to find the newly created database. Use the values there for `[endpoint]` in the command below in order to configure the database access. This is because Elastic Beanstalk has no sane way of sharing an RDS instance between envrionments (wtf?).
+
+```
+RAILS_ENV=production NODE_ENV=production  AWS_EB_PROFILE=drivevote.prod eb create drivevote-prod-worker -t worker -p 'Ruby 2.3 (Puma)' -s -k aws-eb -r us-west-2  --envvars "SECRET_KEY_BASE=$(rake secret),RAILS_SKIP_ASSET_COMPILATION=true,DTV_IS_WORKER=TRUE,PAPERTRAIL_HOST=logs4.papertrailapp.com,PAPERTRAIL_PORT=46774,RDS_DB_NAME=ebdb,RDS_HOSTNAME=[endpoint],RDS_PASSWORD=[password],RDS_USERNAME=drivevoteprod,DTV_ACTION_CABLE_ORIGIN=worker-[origin-for-papertrail-logging]"
+```
+
+Next, fix the RDS security group to allow writes from the worker. Open up the RDS console for the EB instance and modify its securtiy group's incoming rules to allow access from the worker.
+
+Finally, do a deploy via
 ```
 RAILS_ENV=production NODE_ENV=production  AWS_EB_PROFILE=drivevote.prod rake deploy:prod
 ```

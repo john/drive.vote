@@ -6,9 +6,9 @@ class Admin::UsersController < Admin::AdminApplicationController
   USER_SEARCH = "(lower(users.name) LIKE ?) OR (users.phone_number LIKE ?) OR (users.email LIKE ?)".freeze
 
   def show
-    @admin_zones = RideZone.with_role(:admin, @user)
-    @dispatch_zones = RideZone.with_role(:dispatcher, @user)
-    @driving_zones = RideZone.with_role(:driver, @user)
+    @admin_zones = RideZone.with_user_in_role(:admin, @user)
+    @dispatch_zones = RideZone.with_user_in_role(:dispatcher, @user)
+    @driving_zones = RideZone.with_user_in_role(:driver, @user)
     @conversations = Conversation.where(user_id: @user.id)
   end
 
@@ -18,11 +18,11 @@ class Admin::UsersController < Admin::AdminApplicationController
     sort = params[:sort] || 'name'
     if params[:q].present?
       @q = params[:q].downcase
-      @users = User.where(USER_SEARCH, "%#{@q}%", "%#{@q}%", "%#{@q}%").order("#{sort} DESC").paginate(page: page, per_page: per_page)
-    elsif params[:filter].present?
+      @users = User.where(USER_SEARCH, "%#{@q}%", "%#{@q}%", "%#{@q}%").order("UPPER(#{sort}) DESC").paginate(page: page, per_page: per_page)
+    elsif params[:filter].present? && params[:filter].downcase != 'all'
       @users = User.with_role(params[:filter].to_sym, :any).order("#{sort} DESC").paginate(page: page, per_page: per_page)
     else
-      @users = User.non_voters.order("#{sort} DESC").paginate(page: page, per_page: per_page)
+      @users = User.users.order("UPPER(#{sort}) ASC").paginate(page: page, per_page: per_page)
     end
   end
 
@@ -41,8 +41,8 @@ class Admin::UsersController < Admin::AdminApplicationController
 
   def edit
     @user.superadmin = @user.has_role?(:admin)
-    @zones_driving_for = RideZone.with_role(:driver, @user)
-    @zones_dispatching_for = RideZone.with_role(:dispatcher, @user)
+    @zones_driving_for = RideZone.with_user_in_role(@user, :driver)
+    @zones_dispatching_for = RideZone.with_user_in_role(@user, :dispatcher)
   end
 
   def qa_clear

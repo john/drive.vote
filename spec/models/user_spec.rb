@@ -78,7 +78,7 @@ RSpec.describe User, :type => :model do
     it { should validate_presence_of :email }
     it { should validate_length_of(:phone_number).is_at_most(17)}
     it { should validate_length_of(:email).is_at_most(50)}
-    it { should validate_length_of(:password).is_at_least(8).is_at_most(50)}
+    it { should validate_length_of(:password).is_at_least(8).is_at_most(128)}
     it { should validate_length_of(:city).is_at_most(50)}
     it { should validate_length_of(:state).is_at_most(2)}
     it { should validate_length_of(:zip).is_at_most(12)}
@@ -228,15 +228,15 @@ RSpec.describe User, :type => :model do
   end
 
   it 'removes :unassigned_driver role when made :driver' do
-    u = create :unassigned_driver_user
     rz = create :ride_zone
+    u = create :unassigned_driver_user, rz: rz
 
-    expect( u.has_role?(:unassigned_driver) ).to be_truthy
+    expect( u.has_role?(:unassigned_driver, :any) ).to be_truthy
     expect( u.has_role?(:driver, rz) ).to be_falsy
 
     u.add_role(:driver, rz)
 
-    expect( u.has_role?(:unassigned_driver) ).to be_falsy
+    expect( u.has_role?(:unassigned_driver, :any) ).to be_falsy
     expect( u.has_role?(:driver, rz) ).to be_truthy
   end
 
@@ -250,7 +250,7 @@ RSpec.describe User, :type => :model do
 
     u.remove_role(:driver, rz)
 
-    expect( u.has_role?(:unassigned_driver) ).to be_truthy
+    expect( u.has_role?(:unassigned_driver, rz) ).to be_truthy
     expect( u.has_role?(:driver, rz) ).to be_falsy
   end
 
@@ -260,7 +260,7 @@ RSpec.describe User, :type => :model do
 
   it 'returns driver ride zone' do
     rz = create :ride_zone
-    u = create :driver_user, ride_zone: rz
+    u = create :driver_user, rz: rz
     expect(u.reload.driver_ride_zone_id).to eq(rz.id)
   end
 
@@ -282,7 +282,7 @@ RSpec.describe User, :type => :model do
 
     it 'sends driver email for web registration' do
       expect(UserMailer).to receive(:welcome_email_driver) { dummy_mailer }
-      create :driver_user
+      create :driver_user, user_type: :driver
     end
 
     it 'does not send email for sms voter' do
@@ -296,11 +296,11 @@ RSpec.describe User, :type => :model do
 
     it 'does not send event for new voter' do
       expect(RideZone).to_not receive(:event)
-      create :voter_user, ride_zone: rz
+      create :voter_user, rz: rz
     end
 
     it 'does not send event for updated voter' do
-      u = create :voter_user, ride_zone: rz
+      u = create :voter_user, rz: rz
       expect(RideZone).to_not receive(:event)
       u.update_attribute(:name, 'foobar')
     end
@@ -313,7 +313,7 @@ RSpec.describe User, :type => :model do
     end
 
     it 'sends driver update event on change' do
-      d = create :driver_user, ride_zone: rz
+      d = create :driver_user, rz: rz
       expect(RideZone).to receive(:event).with(rz.id, :driver_changed, anything, :driver)
       d.update_attribute(:name, 'foo bar')
     end
@@ -367,6 +367,14 @@ RSpec.describe User, :type => :model do
       it "knows if you're not an unassigned driver" do
         expect( non_driver.is_unassigned_driver? ).to eq(false)
       end
+
+      it "knows a non-driver is not just an unassigned driver" do
+        expect( non_driver.is_only_unassigned_driver? ).to eq(false)
+      end
+
+      it "knows if an unassigned driver has only that role" do
+        expect( unassigned_driver.is_only_unassigned_driver? ).to eq(true)
+      end
     end
 
     describe 'for drivers' do
@@ -380,6 +388,10 @@ RSpec.describe User, :type => :model do
       it "knows if you're not a driver" do
         expect( non_driver.is_driver? ).to eq(false)
       end
+
+      it "knows a driver fails is_only_unassigned_driver?" do
+        expect( driver.is_only_unassigned_driver? ).to eq(false)
+      end
     end
 
     describe 'for dispatchers' do
@@ -392,6 +404,10 @@ RSpec.describe User, :type => :model do
 
       it "knows if you're not a dispatcher" do
         expect( non_dispatcher.is_dispatcher? ).to eq(false)
+      end
+
+      it "knows a dispatcher fails is_only_unassigned_driver?" do
+        expect( dispatcher.is_only_unassigned_driver? ).to eq(false)
       end
     end
 
@@ -407,5 +423,10 @@ RSpec.describe User, :type => :model do
         expect( non_zone_admin.is_zone_admin? ).to eq(false)
       end
     end
+  end
+
+  it 'produces safe html' do
+    u = create :user, name: '&'
+    expect(u.api_json['name']).to eq('&amp;')
   end
 end
