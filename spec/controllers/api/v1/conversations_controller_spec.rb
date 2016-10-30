@@ -154,9 +154,17 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
       end
 
       it 'calls twilio service' do
-        args = {from: convo.to_phone, to: convo.from_phone, body: body}
+        args = {from: convo.ride_zone.phone_number_normalized, to: convo.user.phone_number, body: body}
         expect(TwilioService).to receive(:send_message).with(args, Rails.configuration.twilio_timeout)
         post :create_message, params: {id: convo.id, message: {body: body}}
+      end
+
+      it 'handles twilio service error' do
+        args = {from: convo.ride_zone.phone_number_normalized, to: convo.user.phone_number, body: body}
+        expect(TwilioService).to receive(:send_message).with(args, Rails.configuration.twilio_timeout) { raise "foobar" }
+        post :create_message, params: {id: convo.id, message: {body: body}}
+        expect(response.status).to eq(500)
+        expect(response.body.include?('foobar')).to be_truthy
       end
 
       it 'creates a message' do
