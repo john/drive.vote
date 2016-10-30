@@ -1,17 +1,8 @@
-- if @obj.is_a?(Conversation)
-  Active conversation with voter
-- else
-  Ride has been scheduled for voter
-
--# TODO: sort out statuses of rides v. conversations; copy conversation cell logic in dispatch.js
-  /   status
-  / .modal-ride-status
-  /   - if @obj.class == Conversation
-  /     = @obj.status
-  /     -#= Conversation::STATUS_STRINGS[ @obj.status.to_sym ].html_safe
-  /   - else
-  /     foo
-
+.modal-ride-status
+  - if @obj.is_a?(Conversation)
+    Active conversation
+  - else
+    Ride scheduled
 
 - url = send("update_attribute_api_v1_#{@obj.class.name.downcase}_path", @obj)
 
@@ -46,20 +37,24 @@
 
   %tr
     %td.conv-label
-      ADDITIONAL PASSENGERS
+      XTRA PASSENGERS
     %td.conv-field
-      %a.to_from{href: '#', id:"additional_passengers", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"To address"}
+      %a.to_from{href: '#', id:"additional_passengers", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"Additional Passengers"}
         = @obj.send(:additional_passengers) || 0
 
   %tr
     %td.conv-label
-      - if @obj.class == Conversation && @obj.has_fields_for_ride
+      SPECIAL REQ
+    %td.conv-field
+      %a.to_from{href: '#', id:"special_requests", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"Special Requests"}
+        = @obj.send(:special_requests)
+
+  - if @obj.class == Conversation && @obj.has_fields_for_ride
+    %tr
+      %td.conv-label
         %a.create_ride{href: '#', class: 'btn btn-sm btn-info', style: 'margin-top: 30px;'}
           CREATE RIDE
-      - else
-        %i
-
-    %td.conv-field
+      %td.conv-field
 
   - if @obj.class == Ride
     %tr
