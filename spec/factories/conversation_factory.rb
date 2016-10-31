@@ -4,6 +4,8 @@ FactoryGirl.define do
     user
 
     sequence(:to_phone) { |n| "212-867-%04d" % n }
+    sequence(:from_phone) { |n| "310-567-%04d" % n }
+
     ride_zone {create :ride_zone, phone_number: to_phone}
 
     factory :conversation_with_messages do
