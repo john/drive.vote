@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20161025050425) do
     t.integer  "conversation_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.index ["phone"], name: "index_blacklisted_phones_on_phone", unique: true, using: :btree
   end
 
   create_table "conversations", force: :cascade do |t|

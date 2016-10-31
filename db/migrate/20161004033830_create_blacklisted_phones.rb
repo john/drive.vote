@@ -6,5 +6,6 @@ class CreateBlacklistedPhones < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
+    add_index :blacklisted_phones, :phone, unique: true
   end
 end
