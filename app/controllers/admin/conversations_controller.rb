@@ -1,6 +1,6 @@
 class Admin::ConversationsController < Admin::AdminApplicationController
 
-  before_action :set_conversation, only: [:show, :messages, :ride_pane, :update_attribute, :close]
+  before_action :set_conversation, only: [:show, :messages, :ride_pane, :update_attribute, :close, :blacklist_voter_phone, :unblacklist_voter_phone]
 
   # GET /admin/conversations
   def index
@@ -16,6 +16,20 @@ class Admin::ConversationsController < Admin::AdminApplicationController
     @conversation.status = :closed
     @conversation.save!
     flash[:notice] = "Conversation closed."
+    redirect_back(fallback_location: root_path) and return
+  end
+
+  # POST /admin/converations/1/blacklist_voter_phone
+  def blacklist_voter_phone
+    @conversation.blacklist_voter_phone
+    flash[:notice] = "Voter Phone Blacklisted."
+    redirect_back(fallback_location: root_path) and return
+  end
+
+  # POST /admin/converations/1/unblacklist_voter_phone
+  def unblacklist_voter_phone
+    @conversation.unblacklist_voter_phone
+    flash[:notice] = "Voter Phone No Longer Blacklisted."
     redirect_back(fallback_location: root_path) and return
   end
 
