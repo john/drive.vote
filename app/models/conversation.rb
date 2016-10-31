@@ -195,11 +195,16 @@ class Conversation < ApplicationRecord
   end
 
   def voter_phone_blacklisted?
+    self.reload
     self.blacklisted_phone.nil? ? false : true
   end
 
   def blacklist_voter_phone
     BlacklistedPhone.create!(phone: self.from_phone, conversation_id: self.id)
+  end
+
+  def unblacklist_voter_phone
+    BlacklistedPhone.delete self.blacklisted_phone
   end
 
   private
