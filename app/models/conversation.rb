@@ -200,7 +200,7 @@ class Conversation < ApplicationRecord
   end
 
   def blacklist_voter_phone
-    BlacklistedPhone.create!(phone: self.from_phone, conversation_id: self.id)
+    BlacklistedPhone.create!(phone: self.from_phone, conversation_id: self.id) unless BlacklistedPhone.where(phone: self.from_phone).any?
   end
 
   def unblacklist_voter_phone
