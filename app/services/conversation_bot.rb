@@ -21,6 +21,7 @@ class ConversationBot
     @message = message
     @body = @message.body.strip
     @locale = convo.user.language
+    @locale = (@locale.blank? || @locale == 'unknown') ? :en : @locale
   end
 
   # returns an appropriate response to the new message and updates the conversation
@@ -236,7 +237,7 @@ class ConversationBot
             return 0
           when '2'
             # reschedule - reset pickup time and confirmed flag
-            @conversation.update_attributes(pickup_at: nil, time_confirmed: nil)
+            @conversation.update_attributes(status: :in_progress, pickup_at: nil, time_confirmed: nil)
             @response = I18n.t(:when_do_you_want_pickup, locale: @locale)
             return 0
           when '3'
@@ -320,7 +321,7 @@ class ConversationBot
 
   def stalled
     @conversation.update_attribute(:status, :help_needed)
-    @response = I18n.t(:bot_stalled, locale: @locale || :en)
+    @response = I18n.t(:bot_stalled, locale: @locale)
     @bot_counter
   end
 

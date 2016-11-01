@@ -66,8 +66,8 @@ class Ride < ApplicationRecord
       to_city: conversation.to_city,
       to_latitude: conversation.to_latitude,
       to_longitude: conversation.to_longitude,
-      additional_passengers: conversation.additional_passengers,
-      special_requests: conversation.special_requests,
+      additional_passengers: conversation.additional_passengers || 0,
+      special_requests: conversation.special_requests || '',
       conversation: conversation,
     }
     ActiveRecord::Base.transaction do

@@ -325,6 +325,16 @@ RSpec.describe Conversation, type: :model do
       expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:have_language])
     end
 
+    it 'detects confirmation required' do
+      c = create :conversation, status: :ride_created, ride_confirmed: false
+      expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:requested_confirmation])
+    end
+
+    it 'detects confirmation received' do
+      c = create :conversation, status: :ride_created, ride_confirmed: true
+      expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:info_complete])
+    end
+
     describe 'user attributes known' do
       let(:user) { create :user, language: 1, name: 'foo' }
 

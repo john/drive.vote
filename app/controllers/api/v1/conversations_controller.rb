@@ -55,28 +55,21 @@ module Api::V1
 
     def create_ride
       # if driver_id is present, make sure they can be added before doing anything
+      driver = nil
       if params[:driver_id].present?
-        if driver = User.find( params[:driver_id] )
-          if ride = Ride.create_from_conversation( @conversation )
-            ride.assign_driver( driver, true, true )
-            render json: {response: ride.reload.api_json}
-          else
-            render json: {error: "Could not create Ride from Conversation"}, status: 500
-          end
-        else
+        if (driver = User.find_by_id(params[:driver_id])).nil?
           render json: {error: "Could not find driver"}, status: 500
+          return
         end
-      else
-
-        # if no driver_id, go ahead and create the ride
-        if ride = Ride.create_from_conversation( @conversation )
-          render json: {response: ride.reload.api_json}
-        else
-          render json: {error: "Could not create Ride from Conversation"}, status: 500
-        end
-
       end
 
+      if ride = Ride.create_from_conversation(@conversation)
+        ride.assign_driver( driver, true, true ) if driver
+        @conversation.mark_info_completed(ride)
+        render json: {response: ride.reload.api_json}
+      else
+        render json: {error: "Could not create Ride from Conversation"}, status: 500
+      end
     end
 
     private
