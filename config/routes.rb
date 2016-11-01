@@ -125,6 +125,8 @@ Rails.application.routes.draw do
         # get 'messages' => 'conversations#messages'
         # get 'ride_pane' => 'conversations#ride_pane'
         post 'close' => 'conversations#close'
+        post 'blacklist_voter_phone' => 'conversations#blacklist_voter_phone'
+        post 'unblacklist_voter_phone' => 'conversations#unblacklist_voter_phone'
       end
     end
     resources :drivers, only: [:index]

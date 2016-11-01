@@ -88,6 +88,30 @@ RSpec.describe Conversation, type: :model do
         end
       end
     end
+
+    describe 'validate_voter_phone_not_blacklisted' do
+      let(:convo) { create :conversation_with_messages}
+
+      context 'voter phone is blacklisted' do
+        it 'should not be valid' do
+          convo.blacklist_voter_phone
+
+          new_convo = build :conversation, from_phone: convo.from_phone
+
+          expect(new_convo).to_not be_valid
+        end
+      end
+
+      context 'voter phone is not blacklisted' do
+        it 'should be valid' do
+          convo.blacklist_voter_phone
+
+          new_convo = build :conversation, from_phone: '111-111-1112'
+
+          expect(new_convo).to be_valid
+        end
+      end
+    end
   end
 
   describe 'lifecycle hooks' do

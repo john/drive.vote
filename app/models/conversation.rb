@@ -6,6 +6,7 @@ class Conversation < ApplicationRecord
   belongs_to :user
   has_many :messages, dependent: :destroy
   belongs_to :ride
+  has_one :blacklisted_phone
 
   before_save :check_ride_attached
   before_save :update_status_and_lifecycle
@@ -14,6 +15,7 @@ class Conversation < ApplicationRecord
   around_save :notify_update
 
   validate :phone_numbers_match_first_message
+  validate :validate_voter_phone_not_blacklisted
 
   enum status: { sms_created: -1, in_progress: 0, ride_created: 1, closed: 2, help_needed: 3 }
   enum lifecycle: {
@@ -192,6 +194,19 @@ class Conversation < ApplicationRecord
     Conversation.statuses.keys - ['closed']
   end
 
+  def voter_phone_blacklisted?
+    self.reload
+    self.blacklisted_phone.nil? ? false : true
+  end
+
+  def blacklist_voter_phone
+    BlacklistedPhone.create!(phone: self.from_phone, conversation_id: self.id) unless BlacklistedPhone.where(phone: self.from_phone).any?
+  end
+
+  def unblacklist_voter_phone
+    BlacklistedPhone.delete self.blacklisted_phone
+  end
+
   private
   def notify_creation
     rz_id = self.ride_zone_id || self.ride_zone.try(:id)
@@ -266,6 +281,12 @@ class Conversation < ApplicationRecord
       unless self.from_phone == first_message.from
         errors.add(:from_phone, 'must match :from attribute of first Message')
       end
+    end
+  end
+
+  def validate_voter_phone_not_blacklisted
+    if self.new_record? && BlacklistedPhone.has_voter_phone?(self.from_phone)
+      errors.add(:from_phone, 'has been blacklisted')
     end
   end
 end

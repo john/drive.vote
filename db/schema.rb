@@ -15,6 +15,14 @@ ActiveRecord::Schema.define(version: 20161025050425) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "blacklisted_phones", force: :cascade do |t|
+    t.string   "phone"
+    t.integer  "conversation_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["phone"], name: "index_blacklisted_phones_on_phone", unique: true, using: :btree
+  end
+
   create_table "conversations", force: :cascade do |t|
     t.integer  "ride_zone_id",                                                 null: false
     t.integer  "user_id",                                                      null: false
