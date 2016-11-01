@@ -17,7 +17,17 @@ class ApplicationController < ActionController::Base
       # TODO: handle es path
       return "/ride/#{resource.voter_ride_zone_id}"
     end
-    root_path
+
+    if resource.is_super_admin?
+      admin_path
+    elsif resource.is_dispatcher?
+      dispatch_path( RideZone.with_user_in_role(current_user, :dispatcher).first.slug)
+    elsif resource.is_zone_admin?
+      # with that with_user_in_role work on a specific RZ? Verify
+      dispatch_path( RideZone.with_user_in_role(current_user, :admin).first.slug)
+    else
+      root_path
+    end
   end
 
   protected

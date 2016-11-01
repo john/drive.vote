@@ -41,11 +41,6 @@ Rails.application.routes.draw do
     member do
       get 'messages' => 'dispatch#messages'
       get 'ride_pane' => 'dispatch#ride_pane'
-
-      # get 'messages' => 'conversations#messages'
-      # get 'ride_pane' => 'conversations#ride_pane'
-
-
       get 'drivers' => 'dispatch#drivers'
       get 'flyer' => 'dispatch#flyer'
       get 'map' => 'dispatch#map'
