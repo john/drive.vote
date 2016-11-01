@@ -55,6 +55,12 @@
         %a.create_ride{href: '#', class: 'btn btn-sm btn-info', style: 'margin-top: 30px;'}
           CREATE RIDE
       %td.conv-field
+  - else
+    %tr
+      %td{colspan: '2'}
+        %button{style: "margin: 20px 10px 0 0;"}
+          'From' address and pickup time need to be filled in before a ride request can be made available to drivers.
+
 
   - if @obj.class == Ride
     %tr
