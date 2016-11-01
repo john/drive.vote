@@ -58,6 +58,7 @@ class RidesController < ApplicationController
           city: @ride.from_city,
           state: @ride.from_state,
           locale: @locale,
+          language: @locale,
           user_type: 'voter',
       }
 
@@ -73,10 +74,10 @@ class RidesController < ApplicationController
     @ride.from_zip = @user.zip
     @ride.status = :scheduled
     @ride.ride_zone = @ride_zone
+    @ride.to_address = Ride::UNKNOWN_ADDRESS
 
     if @ride.save
-      Conversation.create_from_staff(@ride_zone, @user, thanks_msg, Rails.configuration.twilio_timeout,
-                                     {status: :ride_created, ride: @ride})
+      Conversation.create_from_ride(@ride, thanks_msg)
       UserMailer.welcome_email_voter_ride(@user, @ride).deliver_later
       render :success
     else

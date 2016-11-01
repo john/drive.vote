@@ -79,6 +79,38 @@ class Conversation < ApplicationRecord
     Message.create_from_staff(self, sms)
   end
 
+  # create a new conversation from the information in a completed ride object
+  def self.create_from_ride(ride, thanks_msg)
+    attrs = Conversation.ride_conversation_attrs(ride)
+    create_from_staff(ride.ride_zone, ride.voter, thanks_msg, Rails.configuration.twilio_timeout, attrs)
+  end
+
+  # sets all fields in the conversation as completed based on ride info to prepare for bot
+  # followup
+  def mark_info_completed(ride)
+    update_attributes(Conversation.ride_conversation_attrs(ride))
+  end
+
+  def self.ride_conversation_attrs(ride)
+    {
+      user: ride.voter,
+      status: :ride_created,
+      ride: ride,
+      from_address: ride.from_address,
+      from_latitude: ride.from_latitude,
+      from_longitude: ride.from_longitude,
+      from_confirmed: true,
+      to_address: ride.to_address,
+      to_latitude: ride.to_latitude,
+      to_longitude: ride.to_longitude,
+      to_confirmed: true,
+      pickup_at: ride.pickup_at,
+      time_confirmed: true,
+      additional_passengers: ride.additional_passengers,
+      special_requests: ride.special_requests
+    }
+  end
+
   # create a new conversation initiated by staff
   # returns conversation if successful otherwise an error message
   def self.create_from_staff(ride_zone, user, body, timeout, attrs = {})
@@ -236,7 +268,13 @@ class Conversation < ApplicationRecord
   end
 
   def calculated_lifecycle
-    if user.unknown_language?
+    if status == 'ride_created'
+      if ride_confirmed == false
+        lckey = :requested_confirmation
+      else
+        lckey = :info_complete
+      end
+    elsif user.unknown_language?
       lckey = :created
     elsif user.name.blank? || user.has_sms_name?
       lckey = :have_language
@@ -260,12 +298,6 @@ class Conversation < ApplicationRecord
       lckey = :have_confirmed_time
     elsif special_requests.nil?
       lckey = :have_passengers
-    elsif status == 'ride_created'
-      if ride_confirmed == false
-        lckey = :requested_confirmation
-      else
-        lckey = :info_complete
-      end
     else
       lckey = :info_complete
     end
