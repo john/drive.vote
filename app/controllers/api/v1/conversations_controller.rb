@@ -57,8 +57,7 @@ module Api::V1
       # if driver_id is present, make sure they can be added before doing anything
       driver = nil
       if params[:driver_id].present?
-        driver = User.find(params[:driver_id])
-        unless driver
+        if (driver = User.find_by_id(params[:driver_id])).nil?
           render json: {error: "Could not find driver"}, status: 500
           return
         end
