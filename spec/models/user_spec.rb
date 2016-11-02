@@ -397,6 +397,15 @@ RSpec.describe User, :type => :model do
     end
   end
 
+  it 'marks info complete' do
+    u = create :user, name: '+15105261111 via sms', phone_number: '+15105261111'
+    expect(u.has_sms_name?).to be_truthy
+    expect(u.language).to eq('unknown')
+    u.mark_info_completed
+    expect(u.reload.has_sms_name?).to be_falsey
+    expect(u.language).to eq('en')
+  end
+
   it 'produces safe html' do
     u = create :user, name: '&'
     expect(u.api_json['name']).to eq('&amp;')

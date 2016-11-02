@@ -200,6 +200,12 @@ class User < ApplicationRecord
     end
   end
 
+  def mark_info_completed
+    self.language = :en if language == 'unknown'
+    self.name = self.name.gsub(/ via sms/, '') if has_sms_name?
+    save!
+  end
+
   def qa_clear
     convos = Conversation.where(user_id: self.id)
     convos.each do |convo|
