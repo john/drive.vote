@@ -48,7 +48,7 @@ RSpec.describe DispatchController, :type => :controller do
   end
 
   describe 'GET #ride_pane' do
-    let!(:convo) { create :conversation, ride_zone: rz }
+    let!(:convo) { create :complete_conversation, ride_zone: rz }
 
     it "redirects if not logged in" do
       get :ride_pane, params: {id: convo.to_param}
@@ -68,13 +68,30 @@ RSpec.describe DispatchController, :type => :controller do
         expect(response).to render_template(partial: '_form')
       end
 
-      it 'renders _form partial if convo has a ride' do
-        rz = create :ride_zone
-        ride = create :ride, ride_zone: rz
-        convo.ride = ride
-        convo.save
-        get :ride_pane, params: {id: convo.to_param}
-        expect(response).to render_template(partial: '_form')
+      describe 'with ride' do
+        before :each do
+          ride = Ride.create_from_conversation(convo)
+          convo.ride = ride
+          convo.save
+        end
+
+        it 'renders _form partial if convo has a ride' do
+          get :ride_pane, params: {id: convo.to_param}
+          expect(response).to render_template(partial: '_form')
+        end
+
+        it 'returns nearby sorted drivers' do
+          d1 = create :driver_user, available: true, rz: convo.ride_zone
+          d1.update_attributes(latitude: convo.from_latitude+0.2, longitude: convo.from_longitude+0.2)
+          d2 = create :driver_user, available: true, rz: convo.ride_zone
+          d2.update_attributes(latitude: convo.from_latitude+0.1, longitude: convo.from_longitude+0.1)
+          d3 = create :driver_user, available: true, rz: convo.ride_zone
+          d3.update_attributes(latitude: convo.from_latitude+0.15, longitude: convo.from_longitude+0.15)
+          get :ride_pane, params: {id: convo.to_param}
+          expect(assigns(:available_drivers_with_distance)[0][0].id).to eq(d2.id)
+          expect(assigns(:available_drivers_with_distance)[1][0].id).to eq(d3.id)
+          expect(assigns(:available_drivers_with_distance)[2][0].id).to eq(d1.id)
+        end
       end
     end
   end
