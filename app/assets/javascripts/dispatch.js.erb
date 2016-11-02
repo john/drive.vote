@@ -74,16 +74,10 @@ DispatchController.prototype = {
     });
   },
 
-  loadRidePane: function (id, action) {
+  loadRidePane: function (id) {
     var sameConvo = (id === this._activeConversationId);
     this._activeConversationId = id;
-    if (action === undefined) {
-      action = 'create';
-    }
     var url = '/dispatch/' + id + '/ride_pane';
-    if(action=='edit') {
-      url += '?edit=true';
-    }
     $('#conversation-form').load( url, function( response, status, xhr ) {
       if (!sameConvo) {
         $('#msg-input').text('');
@@ -144,12 +138,6 @@ DispatchController.prototype = {
          var txt = $(el).find(":selected").text()
          $('.current-driver').text( txt );
          $('.current-driver').addClass('item-highlight');
-
-         // update status badge with current status
-         console.log( responseData ); //.conversation.ride.status)
-
-         $(".modal-ride-status").text('foo');
-
       }).fail(function() {
         humane.log ('Something has gone horribly wrong.');
       });

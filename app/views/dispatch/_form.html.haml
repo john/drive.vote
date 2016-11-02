@@ -49,17 +49,22 @@
       %a.to_from{href: '#', id:"special_requests", 'data-type':"text", 'data-pk':"#{@obj.send(:id)}", 'data-url':"#{url}", 'data-title':"Special Requests"}
         = @obj.send(:special_requests)
 
-  - if @obj.class == Conversation && @obj.has_fields_for_ride
-    %tr
-      %td.conv-label
-        %a.create_ride{href: '#', class: 'btn btn-sm btn-info', style: 'margin-top: 30px;'}
-          CREATE RIDE
-      %td.conv-field
-  - else
-    %tr
-      %td{colspan: '2'}
-        %button{style: "margin: 20px 10px 0 0;"}
-          'From' address and pickup time need to be filled in before a ride request can be made available to drivers.
+  - if @obj.class == Conversation
+    - if @obj.has_fields_for_ride
+      %tr
+        %td.conv-label{colspan: '2'}
+          %a.create_ride{href: '#', class: 'btn btn-sm btn-info', style: 'margin-top: 30px;'}
+            CREATE RIDE
+          %br
+          %small
+            Once you've created a ride it becomes visible to drivers. If you want to specify a driver, reload the conversation after clicking 'Create Ride'.
+        %td.conv-field
+
+    - else
+      %tr
+        %td{colspan: '2'}
+          %button{style: "margin: 20px 10px 0 0;"}
+            'From' address and pickup time need to be filled in before a ride request can be made available to drivers.
 
 
   - if @obj.class == Ride
@@ -81,17 +86,17 @@
           %i
             There are no drivers assigned to this zone.
         - else
-          - if @available_drivers.present?
-
+          - if @available_drivers_with_distance.present?
             %select{id: 'driver_select'}
               %option
                 Select driver:
-              - @available_drivers.each do |driver|
-                %option{value: driver.id}
-                  = driver.name
+              - @available_drivers_with_distance.each do |driver|
+                %option{value: driver[0].id}
+                  #{driver[0].name} (#{driver[1].round(1)} miles)
+
           - else
             %i
-              None of the #{@zone_driver_count} drivers in this zone are currently available.
+              No nearby drivers are currently available.
 
   :javascript
     $( function() {
