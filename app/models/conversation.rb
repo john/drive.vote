@@ -60,7 +60,7 @@ class Conversation < ApplicationRecord
   # have language and name and confirmed origin and destination and confirmed time and passengers
   def has_fields_for_ride
     if self.user.blank? ||
-      self.user.name.blank? ||
+      # self.user.name.blank? ||
       self.from_address.blank? ||
       self.from_city.blank? ||
       self.from_latitude.blank? ||
