@@ -63,12 +63,15 @@ module Api::V1
         end
       end
 
-      if ride = Ride.create_from_conversation(@conversation)
-        ride.assign_driver( driver, true, true ) if driver
-        @conversation.mark_info_completed(ride)
-        render json: {response: ride.reload.api_json}
-      else
-        render json: {error: "Could not create Ride from Conversation"}, status: 500
+      ActiveRecord::Base.transaction do
+        if ride = Ride.create_from_conversation(@conversation)
+          ride.assign_driver( driver, true, true ) if driver
+          @conversation.mark_info_completed(ride)
+          @conversation.user.mark_info_completed
+          render json: {response: ride.reload.api_json}
+        else
+          render json: {error: "Could not create Ride from Conversation"}, status: 500
+        end
       end
     end
 
