@@ -17,13 +17,19 @@ class DispatchController < ApplicationController
 
   def ride_pane
     @conversation = Conversation.find(params[:id])
+    ride = @conversation.ride
     @zone_driver_count = @conversation.ride_zone.drivers.count
     @available_drivers = @conversation.ride_zone.available_drivers
+    @available_drivers_with_distance = @available_drivers.map  do |d|
+      [d, ride ? ride.distance_to_point(d.latitude, d.longitude) : 0]
+    end.sort do |pair1, pair2|
+      pair1[1] <=> pair2[1]
+    end
 
-    if @conversation.ride.present?
+    if ride.present?
       @action =  'Edit'
-      @obj = @conversation.ride
-    elsif @conversation.ride.blank? # create ride
+      @obj = ride
+    else # create ride
       @action =  'Create'
       @obj = @conversation
     end

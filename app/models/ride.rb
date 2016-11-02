@@ -157,6 +157,12 @@ class Ride < ApplicationRecord
     self.distance_to_voter = pt.distance_to(ride_pt)
   end
 
+  def distance_to_point(latitude, longitude)
+    pt = Geokit::LatLng.new(latitude, longitude)
+    ride_pt = Geokit::LatLng.new(self.from_latitude, self.from_longitude)
+    pt.distance_to(ride_pt)
+  end
+
   # return up to limit Rides near the specified location
   def self.waiting_nearby ride_zone_id, latitude, longitude, limit, radius
     rides = Ride.where(ride_zone_id: ride_zone_id, status: :waiting_assignment).to_a
