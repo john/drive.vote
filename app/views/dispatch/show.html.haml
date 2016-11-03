@@ -101,6 +101,7 @@
   jQuery(document).ready(function($) {
     jQuery.timeago.settings.allowFuture = true;
     $(document).on("click", '.conv-row', function(event) {
+      $(this).removeClass('conv-last-voter');
       $(".modal-body").modal();
       dispatchController.loadRidePane($(this).data("cid"));
       dispatchController.loadConversationMessages($(this).data("cid"));
