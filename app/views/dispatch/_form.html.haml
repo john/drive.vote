@@ -50,21 +50,20 @@
         = @obj.send(:special_requests)
 
   - if @obj.class == Conversation
-    - if @obj.has_fields_for_ride
-      %tr
-        %td.conv-label{colspan: '2'}
-          %a.create_ride{href: '#', class: 'btn btn-sm btn-info', style: 'margin-top: 30px;'}
-            CREATE RIDE
-          %br
-          %small
-            Once you've created a ride it becomes visible to drivers. If you want to specify a driver, reload the conversation after clicking 'Create Ride'.
-        %td.conv-field
+    - @show_create_ride = @obj.has_fields_for_ride
 
-    - else
-      %tr
-        %td{colspan: '2'}
-          %button{style: "margin: 20px 10px 0 0;"}
-            'From' address and pickup time need to be filled in before a ride request can be made available to drivers.
+    %tr.show_create_ride{style: "display: #{@show_create_ride ? 'table-row' : 'none'};"}
+      %td.conv-label{colspan: '2'}
+        %a.create_ride{href: '#', class: 'btn btn-sm btn-info', style: 'margin-top: 30px;'}
+          CREATE RIDE
+        %br
+        %small
+          Once you've created a ride it becomes visible to drivers. If you want to specify a driver, reload the conversation after clicking 'Create Ride'.
+
+    %tr.hide_create_ride{style: "display: #{@show_create_ride ? 'none' : 'table-row'};"}
+      %td{colspan: '2'}
+        %button{style: "margin: 20px 10px 0 0;"}
+          'From' address and pickup time need to be filled in before a ride request can be made available to drivers.
 
 
   - if @obj.class == Ride
@@ -115,8 +114,9 @@
             to: "2016-11-08",
           }],
 
-          $.post( "#{url}", {name: 'pickup_at', value: dateStr}, function() {
+          $.post( "#{url}", {name: 'pickup_at', value: dateStr}, function(data) {
             $('#pickup_at').addClass('item-highlight');
+            dispatchController.checkToggleRideCreate(data);
           }).fail(function() {
             humane.log ('There was a problem setting the date.');
           });

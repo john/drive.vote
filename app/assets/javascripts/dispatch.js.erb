@@ -93,13 +93,44 @@ DispatchController.prototype = {
     });
   },
 
+  checkToggleRideCreate: function(data) {
+    var from_address = data['response']['from_address'];
+    var from_city = data['response']['from_city'];
+    var from_latitude = data['response']['from_latitude'];
+    var from_longitude = data['response']['from_longitude'];
+    var pickup_at = data['response']['pickup_at'];
+
+    if ( from_address===null || from_city===null || from_latitude===null || from_longitude===null || pickup_at===null ) {
+      console.log('do nothing');
+    } else {
+      $('.show_create_ride').css('display', 'table-row');
+      $('.hide_create_ride').css('display', 'none');
+    }
+  },
+
   attachInlineEditables: function() {
-    $('#from_address').editable({ mode: 'inline', emptytext:'address' });
-    $('#from_city').editable({ mode: 'inline', emptytext:'city'});
-    $('#to_address').editable({ mode: 'inline', emptytext:'address' });
-    $('#to_city').editable({ mode: 'inline', emptytext:'city'});
-    $('#additional_passengers').editable({ mode: 'inline'});
-    $('#special_requests').editable({ mode: 'inline'});
+    var self = this;
+
+    $('#from_address').editable({ mode: 'inline', emptytext:'address', success: function(data, config) {
+      self.checkToggleRideCreate(data);
+    }});
+
+    $('#from_city').editable({ mode: 'inline', emptytext:'city', success: function(data,config) {
+      self.checkToggleRideCreate(data);
+    }});
+
+    $('#to_address').editable({ mode: 'inline', emptytext:'address', success: function(data,config) {
+      self.checkToggleRideCreate(data);
+    }});
+    $('#to_city').editable({ mode: 'inline', emptytext:'city', success: function(data,config) {
+      self.checkToggleRideCreate(data);
+    }});
+    $('#additional_passengers').editable({ mode: 'inline', success: function(data,config) {
+      self.checkToggleRideCreate(data);
+    }});
+    $('#special_requests').editable({ mode: 'inline', success: function(data,config) {
+      self.checkToggleRideCreate(data);
+    }});
   },
 
   attachRideCreate: function( conversation_id ) {
