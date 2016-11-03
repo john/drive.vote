@@ -36,7 +36,7 @@
 
   .col-sm-8.field
     = f.label :name, "#{t(:name)} *"
-    = f.text_field :name, class: 'form-control', autofocus: true, maxlength: 100
+    = f.text_field :name, class: 'form-control', required: 'true', autofocus: true, maxlength: 100
 
   .col-sm-8.field
     = f.label :email, "Email *"

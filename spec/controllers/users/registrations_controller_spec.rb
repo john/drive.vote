@@ -7,6 +7,22 @@ RSpec.describe Users::RegistrationsController, type: :controller do
   end
 
   describe "GET #new" do
+    context "for a ride zone" do
+      let(:rz) { create :ride_zone }
+
+      it "loads the ride zone specified" do
+        get :new, params: {}
+        expect(assigns(:user)).to be_a_new(User)
+        expect(response).to be_successful
+      end
+    end
+
+    it "redirects for a non-existent ride zone" do
+      get :new, params: {id: 'blarg'}
+      expect(response.status).to eq(404)
+    end
+
+
     it "assigns a new User as @user when no role specified" do
       get :new, params: {}
       expect(assigns(:user)).to be_a_new(User)

@@ -27,9 +27,16 @@ RSpec.describe "TopLevel", type: :request do
     it "serves ride zone volunteer page" do
       ride_zone = create(:ride_zone)
 
-      get "/volunteer/#{ride_zone.id}"
+      get "/volunteer/#{ride_zone.slug}"
       expect(response).to have_http_status(200)
     end
+
+    it "404s a bad volunteer page" do
+      get "/volunteer/blarg"
+      expect(response).to have_http_status(404)
+    end
+
+
 
     it "redirects the old ride zone volunteer page" do
       ride_zone = create(:ride_zone)

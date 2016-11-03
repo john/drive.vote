@@ -23,6 +23,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if params[:id].present?
       if @ride_zone = RideZone.find_by_slug(params[:id])
         resource.ride_zone_id = @ride_zone.id
+      else
+        render layout: false, file: "#{Rails.root}/public/404.html",  status: 404 and return
       end
     end
 
