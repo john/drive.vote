@@ -139,7 +139,7 @@ es:
   found_active_request: 'Encontramos una solicitud activa - reprogramación'
   email_address: 'Cuál es tu dirección de correo electrónico?'
   request_saved: 'Hemos salvado su solicitud paseo con los detalles a continuación:'
-  thanks_for_requesting: 'Gracias por su interés en un paseo en %{time }. Describir Número de preguntas'
+  thanks_for_requesting: 'Gracias por su interés en un paseo en %{time}. Describir Número de preguntas'
   pickup_location: 'Lugar de recogida:'
   pickup_time: 'Hora de recogida'
   additional_passengers: 'Pasajeros adicionales:'
