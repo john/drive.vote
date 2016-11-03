@@ -34,7 +34,7 @@ class DispatchController < ApplicationController
       @obj = @conversation
     end
 
-    @pickup_at = @obj.try(:pickup_at).try(:in_time_zone, @obj.ride_zone.time_zone) || "Tues, 08 Nov 2016 07:00:00"
+    @pickup_at = @obj.try(:pickup_at).try(:in_time_zone, @obj.ride_zone.time_zone) || ""
     render partial: 'dispatch/form'
   end
 

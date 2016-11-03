@@ -17,7 +17,7 @@
     = (action_name == 'map') ? "<b>Large Map</b>".html_safe : link_to('Large map', map_dispatch_path(@ride_zone.slug))
     &nbsp; · &nbsp;
 
-    = link_to 'Contact flyer (pdf)', flyer_dispatch_path(@ride_zone.slug, format: 'pdf'), target: '_blank'
+    = link_to 'Schedule a ride', get_a_ride_path(@ride_zone.slug), target: '_blank'
     &nbsp; · &nbsp;
 
     = link_to 'Poll finder', 'https://gttp.votinginfoproject.org/', target: '_blank'
@@ -27,13 +27,16 @@
 
 :javascript
   $(function () {
-    var content = "#{j( link_to 'Schedule a ride', get_a_ride_path(@ride_zone.slug), target: '_blank' )}";
-    content += "<div class='disp-extras'>";
-    content += "#{j( link_to 'Driver volunteer form', volunteer_to_drive_for_zone_path(@ride_zone.slug), target: '_blank')}";
-    content += "</div>";
+    var content = "#{j( link_to 'Driver volunteer form', volunteer_to_drive_for_zone_path(@ride_zone.slug), target: '_blank')}";
+
     content += "<div class='disp-extras'>";
     content += "#{j( link_to 'Driver app', driving_index_path, target: '_blank')}";
     content += "</div>";
+
+    content += "<div class='disp-extras'>";
+    content += "#{j( link_to 'Contact flyer (pdf)', flyer_dispatch_path(@ride_zone.slug, format: 'pdf'), target: '_blank') }";
+    content += "</div>";
+
     $('.dispatch-xtras').popover({
       placement: 'bottom',
       html: true,

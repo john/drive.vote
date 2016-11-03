@@ -93,13 +93,50 @@ DispatchController.prototype = {
     });
   },
 
+  checkToggleRideCreate: function(data) {
+    var from_address = data['response']['from_address'];
+    var from_city = data['response']['from_city'];
+    var pickup_at = data['response']['pickup_at'];
+
+    if ( from_address===null || from_city===null || pickup_at===null ) {
+      console.log('do nothing');
+    } else {
+      $('.show_create_ride').css('display', 'table-row');
+      $('.hide_create_ride').css('display', 'none');
+    }
+  },
+
   attachInlineEditables: function() {
-    $('#from_address').editable({ mode: 'inline', emptytext:'address' });
-    $('#from_city').editable({ mode: 'inline', emptytext:'city'});
-    $('#to_address').editable({ mode: 'inline', emptytext:'address' });
+    var self = this;
+
+    $('#from_address').editable({ mode: 'inline', emptytext:'address', success: function(data, config) {
+      self.checkToggleRideCreate(data);
+    }});
+
+    $('#from_city').editable({ mode: 'inline', emptytext:'city', success: function(data,config) {
+      self.checkToggleRideCreate(data);
+    }});
+
+    $('#to_address').editable({ mode: 'inline', emptytext:'address'});
     $('#to_city').editable({ mode: 'inline', emptytext:'city'});
     $('#additional_passengers').editable({ mode: 'inline'});
     $('#special_requests').editable({ mode: 'inline'});
+
+    $(".flatpickr").flatpickr({
+      onClose: function(dateObj, dateStr, instance){
+    		enable: [{
+          from: "today",
+          to: "2016-11-08",
+        }],
+
+        $.post( "#{url}", {name: 'pickup_at', value: dateStr}, function(data) {
+          $('#pickup_at').addClass('item-highlight');
+          dispatchController.checkToggleRideCreate(data);
+        }).fail(function() {
+          humane.log ('There was a problem setting the date.');
+        });
+      }
+    });
   },
 
   attachRideCreate: function( conversation_id ) {
