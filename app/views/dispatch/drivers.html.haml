@@ -34,7 +34,7 @@
           %td
             = tel_to  driver.phone_number.phony_formatted(normalize: :US, spaces: '-')
           %td
-            = link_to 'promote', change_role_admin_ride_zone_path(@ride_zone, to_role: 'driver', driver: driver.id), method: :post
+            = link_to 'Approve', change_role_admin_ride_zone_path(@ride_zone, to_role: 'driver', driver: driver.id), method: :post
 
     %h2 Nearby unapproved drivers
     %table.table{style: 'margin-top: 40px;'}
@@ -47,4 +47,4 @@
           %td
             = tel_to  driver.phone_number.phony_formatted(normalize: :US, spaces: '-')
           %td
-            = link_to 'promote', change_role_admin_ride_zone_path(@ride_zone, to_role: 'driver', driver: driver.id), method: :post
+            = link_to 'Approve', change_role_admin_ride_zone_path(@ride_zone, to_role: 'driver', driver: driver.id), method: :post
