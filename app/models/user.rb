@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  require 'csv'
   include States
 
   # TODO: when geocoding is enabled
@@ -92,12 +93,24 @@ class User < ApplicationRecord
     User.with_role( :unassigned_driver, :any )
   end
 
-  def self.all_drivers
-    User.assigned_drivers + User.unassigned_drivers
-  end
-
   def self.sms_name(phone_number)
     "#{phone_number} via sms"
+  end
+
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      attributes = %w{name email phone_number_normalized created_at}
+      csv << attributes
+      all.each do |driver|
+        csv << attributes.map do |attr|
+          if attr == 'created_at'
+            driver.send(attr).strftime("%Y-%m-%d %H:%M")
+          else
+            driver.send(attr)
+          end
+        end
+      end
+    end
   end
 
   def api_json

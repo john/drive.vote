@@ -1,26 +1,68 @@
 :css
   h2 { font-size: 20px; font-weight: bold; color: #999; margin: 50px 0 -20px 0;}
+  td { border: 0px solid grey;}
+  .created_at {color: grey;}
 
 = render partial: 'dispatch/nav'
 
+%div{style: "margin: 20px 0 0 15px;"}
+  Sort &nbsp;
+  %select.sort
+    %option
+      name
+    - if @sort.to_s == 'created_at'
+      %option{ selected: true }
+        created_at
+    - else
+      %option
+        created_at
+  &nbsp;&nbsp; &#183; &nbsp;&nbsp;
+
+  = link_to 'Download .csv', drivers_dispatch_path(format: 'csv'), class: 'btn btn-info btn-xs'
+
+:javascript
+  $('.sort').change(function() {
+    window.location.href = window.location.pathname + "?sort=" + $('.sort option:selected').val();;
+  });
+
 .col-md-12
 
-  %h2 Approved drivers
+  %h2{style: 'margin-top: 20px;'}
+    Approved drivers
   %table.table{style: 'margin-top: 40px;'}
-    - @drivers.each do |driver|
-      %tr
+    %tr
+      %td
+      %td
+        email
+      %td
+        phone
+      %td
+        signed up
+      - if current_user.has_role?(:admin, @ride_zone) || current_user.is_super_admin?
         %td
-          = driver.name
-          = driver.available? ? '🔵 ' : '🔴 '
-          - if driver.active_ride.present?
-            🚕
-        %td
-          = mail_to driver.email
-        %td
-          = tel_to  driver.phone_number.phony_formatted(normalize: :US, spaces: '-')
-        - if current_user.has_role?(:admin, @ride_zone) || current_user.is_super_admin?
+    - if @drivers
+      - @drivers.each do |driver|
+        %tr
           %td
-            = link_to 'demote', change_role_admin_ride_zone_path(@ride_zone, to_role: 'unassigned_driver', driver: driver.id), method: :post
+            = driver.name
+            = driver.available? ? '🔵 ' : '🔴 '
+            - if driver.active_ride.present?
+              🚕
+          %td
+            = mail_to driver.email
+          %td
+            = tel_to  driver.phone_number.phony_formatted(normalize: :US, spaces: '-')
+          %td.created_at
+            = driver.created_at.strftime("%-m/%-d %l:%M%P")
+          - if current_user.has_role?(:admin, @ride_zone) || current_user.is_super_admin?
+            %td
+              = link_to 'demote', change_role_admin_ride_zone_path(@ride_zone, to_role: 'unassigned_driver', driver: driver.id), method: :post
+
+    - else
+      %tr
+        %td{colspan: '3'}
+          %i
+            No drivers have been approved
 
   - if current_user.has_role?(:admin, @ride_zone) || current_user.has_role?(:admin)
     %h2 Unapproved drivers
@@ -33,6 +75,8 @@
             = mail_to driver.email
           %td
             = tel_to  driver.phone_number.phony_formatted(normalize: :US, spaces: '-')
+          %td.created_at
+            = driver.created_at.strftime("%-m/%-d %l:%M%P")
           %td
             = link_to 'Approve', change_role_admin_ride_zone_path(@ride_zone, to_role: 'driver', driver: driver.id), method: :post
 
@@ -46,5 +90,7 @@
             = mail_to driver.email
           %td
             = tel_to  driver.phone_number.phony_formatted(normalize: :US, spaces: '-')
+          %td.created_at
+            = driver.created_at.strftime("%-m/%-d %l:%M%P")
           %td
             = link_to 'Approve', change_role_admin_ride_zone_path(@ride_zone, to_role: 'driver', driver: driver.id), method: :post
