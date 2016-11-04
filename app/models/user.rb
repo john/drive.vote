@@ -105,7 +105,7 @@ class User < ApplicationRecord
     CSV.generate(options) do |csv|
       attributes = %w{name email phone_number_normalized created_at}
       csv << attributes
-      all.each do |driver|
+      all.sort{|a,b| a <=> b}.each do |driver|
         csv << attributes.map do |attr|
           if attr == 'created_at'
             driver.send(attr).strftime("%Y-%m-%d %H:%M")

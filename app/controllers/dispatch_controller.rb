@@ -48,8 +48,12 @@ class DispatchController < ApplicationController
     respond_to do |format|
       format.html
       format.csv do
-        @all_drivers = @ride_zone.unassigned_drivers.merge( @ride_zone.drivers ).merge(@ride_zone.nearby_drivers)
-        send_data @all_drivers.to_csv(headers: true), filename: "drivers-#{Date.today}.csv"
+        if has_zone_admin?
+          @all_drivers = @ride_zone.unassigned_drivers.merge( @ride_zone.drivers ).merge(@ride_zone.nearby_drivers)
+          send_data @all_drivers.to_csv(headers: true), filename: "drivers-#{Date.today}.csv"
+        else
+          redirect_to root_path
+        end
       end
     end
   end

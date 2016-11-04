@@ -3,82 +3,113 @@ require 'rails_helper'
 RSpec.describe "Dispatcher", type: :request do
   describe "GET /dispatcher" do
 
-    it "redirects dispatch page if you're not logged in" do
-      ride_zone = create(:ride_zone)
-      get dispatch_path(ride_zone)
-      expect(response).to have_http_status(302)
+    context "not logged in" do
+      let(:ride_zone) { create :ride_zone }
+
+      it "redirects the dispatch page" do
+        get dispatch_path(ride_zone)
+        expect(response).to have_http_status(302)
+      end
+
+      it "redirects the drivers page" do
+        get drivers_dispatch_path(ride_zone)
+        expect(response).to have_http_status(302)
+      end
+
+      it "doesn't let you download drivers.csv" do
+        get drivers_dispatch_path(ride_zone, format: 'csv')
+        expect(response).to have_http_status(302)
+      end
+
+      it "redirects map page" do
+        get map_dispatch_path(ride_zone)
+        expect(response).to have_http_status(302)
+      end
     end
 
-    it "redirects dispatch page if you're logged in but not a dispatcher" do
-      user = create(:user)
-      sign_in user
+    context "logged in as regular user" do
+      let(:ride_zone) { create :ride_zone }
+      let(:user) { create :user }
 
-      ride_zone = create(:ride_zone)
-      get dispatch_path(ride_zone)
-      expect(response).to have_http_status(302)
+      before :each do
+        sign_in user
+      end
+
+      it "redirects dispatch page" do
+        get dispatch_path(ride_zone)
+        expect(response).to have_http_status(302)
+      end
+
+      it "redirects drivers page" do
+        get drivers_dispatch_path(ride_zone)
+        expect(response).to have_http_status(302)
+      end
+
+      it "doesn't let you download drivers" do
+        get drivers_dispatch_path(ride_zone, format: 'csv')
+        expect(response).to have_http_status(302)
+      end
+
+      it "redirects map page" do
+        get map_dispatch_path(ride_zone)
+        expect(response).to have_http_status(302)
+      end
+
     end
 
-    it "lets you view dispatch page if you're a dispatcher for it" do
-      ride_zone = create(:ride_zone)
-      user = create(:user)
-      user.add_role(:dispatcher, ride_zone)
+    context "logged in as a dispatcher" do
+      let(:ride_zone) { create :ride_zone }
+      let(:user) { create :user }
 
-      sign_in user
+      before :each do
+        user.add_role(:dispatcher, ride_zone)
+        sign_in user
+      end
 
-      get dispatch_path(ride_zone)
-      expect(response).to have_http_status(200)
+      it "lets you view the dispatch page" do
+        get dispatch_path(ride_zone)
+        expect(response).to have_http_status(200)
+      end
+
+      it "lets you view map page" do
+        get map_dispatch_path(ride_zone)
+        expect(response).to have_http_status(200)
+      end
+
+      it "lets you view drivers page" do
+        get drivers_dispatch_path(ride_zone)
+        expect(response).to have_http_status(200)
+      end
+
+      it "doesn't let you download drivers" do
+        get drivers_dispatch_path(ride_zone, format: 'csv')
+        expect(response).to have_http_status(302)
+      end
     end
 
-    it "redirects drivers page if you're not logged in" do
-      ride_zone = create(:ride_zone)
-      get drivers_dispatch_path(ride_zone)
-      expect(response).to have_http_status(302)
-    end
+    context "logged in as a zone admin" do
+      let(:ride_zone) { create :ride_zone }
+      let(:user) { create :user }
 
-    it "redirects drivers page if you're logged in but not a dispatcher" do
-      user = create(:user)
-      sign_in user
+      before :each do
+        user.add_role(:admin, ride_zone)
+        sign_in user
+      end
 
-      ride_zone = create(:ride_zone)
-      get drivers_dispatch_path(ride_zone)
-      expect(response).to have_http_status(302)
-    end
+      it "lets you download drivers.csv if you're a zone admin" do
+        get drivers_dispatch_path(ride_zone, format: 'csv')
+        expect(response).to have_http_status(200)
+      end
 
-    it "lets you view drivers page page if you're a dispatcher for it" do
-      ride_zone = create(:ride_zone)
-      user = create(:user)
-      user.add_role(:dispatcher, ride_zone)
+      it "csv downloads with the correct Content-Type header" do
+        get drivers_dispatch_path(ride_zone, format: 'csv')
+        expect(response.headers["Content-Type"]).to eq "text/csv"
+      end
 
-      sign_in user
-
-      get drivers_dispatch_path(ride_zone)
-      expect(response).to have_http_status(200)
-    end
-
-    it "redirects map page if you're not logged in" do
-      ride_zone = create(:ride_zone)
-      get map_dispatch_path(ride_zone)
-      expect(response).to have_http_status(302)
-    end
-
-    it "redirects map page if you're logged in but not a dispatcher" do
-      user = create(:user)
-      sign_in user
-
-      ride_zone = create(:ride_zone)
-      get map_dispatch_path(ride_zone)
-      expect(response).to have_http_status(302)
-    end
-
-    it "lets you view map page page if you're a dispatcher for it" do
-      ride_zone = create(:ride_zone)
-      user = create(:user)
-      user.add_role(:dispatcher, ride_zone)
-
-      sign_in user
-
-      get map_dispatch_path(ride_zone)
-      expect(response).to have_http_status(200)
+      it "csv downloads with the correct Content-Type header" do
+        get drivers_dispatch_path(ride_zone, format: 'csv')
+        expect(response.headers["Content-Disposition"]).to include("attachment; filename=")
+      end
     end
   end
 end
