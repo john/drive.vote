@@ -24,7 +24,7 @@ Create a .env file in the app root and add:
 ### Running it via docker (in dev only!)
 1. Install docker. For mac, make sure to use the [Docker Mac Beta](https://docs.docker.com/engine/installation/mac/#/docker-for-mac) and not Docker Toolbox.
 1. Run `docker-compose up`. This will start 2 containers: one for postgres, and one that runs rails + webpack dev server.
-1. If necessary, run `docker-compose exec web bundle exec rails db:create db:migrate db:seed` to setup the database.
+1. If necessary, run `docker-compose exec web bundle exec rails db:create db:schema:load db:seed` to setup the database.
 
 Your current directory will be mounted into the docker instances so changes to the files should go live immediately without restarting the envrionment. If you need to restart the rails server, just run `docker-compose up` again.
 
@@ -153,4 +153,3 @@ Per above make sure you have aws profiles defined in ~/.aws/credentials.
 ## License
 
 This software is released under the MIT License. See the LICENSE.md file for more information.
-
