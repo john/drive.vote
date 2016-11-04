@@ -41,7 +41,7 @@ DispatchMapController.prototype = {
 
     if(this._drivers[id] != undefined) {
       if (!available) {
-        self.map.removeMarker(this._drivers[id]);
+        this.map.removeMarker(this._drivers[id]);
         delete this._drivers[id];
       } else {
         // re-use the existing marker
