@@ -25,6 +25,10 @@ function Map(element, callback, args)
   } else {
     this._loadLeafletMap(element, view, callback);
   }
+
+  // update zoom every minute: it's a balance between trying to show
+  // everything all the time and not shifting the map around all the time
+  setInterval(function() { this._updateMapBounds() }.bind(this), 60000)
 }
 
 // Built-in icon options.
@@ -62,6 +66,8 @@ Map.prototype = {
     } else {
       throw "There's no place to put the marker yet";
     }
+
+    this._updateMapBounds(marker)
 
     // Return index of the marker as the ID
     return (this._markers.push(marker) - 1);
@@ -314,6 +320,27 @@ Map.prototype = {
     }
 
     awaitLeaflet(this, element, view, callback);
+  },
+
+  _updateMapBounds: function(newMarker) {
+    var maxAutoZoom = 17;
+    // make the bounds fit the markers, but don't zoom waaay in if there's only one
+    var markers = newMarker ? this._markers.concat(newMarker) : this._markers;
+    var map = this._gmap ? this._gmap : this._lmap;
+    if(this._gmap) {
+      var bounds = new google.maps.LatLngBounds();
+      for (var i = 0; i < markers.length; i++) {
+       bounds.extend(markers[i].getPosition());
+      }
+      this._gmap.fitBounds(bounds);
+    } else if(this._lmap) {
+      var group = new L.featureGroup(markers); // actual array push happens later
+      this._lmap.fitBounds(group.getBounds());
+    }
+    if (map) {
+      var currentZoom = map.getZoom();
+      if (currentZoom > maxAutoZoom) map.setZoom(maxAutoZoom);
+    }
   }
 
 };
