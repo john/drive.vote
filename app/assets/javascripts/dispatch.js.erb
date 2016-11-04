@@ -197,6 +197,10 @@ DispatchController.prototype = {
         last_msg_time = new Date(c.last_message_time * 1000),
         now = Date.now(),
         status = c.status;
+
+    if (status == 'help_needed')
+      return 'help_needed';
+
     if (ride !== undefined && ride !== null) {
       switch (ride.status) {
         case 'complete':
@@ -215,16 +219,18 @@ DispatchController.prototype = {
           if (now > desired_time - this.OVERDUE_ASSIGNMENT)
             return 'assignment_overdue';
           return 'waiting_assignment';
+        case 'waiting_acceptance':
+          return 'scheduled';
+        case 'scheduled':
+          if (now > desired_time)
+            return 'assignment_overdue';
+          return 'scheduled';
         default:
           return ride.status;
       }
     }
-    switch(status) {
-      case 'help_needed':
-        return 'help_needed';
-      case 'closed':
+    if (status == 'closed')
         return 'complete';
-    }
     if (c.message_count == 0 || now - last_msg_time > 20*60*1000)
       return 'help_needed';
     return 'messaging';
