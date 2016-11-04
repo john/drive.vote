@@ -42,15 +42,15 @@ class DispatchController < ApplicationController
     @sort = params[:sort]&.to_sym || :name
     @drivers = @ride_zone.drivers.order(@sort)
     if current_user.has_role?(:admin, @ride_zone) || current_user.has_role?(:admin)
-      @unassigned_drivers = @ride_zone.unassigned_drivers.order(@sort )
-      @nearby_drivers = @ride_zone.nearby_unassigned_drivers.order(@sort )
+      @unassigned_drivers = @ride_zone.unassigned_drivers.order(@sort)
+      @nearby_drivers = @ride_zone.nearby_unassigned_drivers.order(@sort)
     end
     respond_to do |format|
       format.html
       format.csv do
-        if has_zone_admin?
-          @all_drivers = @ride_zone.unassigned_drivers.merge( @ride_zone.drivers ).merge(@ride_zone.nearby_drivers)
-          send_data @all_drivers.to_csv(headers: true), filename: "drivers-#{Date.today}.csv"
+        if current_user.has_role?(:admin, @ride_zone) || current_user.has_role?(:admin)
+          all_drivers = @ride_zone.unassigned_drivers.or( @ride_zone.drivers ) #.merge(@ride_zone.nearby_unassigned_drivers)
+          send_data all_drivers.to_csv({headers: true}, @ride_zone.time_zone), filename: "drivers-#{Date.today}.csv"
         else
           redirect_to root_path
         end

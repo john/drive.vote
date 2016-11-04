@@ -101,14 +101,14 @@ class User < ApplicationRecord
     "#{phone_number} via sms"
   end
 
-  def self.to_csv(options = {})
+  def self.to_csv(options = {}, timezone = 'UTC')
     CSV.generate(options) do |csv|
       attributes = %w{name email phone_number_normalized created_at}
       csv << attributes
       all.sort{|a,b| a <=> b}.each do |driver|
         csv << attributes.map do |attr|
           if attr == 'created_at'
-            driver.send(attr).strftime("%Y-%m-%d %H:%M")
+            driver.send(attr).in_time_zone(timezone).strftime("%Y-%m-%d %H:%M:%S %z")
           else
             driver.send(attr)
           end

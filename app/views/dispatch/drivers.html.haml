@@ -79,7 +79,7 @@
             %td
               = tel_to  driver.phone_number.phony_formatted(normalize: :US, spaces: '-')
             %td.created_at
-              = driver.created_at.strftime("%-m/%-d %l:%M%P")
+              = driver.created_at.in_time_zone(@ride_zone.time_zone).strftime("%-m/%-d %l:%M%P")
             %td
               = link_to 'Approve', change_role_admin_ride_zone_path(@ride_zone, to_role: 'driver', driver: driver.id), method: :post
       - else
@@ -100,7 +100,7 @@
             %td
               = tel_to  driver.phone_number.phony_formatted(normalize: :US, spaces: '-')
             %td.created_at
-              = driver.created_at.strftime("%-m/%-d %l:%M%P")
+              = driver.created_at.in_time_zone(@ride_zone.time_zone).strftime("%-m/%-d %l:%M%P")
             %td
               = link_to 'Approve', change_role_admin_ride_zone_path(@ride_zone, to_role: 'driver', driver: driver.id), method: :post
 
