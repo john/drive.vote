@@ -226,7 +226,7 @@ DispatchController.prototype = {
         return 'complete';
     }
     if (c.message_count == 0 || now - last_msg_time > 20*60*1000)
-      return 'help_needed'
+      return 'help_needed';
     return 'messaging';
   },
 
@@ -300,6 +300,7 @@ DispatchController.prototype = {
         existing = $('#' + rowId),
         targetTable = this.tableForStatus(status),
         cells = this.conversationCells(c, status),
+        addLastFromVoter = (status == 'help_needed' && c.last_message_sent_by == 'Voter'),
         ride_id = (c.ride !== undefined) ? c.ride.id : 0;
 
     if (targetTable !== undefined) {
@@ -308,10 +309,14 @@ DispatchController.prototype = {
         existing.html(cells);
         existing.data('ride-id', ride_id);
         existing.data('objref', c);
+        if (addLastFromVoter)
+          existing.addClass('conv-last-voter');
+        else
+          existing.removeClass('conv-last-voter');
         this.setRowStatus(existing, status);
         this.insertIntoTable(existing, targetTable);
       } else {
-        var classes = "conv-row conv-status-" + status,
+        var classes = "conv-row conv-status-" + status + (addLastFromVoter ? ' conv-last-voter' : ''),
             rowHtml = '<tr id="' + rowId + '" data-ride-id="' + ride_id + '" class="' + classes + '" data-cid="' + c.id + '">' + cells + '</tr>',
             newRow = $(rowHtml);
         newRow.data('objref', c);
