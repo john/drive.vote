@@ -18,6 +18,10 @@ RSpec.describe DispatchController, type: :routing do
       expect(get: '/dispatch/1/drivers').to route_to('dispatch#drivers', id: '1')
     end
 
+    it 'routes to #drivers.csv' do
+      expect(get: '/dispatch/1/drivers.csv').to route_to('dispatch#drivers', id: '1', format: 'csv')
+    end
+
     it 'routes to #map' do
       expect(get: '/dispatch/1/map').to route_to('dispatch#map', id: '1')
     end
