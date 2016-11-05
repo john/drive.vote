@@ -18,10 +18,10 @@ function Map(element, callback, args)
 
   // Reference to the out of bounds message element and button
   this._outOfBoundsMessageEl = document.getElementById('out-of-bounds-message');
-  this._showAllButton = document.getElementById('show-all-pins')
+  this._mapControls = document.getElementById('dispatch-map-controls');
 
   var self = this;
-  this._showAllButton.addEventListener('click', function() {
+  document.getElementById('show-all-pins').addEventListener('click', function() {
     self._updateMapBoundsIfNeeded()
   })
 
@@ -366,7 +366,7 @@ Map.prototype = {
     if (outOfBoundsCount > 0) {
        message = outOfBoundsCount + ' not visible';
     }
-    this._showAllButton.style.display = (outOfBoundsCount > 0) ? 'inline' : 'none';
+    this._mapControls.style.display = (outOfBoundsCount > 0) ? 'block' : 'none';
     this._outOfBoundsMessageEl.textContent = message;
   },
 
