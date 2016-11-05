@@ -10,9 +10,7 @@ class RidesController < ApplicationController
   def new
     @locale = params[:locale]
     @ride = Ride.new
-
-    @user_agent = UserAgent.parse(request.env['HTTP_USER_AGENT'])
-    @ios = @user_agent.platform&.downcase == 'iphone' || @user_agent.platform&.downcase == 'ipad'
+    @ride.pickup_at = Time.zone.parse('2016-11-08 07:00')
   end
 
   def create
