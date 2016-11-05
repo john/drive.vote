@@ -383,13 +383,21 @@ Map.prototype = {
       var map = this._gmap ? this._gmap : this._lmap;
       if(this._gmap) {
         var bounds = new google.maps.LatLngBounds();
-        for (var i = 0; i < this._markers.length; i++) {
-         bounds.extend(this._markers[i].getPosition());
+        if (bounds) {
+          for (var i = 0; i < this._markers.length; i++) {
+            var marker = this._markers[i];
+            if (marker) {
+              bounds.extend(marker.getPosition());
+            }
+          }
+          this._gmap.fitBounds(bounds);
         }
-        this._gmap.fitBounds(bounds);
       } else if(this._lmap) {
         var group = new L.featureGroup(this._markers);
-        this._lmap.fitBounds(group.getBounds());
+        var bounds = group.getBounds();
+        if (bounds) {
+          this._lmap.fitBounds(bounds);
+        }
       }
       if (map) {
         var currentZoom = map.getZoom();
