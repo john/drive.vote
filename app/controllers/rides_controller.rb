@@ -18,6 +18,8 @@ class RidesController < ApplicationController
   def create
     @locale = params[:locale] || :en
 
+    @ride = Ride.new(ride_params)
+
     # check for existing voter
     normalized = PhonyRails.normalize_number(params[:ride][:phone_number], default_country_code: 'US')
     @user = User.find_by_id(params[:user_id]) if params[:user_id]
@@ -26,14 +28,12 @@ class RidesController < ApplicationController
     if @user
       existing = @user.open_ride
       if existing
-        # after sign-in voters are redirected to edit their existing open ride
-        # flash[:notice] = t(:sign_in_to_edit)
-        flash[:notice] = "Sorry that number or email is already in the system. Contact hello@drive.vote if you need help."
-        redirect_to "/users/sign_in?locale=#{locale}" and return
+        scheduled = existing.pickup_in_time_zone.strftime('%m/%d %l:%M %P %Z')
+        @user.errors.add(:name, "match for voter #{@user.name} (#{@user.email}/#{@user.phone_number}) that already has an active ride scheduled for #{scheduled}")
+        render :new and return
       end
     end
 
-    @ride = Ride.new(ride_params)
 
     if @ride.pickup_at.blank?
       flash[:notice] = "Please fill in scheduled date and time."
