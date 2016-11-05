@@ -74,7 +74,7 @@ class User < ApplicationRecord
   scope :nearby_ride_zone, ->(rz) { near(rz.zip, GEO_NEARBY_DISTANCE) }
 
   def self.autogenerate_email
-    "#{Time.now.to_f}@example.com"
+    "#{Time.now.to_f}_#{rand(5 ** 10).to_s.rjust(5,'0')}@example.com"
   end
 
   def self.voters
