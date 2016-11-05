@@ -13,6 +13,18 @@ function Map(element, callback, args)
   // List of map markers.
   this._markers = [];
 
+  // Keep track of the number of markers that are off the map
+  this._outOfBoundsCount = 0;
+
+  // Reference to the out of bounds message element and button
+  this._outOfBoundsMessageEl = document.getElementById('out-of-bounds-message');
+  this._mapControls = document.getElementById('dispatch-map-controls');
+
+  var self = this;
+  document.getElementById('show-all-pins').addEventListener('click', function() {
+    self._updateMapBoundsIfNeeded()
+  })
+
   var view = {
     lat: (args && args.lat || 37.77073),
     lon: (args && args.lon || -122.43020),
@@ -64,7 +76,9 @@ Map.prototype = {
     }
 
     // Return index of the marker as the ID
-    return (this._markers.push(marker) - 1);
+    var id = this._markers.push(marker) - 1;
+    this._checkMarkerBounds()
+    return id;
   },
 
   // Update an existing marker with an optional text-only popup.
@@ -83,6 +97,7 @@ Map.prototype = {
     } else if(marker) {
       throw "There's no place to update the marker yet";
     }
+    this._checkMarkerBounds()
   },
 
   // Remove an existing marker
@@ -96,6 +111,7 @@ Map.prototype = {
     // todo: leaflet remove
 
     this._markers[id] = null;
+    this._checkMarkerBounds()
   },
 
   visibleMarker: function(id, visible)
@@ -234,6 +250,7 @@ Map.prototype = {
 
   _loadGoogleMap: function(element, view, callback, api_key)
   {
+    var self = this;
     if(!window.google || !window.google.maps.Map)
     {
       // Include script for Google Maps, see:
@@ -262,6 +279,10 @@ Map.prototype = {
       };
 
       map._gmap = new google.maps.Map(element, opts);
+      // after pan and/or zoom, check bounds again
+      google.maps.event.addListener(map._gmap, 'idle', function() {
+        self._checkMarkerBounds()
+      });
       callback(map);
     }
 
@@ -270,6 +291,7 @@ Map.prototype = {
 
   _loadLeafletMap: function(element, view, callback)
   {
+    var self = this;
     if(!window.L || !window.L.map)
     {
       // Include script and stylesheets for Leaflet, see:
@@ -310,10 +332,64 @@ Map.prototype = {
         maxZoom: 18
       }).addTo(map._lmap);
 
+      // after pan and/or zoom, check bounds again
+      map._lmap.on('moveend', function() {
+        self._checkMarkerBounds()
+      });
+
       callback(map);
     }
 
     awaitLeaflet(this, element, view, callback);
+  },
+
+  _checkMarkerBounds: function() {
+    var map = this._gmap ? this._gmap : this._lmap;
+    var outOfBoundsCount = 0;
+    if(this._gmap) {
+      var bounds = this._gmap.getBounds();
+      for (var i = 0; i < this._markers.length; i++) {
+        if (!bounds.contains(this._markers[i].getPosition())) outOfBoundsCount++;
+      }
+    } else if(this._lmap) {
+      var bounds = this._lmap.getBounds()
+      for (var i = 0; i < this._markers.length; i++) {
+        var marker = this._markers[i];
+        // check to see if we have one, since remove just sets it to null
+        if (marker) {
+          if (!bounds.contains(marker.getLatLng())) outOfBoundsCount++;
+        }
+      }
+    }
+    this._outOfBoundsCount = outOfBoundsCount;
+    var message = '';
+    if (outOfBoundsCount > 0) {
+       message = outOfBoundsCount + ' out of view';
+    }
+    this._mapControls.style.display = (outOfBoundsCount > 0) ? 'block' : 'none';
+    this._outOfBoundsMessageEl.textContent = message;
+  },
+
+  _updateMapBoundsIfNeeded: function() {
+    if (this._outOfBoundsCount > 0) {
+      var maxAutoZoom = 17;
+      var map = this._gmap ? this._gmap : this._lmap;
+      if(this._gmap) {
+        var bounds = new google.maps.LatLngBounds();
+        for (var i = 0; i < this._markers.length; i++) {
+         bounds.extend(this._markers[i].getPosition());
+        }
+        this._gmap.fitBounds(bounds);
+      } else if(this._lmap) {
+        var group = new L.featureGroup(this._markers);
+        this._lmap.fitBounds(group.getBounds());
+      }
+      if (map) {
+        var currentZoom = map.getZoom();
+        if (currentZoom > maxAutoZoom) map.setZoom(maxAutoZoom);
+        else map.setZoom(currentZoom-1) // zoom out one step for bounds padding
+      }
+    }
   }
 
 };
