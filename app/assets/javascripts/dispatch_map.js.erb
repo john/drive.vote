@@ -13,6 +13,18 @@ function Map(element, callback, args)
   // List of map markers.
   this._markers = [];
 
+  // Keep track of the number of markers that are off the map
+  this._outOfBoundsCount = 0;
+
+  // Reference to the out of bounds message element and button
+  this._outOfBoundsMessageEl = document.getElementById('out-of-bounds-message');
+  this._showAllButton = document.getElementById('show-all-pins')
+
+  var self = this;
+  this._showAllButton.addEventListener('click', function() {
+    self._updateMapBoundsIfNeeded()
+  })
+
   var view = {
     lat: (args && args.lat || 37.77073),
     lon: (args && args.lon || -122.43020),
@@ -25,10 +37,6 @@ function Map(element, callback, args)
   } else {
     this._loadLeafletMap(element, view, callback);
   }
-
-  // update zoom every minute: it's a balance between trying to show
-  // everything all the time and not shifting the map around all the time
-  setInterval(function() { this._updateMapBounds() }.bind(this), 60000)
 }
 
 // Built-in icon options.
@@ -67,10 +75,10 @@ Map.prototype = {
       throw "There's no place to put the marker yet";
     }
 
-    this._updateMapBounds(marker)
-
     // Return index of the marker as the ID
-    return (this._markers.push(marker) - 1);
+    var id = this._markers.push(marker) - 1;
+    this._checkMarkerBounds()
+    return id;
   },
 
   // Update an existing marker with an optional text-only popup.
@@ -89,6 +97,7 @@ Map.prototype = {
     } else if(marker) {
       throw "There's no place to update the marker yet";
     }
+    this._checkMarkerBounds()
   },
 
   // Remove an existing marker
@@ -102,6 +111,7 @@ Map.prototype = {
     // todo: leaflet remove
 
     this._markers[id] = null;
+    this._checkMarkerBounds()
   },
 
   visibleMarker: function(id, visible)
@@ -240,6 +250,7 @@ Map.prototype = {
 
   _loadGoogleMap: function(element, view, callback, api_key)
   {
+    var self = this;
     if(!window.google || !window.google.maps.Map)
     {
       // Include script for Google Maps, see:
@@ -268,6 +279,10 @@ Map.prototype = {
       };
 
       map._gmap = new google.maps.Map(element, opts);
+      // after pan and/or zoom, check bounds again
+      google.maps.event.addListener(map._gmap, 'idle', function() {
+        self._checkMarkerBounds()
+      });
       callback(map);
     }
 
@@ -276,6 +291,7 @@ Map.prototype = {
 
   _loadLeafletMap: function(element, view, callback)
   {
+    var self = this;
     if(!window.L || !window.L.map)
     {
       // Include script and stylesheets for Leaflet, see:
@@ -316,30 +332,63 @@ Map.prototype = {
         maxZoom: 18
       }).addTo(map._lmap);
 
+      // after pan and/or zoom, check bounds again
+      map._lmap.on('moveend', function() {
+        self._checkMarkerBounds()
+      });
+
       callback(map);
     }
 
     awaitLeaflet(this, element, view, callback);
   },
 
-  _updateMapBounds: function(newMarker) {
-    var maxAutoZoom = 17;
-    // make the bounds fit the markers, but don't zoom waaay in if there's only one
-    var markers = newMarker ? this._markers.concat(newMarker) : this._markers;
+  _checkMarkerBounds: function() {
     var map = this._gmap ? this._gmap : this._lmap;
+    var outOfBoundsCount = 0;
     if(this._gmap) {
-      var bounds = new google.maps.LatLngBounds();
-      for (var i = 0; i < markers.length; i++) {
-       bounds.extend(markers[i].getPosition());
+      var bounds = this._gmap.getBounds();
+      for (var i = 0; i < this._markers.length; i++) {
+        if (!bounds.contains(this._markers[i].getPosition())) outOfBoundsCount++;
       }
-      this._gmap.fitBounds(bounds);
     } else if(this._lmap) {
-      var group = new L.featureGroup(markers); // actual array push happens later
-      this._lmap.fitBounds(group.getBounds());
+      var bounds = this._lmap.getBounds()
+      for (var i = 0; i < this._markers.length; i++) {
+        var marker = this._markers[i];
+        // check to see if we have one, since remove just sets it to null
+        if (marker) {
+          if (!bounds.contains(marker.getLatLng())) outOfBoundsCount++;
+        }
+      }
     }
-    if (map) {
-      var currentZoom = map.getZoom();
-      if (currentZoom > maxAutoZoom) map.setZoom(maxAutoZoom);
+    this._outOfBoundsCount = outOfBoundsCount;
+    var message = '';
+    if (outOfBoundsCount > 0) {
+       message = outOfBoundsCount + ' not visible';
+    }
+    this._showAllButton.style.display = (outOfBoundsCount > 0) ? 'inline' : 'none';
+    this._outOfBoundsMessageEl.textContent = message;
+  },
+
+  _updateMapBoundsIfNeeded: function() {
+    if (this._outOfBoundsCount > 0) {
+      var maxAutoZoom = 17;
+      var map = this._gmap ? this._gmap : this._lmap;
+      if(this._gmap) {
+        var bounds = new google.maps.LatLngBounds();
+        for (var i = 0; i < this._markers.length; i++) {
+         bounds.extend(this._markers[i].getPosition());
+        }
+        this._gmap.fitBounds(bounds);
+      } else if(this._lmap) {
+        var group = new L.featureGroup(this._markers);
+        this._lmap.fitBounds(group.getBounds());
+      }
+      if (map) {
+        var currentZoom = map.getZoom();
+        if (currentZoom > maxAutoZoom) map.setZoom(maxAutoZoom);
+        else map.setZoom(currentZoom-1) // zoom out one step for bounds padding
+      }
     }
   }
 

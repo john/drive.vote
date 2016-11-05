@@ -65,6 +65,14 @@
   .col-md-5{style: 'margin-top: 15px;'}
     #dispatch-map
 
+    #dispatch-map-controls
+      %span
+        %button.btn.btn-info#show-all-pins{style: 'display:none'}
+          Show all pins
+
+      %span#out-of-bounds-message
+
+
     .pull-left
       %table.key{style: 'margin-bottom: 30px;;'}
         %tr
@@ -143,4 +151,3 @@
       $('html,body').scrollTop(scrollmem);
     });
   });
-
