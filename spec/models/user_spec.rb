@@ -128,7 +128,7 @@ RSpec.describe User, :type => :model do
       end
 
       it 'is not valid if zipcode not in supported state' do
-        user.zip = 90026 # zip not in state on approved list
+        user.zip = '04101' # zip not in state on approved list
         expect(user).to_not be_valid
         expect(user.errors[:zip]).to include('isn\'t in a supported state.')
       end
@@ -227,7 +227,7 @@ RSpec.describe User, :type => :model do
   end
 
   it 'is invalid with a non-permissible zip' do
-   expect( build(:user, zip: '94118') ).to_not be_valid
+   expect( build(:user, zip: '04101') ).to_not be_valid
   end
 
   it 'returns driver ride zone' do

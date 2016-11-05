@@ -10,6 +10,9 @@ class RidesController < ApplicationController
   def new
     @locale = params[:locale]
     @ride = Ride.new
+
+    @user_agent = UserAgent.parse(request.env['HTTP_USER_AGENT'])
+    @ios = @user_agent.platform&.downcase == 'iphone' || @user_agent.platform&.downcase == 'ipad'
   end
 
   def create
@@ -30,8 +33,6 @@ class RidesController < ApplicationController
       end
     end
 
-    # create user if not found
-    # rp = ride_params
     @ride = Ride.new(ride_params)
 
     if @ride.pickup_at.blank?
@@ -82,7 +83,6 @@ class RidesController < ApplicationController
       render :success
     else
       flash[:notice] = "Problem creating a ride."
-      # redirect_back(fallback_location: root_path) and return
       render :new and return
     end
   end
