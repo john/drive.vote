@@ -33,16 +33,16 @@ class TwilioService
 
   # sends an SMS message with specified data and waits up to timeout seconds
   # for the status to become 'delivered' or have a non-nil error_code
-  # returns the Twilio message object
+  # returns the Twilio message object unless there is a hard error from twilio
+  # that raises
   def self.send_message(args, timeout)
     raise 'Do not call Twilio in test' if Rails.env.test?
-    sms = nil
 
-    Timeout::timeout(timeout) do
-      sms = twilio_client.messages.create(args)
-      while sms.error_code.nil? && sms.status.to_s != 'delivered'
+    end_time = timeout.seconds.from_now
+    sms = twilio_client.messages.create(args)
+    while sms.error_code.nil? && sms.status.to_s != 'delivered' && Time.now <= end_time
+        sleep(0.5)
         sms.refresh
-      end
     end
     sms
   end

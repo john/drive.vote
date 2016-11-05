@@ -134,13 +134,13 @@ class Conversation < ApplicationRecord
       logger.error "TWILIO ERROR #{e.message} User id #{user.id} Message #{body}"
       return "Twilio error #{e.message}"
     end
-    logger.info "TWILIO sent staff sms to #{user.phone_number} from #{ride_zone.phone_number_normalized}: #{body} code: #{sms.error_code} status: #{sms.status}"
+    info = "user_id: #{user.id} to: #{user.phone_number} from: #{ride_zone.phone_number_normalized}: '#{body}'"
+    logger.info "TWILIO sent staff sms #{info} code: #{sms.error_code} status: #{sms.status}"
     if sms.error_code
-      logger.error "TWILIO ERROR #{sms.error_code} User id #{user.id} Message #{body}"
+      logger.error "TWILIO ERROR #{sms.error_code} #{info}"
       return "Communication error #{sms.error_code}"
     elsif sms.status.to_s != 'delivered'
-      logger.error "TWILIO ERROR Timeout User id #{user.id} Message #{body}"
-      return 'Timeout in delivery'
+      logger.error "TWILIO note timeout #{info}"
     end
     sms
   end
