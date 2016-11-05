@@ -348,16 +348,23 @@ Map.prototype = {
     var outOfBoundsCount = 0;
     if(this._gmap) {
       var bounds = this._gmap.getBounds();
-      for (var i = 0; i < this._markers.length; i++) {
-        if (!bounds.contains(this._markers[i].getPosition())) outOfBoundsCount++;
+      if (bounds) {
+        for (var i = 0; i < this._markers.length; i++) {
+          var marker = this._markers[i];
+          if (marker) {
+            if (!bounds.contains(marker.getPosition())) outOfBoundsCount++;
+          }
+        }
       }
     } else if(this._lmap) {
       var bounds = this._lmap.getBounds()
-      for (var i = 0; i < this._markers.length; i++) {
-        var marker = this._markers[i];
-        // check to see if we have one, since remove just sets it to null
-        if (marker) {
-          if (!bounds.contains(marker.getLatLng())) outOfBoundsCount++;
+      if (bounds) {
+        for (var i = 0; i < this._markers.length; i++) {
+          var marker = this._markers[i];
+          // check to see if we have one, since remove just sets it to null
+          if (marker) {
+            if (!bounds.contains(marker.getLatLng())) outOfBoundsCount++;
+          }
         }
       }
     }
@@ -376,13 +383,21 @@ Map.prototype = {
       var map = this._gmap ? this._gmap : this._lmap;
       if(this._gmap) {
         var bounds = new google.maps.LatLngBounds();
-        for (var i = 0; i < this._markers.length; i++) {
-         bounds.extend(this._markers[i].getPosition());
+        if (bounds) {
+          for (var i = 0; i < this._markers.length; i++) {
+            var marker = this._markers[i];
+            if (marker) {
+              bounds.extend(marker.getPosition());
+            }
+          }
+          this._gmap.fitBounds(bounds);
         }
-        this._gmap.fitBounds(bounds);
       } else if(this._lmap) {
         var group = new L.featureGroup(this._markers);
-        this._lmap.fitBounds(group.getBounds());
+        var bounds = group.getBounds();
+        if (bounds) {
+          this._lmap.fitBounds(bounds);
+        }
       }
       if (map) {
         var currentZoom = map.getZoom();
