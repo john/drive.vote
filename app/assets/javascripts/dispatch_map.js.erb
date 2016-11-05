@@ -364,7 +364,7 @@ Map.prototype = {
     this._outOfBoundsCount = outOfBoundsCount;
     var message = '';
     if (outOfBoundsCount > 0) {
-       message = outOfBoundsCount + ' not visible';
+       message = outOfBoundsCount + ' out of view';
     }
     this._mapControls.style.display = (outOfBoundsCount > 0) ? 'block' : 'none';
     this._outOfBoundsMessageEl.textContent = message;
