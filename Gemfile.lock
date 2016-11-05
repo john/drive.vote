@@ -298,7 +298,6 @@ GEM
     uglifier (3.0.2)
       execjs (>= 0.3.0, < 3)
     underscore-rails (1.8.3)
-    useragent (0.16.8)
     vcr (3.0.3)
     warden (1.2.6)
       rack (>= 1.0)
@@ -372,7 +371,6 @@ DEPENDENCIES
   twilio-ruby
   uglifier (>= 1.3.0)
   underscore-rails
-  useragent
   vcr (~> 3.0.3)
   watir
   web-console
