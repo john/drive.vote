@@ -10,6 +10,7 @@ function driverState(state = {
     switch (action.type) {
         case 'REQUEST_STATUS':
         case 'REQUEST_TOGGLE':
+        case 'REQUEST_RIDES':
             return Object.assign({}, state, {
                 isFetching: true,
             })

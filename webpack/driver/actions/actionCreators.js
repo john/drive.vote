@@ -80,6 +80,12 @@ export function driverAvailable() {
     }
 }
 
+export function requestRides() {
+    return {
+        type: 'REQUEST_RIDES',
+    }
+}
+
 export function receveWaitingRides(rides) {
     return {
         type: 'RECEIVE_RIDES',
@@ -235,7 +241,7 @@ export function fetchWaitingRides(location) {
         url += `?latitude=${location.latitude}&longitude=${location.longitude}`;
     }
     return function(dispatch) {
-        dispatch(requestStatus())
+        dispatch(requestRides())
         fetch(`${api}${url}`, {
                 credentials: 'include',
             })
