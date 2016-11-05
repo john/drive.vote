@@ -80,8 +80,6 @@ RSpec.describe User, :type => :model do
     it { should allow_value('lost of-fun & your ЖжДдѮѯ💩  jr.').for(:name)}
     it { should_not allow_value('Erin Germ">\'><img src=x onerror=alert(/v-name/)>r').for(:name)}
     it { should_not allow_value('fun"').for(:name)}
-    it { should_not allow_value('fun<').for(:name)}
-    it { should_not allow_value('fun>').for(:name)}
     it { should_not allow_value('fun@').for(:name)}
     it { should_not allow_value('fun
                                 ').for(:name)}
