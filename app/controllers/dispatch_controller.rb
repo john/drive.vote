@@ -3,6 +3,7 @@ class DispatchController < ApplicationController
   include AccessMethods
 
   before_action :set_ride_zone, except: [:messages, :ride_pane]
+  before_action :set_conversation, only: [:messages, :ride_pane]
   before_action :require_zone_dispatch
   before_action :get_driver_count, except: [:messages, :ride_pane]
 
@@ -11,12 +12,10 @@ class DispatchController < ApplicationController
   end
 
   def messages
-    @conversation = Conversation.find(params[:id])
     render partial: 'messages'
   end
 
   def ride_pane
-    @conversation = Conversation.find(params[:id])
     ride = @conversation.ride
     @zone_driver_count = @conversation.ride_zone.drivers.count
     @available_drivers = @conversation.ride_zone.available_drivers
@@ -79,4 +78,8 @@ class DispatchController < ApplicationController
     @driver_count = @ride_zone.drivers.count(:all)
   end
 
+  def set_conversation
+    @conversation = Conversation.find(params[:id])
+    @ride_zone = @conversation.ride_zone
+  end
 end
