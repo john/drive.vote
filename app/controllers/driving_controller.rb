@@ -6,7 +6,7 @@ class DrivingController < ApplicationController
 
   skip_before_action :verify_authenticity_token
 
-  RIDES_LIMIT = 3
+  RIDES_LIMIT = 10
 
   def index
     unless current_user && current_user.is_driver?
