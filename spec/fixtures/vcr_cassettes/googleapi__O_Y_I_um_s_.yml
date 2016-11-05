@@ -1,0 +1,214 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://maps.googleapis.com/maps/api/geocode/json?address=,%20,%20Carnegie,%20PA,%2010011,%20&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 05 Nov 2016 05:57:21 GMT
+      Expires:
+      - Sun, 06 Nov 2016 05:57:21 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '946'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "10011",
+                       "short_name" : "10011",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Carnegie Street",
+                       "short_name" : "Carnegie St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Lawrenceville",
+                       "short_name" : "Lawrenceville",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "Pittsburgh",
+                       "short_name" : "Pittsburgh",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Allegheny County",
+                       "short_name" : "Allegheny County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "15201",
+                       "short_name" : "15201",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "2328",
+                       "short_name" : "2328",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "10011 Carnegie St, Pittsburgh, PA 15201, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.4846088,
+                          "lng" : -79.94567579999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.4845964,
+                          "lng" : -79.9456852
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4846088,
+                       "lng" : -79.9456852
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.48595158029151,
+                          "lng" : -79.94433151970848
+                       },
+                       "southwest" : {
+                          "lat" : 40.48325361970851,
+                          "lng" : -79.9470294802915
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "EiwxMDAxMSBDYXJuZWdpZSBTdCwgUGl0dHNidXJnaCwgUEEgMTUyMDEsIFVTQQ",
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Carnegie Hall",
+                       "short_name" : "Carnegie Hall",
+                       "types" : [ "premise" ]
+                    },
+                    {
+                       "long_name" : "152",
+                       "short_name" : "152",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "West 57th Street",
+                       "short_name" : "W 57th St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Midtown",
+                       "short_name" : "Midtown",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "Manhattan",
+                       "short_name" : "Manhattan",
+                       "types" : [ "political", "sublocality", "sublocality_level_1" ]
+                    },
+                    {
+                       "long_name" : "New York",
+                       "short_name" : "New York",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "New York County",
+                       "short_name" : "New York County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "New York",
+                       "short_name" : "NY",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "10019",
+                       "short_name" : "10019",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Carnegie Hall, 152 W 57th St, New York, NY 10019, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.7653927,
+                          "lng" : -73.9793454
+                       },
+                       "southwest" : {
+                          "lat" : 40.7646154,
+                          "lng" : -73.9803553
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.765004,
+                       "lng" : -73.9798504
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.7663530302915,
+                          "lng" : -73.9785013697085
+                       },
+                       "southwest" : {
+                          "lat" : 40.7636550697085,
+                          "lng" : -73.9811993302915
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "ChIJXRAwePdYwokRVbauL6rA8iY",
+                 "types" : [ "premise" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 05 Nov 2016 05:57:20 GMT
+recorded_with: VCR 3.0.3

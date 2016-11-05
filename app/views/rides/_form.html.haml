@@ -41,7 +41,10 @@
   .col-sm-8.field
     = f.label t(:what_time_pickup)
     %p#pickupdaytime
-      %input{type: 'text', class: 'flatpickr', 'data-default-date': @pickup_at, 'data-date-format': "F j, h:iK", 'data-enable-time': true, name: "ride[pickup_at]", id: "ride_name"}
+      - if @ios
+        = datetime_select :ride, :pickup_at, {discard_year: true, use_short_month: true, ampm: true}
+      - else
+        %input{type: 'text', class: 'flatpickr', 'data-default-date': @pickup_at, 'data-date-format': "F j, h:iK", 'data-enable-time': true, name: "ride[pickup_at]", id: "ride_pickup_at"}
 
   .col-sm-8.field
     = f.label t(:how_many_additional)
