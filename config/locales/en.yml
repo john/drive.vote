@@ -127,6 +127,7 @@ en:
   thanks_wait_for_driver: 'Thank you! We have your info and will contact you when we find a driver for you.'
   thanks_for_using: 'Thanks for trying Drive the Vote'
   confirm_ride: 'Your Drive the Vote ride is scheduled for %{time}. Reply 1 to confirm, 2 to reschedule, 3 to cancel, 4 to speak to someone'
+  ride_not_confirmed: 'Sorry we did not hear from you. Someone will contact you.'
 
   # voter form
   schedule_ride: 'Schedule a free ride'
