@@ -165,8 +165,8 @@ label {
 
 .bottom-controls .btn {
     display: block;
-    width: 90%;
-    margin: 0 auto;
+    width: calc(90% - 37px);
+    float: left;
 }
 
 .bottom-controls .btn:nth-child(2) {
