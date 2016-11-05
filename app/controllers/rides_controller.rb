@@ -14,7 +14,11 @@ class RidesController < ApplicationController
   end
 
   def create
-    @locale = params[:locale] || :en
+    if params[:locale].present?
+      @locale = params[:locale]
+    else
+      @locale = :en
+    end
 
     # check for existing voter
     normalized = PhonyRails.normalize_number(params[:ride][:phone_number], default_country_code: 'US')
@@ -52,7 +56,7 @@ class RidesController < ApplicationController
           phone_number: user_params[:phone_number],
           ride_zone: @ride_zone,
           ride_zone_id: @ride_zone.id,
-          email: user_params[:email],
+          email: user_params[:email] || User.autogenerate_email,
           password: user_params[:password] || SecureRandom.hex(8),
           city: @ride.from_city,
           state: @ride.from_state,
