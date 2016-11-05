@@ -25,6 +25,8 @@ class ApplicationController < ActionController::Base
     elsif resource.is_zone_admin?
       # with that with_user_in_role work on a specific RZ? Verify
       dispatch_path( RideZone.with_user_in_role(current_user, :admin).first.slug)
+    elsif resource.is_driver?
+      driving_index_path
     else
       root_path
     end
