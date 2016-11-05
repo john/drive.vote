@@ -12,9 +12,7 @@ class RidesController < ApplicationController
     @ride = Ride.new
 
     @user_agent = UserAgent.parse(request.env['HTTP_USER_AGENT'])
-    if @user_agent.platform&.downcase == 'iphone' || @user_agent.platform&.downcase == 'ipad'
-      @ios = true
-    end
+    @ios = @user_agent.platform&.downcase == 'iphone' || @user_agent.platform&.downcase == 'ipad'
   end
 
   def create
