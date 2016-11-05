@@ -72,6 +72,13 @@
           %td.key-label     Voter needs a driver
           %td.key-pin-cell= image_tag "driver-waiting-assignment.png", class: 'key-pin-img'
           %td.key-label     Available driver
+          %td{rowspan: 3, style: 'text-align: center'}
+            #dispatch-map-controls{style: 'margin-bottom: 1em; display:none'}
+              %button.btn.btn-info.btn-sm#show-all-pins
+                Show all pins
+              %br
+              %span#out-of-bounds-message{style: 'color: #666; font-size: 13px;'}
+
         %tr
           %td.key-pin-cell= image_tag "rider-overdue-assignment.png", class: 'key-pin-img'
           %td.key-label     Voter overdue assignment
@@ -143,4 +150,3 @@
       $('html,body').scrollTop(scrollmem);
     });
   });
-
