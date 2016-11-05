@@ -91,7 +91,7 @@
                 Select driver:
               - @available_drivers_with_distance.each do |driver|
                 %option{value: driver[0].id}
-                  #{driver[0].name} (#{driver[1].round(1)} miles)
+                  (#{driver[1].round(1)} mi) #{driver[0].name}
 
           - else
             %i

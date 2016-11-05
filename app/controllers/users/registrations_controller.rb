@@ -8,6 +8,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
     resource = build_resource({})
 
     if request.path.include?('volunteer')
+
+      if params[:id]&.downcase == 'philadelphia'
+        flash[:notice] = 'Sorry, no longer accepting volunteers at that location.'
+        redirect_to root_path and return
+      end
+
       @volunteer = true
       resource.user_type = 'unassigned_driver'
     end
