@@ -45,6 +45,24 @@ RSpec.describe DispatchController, :type => :controller do
         expect(assigns(:conversation)).to eq(convo)
       end
     end
+
+    context 'as zone admin' do
+      login_rz_admin
+
+      it 'assigns the requested conversation as @conversation' do
+        get :messages, params: {id: convo.to_param}
+        expect(assigns(:conversation)).to eq(convo)
+      end
+    end
+
+    context 'as dispatcher' do
+      login_dispatcher
+
+      it 'assigns the requested conversation as @conversation' do
+        get :messages, params: {id: convo.to_param}
+        expect(assigns(:conversation)).to eq(convo)
+      end
+    end
   end
 
   describe 'GET #ride_pane' do
@@ -92,6 +110,24 @@ RSpec.describe DispatchController, :type => :controller do
           expect(assigns(:available_drivers_with_distance)[1][0].id).to eq(d3.id)
           expect(assigns(:available_drivers_with_distance)[2][0].id).to eq(d1.id)
         end
+      end
+    end
+
+    context 'as zone admin' do
+      login_rz_admin
+
+      it 'assigns the requested conversation as @conversation' do
+        get :ride_pane, params: {id: convo.to_param}
+        expect(assigns(:conversation)).to eq(convo)
+      end
+    end
+
+    context 'as dispatcher' do
+      login_dispatcher
+
+      it 'assigns the requested conversation as @conversation' do
+        get :ride_pane, params: {id: convo.to_param}
+        expect(assigns(:conversation)).to eq(convo)
       end
     end
   end
