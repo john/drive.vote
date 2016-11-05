@@ -53,6 +53,7 @@ class User < ApplicationRecord
   phony_normalize :phone_number, as: :phone_number_normalized, default_country_code: 'US'
 
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+  validates_format_of :name, with: /\A[^"@\n]*\z/
   validates :phone_number_normalized, phony_plausible: true
   validate :permissible_user_type
   validate :permissible_zip, if: -> (obj) { obj.zip_changed? || obj.new_record? }
@@ -249,6 +250,10 @@ class User < ApplicationRecord
 
   def missing_required_fields?
     !has_required_fields?
+  end
+
+  def email_with_name
+    %("#{name}" <#{email}>)
   end
 
 

@@ -21,31 +21,27 @@ class UserMailer < ApplicationMailer
     @user = user
     @ride_zone = ride_zone
 
-    email_with_name = %("#{@user.name}" <#{@user.email}>)
-    mail(to: email_with_name, subject: 'Thank you for volunteering to Drive the Vote!')
+    mail(to: @user.email_with_name, subject: 'Thank you for volunteering to Drive the Vote!')
   end
 
   def welcome_email_voter(user)
     sendgrid_category "welcome_voter"
     @user = user
 
-    email_with_name = %("#{@user.name}" <#{@user.email}>)
-    mail(to: email_with_name, subject: 'Welcome to Drive the Vote, Voter!')
+    mail(to: @user.email_with_name, subject: 'Welcome to Drive the Vote, Voter!')
   end
 
   def welcome_email_voter_ride(user, ride)
     sendgrid_category "welcome_voter_ride"
     @user = user
     @ride = ride
-    email_with_name = %("#{@user.name}" <#{@user.email}>)
-    mail(to: email_with_name, subject: 'Welcome to Drive the Vote!')
+    mail(to: @user.email_with_name, subject: 'Welcome to Drive the Vote!')
   end
 
   def welcome_email_not_inlined(user)
     sendgrid_category "welcome_not_inlined"
     @user = user
 
-    email_with_name = %("#{@user.name}" <#{@user.email}>)
-    mail(to: email_with_name, subject: 'Welcome to Drive the Vote!')
+    mail(to: @user.email_with_name, subject: 'Welcome to Drive the Vote!')
   end
 end
