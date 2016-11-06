@@ -207,6 +207,13 @@ RSpec.describe Conversation, type: :model do
       expect(convo.reload.messages.last.sent_by).to eq('Bot')
     end
 
+    it 'auto confirms ride if twilio error' do
+      expect(Conversation).to receive(:send_staff_sms).and_return('Conversation error 30005')
+      convo.attempt_confirmation
+      expect(convo.reload.ride_confirmed).to be_truthy
+      expect(ride.reload.status).to eq('waiting_assignment')
+    end
+
     [false, true].each do |val|
       it "does not call twilio if ride confirmed is #{val}" do
         expect(TwilioService).to_not receive(:send_message)
@@ -448,6 +455,22 @@ RSpec.describe Conversation, type: :model do
         Ride.create_from_conversation(c)
         expect(c.send(:calculated_lifecycle)).to eq(Conversation.lifecycles[:info_complete])
       end
+    end
+  end
+
+  describe 'finds unreachable phone errors' do
+    it 'matches error codes' do
+      expect(Conversation.unreachable_phone_error('Conversation error 30003')).to be_truthy
+      expect(Conversation.unreachable_phone_error('Conversation error 30005')).to be_truthy
+      expect(Conversation.unreachable_phone_error('Conversation error 30006')).to be_truthy
+    end
+
+    it 'does not match other errors' do
+      expect(Conversation.unreachable_phone_error('Twilio error invalid number')).to be_falsey
+    end
+
+    it 'ignores non-strings' do
+      expect(Conversation.unreachable_phone_error(OpenStruct.new(sms_id: 'foo'))).to be_falsey
     end
   end
 
