@@ -480,6 +480,13 @@ DispatchController.prototype = {
   // Called for new conversation event or changed
   processConversation: function (convo, opts) {
     var status = this.updateConversationTable(convo, opts);
+
+    // Update the from and two addresses if applicable.
+    $('#from_address').editable('setValue', convo.from_address);
+    $('#from_city').editable('setValue', convo.from_city);
+    $('#to_address').editable('setValue', convo.to_address);
+    $('#to_city').editable('setValue', convo.to_city);
+
     if (convo.ride != undefined) {
       this._mapController.processRide(convo.ride, this.statusIsVisible(status));
     }
