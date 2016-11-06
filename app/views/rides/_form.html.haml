@@ -33,13 +33,26 @@
     = f.text_field :from_address, class: 'form-control', required: true, maxlength: 100
 
   .col-sm-8.field
-    = f.label :city_state, "#{h t(:city_for_pickup)} <sup>*</sup>".html_safe
-    = f.text_field :city_state, class: 'form-control', required: 'true', autocomplete: :off, maxlength: 40, pattern: "^.*( PA| pa| UT | ut| NV| nv| OH| oh| FL| fl| WI| wi| DC| dc)\s*$"
+    = f.label :from_city_state, "#{h t(:city_for_pickup)} <sup>*</sup>".html_safe
+    = f.text_field :from_city_state, class: 'form-control', required: 'true', autocomplete: :off, maxlength: 40, pattern: "^.*( PA| pa| UT | ut| NV| nv| OH| oh| FL| fl| WI| wi| DC| dc| ca| CA)\s*$"
 
     -# populated by location_autocomplete from city_state, which is populated by google places api
     = f.hidden_field :from_city, :value => ''
     = f.hidden_field :from_state, :value => ''
     = f.hidden_field :from_zip, :value => ''
+
+  .col-sm-8.field
+    = f.label :to_address, "#{h t(:where_to_be_dropped_off)}".html_safe
+    = f.text_field :to_address, class: 'form-control', required: false, maxlength: 100
+
+  .col-sm-8.field
+    = f.label :to_city_state, "#{h t(:city_for_pickup)}".html_safe
+    = f.text_field :to_city_state, class: 'form-control', required: 'false', autocomplete: :off, maxlength: 40, pattern: "^.*( PA| pa| UT | ut| NV| nv| OH| oh| FL| fl| WI| wi| DC| dc | ca| CA)\s*$"
+
+    -# populated by location_autocomplete from city_state, which is populated by google places api
+    = f.hidden_field :to_city, :value => ''
+    = f.hidden_field :to_state, :value => ''
+    = f.hidden_field :to_zip, :value => ''
 
   .col-sm-8.field
     = f.label :pickup_at, "#{h t(:what_time_pickup)} <sup>*</sup>".html_safe
@@ -77,5 +90,6 @@
       defaultDate: "Tues, 08 Nov 2016 07:00:00"
     });
 
-    locationAutocomplete.attach('#ride_city_state', '#ride_from_city', '#ride_from_state', '#ride_from_zip');
+    locationAutocomplete.attach('#ride_from_city_state', '#ride_from_city', '#ride_from_state', '#ride_from_zip');
+    locationAutocomplete.attach('#ride_to_city_state', '#ride_to_city', '#ride_to_state', '#ride_to_zip');
   });
