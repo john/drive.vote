@@ -154,7 +154,7 @@ export function setLocation(location) {
 export function locationSaved(response) {
     return {
         type: 'LOCATION_SUBMITTED',
-        update_location_interval: response.update_location_interval
+        update_location_interval: response.response.update_location_interval
     }
 }
 
