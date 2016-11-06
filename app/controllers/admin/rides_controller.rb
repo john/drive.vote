@@ -3,9 +3,17 @@ class Admin::RidesController < Admin::AdminApplicationController
 
   before_action :set_ride, only: [:show, :edit, :update, :destroy]
 
-  # GET /rides
+  RIDE_SEARCH = "(lower(rides.name) LIKE ?) OR (lower(rides.from_address) LIKE ?) OR (lower(rides.from_city) LIKE ?) OR (lower(rides.from_state) LIKE ?) OR (lower(rides.special_requests) LIKE ?)".freeze
+
   def index
-    @rides = Ride.all
+    page = params[:page] || 1
+    per_page = params[:per_page] || 25
+    if params[:q].present?
+      @q = params[:q].downcase
+      @rides = Ride.where(RIDE_SEARCH, "%#{@q}%", "%#{@q}%", "%#{@q}%", "%#{@q}%", "%#{@q}%").paginate(page: page, per_page: per_page)
+    else
+      @rides = Ride.paginate(page: page, per_page: per_page).order("created_at ASC")
+    end
   end
 
   # GET /rides/1
