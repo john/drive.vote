@@ -20,6 +20,7 @@ class User < ApplicationRecord
     end
   end
 
+  before_validation :autogenerate_email_if_necessary
   after_validation :geocode, if: ->(obj){ obj.new_record? }
 
   # TODO: when users & ridezones are geocoded
@@ -72,6 +73,9 @@ class User < ApplicationRecord
   # scope that gets Users, of any/all roles, close to a particular RideZone
   scope :nearby_ride_zone, ->(rz) { near(rz.zip, GEO_NEARBY_DISTANCE) }
 
+  def self.autogenerate_email
+    "#{Time.now.to_f}_#{rand(5 ** 10).to_s.rjust(5,'0')}@example.com"
+  end
 
   def self.voters
     User.with_role(:voter, :any)
@@ -245,7 +249,7 @@ class User < ApplicationRecord
   end
 
   def has_required_fields?
-    !!(self.email? && self.name? && self.phone_number? && self.city? && self.state? && self.zip)
+    !!(self.name? && self.phone_number? && self.city? && self.state? && self.zip)
   end
 
   def missing_required_fields?
@@ -258,6 +262,10 @@ class User < ApplicationRecord
 
 
   private
+
+  def autogenerate_email_if_necessary
+    self.email = User.autogenerate_email if self.email.blank?
+  end
 
   def if_driver_remove_unassigned(added_role)
     if self.is_driver? && added_role.name != 'unassigned_driver'

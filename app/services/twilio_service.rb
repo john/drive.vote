@@ -77,7 +77,7 @@ class TwilioService
         password: '12345678',
         phone_number: from_phone,
         phone_number_normalized: from_phone,
-        email: "#{Time.now.to_f}@example.com"
+        email: User.autogenerate_email
     }
     # create the user and rescue duplicate record error to find existing one
     @user = begin
