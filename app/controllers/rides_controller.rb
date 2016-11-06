@@ -10,13 +10,16 @@ class RidesController < ApplicationController
   def new
     @locale = params[:locale]
     @ride = Ride.new
-
-    @user_agent = UserAgent.parse(request.env['HTTP_USER_AGENT'])
-    @ios = @user_agent.platform&.downcase == 'iphone' || @user_agent.platform&.downcase == 'ipad'
   end
 
   def create
-    @locale = params[:locale] || :en
+    if params[:locale].present?
+      @locale = params[:locale]
+    else
+      @locale = :en
+    end
+
+    @ride = Ride.new(ride_params)
 
     # check for existing voter
     normalized = PhonyRails.normalize_number(params[:ride][:phone_number], default_country_code: 'US')
@@ -26,14 +29,12 @@ class RidesController < ApplicationController
     if @user
       existing = @user.open_ride
       if existing
-        # after sign-in voters are redirected to edit their existing open ride
-        # flash[:notice] = t(:sign_in_to_edit)
-        flash[:notice] = "Sorry that number or email is already in the system. Contact hello@drive.vote if you need help."
-        redirect_to "/users/sign_in?locale=#{locale}" and return
+        scheduled = existing.pickup_in_time_zone.strftime('%m/%d %l:%M %P %Z')
+        @user.errors.add(:name, "match for voter #{@user.name} (#{@user.email}/#{@user.phone_number}) that already has an active ride scheduled for #{scheduled}")
+        render :new and return
       end
     end
 
-    @ride = Ride.new(ride_params)
 
     if @ride.pickup_at.blank?
       flash[:notice] = "Please fill in scheduled date and time."
@@ -54,7 +55,7 @@ class RidesController < ApplicationController
           phone_number: user_params[:phone_number],
           ride_zone: @ride_zone,
           ride_zone_id: @ride_zone.id,
-          email: user_params[:email],
+          email: user_params[:email] || User.autogenerate_email,
           password: user_params[:password] || SecureRandom.hex(8),
           city: @ride.from_city,
           state: @ride.from_state,

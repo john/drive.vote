@@ -37,7 +37,6 @@ Filter: &nbsp;
       %tr
         %td{style: 'font-size: 16px; max-width: 250px;'}
           = link_to user.name, admin_user_path(user)
-          &nbsp;
           %div{style: 'font-size: 12px; margin-top: 0px; color: #999'}
             = user.phone_number.phony_formatted(normalize: :US, spaces: '-')
         %td

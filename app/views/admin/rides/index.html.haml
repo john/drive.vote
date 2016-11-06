@@ -1,35 +1,74 @@
+:css
+  #user-filter { margin: 0 0 20px 0;}
+  #user-search { display: inline;}
+  th { font-weight: bold; margin-bottom: 20px;}
+  td { font-size: 14px; }
+
+
 = render 'admin/nav', {active: 'rides'}
 
-%h1
+%h2
   Rides
   &nbsp;
   %small
     = link_to 'New Ride', new_admin_ride_path, class: 'btn btn-default btn-xs'
 
-%table.admin
+%div{style: 'margin: 0 0 30px 0;'}
+  %span{style: "margin-left: 25px"}
+    Search: &nbsp;
+    %form#ride-search
+      %input#q{type: 'text', value: "#{@q}"}
+
+    - if @q.present?
+      = link_to 'clear', admin_rides_path, style: "font-size: 13px; color: #777; margin-left: 10px;"
+
+%table.table-hover.admin
   %thead
     %tr
-      %th Ride
-      %th Ride Zone
+      %th
+      %th Voter/from
+      %th Zone
       %th Driver
-      %th Voter
       %th Pickup Time
-      %th Additional Passengers
+      %th Xtra Pass.
       %th Status
-      %th
-      %th
       %th
 
   %tbody
     - @rides.each do |ride|
       %tr
-        %td= ride.id
-        %td= ride.ride_zone.nil? ? 'None Set' : ride.ride_zone.name
-        %td= ride.driver.nil? ? 'None Assigned' : ride.driver.name
-        %td= ride.voter.nil? ? 'None Assigned' : ride.voter.name
-        %td= ride.pickup_at.nil? ? 'None Set' : ride.pickup_in_time_zone.strftime('%m/%d %l:%M %P %Z')
-        %td= ride.additional_passengers
-        %td= ride.status.nil? ? 'None Set' : ride.status
-        %td= link_to 'Show', [:admin, ride]
-        %td= link_to 'Edit', edit_admin_ride_path(ride)
-        %td= link_to 'Destroy', [:admin, ride], :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %td
+          = ride.id
+        %td
+          - if ride.voter.nil?
+            none
+          - else
+            #{ride.voter.name}
+            %div{style: 'font-size: 12px; margin-top: 0px; color: #999'}
+              #{[ride.from_address, ride.from_state].join(', ')}
+        %td
+          = ride.ride_zone.nil? ? 'none' : ride.ride_zone.name
+        %td
+          = ride.driver.nil? ? 'none' : ride.driver.name
+        %td
+          = ride.pickup_at.nil? ? 'none' : ride.pickup_in_time_zone.strftime('%m/%d %l:%M %P %Z')
+        %td
+          = ride.additional_passengers
+        %td{style: "font-size: 12px;"}
+          = ride.status.nil? ? 'none' : ride.status
+        %td{style: "font-size: 12px;"}
+          = link_to 'Show', [:admin, ride]
+          &nbsp; &#183; &nbsp;
+          = link_to 'Edit', edit_admin_ride_path(ride)
+          &nbsp; &#183; &nbsp;
+          = link_to 'Destroy', [:admin, ride], :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+- if @rides.present?
+  %nav{'aria-label': 'pagination'}
+    = will_paginate @rides
+
+:javascript
+  $( "#ride-search" ).submit(function( event ) {
+    window.location.href = "/admin/rides?q=" + $('#q').val();
+    event.preventDefault();
+  });

@@ -38,15 +38,15 @@ class ActiveRide extends React.Component {
                     </div>
                 )
             case 'picked_up':
-                mapLink = `http://maps.apple.com/?daddr=${ride.to_address}, ${ride.from_city}, ${ride.from_state}`;
+                mapLink = `http://maps.apple.com/?daddr=${ride.to_address}, ${ride.to_city}, ${ride.to_state}`;
                 return (
                     <div className="panel panel-full p-y-sm">
                         <a className="directionsLink" target="_blank" href={mapLink}><i className="fa fa-map-marker"></i> Directions</a>
                         <label>Dropping off:</label>
                         <h3>{ride.name}</h3>
                         <p>
-                            {ride.from_address}<br />
-                            {ride.from_city}, {ride.from_state} {ride.from_zip}
+                            {ride.to_address}<br />
+                            {ride.to_city}, {ride.to_state} {ride.to_zip}
                         </p>
                         <ContactVoter voter_phone_number={ride.voter_phone_number} />
                         <div className="secondary-info">
