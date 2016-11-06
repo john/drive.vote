@@ -7,7 +7,8 @@ RSpec.describe 'admin/conversations/index', type: :view do
     assign(:conversations, [create(:conversation, ride_zone: rz), create(:conversation, ride_zone: rz)])
   end
 
-  it 'renders' do
+  it "renders a list of rides" do
+    allow(view).to receive_messages(:will_paginate => nil)
     render
   end
 end
