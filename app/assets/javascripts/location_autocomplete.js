@@ -19,7 +19,8 @@ var locationAutocomplete = {
       var city = city_state[0];
       var state_zip = city_state[1].trim().split(' ');
       var state = state_zip[0].trim();
-      var zip = state_zip[1].trim();
+      // Washington, DC has several zip codes, so Google Places Service won't give you one.
+      var zip = state_zip.length > 1 ? state_zip[1].trim() : '';
 
       $( city_el ).val( city );
       $( state_el ).val( state );
