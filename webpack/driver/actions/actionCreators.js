@@ -80,6 +80,12 @@ export function driverAvailable() {
     }
 }
 
+export function requestRides() {
+    return {
+        type: 'REQUEST_RIDES',
+    }
+}
+
 export function receveWaitingRides(rides) {
     return {
         type: 'RECEIVE_RIDES',
@@ -148,7 +154,7 @@ export function setLocation(location) {
 export function locationSaved(response) {
     return {
         type: 'LOCATION_SUBMITTED',
-        update_location_interval: response.update_location_interval
+        update_location_interval: response.response.update_location_interval
     }
 }
 
@@ -235,7 +241,7 @@ export function fetchWaitingRides(location) {
         url += `?latitude=${location.latitude}&longitude=${location.longitude}`;
     }
     return function(dispatch) {
-        dispatch(requestStatus())
+        dispatch(requestRides())
         fetch(`${api}${url}`, {
                 credentials: 'include',
             })
