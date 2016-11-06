@@ -169,6 +169,11 @@ label {
     margin: 0 auto;
 }
 
+.bottom-controls.fixed .btn {
+    width: calc(90% - 37px);
+    float: left;
+}
+
 .bottom-controls .btn:nth-child(2) {
     margin-top: 2rem;
 }

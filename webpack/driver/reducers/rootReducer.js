@@ -10,6 +10,7 @@ function driverState(state = {
     switch (action.type) {
         case 'REQUEST_STATUS':
         case 'REQUEST_TOGGLE':
+        case 'REQUEST_RIDES':
             return Object.assign({}, state, {
                 isFetching: true,
             })
@@ -26,8 +27,8 @@ function driverState(state = {
                 isFetching: false,
                 available: action.available,
                 ride_zone_id: action.ride_zone_id,
-                waiting_rides_interval: action.waiting_rides_interval * 100,
-                update_location_interval: action.update_location_interval * 100,
+                waiting_rides_interval: action.waiting_rides_interval * 1000,
+                update_location_interval: action.update_location_interval * 1000,
                 active_ride: action.active_ride,
             })
         case 'RECEIVE_RIDE_ZONE_STATS':
@@ -56,7 +57,7 @@ function driverState(state = {
             return Object.assign({}, state, {
                 isFetching: false,
                 rides: action.rides,
-                waiting_rides_interval: action.waiting_rides_interval * 100,
+                waiting_rides_interval: action.waiting_rides_interval * 1000,
             })
         case 'RIDE_CLAIMED':
             action.active_ride.status = 'driver_assigned';
@@ -102,7 +103,7 @@ function driverState(state = {
 
         case 'LOCATION_SUBMITTED':
             return Object.assign({}, state, {
-                update_location_interval: action.update_location_interval * 100,
+                update_location_interval: action.update_location_interval * 1000,
             })
         case 'API_ERROR':
             return Object.assign({}, state, {

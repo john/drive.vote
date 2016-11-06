@@ -10,7 +10,6 @@ class RidesController < ApplicationController
   def new
     @locale = params[:locale]
     @ride = Ride.new
-    @ride.pickup_at = Time.zone.parse('2016-11-08 07:00')
   end
 
   def create
