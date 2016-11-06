@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     get '/volunteer/:id', :to => 'users/registrations#new', :as => 'volunteer_to_drive_for_zone'
+    post '/volunteer/:id', :to => 'users/registrations#create'
     get '/volunteer_to_drive/:id', to: redirect("/volunteer/%{id}")
     get '/volunteer_to_drive', :to => 'users/registrations#new', :as => 'volunteer_to_drive'
     get "/users/sign_out" => "devise/sessions#destroy", :as => :get_destroy_user_session
