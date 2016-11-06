@@ -14,11 +14,13 @@ module RideParams
                                  :driver_id,
                                  :ride_zone_id,
                                  :additional_passengers,
-                                 :city_state, # used by google places api, gets parsed into city/state fields
+                                 :from_city_state, # used by google places api, gets parsed into city/state fields
                                  :from_address,
                                  :from_city,
                                  :from_state,
                                  :from_zip,
+                                 :to_city_state,
+                                 :to_address,
                                  :to_city,
                                  :to_state,
                                  :to_zip,
