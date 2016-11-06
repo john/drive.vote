@@ -45,7 +45,8 @@ class Ride < ApplicationRecord
   # for ride + voter creation
   attr_accessor :phone_number
   attr_accessor :email
-  attr_accessor :city_state
+  attr_accessor :from_city_state
+  attr_accessor :to_city_state
 
   # transient for returning distance to voter
   attr_accessor :distance_to_voter
