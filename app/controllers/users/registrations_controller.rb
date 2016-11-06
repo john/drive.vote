@@ -71,6 +71,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         respond_with resource, location: after_inactive_sign_up_path_for(resource)
       end
     else
+      @ride_zone = RideZone.find_by_slug(params[:id]) if params.has_key?(:id)
       clean_up_passwords resource
       set_minimum_password_length
       respond_with resource

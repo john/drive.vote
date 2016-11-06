@@ -25,7 +25,7 @@
   -# %div{style: 'margin-bottom: 0;'}
   -#  = t(:will_drive_signup_description)
 
-= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {autocomplete: "off"}) do |f|
+= form_for(resource, as: resource_name, url: volunteer_to_drive_for_zone_path(params[:id]), html: {autocomplete: "off"}) do |f|
   - if @volunteer
     = f.hidden_field :user_type
     = f.hidden_field :ride_zone_id
