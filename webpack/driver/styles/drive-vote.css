@@ -58,6 +58,10 @@ label {
     padding-bottom: 1em;
 }
 
+.p-t {
+    padding-top: 1em;
+}
+
 .p-y-sm {
     padding-top: .75em !important;
     padding-bottom: .75em !important;
@@ -318,6 +322,17 @@ label {
 
 .pending-ride {
     padding: 1rem 1.5rem;
+}
+
+.pending-ride p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.special-requests {
+    font-weight: bold;
+    color: #34495e !important;
 }
 
 p.display-2 {
