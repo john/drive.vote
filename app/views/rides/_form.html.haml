@@ -33,7 +33,7 @@
     = f.text_field :from_address, class: 'form-control', required: true, maxlength: 100
 
   .col-sm-8.field
-    = f.label :from_city_state, "#{h t(:city_for_pickup)} <sup>*</sup>".html_safe
+    = f.label :from_city_state, "#{h t(:city_for_pickup)} (ie 'Philadelphia, PA'<sup>*</sup>)".html_safe
     = f.text_field :from_city_state, class: 'form-control', required: 'true', autocomplete: :off, maxlength: 40, pattern: "^.*( CA| ca| DC| dc| FL| fl| HI| hi| IL| il| NV| nv| OH| oh| PA| pa| UT| ut| WI| wi)\s*$"
 
     -# populated by location_autocomplete from city_state, which is populated by google places api
