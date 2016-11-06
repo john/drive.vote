@@ -20,11 +20,11 @@ class RideContainer extends React.Component {
         const nextRidesInterval = nextProps.state.driverState.waiting_rides_interval;
         const currentLoactionInterval = this.props.state.driverState.update_location_interval;
         const nextLocationInterval = nextProps.state.driverState.update_location_interval;
-        if (currentRidesInterval !== nextRidesInterval) {
+        if (nextRidesInterval && currentRidesInterval !== nextRidesInterval) {
             clearInterval(this.ridesInterval);
             this.ridesInterval = setInterval(() => this.props.fetchWaitingRides(this.props.state.driverState.location), nextRidesInterval);
         }
-        if (currentLoactionInterval !== nextLocationInterval) {
+        if (nextLocationInterval && currentLoactionInterval !== nextLocationInterval) {
             clearInterval(this.locationInterval);
             this.locationInterval = setInterval(() => this.props.submitLocation(this.props.state.driverState.location), nextLocationInterval);
         }
