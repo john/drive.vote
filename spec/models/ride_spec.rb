@@ -81,7 +81,7 @@ RSpec.describe Ride, type: :model do
 
     it 'sends driver update event on driver clear' do
       allow_any_instance_of(Conversation).to receive(:notify_voter_of_assignment)
-      r = create :ride, driver: driver, conversation: convo
+      r = create :ride, driver: driver, conversation: convo, status: :driver_assigned
       expect(RideZone).to receive(:event).with(anything, :conversation_changed, anything)
       expect(RideZone).to receive(:event).with(anything, :driver_changed, anything, :driver)
       expect_any_instance_of(Conversation).to receive(:notify_voter_of_assignment).with(nil)
@@ -129,6 +129,21 @@ RSpec.describe Ride, type: :model do
       ride = Ride.create_from_conversation(convo)
       expect_any_instance_of(Conversation).to receive(:notify_voter_of_assignment)
       ride.assign_driver(driver, false, false)
+    end
+
+    it 'does not send voter a text on driver waiting_acceptance' do
+      convo = create :complete_conversation
+      ride = Ride.create_from_conversation(convo)
+      expect_any_instance_of(Conversation).to_not receive(:notify_voter_of_assignment)
+      ride.assign_driver(driver, false, true)
+    end
+
+    it 'does not send voter a text on driver canceling waiting_acceptance' do
+      convo = create :complete_conversation
+      ride = Ride.create_from_conversation(convo)
+      ride.assign_driver(driver, false, true)
+      expect_any_instance_of(Conversation).to_not receive(:notify_voter_of_assignment)
+      ride.clear_driver(driver)
     end
 
     it 'does not assign driver if already has one' do
