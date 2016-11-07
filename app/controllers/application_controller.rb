@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
   # https://github.com/plataformatec/devise/pull/4033/files
   protect_from_forgery with: :exception, prepend: true
 
+  rescue_from(ActionController::RoutingError, ActionController::UnknownController, ActiveRecord::RecordNotFound) do
+    redirect_to '/404.html'
+  end
+
   before_action :set_locale
   before_action :configure_permitted_parameters, if: :devise_controller?
 
