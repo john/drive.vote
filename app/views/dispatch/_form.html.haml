@@ -106,4 +106,21 @@
 
       // only pertains to Rides
       dispatchController.attachDriverSelect(#{@obj.ride_zone_id}, #{@obj.id}, "#driver_select", "#{@action.downcase}");
+
+      $(".flatpickr").flatpickr({
+        onClose: function(dateObj, dateStr, instance){
+      		enable: [{
+            from: "today",
+            to: "2016-11-08",
+          }],
+
+          $.post( "#{url}", {name: 'pickup_at', value: dateStr}, function(data) {
+            $('#pickup_at').addClass('item-highlight');
+            dispatchController.checkToggleRideCreate(data);
+          }).fail(function() {
+            humane.log ('There was a problem setting the date.');
+          });
+        }
+      });
+
     });
