@@ -61,7 +61,7 @@ RSpec.describe RidesController, type: :controller do
     it "does not create a ride given bad data" do
       expect {
         post :create, params: bad_data
-      }.to change{ User.count }.by(0)
+      }.to change{ Ride.count }.by(0)
     end
   end
 end
