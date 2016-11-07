@@ -3,19 +3,19 @@
 %p{style: 'margin-top: 20px;'}
   = link_to 'Back to Rides', admin_rides_url
 
-%p#notice= notice
+%h3#notice= notice
 
+= link_to 'Edit', edit_admin_ride_path(@ride), class: 'btn btn-default btn-info btn-sm'
 %p
-  Voter
-%h3{style: 'margin-top: 0;'}
-  = @ride.voter.nil? ? 'None Assigned' : @ride.voter.name
-
 %p
   %b Name:
   = @ride.name
 %p
-  %b Description:
-  = @ride.description
+  %b From address:
+  = [@ride.from_address, @ride.from_city, @ride.from_state].join(', ')
+%p
+  %b To address:
+  = [@ride.to_address, @ride.to_city, @ride.to_state].join(', ')
 %p
   %b Pickup Time:
   = @ride.pickup_at ? @ride.pickup_in_time_zone.strftime('%m/%d %l:%M %P %Z') : 'None Set'
