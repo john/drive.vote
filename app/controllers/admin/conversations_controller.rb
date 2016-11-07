@@ -6,7 +6,7 @@ class Admin::ConversationsController < Admin::AdminApplicationController
   def index
     page = params[:page] || 1
     per_page = params[:per_page] || 25
-    @conversations = Conversation.where.not(status: :closed).paginate(page: page, per_page: per_page).order("created_at ASC")
+    @conversations = Conversation.all.paginate(page: page, per_page: per_page).order("created_at ASC")
   end
 
   # GET /admin/conversations/1

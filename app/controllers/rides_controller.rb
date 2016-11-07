@@ -9,6 +9,7 @@ class RidesController < ApplicationController
 
   def new
     @locale = params[:locale]
+    @validation_pattern = "( CA| ca| DC| dc| FL| fl| HI| hi| IL| il| NV| nv| NY| ny| OH| oh| PA| pa| UT| ut| WI| wi)"
     @ride = Ride.new
   end
 
@@ -95,6 +96,7 @@ class RidesController < ApplicationController
   end
 
   def edit
+    @validation_pattern = "( CA| ca| DC| dc| FL| fl| HI| hi| IL| il| NV| nv| OH| oh| PA| pa| UT| ut| WI| wi)"
     I18n.locale = @ride.voter.locale
     @ride_zone = @ride.ride_zone
     @pickup_at = @ride.pickup_in_time_zone
