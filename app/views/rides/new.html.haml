@@ -4,6 +4,8 @@
 %h3.schedule
   = t(:schedule_ride)
 .to_or_from
-  = t(:to_or_from)
+  #{t(:to_or_from)}.
+  %span{style: "font-size: 15px; color: #aaa; margin-top: 7px;"}
+    = t(:can_text_to) + ' ' + @ride_zone.phone_number.phony_formatted(normalize: :US, spaces: '-')
 
 = render partial: 'form', locals: {rescheduling: false}

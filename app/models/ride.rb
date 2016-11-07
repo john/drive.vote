@@ -45,7 +45,8 @@ class Ride < ApplicationRecord
   # for ride + voter creation
   attr_accessor :phone_number
   attr_accessor :email
-  attr_accessor :city_state
+  attr_accessor :from_city_state
+  attr_accessor :to_city_state
 
   # transient for returning distance to voter
   attr_accessor :distance_to_voter
@@ -218,7 +219,10 @@ class Ride < ApplicationRecord
   end
 
   def notify_voter_about_driver
-    if (self.status_changed? && self.status == 'driver_assigned') || self.driver_id_changed?
+    # notify voter IF
+    # ride became driver_assigned or is assigned and driver id changed or driver was cleared when it was assigned
+    if ((self.status_changed? || self.driver_id_changed?) && self.status == 'driver_assigned') ||
+       (self.driver_id_changed? && self.driver.nil? && self.status_was == 'driver_assigned')
       self.conversation.notify_voter_of_assignment(self.driver) if self.conversation
     end
   end

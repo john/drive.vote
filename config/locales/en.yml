@@ -131,13 +131,15 @@ en:
 
   # voter form
   schedule_ride: 'Schedule a free ride'
+  can_text_to: 'Use this form, or text'
   to_or_from: 'to or from your voting place'
   sign_in_to_edit: 'Please sign in to change your existing ride request'
   voter_name: 'What is your name?'
   voter_password: 'Enter a password (at least 8 characters)'
   mobile_phone_number: 'What is your mobile/cell phone number?'
   where_to_be_picked_up: 'Address for pickup?'
-  city_for_pickup: 'What city and state is that in?'
+  where_to_be_dropped_off: 'Destination address?'
+  city_for_pickup: 'What city and state?'
   what_time_pickup: 'What day and time?'
   special_requests: 'Any special requests (wheelchair, child seats)?'
   problem_saving_ride: 'There was a problem saving your ride information'

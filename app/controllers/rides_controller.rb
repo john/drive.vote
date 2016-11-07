@@ -9,6 +9,7 @@ class RidesController < ApplicationController
 
   def new
     @locale = params[:locale]
+    @validation_pattern = "( CA| ca| DC| dc| FL| fl| HI| hi| IL| il| NV| nv| NY| ny| OH| oh| PA| pa| UT| ut| WI| wi)"
     @ride = Ride.new
   end
 
@@ -42,10 +43,16 @@ class RidesController < ApplicationController
     end
     @pickup_at = @ride.pickup_at
 
-    if @ride.city_state.present? && @ride.from_city.blank? && @ride.from_state.blank?
-      city_state_array = @ride.city_state.split(',')
+    if @ride.from_city_state.present? && @ride.from_city.blank? && @ride.from_state.blank?
+      city_state_array = @ride.from_city_state.split(',')
       @ride.from_city = city_state_array[0].try(:strip)
       @ride.from_state = city_state_array[1].try(:strip)
+    end
+
+    if @ride.to_city_state.present? && @ride.to_city.blank? && @ride.to_state.blank?
+      city_state_array = @ride.to_city_state.split(',')
+      @ride.to_city = city_state_array[0].try(:strip)
+      @ride.to_state = city_state_array[1].try(:strip)
     end
 
     unless @user
@@ -76,7 +83,7 @@ class RidesController < ApplicationController
     @ride.from_zip = @user.zip
     @ride.status = :scheduled
     @ride.ride_zone = @ride_zone
-    @ride.to_address = Ride::UNKNOWN_ADDRESS
+    @ride.to_address = Ride::UNKNOWN_ADDRESS if @ride.to_address.blank?
 
     if @ride.save
       Conversation.create_from_ride(@ride, thanks_msg)
@@ -89,6 +96,7 @@ class RidesController < ApplicationController
   end
 
   def edit
+    @validation_pattern = "( CA| ca| DC| dc| FL| fl| HI| hi| IL| il| NV| nv| OH| oh| PA| pa| UT| ut| WI| wi)"
     I18n.locale = @ride.voter.locale
     @ride_zone = @ride.ride_zone
     @pickup_at = @ride.pickup_in_time_zone
