@@ -21,6 +21,9 @@
     &nbsp;&nbsp; &#183; &nbsp;&nbsp;
     = link_to 'Download .csv', drivers_dispatch_path(format: 'csv'), class: 'btn btn-info btn-xs'
 
+  &nbsp;&nbsp; &#183; &nbsp;&nbsp;
+  🔵 = on duty &nbsp;&nbsp;&nbsp;&nbsp; 🔴 = off duty
+
 :javascript
   $('.sort').change(function() {
     window.location.href = window.location.pathname + "?sort=" + $('.sort option:selected').val();;
