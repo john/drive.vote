@@ -3,7 +3,7 @@
     Active conversation
   - else
     Ride scheduled
-- if @obj.conversation.status == 'help_needed' && @obj.conversation.lifecycle == 'info_complete'
+- if @obj.is_a?(Ride) && @obj.conversation.status == 'help_needed' && @obj.conversation.lifecycle == 'info_complete'
   = button_tag 'Remove "Help Needed" alert', class: 'btn btn-info btn-xs remove-help-needed'
 
 - url = send("update_attribute_api_v1_#{@obj.class.name.downcase}_path", @obj)
