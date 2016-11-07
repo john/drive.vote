@@ -17,5 +17,9 @@ RSpec.describe Api::V1::ConversationsController, :type => :routing do
     it 'routes to #update_attribute' do
       expect(post: 'api/1/conversations/43/update_attribute').to route_to('api/v1/conversations#update_attribute', id: '43')
     end
+
+    it 'routes to #remove_help_needed' do
+      expect(post: 'api/1/conversations/43/remove_help_needed').to route_to('api/v1/conversations#remove_help_needed', id: '43')
+    end
   end
 end

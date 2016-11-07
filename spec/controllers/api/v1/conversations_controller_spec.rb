@@ -76,6 +76,63 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
     end
   end
 
+  describe 'POST #remove_help_needed' do
+    let!(:rz) { create :ride_zone }
+    let!(:convo) { create :complete_conversation, ride_zone: rz }
+    let!(:ride) { Ride.create_from_conversation(convo) }
+
+    before :each do
+      convo.update_attributes(status: :help_needed)
+    end
+
+    it 'has right preconditions' do
+      expect(convo.lifecycle).to eq('info_complete')
+      expect(convo.status).to eq('help_needed')
+    end
+
+    it "redirects if not logged in" do
+      post :remove_help_needed, params: {id: convo.to_param}
+      expect(response).to redirect_to('/404.html')
+    end
+
+    context "logged in as a voter" do
+      login_voter
+
+      it "redirects to 404" do
+        post :remove_help_needed, params: {id: convo.to_param}
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
+    context "logged in as a dispatcher" do
+      login_dispatcher
+
+      it 'assigns the requested conversation as @conversation' do
+        post :remove_help_needed, params: {id: convo.to_param}
+        expect(assigns(:conversation)).to eq(convo)
+      end
+
+      it 'does the status update' do
+        post :remove_help_needed, params: {id: convo.to_param}
+        expect(convo.reload.status).to eq('ride_created')
+      end
+
+      it 'does not update if no ride' do
+        convo.update_attribute(:ride_id, nil)
+        post :remove_help_needed, params: {id: convo.to_param}
+        expect(response.status).to eq(400)
+        expect(convo.reload.status).to eq('help_needed')
+      end
+
+      it 'does not update if not info_complete' do
+        convo.update_attribute(:lifecycle, 'have_passengers')
+        post :remove_help_needed, params: {id: convo.to_param}
+        expect(response.status).to eq(400)
+        expect(convo.reload.status).to eq('help_needed')
+      end
+    end
+  end
+
   describe 'update conversation' do
     let(:rz) { create :ride_zone }
     let(:convo) { create :conversation_with_messages, ride_zone: rz}
