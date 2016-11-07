@@ -6,6 +6,7 @@ module RideZoneParams
   # Use callbacks to share common setup or constraints between actions.
   def set_ride_zone(param = :id)
     @ride_zone = RideZone.find_by_id(params[param]) || RideZone.find_by_slug(params[param])
+    raise ActiveRecord::RecordNotFound.new unless @ride_zone
   end
 
   # Only allow a trusted parameter "white list" through.
