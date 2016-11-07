@@ -17,25 +17,35 @@
   %h3
     = t(:how_to_help)
   %p
-    If you have a car and can be in <b>Dayton</b>, <b>Philadelphia</b>, <b>Pittsburgh</b>, or <b>Salt Lake City</b> on election day, volunteer to be a driver! Help get voters to the polls on November 8th and make sure everyone has a vote.
+    If you have a car and can be in <b>Philadelphia</b>, <b>Pittsburgh</b>, or <b>Salt Lake City</b> on election day, volunteer to be a driver! Help get voters to the polls on November 8th and make sure everyone has a vote.
 
-  .volunteer
+  %p
+    %table.btns
+      %tr
+        %td.vol
+          = link_to "javascript:alert('Sorry, Philadelphia is at capacity! You can still volunteer for Pittsburgh.');" do
+            %button.btn.btn-default.btn-home.btn-lft{role: 'button'}
+              Volunteer for Philadelphia
+        %td.ride
+          = link_to "/ride/philadelphia" do
+            %button.btn.btn-success.btn-home.btn-rgt{role: 'button'}
+              Request ride in Philadelphia
+      %tr
+        %td.vol
+          = link_to '/volunteer/pittsburgh' do
+            %button.btn.btn-info.btn-home.btn-lft{role: 'button'}
+              Volunteer for Pittsburgh
+        %td.ride
+          = link_to '/ride/pittsburgh' do
+            %button.btn.btn-success.btn-home.btn-rgt{role: 'button'}
+              Request ride in Pittsburgh
 
-    = link_to '/volunteer/dayton' do
-      %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
-        Volunteer for Dayton, OH
-
-    %br
-    = link_to "javascript:alert('Sorry, Philadelphia is at capacity! You can still volunteer for Pittsburgh.');" do
-      %button.btn.btn-lg.btn-default.btn-home{role: 'button'}
-        Volunteer for Philadelphia, PA
-
-    %br
-    = link_to '/volunteer/pittsburgh' do
-      %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
-        Volunteer for Pittsburgh, PA
-
-    %br
-    = link_to '/volunteer/salt_lake_county' do
-      %button.btn.btn-lg.btn-info.btn-home{role: 'button'}
-        Volunteer for Salt Lake County, UT
+      %tr
+        %td.vol
+          = link_to '/volunteer/salt_lake_county' do
+            %button.btn.btn-info.btn-home.btn-lft{role: 'button'}
+              Volunteer for Salt Lake
+        %td.ride
+          = link_to '/ride/salt_lake_county' do
+            %button.btn.btn-success.btn-home.btn-rgt{role: 'button'}
+              Request ride in Salt Lake
