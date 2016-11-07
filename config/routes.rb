@@ -84,6 +84,7 @@ Rails.application.routes.draw do
           post 'messages' => 'conversations#create_message'
           post 'rides' => 'conversations#create_ride'
           post 'update_attribute' => 'conversations#update_attribute'
+          post 'remove_help_needed' => 'conversations#remove_help_needed'
         end
       end
 

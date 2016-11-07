@@ -70,6 +70,10 @@ class RideZone < ApplicationRecord
     named_role(:driver)&.users || User.none
   end
 
+  def on_duty_drivers
+    self.drivers.where(available: true)
+  end
+
   def nearby_drivers
     return User.none unless role = named_role(:driver)
     zone_driver_ids = role.users.pluck(:id)

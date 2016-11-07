@@ -2,6 +2,7 @@ class Admin::RidesController < Admin::AdminApplicationController
   include RideParams
 
   before_action :set_ride, only: [:show, :edit, :update, :destroy]
+  around_action :set_time_zone, only: [:show, :edit, :update]
 
   RIDE_SEARCH = "(lower(rides.name) LIKE ?) OR (lower(rides.from_address) LIKE ?) OR (lower(rides.from_city) LIKE ?) OR (lower(rides.from_state) LIKE ?) OR (lower(rides.special_requests) LIKE ?)".freeze
 
@@ -27,6 +28,8 @@ class Admin::RidesController < Admin::AdminApplicationController
 
   # GET /rides/1/edit
   def edit
+    @ride.from_city_state = [@ride.from_city, @ride.from_state].compact.join(', ')
+    @ride.to_city_state = [@ride.to_city, @ride.to_state].compact.join(', ')
   end
 
   # POST /rides
@@ -43,7 +46,11 @@ class Admin::RidesController < Admin::AdminApplicationController
 
   # PATCH/PUT /rides/1
   def update
-    if @ride.update(ride_params)
+    attrs = ride_params
+    attrs[:from_city], attrs[:from_state] = parse_city_state(attrs[:from_city_state])
+    attrs[:to_city], attrs[:to_state] = parse_city_state(attrs[:to_city_state])
+
+    if @ride.update(attrs)
       redirect_to [:admin, @ride], notice: 'Ride was successfully updated.'
     else
       render :edit
@@ -57,8 +64,24 @@ class Admin::RidesController < Admin::AdminApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_ride
-      @ride = Ride.find(params[:id])
+  # Use callbacks to share common setup or constraints between actions.
+  def set_ride
+    @ride = Ride.find(params[:id])
+  end
+
+  def set_time_zone(&block)
+    Time.use_zone(@ride.ride_zone.time_zone, &block) if @ride && @ride.ride_zone
+  end
+
+  def parse_city_state(city_state)
+    c_s_array = city_state.split(/ |,/).reject { |cs| cs.strip.blank? }
+    if c_s_array.size > 1
+      state = c_s_array.pop
+      return c_s_array.join(' ').titlecase, state
+    elsif c_s_array.size == 1
+      return nil, c_s_array[0] if len(c_s_array[0]) == 2
+      return c_s_array[0], nil
     end
+    return nil, nil
+  end
 end

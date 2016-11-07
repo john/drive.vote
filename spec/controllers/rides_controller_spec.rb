@@ -26,4 +26,42 @@ RSpec.describe RidesController, type: :controller do
       expect(response).to redirect_to('/users/sign_in')
     end
   end
+
+  describe "GET #create" do
+    let(:rz) { create :ride_zone }
+
+    let(:good_data) { {"ride_zone_id"=>rz.id, "ride"=>
+        { "name"=>"Gob", "from_address"=>"330 Cabrillo St.", "from_city_state"=>"Carnegie, PA",
+          "from_city"=>"Carnegie", "from_state"=>"PA", "pickup_at(1i)"=>"2016", "pickup_at(2i)"=>"11", "pickup_at(3i)"=>"8",
+          "pickup_at(4i)"=>"05", "pickup_at(5i)"=>"00", "phone_number"=>"2083328765"}} }
+
+    let(:bad_data) { {"ride_zone_id"=>rz.id, "ride"=>
+        { "name"=>"Gob", "from_address"=>"330 Cabrillo St.", "from_city_state"=>"Carnegie, PA",
+          "from_city"=>"Carnegie", "from_state"=>"areallylonginvalidstring", "pickup_at(1i)"=>"2016", "pickup_at(2i)"=>"11", "pickup_at(3i)"=>"8",
+          "pickup_at(4i)"=>"05", "pickup_at(5i)"=>"00", "phone_number"=>"2083328765"}} }
+
+    it "creates a user given good good data" do
+      expect {
+        post :create, params: good_data
+      }.to change{ User.count }.by(1)
+    end
+
+    it "creates a ride given good data" do
+      expect {
+        post :create, params: good_data
+      }.to change{ Ride.count }.by(1)
+    end
+
+    it "does not create a user given bad data" do
+      expect {
+        post :create, params: bad_data
+      }.to change{ User.count }.by(0)
+    end
+
+    it "does not create a ride given bad data" do
+      expect {
+        post :create, params: bad_data
+      }.to change{ Ride.count }.by(0)
+    end
+  end
 end

@@ -76,6 +76,7 @@ class DispatchController < ApplicationController
 
   def get_driver_count
     @driver_count = @ride_zone.drivers.count(:all)
+    @active_driver_count = @ride_zone.on_duty_drivers.count
   end
 
   def set_conversation

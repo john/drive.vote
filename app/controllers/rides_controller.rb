@@ -55,43 +55,46 @@ class RidesController < ApplicationController
       @ride.to_state = city_state_array[1].try(:strip)
     end
 
-    unless @user
-      user_params = params.require(:ride).permit(:phone_number, :email, :name, :password)
-      user_attrs = {
-          name: user_params[:name],
-          phone_number: user_params[:phone_number],
-          ride_zone: @ride_zone,
-          ride_zone_id: @ride_zone.id,
-          email: user_params[:email] || User.autogenerate_email,
-          password: user_params[:password] || SecureRandom.hex(8),
-          city: @ride.from_city,
-          state: @ride.from_state,
-          locale: @locale,
-          language: @locale,
-          user_type: 'voter',
-      }
+    # if ride is rolled back we want to make sure the user is too.
+    ActiveRecord::Base.transaction do
+      unless @user
+        user_params = params.require(:ride).permit(:phone_number, :email, :name, :password)
+        user_attrs = {
+            name: user_params[:name],
+            phone_number: user_params[:phone_number],
+            ride_zone: @ride_zone,
+            ride_zone_id: @ride_zone.id,
+            email: user_params[:email] || User.autogenerate_email,
+            password: user_params[:password] || SecureRandom.hex(8),
+            city: @ride.from_city,
+            state: @ride.from_state,
+            locale: @locale,
+            language: @locale,
+            user_type: 'voter',
+        }
 
-      # TODO: better error handling
-      @user = User.create(user_attrs)
-      if @user.errors.any?
-        flash[:notice] = "Problem creating a new user."
+        # TODO: better error handling
+        @user = User.create(user_attrs)
+        if @user.errors.any?
+          flash[:notice] = "Problem creating a new user."
+          render :new and return
+        end
+      end
+
+      @ride.voter = @user
+      @ride.from_zip = @user.zip
+      @ride.status = :scheduled
+      @ride.ride_zone = @ride_zone
+      @ride.to_address = Ride::UNKNOWN_ADDRESS if @ride.to_address.blank?
+
+      if @ride.save
+        Conversation.create_from_ride(@ride, thanks_msg)
+        UserMailer.welcome_email_voter_ride(@user, @ride).deliver_later
+        render :success
+      else
+        flash[:notice] = "Problem creating a ride."
         render :new and return
       end
-    end
-
-    @ride.voter = @user
-    @ride.from_zip = @user.zip
-    @ride.status = :scheduled
-    @ride.ride_zone = @ride_zone
-    @ride.to_address = Ride::UNKNOWN_ADDRESS if @ride.to_address.blank?
-
-    if @ride.save
-      Conversation.create_from_ride(@ride, thanks_msg)
-      UserMailer.welcome_email_voter_ride(@user, @ride).deliver_later
-      render :success
-    else
-      flash[:notice] = "Problem creating a ride."
-      render :new and return
     end
   end
 
