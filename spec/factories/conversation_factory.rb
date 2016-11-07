@@ -40,6 +40,9 @@ FactoryGirl.define do
       time_confirmed true
       additional_passengers 0
       special_requests 'None'
+      after(:create) do |conversation, evaluator|
+        conversation.user.update_attribute(:language, :en) if conversation.user.language == 'unknown'
+      end
     end
   end
 

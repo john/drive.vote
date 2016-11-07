@@ -44,6 +44,15 @@ module Api::V1
       end
     end
 
+    def remove_help_needed
+      if @conversation.ride && @conversation.lifecycle == 'info_complete'
+        @conversation.update_attributes(status: :ride_created)
+        render json: {response: @conversation.reload.api_json(false)}
+      else
+        render json: {error: 'Conversation must have ride and be info complete'}, status: 400
+      end
+    end
+
     def create_message
       msg = @conversation.send_from_staff(params[:message][:body], Rails.configuration.twilio_timeout)
       if msg.is_a?(String)

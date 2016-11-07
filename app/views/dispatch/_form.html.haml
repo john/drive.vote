@@ -3,6 +3,8 @@
     Active conversation
   - else
     Ride scheduled
+- if @obj.conversation.status == 'help_needed' && @obj.conversation.lifecycle == 'info_complete'
+  = button_tag 'Remove "Help Needed" alert', class: 'btn btn-info btn-xs remove-help-needed'
 
 - url = send("update_attribute_api_v1_#{@obj.class.name.downcase}_path", @obj)
 
@@ -122,5 +124,17 @@
           });
         }
       });
-
     });
+
+  -if @obj.is_a?(Ride)
+    :javascript
+      $( function() {
+        $(".remove-help-needed").click(function(e) {
+          e.preventDefault();
+          $.post( "#{remove_help_needed_api_v1_conversation_path(@obj.conversation)}", function(data) {
+            $('.remove-help-needed').hide();
+          }).fail(function() {
+            alert('Unable to remove the help needed alert');
+          });
+        })
+      });
