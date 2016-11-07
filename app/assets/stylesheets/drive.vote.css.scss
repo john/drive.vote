@@ -177,15 +177,22 @@ form {
   }
 }
 
-.volunteer {
-  text-align: center;
-  margin: 40px 0 10px 0;
+.btns {
+  margin-top: 40px;
+  border: 0px solid grey;
+  margin-left: auto;
+  margin-right: auto;
 }
-
 .btn-home {
-  width: 350px;
+  width: 250px;
   margin-bottom: 20px;
-  font-weight: bold;
+  font-weight: normal;
+}
+.btn-lft {
+  margin-right: 10px;
+}
+.btn-rgt {
+  margin-left: 10px;
 }
 
 .later {
@@ -399,7 +406,41 @@ h3.dispatch { margin: 0 0 0 10px; }
   font-size: 22px;
 }
 
+
+
+@media(max-width:992px) {
+  .btn-home {
+    width: 220px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    font-weight: normal;
+  }
+  .btn-lft {
+    margin-right: 10px;
+  }
+  .btn-rgt {
+    margin-left: 10px;
+  }
+}
+
+
 @media(max-width:480px) {
+
+  .btn-home {
+    width: 180px;
+    font-size: 14px;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-bottom: 20px;
+    font-weight: normal;
+  }
+  .btn-lft {
+    margin-right: 5px;
+  }
+  .btn-rgt {
+    margin-left: 5px;
+  }
+
   body {
     margin-bottom: 60px;
   }
@@ -424,4 +465,5 @@ h3.dispatch { margin: 0 0 0 10px; }
   .to_or_from {
     font-size: 20px;
   }
+
 }

@@ -11,8 +11,20 @@
     = f.text_field :name, class: 'form-control', maxlength: 50
 
   .col-sm-8.field
-    = f.label :description
-    = f.text_area :description, class: 'form-control', maxlength: 100
+    = f.label :from_address
+    = f.text_field :from_address, class: 'form-control', required: true, maxlength: 100
+
+  .col-sm-8.field
+    = f.label :from_city_state
+    = f.text_field :from_city_state, class: 'form-control', required: true, autocomplete: :off, maxlength: 40
+
+  .col-sm-8.field
+    = f.label :to_address
+    = f.text_field :to_address, class: 'form-control', required: false, maxlength: 100
+
+  .col-sm-8.field
+    = f.label :to_city_state
+    = f.text_field :to_city_state, class: 'form-control', required: false, autocomplete: :off, maxlength: 40
 
   .col-sm-8.field
     = f.label :pickup_at
@@ -21,14 +33,6 @@
   .col-sm-8.field
     = f.label :ride_zone
     = f.select :ride_zone_id, RideZone.all.map {|ride_zone| [ride_zone.name.titleize, ride_zone.id]}, {prompt: 'None Assigned'}
-
-  .col-sm-8.field
-    = f.label :driver
-    = f.select :driver_id, User.assigned_drivers.map {|user| [user.name.titleize, user.id]}, {prompt: 'None Assigned'}
-
-  .col-sm-8.field
-    = f.label :voter
-    = f.select :voter_id, User.voters.map {|user| [user.name.titleize, user.id]}, {prompt: 'None Assigned'}
 
   .col-sm-8.field
     = f.label :additional_passengers
