@@ -80,4 +80,11 @@ RSpec.describe Admin::RidesController, type: :controller do
     end
   end
 
+  describe "GET #create" do
+    it "redirects if not logged in" do
+      post :create, params: {id: ride.to_param}
+      expect(response).to redirect_to('/404.html')
+    end
+  end
+
 end
