@@ -154,7 +154,8 @@ export function setLocation(location) {
 export function locationSaved(response) {
     return {
         type: 'LOCATION_SUBMITTED',
-        update_location_interval: response.response.update_location_interval
+        available: response.available,
+        update_location_interval: response.update_location_interval
     }
 }
 
@@ -228,7 +229,7 @@ export function submitLocation(location) {
             })
             .then(parseJSON)
             .then(json =>
-                dispatch(locationSaved(json))
+                dispatch(locationSaved(json.response))
             ).catch(error =>
                 dispatch(apiError(error))
             )
