@@ -137,7 +137,7 @@ DispatchController.prototype = {
          console.log( 'posted to conv.create_ride, got success' ); //.conversation.ride.status)
 
       }).fail(function() {
-        humane.log ('Something has gone horribly wrong.');
+        humane.log ('Address could not be found or is outside of ride zone');
       });
       e.preventDefault();
     });
@@ -164,7 +164,7 @@ DispatchController.prototype = {
          $('.current-driver').text( txt );
          $('.current-driver').addClass('item-highlight');
       }).fail(function() {
-        humane.log ('Something has gone horribly wrong.');
+        humane.log ('Address could not be found or is outside of ride zone.');
       });
       e.preventDefault();
     });
