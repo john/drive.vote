@@ -12,9 +12,9 @@ class DispatchMatch extends React.Component {
         const mapLink = `http://maps.apple.com/?daddr=${ride.from_address}, ${ride.from_city}, ${ride.from_state}`;
         return (
             <div>
-                <ReactCSSTransitionGroup
-                transitionName="dispatchMatch"
-                transitionAppear={true}
+                <ReactCSSTransitionGroup 
+                transitionName="dispatchMatch" 
+                transitionAppear={true} 
                 transitionAppearTimeout={500}>
                     <div className="panel panel-full p-y-sm dispatcher-match">
                         <h2 className="m-b-0">Ride Assigned by Dispatch</h2>
