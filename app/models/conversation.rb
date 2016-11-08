@@ -218,20 +218,13 @@ class Conversation < ApplicationRecord
       end
       result = 'sent_confirm_request'
     elsif self.ride_confirmed == false && Time.now > ride.pickup_at
-      # ride has not been confirmed and pickup time has passed, bump to help_needed
-      if status != 'help_needed'
-        body = I18n.t(:ride_not_confirmed, locale: user_language)
-        sms = Conversation.send_staff_sms(ride_zone, user, body, Rails.configuration.twilio_timeout)
-        unless sms.is_a?(String) # error sending, will try this block again
-          ActiveRecord::Base.transaction do
-            Message.create_from_bot(self, sms)
-            update_attributes(status: :help_needed)
-          end
-        end
-        result = 'sent_confirmation_overdue'
-      else
-        result = 'confirmation_help_needed'
+      # ride has not been confirmed and pickup time has passed, auto_confirm
+      # go ahead and promote b/c we can't reach the voter
+      ActiveRecord::Base.transaction do
+        ride.update_attributes(status: :waiting_assignment) if ride.status == 'scheduled'
+        update_attributes(ride_confirmed: true)
       end
+      return 'no_response_auto_confirm'
     end
     result
   end
