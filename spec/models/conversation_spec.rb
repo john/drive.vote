@@ -222,21 +222,21 @@ RSpec.describe Conversation, type: :model do
       end
     end
 
-    it 'sends sms and bumps to help_needed when time goes by' do
+    it 'bumps to waiting_assignment when time goes by' do
       convo.attempt_confirmation
       ride.update_attribute(:pickup_at, 5.minutes.ago)
-      expect(TwilioService).to receive(:send_message).and_return(twilio_msg)
-      expect {convo.attempt_confirmation}.to change{convo.messages.count}.by(1)
-      expect(convo.reload.status).to eq('help_needed')
+      convo.attempt_confirmation
+      expect(convo.reload.status).to eq('ride_created')
+      expect(convo.lifecycle).to eq('info_complete')
+      expect(ride.reload.status).to eq('waiting_assignment')
     end
 
-    it 'does nothing when time goes by and already help_needed' do
+    it 'does not bump to waiting_assignment if driver assigned' do
       convo.attempt_confirmation
-      ride.update_attribute(:pickup_at, 5.minutes.ago)
+      ride.update_attributes(pickup_at: 5.minutes.ago, status: :driver_assigned)
       convo.attempt_confirmation
-      expect(TwilioService).to_not receive(:send_message)
-      convo.attempt_confirmation
-      expect(convo.reload.status).to eq('help_needed')
+      expect(convo.reload.status).to eq('ride_created')
+      expect(ride.reload.status).to eq('driver_assigned')
     end
 
     it 'handles twilio error' do

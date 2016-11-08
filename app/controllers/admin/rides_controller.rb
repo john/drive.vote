@@ -28,8 +28,8 @@ class Admin::RidesController < Admin::AdminApplicationController
 
   # GET /rides/1/edit
   def edit
-    @ride.from_city_state = [@ride.from_city, @ride.from_state].compact.join(', ')
-    @ride.to_city_state = [@ride.to_city, @ride.to_state].compact.join(', ')
+    @ride.from_city_state = [@ride.from_city, @ride.from_state].reject {|s| s.blank?}.compact.join(', ')
+    @ride.to_city_state = [@ride.to_city, @ride.to_state].reject {|s| s.blank?}.compact.join(', ')
   end
 
   # POST /rides
@@ -79,9 +79,9 @@ class Admin::RidesController < Admin::AdminApplicationController
       state = c_s_array.pop
       return c_s_array.join(' ').titlecase, state
     elsif c_s_array.size == 1
-      return nil, c_s_array[0] if len(c_s_array[0]) == 2
-      return c_s_array[0], nil
+      return '', c_s_array[0] if c_s_array[0].length == 2
+      return c_s_array[0], ''
     end
-    return nil, nil
+    return '', ''
   end
 end
