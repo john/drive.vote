@@ -19,8 +19,8 @@ class Message < ApplicationRecord
     attrs = {
       conversation: conversation,
       ride_zone: conversation.ride_zone,
-      from: conversation.to_phone,
-      to: conversation.from_phone,
+      from: twilio_msg.from,
+      to: twilio_msg.to,
       sms_sid: twilio_msg.sid,
       sms_status: twilio_msg.status,
       body: twilio_msg.body,
@@ -98,8 +98,8 @@ class Message < ApplicationRecord
     {
       conversation: conversation,
       ride_zone: conversation.ride_zone,
-      from: conversation.from_phone,
-      to: conversation.to_phone,
+      from: twilio_msg.from,
+      to: twilio_msg.to,
       sms_sid: twilio_msg.sid,
       sms_status: twilio_msg.status,
       body: twilio_msg.body,
