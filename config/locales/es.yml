@@ -112,8 +112,8 @@ es:
   are_you_going_from_to: "¡Dar una buena acogida! ¿Se va de %{from} al %{to}?"
   when_do_you_want_pickup: 'Qué cuando se desea ser recogido (HH:MM am/pm)?'
   no_dest_when_do_you_want_pickup: 'Se puede trabajar con el controlador de destino. Qué cuando se desea ser recogido (HH:MM am/pm o "ahora")?'
-  confirm_address: 'Por favor confirmar la dirección es %{address}. Si/non?'
-  confirm_the_time: 'Por favor confirmar su recogida hoy a las %{time}. Si/non?'
+  confirm_address: 'Por favor confirmar la dirección es %{address}. Si/no?'
+  confirm_the_time: 'Por favor confirmar su recogida hoy a las %{time}. Si/no?'
   invalid_time: "Eso no se ve como un buen momento. Introducir algo parecido '16:30' o 'ahora'."
   how_many_additional: '¿Cuántas personas adicionales necesitan un paseo (0-4)?'
   invalid_passengers: 'Por favor, responda con el número de pasajeros adicionales (0-4)'
