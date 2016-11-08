@@ -211,6 +211,13 @@ class Ride < ApplicationRecord
     self.additional_passengers + 1
   end
 
+  def cancel(username)
+    clear_driver if self.driver
+    self.status = :complete #todo: should be cancel post election
+    self.description = (self.description || '') + " (Cancelled by #{username} #{Time.now})"
+    save!
+  end
+
   private
   def check_waiting_assignment
     if self.status == 'scheduled' && self.pickup_at && self.pickup_at < SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now

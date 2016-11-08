@@ -474,6 +474,26 @@ RSpec.describe Conversation, type: :model do
     end
   end
 
+  describe 'closing' do
+    let(:convo) { create :conversation_with_messages }
+    let(:driver) { create :driver_user, rz: convo.ride_zone }
+    let(:ride) { r = Ride.create_from_conversation(convo); r.assign_driver(driver); r }
+
+    it 'closes the conversation' do
+      convo.close('user')
+      expect(convo.reload.status).to eq('closed')
+    end
+
+    it 'completes the ride' do
+      ride
+      convo.close('foobar')
+      expect(convo.reload.status).to eq('closed')
+      expect(ride.reload.status).to eq('complete')
+      expect(ride.description =~ /foobar/).to be_truthy
+      expect(ride.driver).to be_nil
+    end
+  end
+
   it 'escapes api json' do
     str = 'So & and <img>'
     safe = CGI::escape_html(str)
