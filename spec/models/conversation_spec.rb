@@ -136,7 +136,7 @@ RSpec.describe Conversation, type: :model do
     let(:rz) { create :ride_zone }
     let(:user) { create :driver_user, rz: rz }
     let(:body) { 'can you go to south side?' }
-    let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid') }
+    let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid', from: rz.phone_number_normalized, to: user.phone_number_normalized) }
 
     before :each do
       allow(TwilioService).to receive(:send_message).and_return(twilio_msg)
@@ -186,7 +186,7 @@ RSpec.describe Conversation, type: :model do
     let(:convo) { create :complete_conversation, ride_zone: rz, user: user, pickup_at: 5.minutes.from_now }
     let!(:ride) { Ride.create_from_conversation(convo) }
     let(:body) { 'confirm' }
-    let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid') }
+    let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid', from: convo.from_phone, to: convo.to_phone) }
 
     before :each do
       allow(TwilioService).to receive(:send_message).and_return(twilio_msg)
@@ -250,9 +250,9 @@ RSpec.describe Conversation, type: :model do
     let(:rz) { create :ride_zone }
     let(:user) { create :user, language: :en }
     let(:driver) { create :driver_user, rz: rz, name: 'FOO', description: 'BAR' }
-    let(:convo) { create :complete_conversation, ride_zone: rz, user: user, pickup_at: 5.minutes.from_now }
+    let(:convo) { create :conversation_with_messages, ride_zone: rz, user: user, pickup_at: 5.minutes.from_now }
     let(:body) { 'FOO has been assigned - look for a BAR'}
-    let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid') }
+    let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid', from: rz.phone_number_normalized, to: user.phone_number_normalized) }
 
     before :each do
       allow(TwilioService).to receive(:send_message).and_return(twilio_msg)

@@ -35,7 +35,7 @@
     %td.conv-label
       PICKUP TIME
     %td.conv-field#pickup_at
-      %input{type: 'text', class: 'flatpickr', 'data-default-date': @pickup_at, 'data-date-format': "F j, h:iK", 'data-enable-time': true}
+      %input{type: 'text', class: 'flatpickr'}
 
   %tr
     %td.conv-label
@@ -110,12 +110,11 @@
       dispatchController.attachDriverSelect(#{@obj.ride_zone_id}, #{@obj.id}, "#driver_select", "#{@action.downcase}");
 
       $(".flatpickr").flatpickr({
+        enableTime: true,
+        minuteIncrement: 5,
+        dateFormat: "F j, h:iK",
+        defaultDate: "#{@pickup_at}",
         onClose: function(dateObj, dateStr, instance){
-      		enable: [{
-            from: "today",
-            to: "2016-11-08",
-          }],
-
           $.post( "#{url}", {name: 'pickup_at', value: dateStr}, function(data) {
             $('#pickup_at').addClass('item-highlight');
             dispatchController.checkToggleRideCreate(data);
