@@ -86,7 +86,7 @@ RSpec.describe RideZone, type: :model do
   end
 
   it 'returns nearby available drivers' do
-    driver = create :zoned_driver_user
+    driver = create :zoned_driver_user, available: true
     rz = RideZone.with_user_in_role(driver, :driver).first
 
      expect( rz.available_drivers(all: true).first ).to eq(driver)
@@ -100,18 +100,23 @@ RSpec.describe RideZone, type: :model do
   end
 
   it 'returns all available drivers' do
-    driver = create( :zoned_driver_user, city: 'Pittsburgh', state: 'PA' )
+    driver = create( :zoned_driver_user, city: 'Pittsburgh', state: 'PA', available: true )
     rz = RideZone.with_user_in_role(driver, :driver).first
 
      expect( rz.available_drivers(all: true).first ).to eq(driver)
   end
 
   it 'returns unavailable_drivers' do
-    d = create :zoned_driver_user
-    rz = RideZone.with_user_in_role(d, :driver).first
+    rz = create :ride_zone
+    d = create :driver_user, rz: rz
+    d2 = create :driver_user, rz: rz, available: false
+    d3 = create :driver_user, rz: rz, available: true
     cr = create :assigned_ride, ride_zone_id: rz.id, driver_id: d.id
 
-     expect( rz.unavailable_drivers.first ).to eq(d)
+    expect( rz.unavailable_drivers.count ).to eq(2)
+    expect( rz.unavailable_drivers.first ).to eq(d)
+    expect( rz.unavailable_drivers.last ).to eq(d2)
+    expect( rz.available_drivers.count ).to eq(1)
   end
 
   describe 'pickup radius' do
