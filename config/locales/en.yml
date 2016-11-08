@@ -54,7 +54,7 @@ en:
     Drive the Vote connects voters who need free rides with volunteer drivers. Voters text a local number to request a ride, and a driver arrives to take them to their voting place.
   how_it_works: 'How it Works'
   how_it_works_copy: |
-    Voters send a text or register online to request a ride, and Drive the Vote connects them with a volunteer driver, who picks them up and takes them to their polling place. .
+    Voters send a text or register online to request a ride, and Drive the Vote connects them with a volunteer driver, who picks them up and takes them to their polling place.
   how_to_help: 'How to Help'
   how_to_help_copy1: 'If you have a car and can be in'
   how_to_help_copy2:  'on election day, volunteer to be a driver! Help get voters to the polls on November 8th and make sure everyone has a vote.'
@@ -147,7 +147,7 @@ en:
   email_address: 'What is your email address?'
   request_saved: 'We have saved your ride request with the details below:'
   found_active_request: 'We found an active request - rescheduling'
-  thanks_for_requesting: "Thank you for requesting a ride on %{time}. We'll send a reminder text before you ride arrives. Email %{email} if you have questions."
+  thanks_for_requesting: "Thank you for requesting a ride on %{time}. We'll send a reminder text before your ride arrives. Email %{email} if you have questions."
   pickup_location: 'Pickup location:'
   pickup_time: 'Pickup time:'
   additional_passengers: 'Additional passengers:'

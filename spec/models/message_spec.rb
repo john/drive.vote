@@ -44,7 +44,7 @@ RSpec.describe Message, type: :model do
   end
 
   describe 'reply to conversation' do
-    let(:twilio_msg) { OpenStruct.new(sid: 'sid', status: 'status', body: 'hello') }
+    let(:twilio_msg) { OpenStruct.new(sid: 'sid', status: 'status', body: 'hello', from: 'from', to: 'to') }
 
     it 'should update the conversation' do
       c = create :conversation_with_messages, status: :in_progress
@@ -60,10 +60,10 @@ RSpec.describe Message, type: :model do
   end
 
   describe 'staff messages' do
-    let(:twilio_msg) { OpenStruct.new(sid: 'sid', status: 'status', body: 'hello') }
     let(:ride_zone) { create :ride_zone }
     let(:user) { create :driver_user, rz: ride_zone }
-    let(:convo) { create :conversation, user: user, ride_zone: ride_zone }
+    let(:convo) { create :conversation, user: user, ride_zone: ride_zone, from_phone: ride_zone.phone_number, to_phone: user.phone_number }
+    let(:twilio_msg) { OpenStruct.new(sid: 'sid', status: 'status', body: 'hello', from: convo.from_phone, to: convo.to_phone) }
 
     it 'should create the message' do
       msg = Message.create_from_staff(convo, twilio_msg)
@@ -75,6 +75,19 @@ RSpec.describe Message, type: :model do
       msg = Message.create_from_bot(convo, twilio_msg)
       expect(msg.body).to eq('hello')
       expect(msg.sent_by).to eq('Bot')
+    end
+  end
+
+  describe 'user initiated conversation' do
+    let(:ride_zone) { create :ride_zone }
+    let(:user) { create :voter_user, rz: ride_zone }
+    let(:convo) { create :conversation_with_messages, user: user, ride_zone: ride_zone, from_phone: user.phone_number, to_phone: ride_zone.phone_number }
+    let(:twilio_msg) { OpenStruct.new(sid: 'sid', status: 'status', body: 'hello', from: convo.from_phone, to: convo.to_phone) }
+
+    it 'should create the message' do
+      msg = Message.create_from_staff(convo, twilio_msg)
+      expect(msg.body).to eq('hello')
+      expect(msg.sent_by).to eq('Voter')
     end
   end
 
