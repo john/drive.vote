@@ -285,14 +285,16 @@ DispatchController.prototype = {
 
   // Adds or replaces row in the conversation table with data from conversation
   // object c. Returns the conversation's calculated status.
-  updateConversationTable: function (c) {
+  updateConversationTable: function (c, opts) {
     var status = this.conversationStatus(c),
         rowId = 'conv-row-'+c.id,
         existing = $('#' + rowId),
         targetTable = this.tableForStatus(status),
         cells = this.conversationCells(c, status),
         addLastFromVoter = (status == 'help_needed' && c.last_message_sent_by == 'Voter'),
-        ride_id = (c.ride !== undefined) ? c.ride.id : 0;
+        ride_id = (c.ride !== undefined) ? c.ride.id : 0,
+        row = existing;
+
 
     if (targetTable !== undefined) {
       if (existing.length > 0) {
@@ -312,8 +314,10 @@ DispatchController.prototype = {
             newRow = $(rowHtml);
         newRow.data('objref', c);
         this.insertIntoTable(newRow, targetTable);
+        row = newRow
       }
-      $("time.timeago").timeago();
+      // scope timeago to this specific row, old or new
+      if (!(opts && opts.skipTimeAgo)) $(row).find("time.timeago").timeago();
       this.recalcBadges();
     }
     return status;
@@ -465,8 +469,8 @@ DispatchController.prototype = {
   },
 
   // Called for new conversation event or changed
-  processConversation: function (convo) {
-    var status = this.updateConversationTable(convo);
+  processConversation: function (convo, opts) {
+    var status = this.updateConversationTable(convo, opts);
     if (convo.ride != undefined) {
       this._mapController.processRide(convo.ride, this.statusIsVisible(status));
     }
@@ -490,8 +494,10 @@ DispatchController.prototype = {
     $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/conversations', {
       success: function(data, status, xhr) {
         for (var i = 0; i < data.response.length; ++i) {
-          self.processConversation(data.response[i]);
+          self.processConversation(data.response[i], { skipTimeAgo : true });
         }
+        // do one bulk timeago update after the table renders
+        $("time.timeago").timeago()
       },
       error: function(xhr, status, err) { $('error_msg').text(xhr.responseText) }
     });
