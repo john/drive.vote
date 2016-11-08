@@ -93,6 +93,7 @@ DispatchController.prototype = {
     $('#conversation-messages').load('/dispatch/' + id + '/messages', function( response, status, xhr ) {
       var cont = $('.messages');
       cont[0].scrollTop = cont[0].scrollHeight;
+      document.querySelector('#conv-modal').scrollIntoView();
     });
   },
 
