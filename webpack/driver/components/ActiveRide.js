@@ -33,7 +33,7 @@ class ActiveRide extends React.Component {
                         </div>
                         <div className="bottom-controls secondary">
                             <button className="btn btn-success btn-api" onClick={()=>this.props.pickupRider(ride)}>Rider picked up</button>
-                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Unaccept Ride</button>
+                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Cancel Ride</button>
                         </div>     
                     </div>
                 )
@@ -55,33 +55,15 @@ class ActiveRide extends React.Component {
                         </div>
                         <div className="bottom-controls secondary">
                             <button className="btn btn-success btn-api" onClick={()=>this.props.completeRide(ride)}>Complete Ride</button>
-                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Unaccept Ride</button>
+                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Cancel Ride</button>
                         </div>
                     </div>
                 )
             default:
                 return (
                     <div className="panel panel-full p-y-sm dispatcher-match">
-                    <div className="rideDetails">
-                        <h2 className="m-b-0">{ride.status}</h2>
-                            <a className="directionsLink" target="_blank" href={mapLink}><i className="fa fa-map-marker"></i> Directions</a>
-                                <label>Accept Ride:</label>
-                                <h3>{ride.name}</h3>
-                            <p>
-                                {ride.from_address}<br />
-                                {ride.from_city}, {ride.from_state} {ride.from_zip}
-                            </p>
-                            <ContactVoter voter_phone_number={ride.voter_phone_number} />
-                            <div className="secondary-info m-t">
-                                <p>Total Passengers: {passengers}</p>
-                                <p>Special requests: {ride.special_requests}</p>
-                            </div>
-                        </div>
-                        <div className="bottom-controls secondary">
-                            <button className="btn btn-success btn-api" onClick={()=>this.props.pickupRider(ride)}>Rider picked up</button>
-                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Unaccept Ride</button>
-                        </div>     
-                </div>
+                       <h2>Ride with an unknown Status!</h2>
+                    </div>
                 )
         }
     }
