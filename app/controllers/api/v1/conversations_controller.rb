@@ -84,6 +84,12 @@ module Api::V1
       end
     end
 
+    # POST /admin/conversations/1/close
+    def close
+      @conversation.close(current_user.name)
+      render json: {response: @conversation.reload.api_json}
+    end
+
     private
     def find_conversation
       @conversation = Conversation.find_by_id(params[:id])

@@ -178,6 +178,41 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
     end
   end
 
+  describe 'POST #close' do
+    let!(:rz) { create :ride_zone }
+    let!(:convo) { create :complete_conversation, ride_zone: rz }
+    let!(:ride) { Ride.create_from_conversation(convo) }
+
+    it "redirects if not logged in" do
+      post :close, params: {id: convo.to_param}
+      expect(response).to redirect_to('/404.html')
+    end
+
+    context "logged in as a voter" do
+      login_voter
+
+      it "redirects to 404" do
+        post :close, params: {id: convo.to_param}
+        expect(response).to redirect_to('/404.html')
+      end
+    end
+
+    context "logged in as a dispatcher" do
+      login_dispatcher
+
+      it 'assigns the requested conversation as @conversation' do
+        post :close, params: {id: convo.to_param}
+        expect(assigns(:conversation)).to eq(convo)
+      end
+
+      it 'does the status update' do
+        post :close, params: {id: convo.to_param}
+        expect(convo.reload.status).to eq('closed')
+        expect(ride.reload.status).to eq('complete')
+      end
+    end
+  end
+
   describe 'create message' do
     let(:rz) { create :ride_zone }
     let(:convo) { create :conversation_with_messages, ride_zone: rz }
