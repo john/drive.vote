@@ -151,6 +151,15 @@ class Conversation < ApplicationRecord
     errormsg.is_a?(String) && errormsg =~ /30003|30005|30006/
   end
 
+  def close(username)
+    if ride
+      ride.cancel(username) # also closes this convo
+    else
+      self.status = :closed
+      save!
+    end
+  end
+
   def username
     if self.user && !self.user.has_sms_name?
       self.user.name
