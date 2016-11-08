@@ -198,6 +198,20 @@ RSpec.describe Ride, type: :model do
     end
   end
 
+  describe 'cancel' do
+    let(:convo) { create :complete_conversation }
+    let(:driver) { create :driver_user, rz: convo.ride_zone }
+    let(:ride) { r = Ride.create_from_conversation(convo); r.assign_driver(driver); r}
+
+    it 'cancels' do
+      ride.cancel('foo')
+      expect(ride.reload.status).to eq('complete') # todo: cancel in the future
+      expect(ride.driver).to be_nil
+      expect(ride.description =~ /foo/).to be_truthy
+      expect(convo.reload.status).to eq('closed')
+    end
+  end
+
   describe 'waiting nearby' do
     let!(:zone) { create :ride_zone, latitude: 35, longitude: -122, max_pickup_radius: 50 }
     let!(:other_zone) { create :ride_zone, latitude: 35, longitude: -122 }
