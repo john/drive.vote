@@ -12,7 +12,7 @@ class TimeZoneUtils
       end
       origin_time = Time.use_zone(origin_time_zone) do Time.current + secs_to_add; end
     else
-      origin_time = Time.use_zone(origin_time_zone) do Time.zone.parse(human_input); end
+      origin_time = Time.use_zone(origin_time_zone) do Time.zone.parse(human_input) rescue nil; end
     end
     origin_time.change(sec:0, usec:0) if origin_time
   end
