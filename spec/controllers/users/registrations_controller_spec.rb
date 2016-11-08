@@ -63,6 +63,7 @@ RSpec.describe Users::RegistrationsController, type: :controller do
       expect(response).to be_redirect
       user_created = User.last
       expect( user_created.has_role?(:unassigned_driver, rz) ).to eq(true)
+      expect( user_created.locale).to eq('en')
     end
 
     it "creates a new voter for a specific ride zone" do

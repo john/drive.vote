@@ -147,7 +147,7 @@ en:
   email_address: 'What is your email address?'
   request_saved: 'We have saved your ride request with the details below:'
   found_active_request: 'We found an active request - rescheduling'
-  thanks_for_requesting: "Thank you for requesting a ride on %{time}. We'll send a reminder text before you ride arrives. Email %{email} if you have questions."
+  thanks_for_requesting: "Thank you for requesting a ride on %{time}. We'll send a reminder text before your ride arrives. Email %{email} if you have questions."
   pickup_location: 'Pickup location:'
   pickup_time: 'Pickup time:'
   additional_passengers: 'Additional passengers:'
