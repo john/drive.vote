@@ -285,7 +285,7 @@ DispatchController.prototype = {
 
   // Adds or replaces row in the conversation table with data from conversation
   // object c. Returns the conversation's calculated status.
-  updateConversationTable: function (c, opts) {
+  updateConversationTable: function (c) {
     var status = this.conversationStatus(c),
         rowId = 'conv-row-'+c.id,
         existing = $('#' + rowId),
@@ -317,7 +317,7 @@ DispatchController.prototype = {
         row = newRow
       }
       // scope timeago to this specific row, old or new
-      if (!(opts && opts.skipTimeAgo)) $(row).find("time.timeago").timeago();
+      $(row).find("time.timeago").timeago();
       this.recalcBadges();
     }
     return status;
@@ -469,8 +469,8 @@ DispatchController.prototype = {
   },
 
   // Called for new conversation event or changed
-  processConversation: function (convo, opts) {
-    var status = this.updateConversationTable(convo, opts);
+  processConversation: function (convo) {
+    var status = this.updateConversationTable(convo);
     if (convo.ride != undefined) {
       this._mapController.processRide(convo.ride, this.statusIsVisible(status));
     }
@@ -494,10 +494,8 @@ DispatchController.prototype = {
     $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/conversations', {
       success: function(data, status, xhr) {
         for (var i = 0; i < data.response.length; ++i) {
-          self.processConversation(data.response[i], { skipTimeAgo : true });
+          self.processConversation(data.response[i]);
         }
-        // do one bulk timeago update after the table renders
-        $("time.timeago").timeago()
       },
       error: function(xhr, status, err) { $('error_msg').text(xhr.responseText) }
     });
