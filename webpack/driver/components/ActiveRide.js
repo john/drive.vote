@@ -33,8 +33,8 @@ class ActiveRide extends React.Component {
                         </div>
                         <div className="bottom-controls secondary">
                             <button className="btn btn-success btn-api" onClick={()=>this.props.pickupRider(ride)}>Rider picked up</button>
-                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Unaccept Ride</button>
-                        </div>     
+                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Cancel pickup</button>
+                        </div>
                     </div>
                 )
             case 'picked_up':
@@ -55,7 +55,7 @@ class ActiveRide extends React.Component {
                         </div>
                         <div className="bottom-controls secondary">
                             <button className="btn btn-success btn-api" onClick={()=>this.props.completeRide(ride)}>Complete Ride</button>
-                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Unaccept Ride</button>
+                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Cancel Pickup</button>
                         </div>
                     </div>
                 )
@@ -80,8 +80,8 @@ class ActiveRide extends React.Component {
                         </div>
                         <div className="bottom-controls secondary">
                             <button className="btn btn-success btn-api" onClick={()=>this.props.pickupRider(ride)}>Rider picked up</button>
-                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Unaccept Ride</button>
-                        </div>     
+                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Cancel Pickup</button>
+                        </div>
                 </div>
                 )
         }
