@@ -50,6 +50,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if resource.city_state.present? && resource.city.blank? && resource.state.blank?
       resource.parse_city_state()
     end
+    resource.locale = 'en' if resource.locale.blank?
+    resource.language = 'en' if resource.language.blank? #todo: consolidate these
     resource.save
 
     yield resource if block_given?

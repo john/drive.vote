@@ -118,7 +118,7 @@ class RidesController < ApplicationController
 
   private
   def thanks_msg
-    I18n.t(:thanks_for_requesting, locale: (@ride.voter.locale ||= 'en'), time: @ride.pickup_in_time_zone.strftime('%m/%d %l:%M %P'), email: @ride.ride_zone.email)
+    I18n.t(:thanks_for_requesting, locale: (@ride.voter.locale.blank? ? 'en' : @ride.voter.locale), time: @ride.pickup_in_time_zone.strftime('%m/%d %l:%M %P'), email: @ride.ride_zone.email)
   end
 
   def require_session
