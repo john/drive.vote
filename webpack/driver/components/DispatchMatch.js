@@ -32,7 +32,7 @@ class DispatchMatch extends React.Component {
                         </div>
                         <div className="bottom-controls secondary">
                             <button className="btn btn-success btn-api" onClick={()=>this.props.claimRide(ride)}>Accept Ride</button>
-                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Decline Ride</button>
+                            <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Cancel Pickup</button>
                         </div>
                     </div>
                 </ReactCSSTransitionGroup>
