@@ -182,7 +182,7 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
     let(:rz) { create :ride_zone }
     let(:convo) { create :conversation_with_messages, ride_zone: rz }
     let(:body) { 'hello' }
-    let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid') }
+    let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid', from: convo.from_phone, to: convo.to_phone) }
 
     before :each do
       allow(TwilioService).to receive(:send_message).and_return(twilio_msg)
