@@ -40,4 +40,8 @@ RSpec.describe TimeZoneUtils do
   it 'returns nil for bad time string' do
     expect(TimeZoneUtils.origin_time('foobar', tz)).to be_nil
   end
+
+  it 'returns nil for bad time' do
+    expect(TimeZoneUtils.origin_time('12:72pm', tz)).to be_nil
+  end
 end
