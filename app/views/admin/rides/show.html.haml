@@ -12,10 +12,10 @@
   = @ride.name
 %p
   %b From address:
-  = [@ride.from_address, @ride.from_city, @ride.from_state].join(', ')
+  = [@ride.from_address, @ride.from_city, @ride.from_state].reject {|s| s.blank?}.join(', ')
 %p
   %b To address:
-  = [@ride.to_address, @ride.to_city, @ride.to_state].join(', ')
+  = [@ride.to_address, @ride.to_city, @ride.to_state].reject {|s| s.blank?}.join(', ')
 %p
   %b Pickup Time:
   = @ride.pickup_at ? @ride.pickup_in_time_zone.strftime('%m/%d %l:%M %P %Z') : 'None Set'

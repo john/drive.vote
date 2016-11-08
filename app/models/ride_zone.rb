@@ -92,14 +92,14 @@ class RideZone < ApplicationRecord
   end
 
   def unavailable_drivers
-    self.active_rides.map {|ar| ar.driver}
+    (self.active_rides.map {|ar| ar.driver} + drivers.where(available: false)).uniq
   end
 
   def available_drivers(all: false)
     if all
       drivers - unavailable_drivers
     else
-      nearby_drivers - unavailable_drivers
+      nearby_drivers.where(available: true) - unavailable_drivers
     end
   end
 
