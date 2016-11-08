@@ -39,14 +39,14 @@ es:
   about: '¿Quiénes somos?'
   click_here: 'Clic aquí'
   to_be_notified: 'para ser notificado'
-  learn_more: 'Aprende más'
+  learn_more: 'Aprenda más'
   contact: 'Contacto'
-  your_profile: 'Tu perfil'
+  your_profile: 'Su perfil'
   your_settings: 'Sus ajustes'
   short_description: |
     paseos gratuitos a las urnas el día de las elecciones
   long_description: |
-    Impulsar el voto conecta los votantes que necesitan los viajes con los conductores voluntarios . Los votantes de texto a un número local para solicitar un paseo , y un conductor llega a llevarlos a su lugar de votación.
+    Impulsar el voto conecta los votantes que necesitan los viajes con los conductores voluntarios. Los votantes de texto a un número local para solicitar un paseo, y un conductor llega a llevarlos a su lugar de votación.
   how_it_works: 'Cómo funciona'
   how_it_works_copy: |
     Los votantes enviar un texto para pedir un paseo, y conducir el voto los conecta con un conductor voluntario, que los recoge y los lleva a su lugar de votación.
@@ -110,7 +110,7 @@ es:
   no_address_match: 'Dirección no encontrada. Por favor, responda todas las direcciones y ciudad específica o responder "no sé" o "omitir"'
   what_is_destination_location: '¿Dónde quieres ir - la dirección y la ciudad? Si no está seguro, responder "no sé" o "omitir"'
   are_you_going_from_to: "¡Dar una buena acogida! ¿Se va de %{from} al %{to}?"
-  when_do_you_want_pickup: 'Qué cuando se desea ser recogido (HH:MM am/pm)?'
+  when_do_you_want_pickup: '¿Cuándo desea ser recogido (HH:MM am/pm)?'
   no_dest_when_do_you_want_pickup: 'Se puede trabajar con el controlador de destino. Qué cuando se desea ser recogido (HH:MM am/pm o "ahora")?'
   confirm_address: 'Por favor confirmar la dirección es %{address}. Si/no?'
   confirm_the_time: 'Por favor confirmar su recogida hoy a las %{time}. Si/no?'
@@ -118,10 +118,10 @@ es:
   how_many_additional: '¿Cuántas personas adicionales necesitan un paseo (0-4)?'
   invalid_passengers: 'Por favor, responda con el número de pasajeros adicionales (0-4)'
   any_special_requests: '¿Cuáles son sus peticiones especiales (como silla de ruedas, asientos de bebé)? O responder ninguno.'
-  thanks_will_contact: '¡Gracias! Tenemos su información y pondremos en contacto con usted antes de su viaje.'
-  thanks_wait_for_driver: '¡Gracias! Tenemos su información y pondremos en contacto con usted cuando nos encontramos con un conductor para usted.'
-  thanks_for_using: 'Gracias por intentar Conduce tu Voto'
-  confirm_ride: 'Su paseo está programado para %{time}. Responder 1 para confirmar, 2 para reprogramar, 3 para cancelar, 4 para hablar con alguien.'
+  thanks_will_contact: '¡Gracias! Tenemos su información y nos pondremos en contacto con usted antes de su viaje.'
+  thanks_wait_for_driver: '¡Gracias! Tenemos su información y nos pondremos en contacto con usted cuando nos encontramos con un conductor para usted.'
+  thanks_for_using: 'Gracias por intentar Conduzca el Voto'
+  confirm_ride: 'Su paseo está programado para %{time}. Responda 1 para confirmar, 2 para reprogramar, 3 para cancelar, 4 para hablar con alguien.'
   ride_not_confirmed: 'Lo siento, no escuchamos de usted. Alguien se pondrá en contacto con usted.'
 
   # voter form
@@ -129,18 +129,18 @@ es:
   schedule_ride: 'Programar un viaje gratis'
   can_text_to: 'Utilice este formulario o envíe un texto a'
   to_or_from: 'hacia o desde su lugar de votación'
-  sign_in_to_edit: 'Por favor, inicia sesión para cambiar su solicitud paseo existente'
+  sign_in_to_edit: 'Por favor, inicie sesión para cambiar su solicitud paseo existente'
   voter_name: 'Cuál es su nombre?'
   voter_password: 'Introducir una contraseña (por lo menos 8 caracteres)'
   mobile_phone_number: '¿Cuál es su número de teléfono móvil?'
   where_to_be_picked_up: '¿Dónde desea ser recogido?'
   where_to_be_dropped_off: '¿Dirección de destino?'
-  city_for_pickup: '¿Qué ciudad y estado es que en?'
+  city_for_pickup: '¿Cuál ciudad y estado?'
   what_time_pickup: '¿A qué dia y hora?'
   special_requests: 'Cualquier petición especial (silla de ruedas, asientos para niños)?'
   problem_saving_ride: 'Hubo un problema al guardar la información de su'
   found_active_request: 'Encontramos una solicitud activa - reprogramación'
-  email_address: 'Cuál es tu dirección de correo electrónico?'
+  email_address: 'Cuál es su dirección de correo electrónico?'
   request_saved: 'Hemos salvado su solicitud paseo con los detalles a continuación:'
   thanks_for_requesting: 'Gracias por su interés en un paseo en %{time}. Describir Número de preguntas'
   pickup_location: 'Lugar de recogida:'
@@ -155,7 +155,7 @@ es:
   devise:
     confirmations:
       confirmed: "Su cuenta ha sido confirmada."
-      send_instructions: "Recibira un correo electrónico en unos minutos con instrucciones sobre cómo restablecer su contraseña."
+      send_instructions: "Recibirá un correo electrónico en unos minutos con instrucciones sobre cómo restablecer su contraseña."
       send_paranoid_instructions: "Si su correo electrónico existe en nuestra base de datos recibirás un correo electrónico en unos minutos con instrucciones sobre cómo reiniciar su contraseña."
     failure:
       already_authenticated: "Ya ha sido identificado."
@@ -178,7 +178,7 @@ es:
       success: "Identificado correctamente de %{kind}."
     passwords:
       no_token: "No puede acceder a esta página sino es por medio de un enlace para restablecer contraseña. Si ha accedido desde el enlace para restablecer la contraseña, asegúrese de que la URL esté completa."
-      send_instructions: "Recibira un correo electrónico con instrucciones sobre cómo restablecer su contraseña en unos minutos."
+      send_instructions: "Recibirá un correo electrónico con instrucciones sobre cómo restablecer su contraseña en unos minutos."
       send_paranoid_instructions: "Si su correo electrónico existe en nuestra base de datos, recibira un enlace para restablecer la contraseña en unos minutos."
       updated: "Su contraseña ha cambiado correctamente. Ha sido identificado correctamente."
       updated_not_active: "Su contraseña se ha cambiado correctamente."
@@ -189,7 +189,7 @@ es:
       signed_up_but_locked: "Se ha registrado correctamente, pero no ha podido iniciar sesión porque su cuenta está bloqueada."
       signed_up_but_unconfirmed: "Se le ha enviado un mensaje con un enlace de confirmación. Por favor visite el enlace para activar su cuenta."
       update_needs_confirmation: "Ha actualizado su cuenta correctamente, sin embargo necesitamos verificar su nueva cuenta de correo. Por favor revise su correo electrónico y visite el enlace para finalizar la confirmación de su nueva dirección de correo electrónico."
-      updated: "Ha actualizado tu cuenta correctamente."
+      updated: "Ha actualizado su cuenta correctamente."
     sessions:
       signed_in: "Ha iniciado sesión satisfactoriamente."
       signed_out: "Ha cerrado la sesión satisfactoriamente."
