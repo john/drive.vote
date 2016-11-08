@@ -60,7 +60,6 @@ class ActiveRide extends React.Component {
                     </div>
                 )
             default:
-                mapLink = `http://maps.apple.com/?daddr=${ride.from_address}, ${ride.from_city}, ${ride.from_state}`;
                 return (
                     <div className="panel panel-full p-y-sm dispatcher-match">
                     <div className="rideDetails">
