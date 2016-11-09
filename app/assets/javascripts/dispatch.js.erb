@@ -449,11 +449,14 @@ DispatchController.prototype = {
   },
 
   sendReply: function() {
-    $('#msg-submit').text('Sending...').prop('disabled',true);
-    $('#msg-input').prop('disabled',true);
-    var args = {'message' : {'body': $('#msg-input').text()}};
-    var url = '/api/1/conversations/' + this._activeConversationId + '/messages';
+    var submitButton = $('#msg-submit'),
+        msgInput = $('#msg-input'),
+        errDisplay = $('#msg-error-display'),
+        args = {'message' : {'body': $('#msg-input').text()}},
+        url = '/api/1/conversations/' + this._activeConversationId + '/messages';
 
+    submitButton.text('Sending...').prop('disabled',true);
+    msgInput.prop('disabled',true);
     $.ajax(url, {
       type: 'POST',
       dataType: 'json',
@@ -461,12 +464,15 @@ DispatchController.prototype = {
       process_data: false,
       content_type: 'application/json',
       success: function(data, textStatus, jqXHR) {
-        $('#msg-error-display').html('')
+        msgInput.text('');
+        errDisplay.html('');
       },
       error: function( jqXHR, textStatus, errorThrown ) {
-        $('#msg-submit').text('Send...').prop('disabled',false);
-        $('#msg-input').prop('disabled',false);
-        $('#msg-error-display').html('Your message failed to send:<br>' + jqXHR.responseJSON['error'])
+        errDisplay.html('Your message failed to send:<br>' + jqXHR.responseJSON['error'])
+      },
+      complete: function() {
+        submitButton.text('Send').prop('disabled',false);
+        msgInput.prop('disabled',false).focus();
       }
     });
   },
@@ -526,10 +532,6 @@ DispatchController.prototype = {
         break;
       case 'conversation_changed':
         this.processConversation(event.conversation);
-        $('.btn-send').text('Send');
-        $('.btn-send').prop('disabled',false);;
-        $('#msg-input').text('');
-        $('#msg-input').prop('disabled',false);
         break;
       case 'new_driver':
         this.processDriver(event.driver);

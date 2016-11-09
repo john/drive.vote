@@ -9,9 +9,12 @@ Rails.application.routes.draw do
   }
 
   devise_scope :user do
-    get '/volunteer/:id', :to => 'users/registrations#new', :as => 'volunteer_to_drive_for_zone'
-    get '/volunteer_to_drive/:id', to: redirect("/volunteer/%{id}")
-    get '/volunteer_to_drive', :to => 'users/registrations#new', :as => 'volunteer_to_drive'
+    get '/volunteer/:id', :as => 'volunteer_to_drive_for_zone', to: redirect("/")
+    get '/volunteer_to_drive/:id', to: redirect("/")
+    get '/volunteer_to_drive', :as => 'volunteer_to_drive', to: redirect("/")
+    # get '/volunteer/:id', :to => 'users/registrations#new', :as => 'volunteer_to_drive_for_zone'
+    # get '/volunteer_to_drive/:id', to: redirect("/volunteer/%{id}")
+    # get '/volunteer_to_drive', :to => 'users/registrations#new', :as => 'volunteer_to_drive'
     get "/users/sign_out" => "devise/sessions#destroy", :as => :get_destroy_user_session
   end
 
@@ -63,9 +66,12 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'ride/:ride_zone_id' => 'rides#new', as: 'get_a_ride'
-  get 'get_a_ride/:ride_zone_id', to: redirect("/ride/%{ride_zone_id}")
-  get 'conseguir_un_paseo/:ride_zone_id' => 'rides#new'
+  # get 'ride/:ride_zone_id' => 'rides#new', as: 'get_a_ride'
+  # get 'get_a_ride/:ride_zone_id', to: redirect("/ride/%{ride_zone_id}")
+  # get 'conseguir_un_paseo/:ride_zone_id' => 'rides#new'
+  get 'ride/:ride_zone_id', as: 'get_a_ride', to: redirect("/")
+  get 'get_a_ride/:ride_zone_id', to: redirect("/")
+  get 'conseguir_un_paseo/:ride_zone_id', to: redirect("/")
 
   resources :rides, only: [:create, :edit, :update]
 
@@ -82,6 +88,7 @@ Rails.application.routes.draw do
       resources :conversations, only: [:show, :update] do
         member do
           post 'messages' => 'conversations#create_message'
+          post 'close' => 'conversations#close'
           post 'rides' => 'conversations#create_ride'
           post 'update_attribute' => 'conversations#update_attribute'
           post 'remove_help_needed' => 'conversations#remove_help_needed'
