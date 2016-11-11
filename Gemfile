@@ -1,6 +1,6 @@
-#ruby=2.3.1
-#ruby-gemset=drive.vote
+# ruby-gemset=drive.vote
 source 'https://rubygems.org'
+ruby '2.3.1'
 
 gem 'city-state'
 gem 'chronic'
