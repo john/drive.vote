@@ -65,72 +65,71 @@ erin.add_role(:admin)
 gerald.add_role(:admin)
 john.add_role(:admin)
 
-if  Rails.env == "development"
+# if  Rails.env == "development"
+zones = RideZone.create!([
+  {
+    name: 'Berkeley, CA',
+    phone_number: '+15102579445',
+    slug: 'berkeley',
+    city: 'Berkeley',
+    state: 'CA',
+    zip: '89169',
+    country: 'us',
+    latitude: 37.8760097,
+    longitude: -122.3157274,
+    time_zone: 'America/Los_Angeles',
+  },
+  {
+    name: 'San Francisco, CA',
+    phone_number: '+14152002626',
+    slug: 'san_francisco',
+    city: 'San Francisco',
+    state: 'CA',
+    zip: '94118',
+    country: 'us',
+    latitude: 37.7756912,
+    longitude: -122.464523,
+    time_zone: 'America/Los_Angeles',
+  },
+  {
+    name: 'Orlando, FL',
+    phone_number: '+14073095953',
+    slug: 'orlando',
+    city: 'Orlando',
+    state: 'FL',
+    zip: '32839',
+    country: 'us',
+    latitude: '28.4813986',
+    longitude: '-81.5091796',
+    time_zone: 'America/New_York'
+  }
+])
 
-  zones = RideZone.create!([
-    {
-      name: 'Berkeley, CA',
-      phone_number: '+15102579445',
-      slug: 'berkeley',
-      city: 'Berkeley',
-      state: 'CA',
-      zip: '89169',
-      country: 'us',
-      latitude: 37.8760097,
-      longitude: -122.3157274,
-      time_zone: 'America/Los_Angeles',
-    },
-    {
-      name: 'San Francisco, CA',
-      phone_number: '+14152002626',
-      slug: 'san_francisco',
-      city: 'San Francisco',
-      state: 'CA',
-      zip: '94118',
-      country: 'us',
-      latitude: 37.7756912,
-      longitude: -122.464523,
-      time_zone: 'America/Los_Angeles',
-    },
-    {
-      name: 'Orlando, FL',
-      phone_number: '+14073095953',
-      slug: 'orlando',
-      city: 'Orlando',
-      state: 'FL',
-      zip: '32839',
-      country: 'us',
-      latitude: '28.4813986',
-      longitude: '-81.5091796',
-      time_zone: 'America/New_York'
-    }
-  ])
+drivers = User.create!([
+  {
+    name: 'Deborah Driver',
+    available: false,
+    email: 'deborah@fnnny.com',
+    password: '1234abcd',
+    phone_number: '2123328709',
+    phone_number_normalized: '+15555222222',
+    image_url: '',
+    locale: 'en',
+    zip: '84122'
+  }, {
+    name: 'Doug Driver',
+    available: false,
+    email: 'doug@fnnny.com',
+    password: '1234abcd',
+    phone_number: '2133328709',
+    phone_number_normalized: '+15556222222',
+    image_url: '',
+    locale: 'en',
+    zip: '84122'
+  }
+])
 
-  drivers = User.create!([
-    {
-      name: 'Deborah Driver',
-      available: false,
-      email: 'deborah@fnnny.com',
-      password: '1234abcd',
-      phone_number: '2123328709',
-      phone_number_normalized: '+15555222222',
-      image_url: '',
-      locale: 'en',
-      zip: '84122'
-    }, {
-      name: 'Doug Driver',
-      available: false,
-      email: 'doug@fnnny.com',
-      password: '1234abcd',
-      phone_number: '2133328709',
-      phone_number_normalized: '+15556222222',
-      image_url: '',
-      locale: 'en',
-      zip: '84122'
-    }
-  ])
-
-  rz = RideZone.find_by_slug('orlando')
-  drivers[0].add_role(:unassigned_driver, rz)
-  drivers[1].add_role(:unassigned_driver, rz)
-end
+rz = RideZone.find_by_slug('orlando')
+drivers[0].add_role(:unassigned_driver, rz)
+drivers[1].add_role(:unassigned_driver, rz)
+# end
