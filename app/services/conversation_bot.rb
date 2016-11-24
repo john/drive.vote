@@ -242,7 +242,7 @@ class ConversationBot
             return 0
           when '3'
             @conversation.update_attributes(status: :closed)
-            @conversation.ride.update_attributes(status: :complete) if @conversation.ride
+            @conversation.ride.cancel(@conversation.user.name) if @conversation.ride
             @response = I18n.t(:thanks_for_using, locale: @locale)
             return 0
           when '4'

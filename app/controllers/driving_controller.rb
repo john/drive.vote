@@ -75,6 +75,15 @@ class DrivingController < ApplicationController
     end
   end
 
+  def cancel_ride
+    if @active_ride.nil?
+      render json: {error: 'Driver not on ride'}, status: 400
+    else
+      update = -> { r = Ride.find(params[:ride_id]); r && r.cancel(current_user.name) }
+      perform_update update, 'Ride not for this driver'
+    end
+  end
+
   def waiting_rides
     rides = if @active_ride
               [ @active_ride ] # this allows for dispatcher assignment
@@ -115,7 +124,7 @@ class DrivingController < ApplicationController
   def ensure_session
     render :nothing => true, :status => 401 && return unless current_user
     @driver_id = current_user.id
-    @active_ride = Ride.where(driver_id: @driver_id).where.not(status: Ride.statuses[:complete]).first
+    @active_ride = Ride.where(driver_id: @driver_id).where.not(status: Ride.complete_status_values).first
   end
 
   def update_location_interval

@@ -109,7 +109,11 @@ module Api::V1
     end
 
     def status_array
-      params[:status].to_s.split(',').map(&:strip)
+      if params[:status] == 'all'
+        Conversation.statuses.keys.map(&:to_s)
+      else
+        params[:status].to_s.split(',').map(&:strip)
+      end
     end
   end
 end

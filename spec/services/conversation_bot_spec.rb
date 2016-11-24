@@ -388,7 +388,7 @@ RSpec.describe ConversationBot do
       reply = create :message, conversation: convo, body: '3', from: convo.from_phone, to: convo.to_phone
       expect(ConversationBot.new(convo, reply).response).to eq(I18n.t(:thanks_for_using, locale: :en))
       expect(convo.reload.status).to eq('closed')
-      expect(convo.ride.status).to eq('complete')
+      expect(convo.ride.status).to eq('canceled')
     end
 
     it 'should accept confirm help needed' do

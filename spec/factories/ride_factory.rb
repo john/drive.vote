@@ -27,6 +27,10 @@ FactoryGirl.define do
     factory :complete_ride do
       status Ride.statuses[:complete]
     end
+
+    factory :canceled_ride do
+      status Ride.statuses[:canceled]
+    end
   end
 
 end
