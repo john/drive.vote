@@ -62,6 +62,10 @@ class RideZone < ApplicationRecord
     named_role(:admin)&.users || User.none
   end
 
+  def voters
+    named_role(:voter)&.users || User.none
+  end
+
   def dispatchers
     named_role(:dispatcher)&.users || User.none
   end

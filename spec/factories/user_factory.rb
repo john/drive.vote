@@ -24,8 +24,12 @@ FactoryGirl.define do
     end
 
     factory :voter do
+      transient do
+        rz { create( :ride_zone ) }
+      end
+
       after(:create) do |user, evaluator|
-        user.add_role(:voter)
+        user.add_role(:voter, evaluator.rz)
       end
     end
 

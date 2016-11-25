@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Admin::MetricsController, type: :controller do
+RSpec.describe Admin::MetricsController, focus:true, type: :controller do
 
   describe "GET index" do
     it "redirects if not logged in" do
@@ -35,12 +35,6 @@ RSpec.describe Admin::MetricsController, type: :controller do
         expect(assigns(:total_rides_count)).to eq(1)
       end
 
-      it "assigns @total_rides_count" do
-        ride = create :ride
-        get :index
-        expect(assigns(:total_rides_count)).to eq(1)
-      end
-
       it "assigns @completed_rides_count" do
         ride = create :complete_ride
         get :index
@@ -49,8 +43,47 @@ RSpec.describe Admin::MetricsController, type: :controller do
 
       it "assigns @message_count" do
         create :conversation_with_messages
-
         get :index
+        expect(assigns(:message_count)).to eq(2)
+      end
+    end
+
+    context "as zone admin" do
+      let!(:rz) { create :ride_zone }
+      login_rz_admin
+
+      it "assigns @voter_count" do
+        voter = create :voter, rz: rz
+        get :index, params: {rz_id: rz.id}
+        expect(assigns(:voter_count)).to eq(1)
+      end
+
+      it "assigns @conversation_count" do
+        conversation = create :conversation, ride_zone: rz
+        get :index, params: {rz_id: rz.id}
+        expect(assigns(:conversation_count)).to eq(1)
+      end
+
+      it "assigns @ride_zone_count" do
+        get :index, params: {rz_id: rz.id}
+        expect(assigns(:ride_zone_count)).to eq(1)
+      end
+
+      it "assigns @total_rides_count" do
+        ride = create :ride, ride_zone: rz
+        get :index, params: {rz_id: rz.id}
+        expect(assigns(:total_rides_count)).to eq(1)
+      end
+
+      it "assigns @completed_rides_count" do
+        ride = create :complete_ride, ride_zone: rz
+        get :index, params: {rz_id: rz.id}
+        expect(assigns(:completed_rides_count)).to eq(1)
+      end
+
+      it "assigns @message_count" do
+        create :conversation_with_messages, ride_zone: rz
+        get :index, params: {rz_id: rz.id}
         expect(assigns(:message_count)).to eq(2)
       end
     end
