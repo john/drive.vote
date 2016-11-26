@@ -291,6 +291,13 @@ RSpec.describe Ride, type: :model do
     expect(c.reload.status).to eq('closed')
   end
 
+  it 'does not send text when ride canceled' do
+    expect_any_instance_of(Conversation).to_not receive(:notify_voter_of_assignment)
+    c = create :conversation_with_messages
+    ride = create :ride, conversation: c
+    ride.cancel('foobar')
+  end
+
   it 'updates status timestamp on create' do
     r = create :ride
     expect(r.reload.status_updated_at).to_not be_nil

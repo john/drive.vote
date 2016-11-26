@@ -103,7 +103,7 @@ class Ride < ApplicationRecord
   def clear_driver driver = nil
     return false if driver && self.driver_id != driver.id
     self.driver = nil
-    self.status = :waiting_assignment
+    self.status = :waiting_assignment unless self.status == 'canceled'
     save!
   end
 
@@ -221,11 +221,11 @@ class Ride < ApplicationRecord
   end
 
   def cancel(username)
-    clear_driver if self.driver
     timestamp = self.ride_zone.current_time.strftime('%m/%d %l:%M%P %Z')
     self.status = :canceled
     self.description = (self.description || '') + " canceled by #{username} at #{timestamp}"
     save!
+    clear_driver if self.driver
   end
 
   private
@@ -236,11 +236,12 @@ class Ride < ApplicationRecord
   end
 
   def notify_voter_about_driver
+    return if self.conversation.nil? || self.status == 'canceled'
     # notify voter IF
     # ride became driver_assigned or is assigned and driver id changed or driver was cleared when it was assigned
     if ((self.status_changed? || self.driver_id_changed?) && self.status == 'driver_assigned') ||
        (self.driver_id_changed? && self.driver.nil? && self.status_was == 'driver_assigned')
-      self.conversation.notify_voter_of_assignment(self.driver) if self.conversation
+      self.conversation.notify_voter_of_assignment(self.driver)
     end
   end
 
