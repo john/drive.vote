@@ -46,6 +46,8 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'spring-commands-rspec'
+  # A mini view framework for console/irb: https://github.com/cldwalker/hirb
+  gem 'hirb', '~> 0.7.3'
 end
 
 group :development, :test do
