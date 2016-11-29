@@ -62,7 +62,7 @@ class User < ApplicationRecord
 
   validates :email, length: { maximum: 50 }
   validates :name, length: { maximum: 50 }
-  validates :phone_number, length: { maximum: 17 }
+  validates :phone_number, length: { maximum: 17 }, uniqueness: { case_sensitive: false }
   validates :address1, length: { maximum: 100 }
   validates :address2, length: { maximum: 100 }
   validates :city, length: { maximum: 50 }
