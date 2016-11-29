@@ -79,12 +79,12 @@ class TwilioService
         phone_number_normalized: from_phone,
         email: User.autogenerate_email
     }
-    # create the user and rescue duplicate record error to find existing one
-    @user = begin
-      User.create!(attrs)
-    rescue ActiveRecord::RecordNotUnique
-      User.where(phone_number_normalized: from_phone).first
+
+    # If User with phone already exists, use it.  Otherwise, create new User.
+    @user = User.where(phone_number_normalized: from_phone).first_or_create do |user|
+      user.assign_attributes(attrs)
     end
+
     @conversation = Conversation.where(user_id: @user.id).where.not(status: :closed).first
     @conversation ||= Conversation.create(status: :sms_created, user_id: @user.id, ride_zone: @ride_zone)
   end
