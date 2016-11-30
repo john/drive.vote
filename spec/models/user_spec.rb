@@ -75,8 +75,6 @@ RSpec.describe User, :type => :model do
   end
 
   context 'validations' do
-    subject { FactoryGirl.build(:user)}
-
     it { should validate_length_of(:name).is_at_most(50)}
     it { should allow_value('lost of-fun & your ЖжДдѮѯ💩  jr.').for(:name)}
     it { should_not allow_value('Erin Germ">\'><img src=x onerror=alert(/v-name/)>r').for(:name)}
@@ -85,12 +83,27 @@ RSpec.describe User, :type => :model do
     it { should_not allow_value('fun
                                 ').for(:name)}
     it { should validate_length_of(:phone_number).is_at_most(17)}
-    it { should validate_uniqueness_of(:phone_number).case_insensitive }
     it { should validate_length_of(:email).is_at_most(50)}
     it { should validate_length_of(:password).is_at_least(8).is_at_most(128)}
     it { should validate_length_of(:city).is_at_most(50)}
     it { should validate_length_of(:state).is_at_most(2)}
     it { should validate_length_of(:zip).is_at_most(12)}
+
+    # shoulda-matchers doesn't really handle validations on derived fields that well
+    it 'should validate uniquiness of phone_number_normalized' do
+      first_user = create :user
+      second_user = build :user
+
+      second_user.phone_number = first_user.phone_number
+      expect(second_user).to_not be_valid
+
+      # junk at end of a phone_number gets stripped off during normalization
+      second_user.phone_number = first_user.phone_number += '++'
+      expect(second_user).to_not be_valid
+
+      second_user.phone_number = '+18005555555'
+      expect(second_user).to be_valid
+    end
 
     describe '#permissible_state' do
       let(:user) {create :user}
