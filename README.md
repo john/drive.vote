@@ -3,10 +3,15 @@
 Master: [![CircleCI](https://circleci.com/gh/john/drive.vote.svg?style=svg&circle-token=59230e969a45b9cbd93ef91e357dd64d07db342b)](https://circleci.com/gh/john/drive.vote)
 Production: [![CircleCI](https://circleci.com/gh/john/drive.vote/tree/production.svg?style=svg&circle-token=59230e969a45b9cbd93ef91e357dd64d07db342b)](https://circleci.com/gh/john/drive.vote/tree/production)
 
-Drive the Vote helps people arrange free rides to the polls on election day.
+Drive the Vote helps people arrange free rides to the polls on election day. It consists of:
+* A text-based interface for voters to request rides on-demand--no smartphone required!
+* A scheduling app, so either voters or volunteers can pre-schedule rides.
+* An app for dispatchers to monitor voters and volunteer drivers in real-time.
+* A location-aware app for drivers, to notify them when a nearby voter has requested or scheduled a ride.
 
-Weekly meeting notes [here](
-https://docs.google.com/document/d/10g34fvm6qZ-s8ca0TDMET56McxQYUPsc_1dOPFlYoAY/edit?usp=sharing).
+Here's what the Philadelphia dispatch and driver apps looked like on election morning 2016:
+
+![DtV screenshots](http://i.imgur.com/pp5NpW9.jpg)
 
 
 
