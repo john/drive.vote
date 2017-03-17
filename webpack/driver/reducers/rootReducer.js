@@ -103,6 +103,7 @@ function driverState(state = {
 
         case 'LOCATION_SUBMITTED':
             return Object.assign({}, state, {
+                available: action.available,
                 update_location_interval: action.update_location_interval * 1000,
             })
         case 'API_ERROR':
