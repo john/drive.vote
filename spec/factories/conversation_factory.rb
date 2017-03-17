@@ -18,7 +18,8 @@ FactoryGirl.define do
                     evaluator.messages_count,
                     conversation: conversation,
                     to: conversation.to_phone,
-                    from: conversation.from_phone)
+                    from: conversation.from_phone,
+                    ride_zone: conversation.ride_zone)
       end
     end
 
