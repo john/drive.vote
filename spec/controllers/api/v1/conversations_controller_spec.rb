@@ -208,7 +208,7 @@ RSpec.describe Api::V1::ConversationsController, :type => :controller do
       it 'does the status update' do
         post :close, params: {id: convo.to_param}
         expect(convo.reload.status).to eq('closed')
-        expect(ride.reload.status).to eq('complete')
+        expect(ride.reload.status).to eq('canceled')
       end
     end
   end

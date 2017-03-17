@@ -192,6 +192,7 @@ DispatchController.prototype = {
     if (ride !== undefined && ride !== null) {
       switch (ride.status) {
         case 'complete':
+        case 'canceled':
           return 'complete';
         case 'picked_up':
           if (now - desired_time > this.OVERDUE_COMPLETION)
@@ -264,7 +265,10 @@ DispatchController.prototype = {
         break;
       case 'complete':
         if (c.ride !== undefined) {
-          msg = 'Ride completed by ' + c.ride.driver_name + ' at ' + rideStatusChange;
+          if (c.ride.status == 'complete')
+            msg = 'Ride completed by ' + c.ride.driver_name + ' at ' + rideStatusChange;
+          else // canceled
+            msg = 'Ride ' + c.ride.description
         }
         break;
     }
@@ -507,7 +511,7 @@ DispatchController.prototype = {
   refreshConversations: function () {
     var self = this;
     $("#conversations > tbody").html("");
-    $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/conversations', {
+    $.ajax('/api/1/ride_zones/' + this._rideZoneId + '/conversations?status=all', {
       success: function(data, status, xhr) {
         for (var i = 0; i < data.response.length; ++i) {
           self.processConversation(data.response[i], { skipTimeAgo : true });

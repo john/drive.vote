@@ -403,6 +403,23 @@ RSpec.describe User, :type => :model do
     end
   end
 
+  describe 'rides' do
+    let(:user) { create :voter_user }
+
+    it 'returns active and open ride' do
+      r = create :assigned_ride, voter: user
+      expect(user.active_ride.id).to eq(r.id)
+      expect(user.open_ride.id).to eq(r.id)
+    end
+
+    it 'does not returns active and open ride' do
+      create :complete_ride, voter: user
+      create :canceled_ride, voter: user
+      expect(user.active_ride).to be_nil
+      expect(user.open_ride).to be_nil
+    end
+  end
+
   it 'marks info complete' do
     u = create :user, name: '+15105261111 via sms', phone_number: '+15105261111'
     expect(u.has_sms_name?).to be_truthy

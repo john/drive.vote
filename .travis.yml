@@ -6,3 +6,5 @@ script:
   - bundle exec rake
 notifications:
   slack: devprogress:cgUQZSb0t5viIy06w8dgJMXh
+env:
+  - SECRET_KEY_BASE=abc123

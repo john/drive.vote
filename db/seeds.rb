@@ -9,7 +9,7 @@
 adam = User.create!(
   name: 'Adam McAmis',
   available: false,
-  email: '	mcamis@gmail.com',
+  email: 'mcamis@gmail.com',
   password: '1234abcd',
   phone_number_normalized: '+15550222222',
   locale: 'en',
@@ -18,7 +18,7 @@ adam = User.create!(
 albert = User.create!(
   name: 'Albert Wong',
   available: false,
-  email: '	awong.public@gmail.com',
+  email: 'awong.public@gmail.com',
   password: '1234abcd',
   phone_number_normalized: '+15551222222',
   locale: 'en',

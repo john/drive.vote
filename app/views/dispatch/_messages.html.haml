@@ -9,7 +9,7 @@
         = message.body
 
 -# just to make the javascript below a little easier to read
-- close_button = j( link_to 'Archive', '#', class: 'btn btn-sm btn-info archive-convo' )
+- close_button = j( link_to 'Cancel', '#', class: 'btn btn-sm btn-info archive-convo' )
 
 - if @conversation.user.name.include?('via sms')
   - title = @conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')
@@ -28,7 +28,7 @@
   $('#archive-btn').html("<span style='font-weight: normal;'>#{close_button}</span>")
 
   $('.archive-convo').click(function(e) {
-    if (confirm("Are you sure? This will end the conversation and complete the ride no matter what state it is in. This is a complete cancellation of this voter's ride" )) {
+    if (confirm("Are you sure? This will end the conversation and cancel the ride no matter what state it is in. This is a complete cancellation of this voter's ride" )) {
       $.post( '/api/1/conversations/#{@conversation.id}/close', function(responseData, status, xhr) {
          $('#conv-modal').modal('hide')
         humane.log ('Conversation archived');

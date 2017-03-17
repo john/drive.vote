@@ -33,20 +33,31 @@
           = @voter_count
     %td
       .inner
+        Drivers
+        .count
+          = @driver_count
+    %td
+      .inner
         Ride zones
         .count
           = @ride_zone_count
+  %tr
     %td
       .inner
         Total rides
         .count
           = @total_rides_count
-  %tr
     %td
       .inner
         Completed rides
         .count
           = @completed_rides_count
+    %td
+      .inner
+        Canceled rides
+        .count
+          = @canceled_rides_count
+  %tr
     %td
       .inner
         Conversations
