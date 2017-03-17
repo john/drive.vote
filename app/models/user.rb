@@ -2,6 +2,10 @@ class User < ApplicationRecord
   require 'csv'
   include States
 
+  HUMANIZED_ATTRIBUTES = {
+      :phone_number_normalized => 'Phone Number' # don't need to expose the "normalized" field to users
+  }
+
   # TODO: when geocoding is enabled
   # acts_as_mappable :lat_column_name => :latitude, :lng_column_name => :longitude
 
@@ -18,6 +22,10 @@ class User < ApplicationRecord
       user.longitude = geo.longitude
       user.zip = geo.postal_code if geo.postal_code.present?
     end
+  end
+
+  def self.human_attribute_name(attr, options = {})
+    HUMANIZED_ATTRIBUTES[attr.to_sym] || super
   end
 
   before_validation :autogenerate_email_if_necessary
@@ -55,7 +63,7 @@ class User < ApplicationRecord
 
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   validates_format_of :name, with: /\A[^"@\n]*\z/
-  validates :phone_number_normalized, phony_plausible: true
+  validates :phone_number_normalized, phony_plausible: true, uniqueness: { message: 'already in use by another account' }
   validate :permissible_user_type
   validate :permissible_zip, if: -> (obj) { obj.zip_changed? || obj.new_record? }
   validate :permissible_state, if: -> (obj) { obj.state_changed? || obj.new_record? }

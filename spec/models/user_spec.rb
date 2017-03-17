@@ -89,6 +89,22 @@ RSpec.describe User, :type => :model do
     it { should validate_length_of(:state).is_at_most(2)}
     it { should validate_length_of(:zip).is_at_most(12)}
 
+    # shoulda-matchers doesn't really handle validations on derived fields that well
+    it 'should validate uniquiness of phone_number_normalized' do
+      first_user = create :user
+      second_user = build :user
+
+      second_user.phone_number = first_user.phone_number
+      expect(second_user).to_not be_valid
+
+      # junk at end of a phone_number gets stripped off during normalization
+      second_user.phone_number = first_user.phone_number += '++'
+      expect(second_user).to_not be_valid
+
+      second_user.phone_number = '+18005555555'
+      expect(second_user).to be_valid
+    end
+
     describe '#permissible_state' do
       let(:user) {create :user}
       let(:admin_user) {create :admin_user}
