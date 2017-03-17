@@ -210,6 +210,32 @@ RSpec.describe DrivingController, :type => :controller do
     end
   end
 
+  describe 'cancel ride' do
+    let(:ride) { create :ride, driver_id: driver.id }
+
+    it 'is successful' do
+      post :cancel_ride, params: {ride_id: ride.id}
+      expect(response).to be_successful
+    end
+
+    it 'updates ride status' do
+      post :cancel_ride, params: {ride_id: ride.id}
+      expect(ride.reload.status).to eq('canceled')
+    end
+
+    it 'does not allow completing un-owned rides' do
+      ride.update_attribute :driver_id, 999
+      post :cancel_ride, params: {ride_id: ride.id}
+      expect(response).to_not be_successful
+      expect(response.status).to eq(400)
+    end
+
+    it 'updates driver location' do
+      post :cancel_ride, params: car_location.merge(ride_id: ride.id)
+      verify_location_updated
+    end
+  end
+
   describe 'waiting rides' do
     it 'is successful' do
       get :waiting_rides

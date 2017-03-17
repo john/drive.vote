@@ -11,7 +11,8 @@ class Ride < ApplicationRecord
     driver_assigned: 3,
     picked_up: 4,
     complete: 5,
-    waiting_acceptance: 6
+    waiting_acceptance: 6,
+    canceled: 7,
   }
 
   belongs_to :ride_zone
@@ -20,7 +21,7 @@ class Ride < ApplicationRecord
   belongs_to :ride_zone
   has_one :conversation
 
-  scope :completed, -> { where(status: :complete)}
+  scope :completed, -> { where(status: Ride.complete_statuses)}
 
   validates :voter, presence: true
   validates :name, length: { maximum: 50 }
@@ -102,7 +103,7 @@ class Ride < ApplicationRecord
   def clear_driver driver = nil
     return false if driver && self.driver_id != driver.id
     self.driver = nil
-    self.status = :waiting_assignment
+    self.status = :waiting_assignment unless self.status == 'canceled'
     save!
   end
 
@@ -190,6 +191,14 @@ class Ride < ApplicationRecord
     self.active_statuses.map {|s| Ride.statuses[s]}
   end
 
+  def self.complete_statuses
+    [:complete, :canceled]
+  end
+
+  def self.complete_status_values
+    self.complete_statuses.map {|s| Ride.statuses[s]}
+  end
+
   def self.confirm_scheduled_rides
     results = Hash.new(0)
     Ride.where(status: :scheduled).where('pickup_at < ?', SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now).each do |ride|
@@ -212,10 +221,11 @@ class Ride < ApplicationRecord
   end
 
   def cancel(username)
-    clear_driver if self.driver
-    self.status = :complete #todo: should be cancel post election
-    self.description = (self.description || '') + " (Cancelled by #{username} #{Time.now})"
+    timestamp = self.ride_zone.current_time.strftime('%m/%d %l:%M%P %Z')
+    self.status = :canceled
+    self.description = (self.description || '') + " canceled by #{username} at #{timestamp}"
     save!
+    clear_driver if self.driver
   end
 
   private
@@ -226,11 +236,12 @@ class Ride < ApplicationRecord
   end
 
   def notify_voter_about_driver
+    return if self.conversation.nil? || self.status == 'canceled'
     # notify voter IF
     # ride became driver_assigned or is assigned and driver id changed or driver was cleared when it was assigned
     if ((self.status_changed? || self.driver_id_changed?) && self.status == 'driver_assigned') ||
        (self.driver_id_changed? && self.driver.nil? && self.status_was == 'driver_assigned')
-      self.conversation.notify_voter_of_assignment(self.driver) if self.conversation
+      self.conversation.notify_voter_of_assignment(self.driver)
     end
   end
 
@@ -253,7 +264,9 @@ class Ride < ApplicationRecord
   end
 
   def close_conversation_when_complete
-    self.conversation.update_attribute(:status, 'closed') if self.conversation && status_changed? && status == 'complete'
+    if self.conversation && status_changed? && (status == 'complete' || status == 'canceled')
+      self.conversation.update_attributes(status: 'closed')
+    end
   end
 
   def geocoded_and_in_radius

@@ -154,6 +154,27 @@ paths:
             The server does not think this driver owns this ride
           schema:
             $ref: '#/definitions/ErrorResponse'
+  /driving/cancel_ride:
+    post:
+      summary: Indicates that the ride itself should be canceled
+      description: |
+        Call this endpoint when the driver indicates the voter is canceling the ride, e.g. has already voted
+      parameters:
+        - name: ride_id
+          in: query
+          type: integer
+          description: Unique id of the ride
+          required: true
+      responses:
+        200:
+          description: Status response
+          schema:
+            $ref: '#/definitions/DrivingStatusResponse'
+        400:
+          description: |
+            The server does not think this driver owns this ride
+          schema:
+            $ref: '#/definitions/ErrorResponse'
   /driving/waiting_rides:
     get:
       summary: Gets one or more nearby rides waiting for a driver

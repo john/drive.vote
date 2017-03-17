@@ -109,6 +109,7 @@ class RideZone < ApplicationRecord
       total_drivers: drivers.count,
       available_drivers: drivers.where(available: true).count,
       completed_rides: Ride.where(ride_zone_id: self.id, status: :complete).count,
+      canceled_rides: Ride.where(ride_zone_id: self.id, status: :canceled).count,
       active_rides: Ride.where(ride_zone_id: self.id, status: Ride.active_statuses).count,
       scheduled_rides: Ride.where(ride_zone_id: self.id, status: :scheduled).count,
     }

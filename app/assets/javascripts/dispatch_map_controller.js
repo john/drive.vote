@@ -27,7 +27,7 @@ DispatchMapController.prototype = {
       icon = Map.icons.open_driver;
 
     if(lat == undefined || lat == null || lon == undefined || lon == null) { return }
-    if(ride != undefined && ride.status != 'complete') {
+    if(ride != undefined && ride.status != 'complete' && ride.status != 'canceled') {
       // this driver has an active ride
       if (ride.status == 'driver_assigned') {
         icon = Map.icons.assigned_driver;
@@ -105,7 +105,7 @@ DispatchMapController.prototype = {
       } else {
         icon = Map.icons.waiting_pickup;
       }
-    } else if (ride.status == 'complete') {
+    } else if (ride.status == 'complete' || ride.status == 'canceled') {
       visible = false;
     }
 

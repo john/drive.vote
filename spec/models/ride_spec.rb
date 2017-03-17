@@ -54,6 +54,13 @@ RSpec.describe Ride, type: :model do
     end
   end
 
+  it 'finds completed rides' do
+    complete = create :complete_ride
+    canceled = create :canceled_ride
+    sched = create :scheduled_ride
+    expect(Ride.completed.count).to eq(2)
+  end
+
   describe 'event generation' do
     let!(:driver) { create :driver_user }
     let!(:new_driver) { create :driver_user }
@@ -205,7 +212,7 @@ RSpec.describe Ride, type: :model do
 
     it 'cancels' do
       ride.cancel('foo')
-      expect(ride.reload.status).to eq('complete') # todo: cancel in the future
+      expect(ride.reload.status).to eq('canceled')
       expect(ride.driver).to be_nil
       expect(ride.description =~ /foo/).to be_truthy
       expect(convo.reload.status).to eq('closed')
@@ -273,8 +280,22 @@ RSpec.describe Ride, type: :model do
   it 'updates conversation to closed when ride complete' do
     c = create :conversation_with_messages
     ride = create :ride, conversation: c
-    ride.update_attribute(:status, :complete)
+    ride.update_attributes(status: :complete)
     expect(c.reload.status).to eq('closed')
+  end
+
+  it 'updates conversation to closed when ride canceled' do
+    c = create :conversation_with_messages
+    ride = create :ride, conversation: c
+    ride.update_attributes(status: :canceled)
+    expect(c.reload.status).to eq('closed')
+  end
+
+  it 'does not send text when ride canceled' do
+    expect_any_instance_of(Conversation).to_not receive(:notify_voter_of_assignment)
+    c = create :conversation_with_messages
+    ride = create :ride, conversation: c
+    ride.cancel('foobar')
   end
 
   it 'updates status timestamp on create' do

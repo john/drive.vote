@@ -488,7 +488,7 @@ RSpec.describe Conversation, type: :model do
       ride
       convo.close('foobar')
       expect(convo.reload.status).to eq('closed')
-      expect(ride.reload.status).to eq('complete')
+      expect(ride.reload.status).to eq('canceled')
       expect(ride.description =~ /foobar/).to be_truthy
       expect(ride.driver).to be_nil
     end

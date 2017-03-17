@@ -61,6 +61,7 @@ Rails.application.routes.draw do
       post 'unaccept_ride' => 'driving#unaccept_ride'
       post 'pickup_ride' => 'driving#pickup_ride'
       post 'complete_ride' => 'driving#complete_ride'
+      post 'cancel_ride' => 'driving#cancel_ride'
       get 'waiting_rides' => 'driving#waiting_rides'
       get 'ridezone_stats' => 'driving#ridezone_stats'
     end
