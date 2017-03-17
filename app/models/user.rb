@@ -206,7 +206,7 @@ class User < ApplicationRecord
   end
 
   def open_ride
-    Ride.where(driver_id: self.id).or(Ride.where(voter_id: self.id)).where.not(status: :complete).first
+    Ride.where(driver_id: self.id).or(Ride.where(voter_id: self.id)).where.not(status: Ride.complete_statuses).first
   end
 
   def recent_complete_ride

@@ -30,6 +30,9 @@
   &nbsp;&#183;&nbsp;
 
   = link_to 'Volunteer to drive form', volunteer_to_drive_for_zone_url(@ride_zone.slug)
+  &nbsp;&#183;&nbsp;
+
+  = link_to 'Metrics', admin_metrics_path + "?rz_id=#{@ride_zone.id}"
 
 %h6
   Dispatchers

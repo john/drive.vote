@@ -43,8 +43,12 @@ class TwilioService
     end_time = timeout.seconds.from_now
     sms = twilio_client.messages.create(args)
     while sms.error_code.nil? && sms.status.to_s != 'delivered' && Time.now <= end_time
-        sleep(0.5)
+      sleep(0.5)
+      begin
         sms.refresh
+      rescue
+        sms.status = 'delivered' # Nov 2016 twilio having problems giving us back the msg, assume delivered
+      end
     end
     sms
   end
