@@ -4,7 +4,7 @@ ruby '2.3.1'
 
 gem 'city-state'
 gem 'chronic'
-gem 'coffee-rails' # should be necessary, not using, but lack of causes sprockets bug
+gem 'coffee-rails' # shouldn't be necessary, not using, but one line in /spec/requests/dispatcher_spec.rb fails without it, super weirdly
 gem 'devise'
 gem 'geocoder'
 gem 'geokit-rails'
@@ -31,20 +31,19 @@ gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'timezone'
 gem 'tod'
-gem 'turbolinks', '~> 5.x'
+gem 'turbolinks', '~> 5'
 gem 'twilio-ruby'
 gem 'uglifier', '>= 1.3.0'
 gem 'underscore-rails'
-gem 'webpack-rails'
+gem 'webpacker', git: 'https://github.com/rails/webpacker.git'
 gem 'will_paginate'
 # gem 'will_paginate-bootstrap' # I'd like to use this, but it breaks specs, weirdly :/
 gem 'zip-codes'
 
 group :development do
-  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem 'foreman'
   gem 'web-console'
-  gem 'listen', '~> 3.0.5'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'spring-commands-rspec'
@@ -52,7 +51,6 @@ end
 
 group :development, :test do
   gem 'bundler-audit', require: false
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'dotenv-rails'
   gem 'vcr', '~> 3.0.3'
@@ -66,5 +64,3 @@ group :test do
   gem 'timecop'
   gem 'watir', require: false
 end
-
-gem 'foreman'

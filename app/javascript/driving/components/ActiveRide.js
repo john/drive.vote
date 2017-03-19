@@ -34,7 +34,7 @@ class ActiveRide extends React.Component {
                         <div className="bottom-controls secondary">
                             <button className="btn btn-success btn-api" onClick={()=>this.props.pickupRider(ride)}>Rider picked up</button>
                             <button className="btn btn-danger btn-api" onClick={()=>this.props.cancelRide(ride)}>Cancel Ride</button>
-                        </div>     
+                        </div>
                     </div>
                 )
             case 'picked_up':

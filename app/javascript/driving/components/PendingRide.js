@@ -51,15 +51,15 @@ class PendingRide extends React.Component {
                 return (
                     <div className="panel pending-ride row p-x-0" onClick={()=>this.handleClick()}>
                     <div className="col-xs-7">
-                        <h3>{name}</h3> 
+                        <h3>{name}</h3>
                         <p>Total Passengers: {passengers}</p>
                         {requestLabel}
-                    </div> 
+                    </div>
                     <div className="col-xs-5 p-l-0">
                         <h4>{time} <span className="p-l">{ride.distance_to_voter} mi</span></h4>
                         <p>{ ride.from_address }</p>
                         <p>{ ride.from_city }, { ride.from_state } { ride.from_zip }</p>
-                    </div>  
+                    </div>
                     {specialRequests}
                     <i className="fa fa-angle-right pendingArrow"></i>
                 </div>

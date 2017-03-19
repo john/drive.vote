@@ -2,6 +2,7 @@ import React from 'react';
 import autobind from 'autobind-decorator';
 import WaitingRidesContainer from '../containers/WaitingRidesContainer';
 import ActiveRide from '../components/ActiveRide';
+
 @autobind
 class RideContainer extends React.Component {
 

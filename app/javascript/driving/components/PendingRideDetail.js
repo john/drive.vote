@@ -1,6 +1,7 @@
 import React from 'react';
 import autobind from 'autobind-decorator';
 import ContactVoter from '../components/ContactVoter';
+
 @autobind
 class PendingRideDetail extends React.Component {
 
