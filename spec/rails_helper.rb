@@ -41,7 +41,6 @@ VCR.configure do |config|
   config.hook_into :webmock # or :fakeweb
 
   config.around_http_request(lambda { |req| req.uri =~ /maps.googleapis.com/ }) do |request|
-    #byebug
     VCR.use_cassette("googleapi_#{OpenSSL::Digest::SHA256.new.digest request.uri}", &request)
   end
 

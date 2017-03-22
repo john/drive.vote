@@ -1,6 +1,8 @@
 class TwilioService
   CONFIG_ERROR_MSG = 'Sorry, we cannot process your request'.freeze
 
+  PHONE_NUMBER_IN_USE_ERROR_MSG = 'Validation failed: Phone Number already in use by another account'.freeze
+
   # processes an inbound Twilio message, creating user, conversation, and message
   # returns the text reply to send back
   def process_inbound_sms(params)
@@ -83,12 +85,17 @@ class TwilioService
         phone_number_normalized: from_phone,
         email: User.autogenerate_email
     }
+    
     # create the user and rescue duplicate record error to find existing one
     @user = begin
       User.create!(attrs)
-    rescue ActiveRecord::RecordNotUnique
+    rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid => e
+      # bail out if record is invalid for any other reason besides the duplicate phone number
+      return if e.instance_of?(ActiveRecord::RecordInvalid) && !e.message.eql?(PHONE_NUMBER_IN_USE_ERROR_MSG)
+
       User.where(phone_number_normalized: from_phone).first
     end
+
     @conversation = Conversation.where(user_id: @user.id).where.not(status: :closed).first
     @conversation ||= Conversation.create(status: :sms_created, user_id: @user.id, ride_zone: @ride_zone)
   end
