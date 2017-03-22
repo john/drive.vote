@@ -2,7 +2,7 @@ import React from 'react';
 import autobind from 'autobind-decorator';
 import Header from '../components/Header';
 import AppError from '../components/AppError';
-// import '../styles/drive-vote.css';
+import '../styles/drive-vote.css';
 
 @autobind
 class Main extends React.Component {

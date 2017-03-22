@@ -30,10 +30,9 @@ const config = {
 
   module: {
     rules: [
-      { test: /\.coffee(\.erb)?$/, loader: 'coffee-loader' },
-
-
-      {
+      { test: /\.coffee(\.erb)?$/,
+        loader: 'coffee-loader'
+      }, {
         test: /\.jsx?(\.erb)?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
@@ -46,43 +45,10 @@ const config = {
             'babel-plugin-transform-decorators-legacy'
           ]
         }
-      },
-
-      // module.exports = {
-      //     babelrc: false,
-      //     cacheDirectory: true,
-      //     presets: [
-      //         'babel-preset-es2015',
-      //         'babel-preset-es2016',
-      //         'babel-preset-react',
-      //         'babel-preset-stage-0'
-      //     ].map(require.resolve),
-      //     plugins: [
-      //         'babel-plugin-syntax-trailing-function-commas',
-      //         'babel-plugin-transform-class-properties',
-      //         'babel-plugin-transform-object-rest-spread',
-      //         'babel-plugin-transform-decorators-legacy'
-      //     ].map(require.resolve).concat([
-      //         [require.resolve('babel-plugin-transform-runtime'), {
-      //             helpers: false,
-      //             polyfill: false,
-      //             regenerator: true
-      //         }]
-      //     ])
-      // };
-
-      // loaders: [{
-      //     test: /\.js$/,
-      //     include: appSrc,
-      //     loader: 'babel',
-      //     // TODO(awong): Understand the dev/prod divergence in babel and either unify or conditional this.
-      //     query: require('./babel.dev'),
-      //
-      //     // Speed up compilation.
-      //     cacheDirectory: true
-      // },
-
-      {
+      }, {
+        test: /\.css$/,
+        loader: ['style-loader', 'css-loader']
+      }, {
         test: /\.erb$/,
         enforce: 'pre',
         exclude: /node_modules/,
