@@ -49,3 +49,5 @@ _site/
 
 # Ignore Vagrant environment
 .vagrant
+/public/packs
+/node_modules

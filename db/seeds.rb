@@ -6,6 +6,15 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+admin = User.create!(
+  name: 'Generic Admin',
+  available: false,
+  email: 'seeds@drive.vote',
+  password: '1234abcd',
+  phone_number_normalized: '+15550222222',
+  locale: 'en',
+)
+
 adam = User.create!(
   name: 'Adam McAmis',
   available: false,
@@ -59,6 +68,7 @@ john = User.create!(
 
 roles = Role.create( [{name: 'admin'}] )
 
+admin.add_role(:admin)
 adam.add_role(:admin)
 albert.add_role(:admin)
 erin.add_role(:admin)

@@ -3,6 +3,7 @@ import autobind from 'autobind-decorator';
 import RideContainer from '../containers/RideContainer';
 import Unavailable from '../components/Unavailable';
 import Loading from '../components/Loading';
+
 @autobind
 class DriverStatusContainer extends React.Component {
 
