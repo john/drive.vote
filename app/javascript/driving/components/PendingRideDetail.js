@@ -8,7 +8,7 @@ class PendingRideDetail extends React.Component {
     render() {
         const ride = this.props.ride;
         const passengers = 1 + parseInt(ride.additional_passengers);
-        const mapLink = `http://maps.apple.com/?daddr=${ride.from_address}, ${ride.from_city}, ${ride.from_state}`;
+        const mapLink = `https://maps.apple.com/?daddr=${ride.from_address}, ${ride.from_city}, ${ride.from_state}`;
 
         return (
             <div className="panel panel-full p-y-sm">

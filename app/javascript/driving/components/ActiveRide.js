@@ -16,7 +16,7 @@ class ActiveRide extends React.Component {
             case 'waiting_acceptance':
                 return <DispatchMatch ride={this.ride} {...this.props} />
             case 'driver_assigned':
-                mapLink = `http://maps.apple.com/?daddr=${ride.from_address}, ${ride.from_city}, ${ride.from_state}`;
+                mapLink = `https://maps.apple.com/?daddr=${ride.from_address}, ${ride.from_city}, ${ride.from_state}`;
                 return (
                     <div className="panel panel-full p-y-sm">
                         <a className="directionsLink" target="_blank" href={mapLink}><i className="fa fa-map-marker"></i> Directions</a>
@@ -38,7 +38,7 @@ class ActiveRide extends React.Component {
                     </div>
                 )
             case 'picked_up':
-                mapLink = `http://maps.apple.com/?daddr=${ride.to_address}, ${ride.to_city}, ${ride.to_state}`;
+                mapLink = `https://maps.apple.com/?daddr=${ride.to_address}, ${ride.to_city}, ${ride.to_state}`;
                 return (
                     <div className="panel panel-full p-y-sm">
                         <a className="directionsLink" target="_blank" href={mapLink}><i className="fa fa-map-marker"></i> Directions</a>
