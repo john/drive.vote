@@ -3,6 +3,7 @@ import autobind from 'autobind-decorator';
 import PendingRide from '../components/PendingRide';
 import ActiveRide from '../components/ActiveRide';
 import UnavailableButton from '../components/UnavailableButton';
+
 @autobind
 class RideListContainer extends React.Component {
 
@@ -42,7 +43,7 @@ class RideListContainer extends React.Component {
                     <div className="jumbotron text-center">
                         <h1><i className="fa fa-map-o text-info"></i></h1>
                         <p>No voters in your area currently need a ride</p>
-                        <p className="m-t-md display-3"><strong className="text-success"><i className="fa fa-check-circle-o"></i> Connected to Dispatch</strong></p>                               
+                        <p className="m-t-md display-3"><strong className="text-success"><i className="fa fa-check-circle-o"></i> Connected to Dispatch</strong></p>
                             {loadingIndicator}
                         </div>
                        <UnavailableButton submitUnavailable={this.props.submitUnavailable} />
