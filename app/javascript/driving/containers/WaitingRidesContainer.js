@@ -4,7 +4,7 @@ import PendingRide from '../components/PendingRide';
 import ActiveRide from '../components/ActiveRide';
 import UnavailableButton from '../components/UnavailableButton';
 
-@autobind
+autobind
 class RideListContainer extends React.Component {
 
     render() {

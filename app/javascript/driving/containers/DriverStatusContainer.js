@@ -4,7 +4,7 @@ import RideContainer from '../containers/RideContainer';
 import Unavailable from '../components/Unavailable';
 import Loading from '../components/Loading';
 
-@autobind
+autobind
 class DriverStatusContainer extends React.Component {
 
     componentWillMount() {

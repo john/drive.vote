@@ -347,13 +347,13 @@ p.display-3 {
 
 .pending-ride p {
     font-size: 12px;
-    color: rgba(93, 95, 98);
-    color: rgb(93, 95, 98);
+    color: RGBA(93, 95, 98);
+    color: RGBA(93, 95, 98);
     margin: 0;
 }
 
 .dispatcher-match {
-    background: linear-gradient(to bottom, rgb(246, 230, 85) 0%, white 140px);
+    background: linear-gradient(to bottom, RGBA(246, 230, 85) 0%, white 140px);
     background-repeat: no-repeat;
     background-position: top;
 }

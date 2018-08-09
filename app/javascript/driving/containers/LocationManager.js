@@ -2,7 +2,7 @@ import React from 'react';
 import autobind from 'autobind-decorator';
 import DriverStatusContainer from '../containers/DriverStatusContainer';
 
-@autobind
+autobind
 class LocationManager extends React.Component {
 
     constructor(props) {

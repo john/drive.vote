@@ -3,7 +3,7 @@ import autobind from 'autobind-decorator';
 import Loading from '../components/Loading.js';
 import AvailableButton from '../components/AvailableButton.js';
 
-@autobind
+autobind
 class Unavilable extends React.Component {
 
     componentWillMount() {

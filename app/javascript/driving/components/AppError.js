@@ -2,7 +2,7 @@ import React from 'react';
 import autobind from 'autobind-decorator';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-@autobind
+autobind
 class AppError extends React.Component {
 
     render() {

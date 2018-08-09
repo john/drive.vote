@@ -1,7 +1,7 @@
 import React from 'react';
 import autobind from 'autobind-decorator';
 
-@autobind
+autobind
 class Header extends React.Component {
 
     render() {

@@ -44,8 +44,21 @@ This shouldn't be necessary most of the time.
 ### Running it directly.
 1. Install postgresql.
 1. Install Redis
+1. Install bundler: `gem install bundler`
+1. Install gems: `bundle install`
 1. Run `rake pg:first_run` on the first run, and `rake pg:start` for subsequent runs to start the DB
 1. To set up the db: `rake db:create; rake db:migrate; rake db:seed`.
+1. bundle exec rails webpacker:install
+1. yarn add webpack-cli -D
+1. yarn add webpack-manifest-plugin -D
+1. Hack https://github.com/webpack/webpack-dev-server/issues/1355 (lower webpack-dev-server version)
+1. rails:webpacker:install
+1. Make sure Redis is running.
+
+
+
+
+
 1. Run `bundle exec rake foreman:dev` to start the server in dev mode. You can check Procfile.dev to see the servers this starts.
 
 For production, instead of `foreman:dev`, run

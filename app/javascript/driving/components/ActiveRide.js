@@ -4,7 +4,7 @@ import ContactVoter from '../components/ContactVoter';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import DispatchMatch from '../components/DispatchMatch';
 
-@autobind
+autobind
 class ActiveRide extends React.Component {
 
     render() {

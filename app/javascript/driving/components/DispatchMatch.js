@@ -3,7 +3,7 @@ import autobind from 'autobind-decorator';
 import ContactVoter from '../components/ContactVoter';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-@autobind
+autobind
 class DispatchMatch extends React.Component {
 
     render() {

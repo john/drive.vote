@@ -15,43 +15,6 @@ admin = User.create!(
   locale: 'en',
 )
 
-adam = User.create!(
-  name: 'Adam McAmis',
-  available: false,
-  email: 'mcamis@gmail.com',
-  password: '1234abcd',
-  phone_number_normalized: '+15550222222',
-  locale: 'en',
-)
-
-albert = User.create!(
-  name: 'Albert Wong',
-  available: false,
-  email: 'awong.public@gmail.com',
-  password: '1234abcd',
-  phone_number_normalized: '+15551222222',
-  locale: 'en',
-)
-
-erin = User.create!(
-  name: 'Erin Germ',
-  available: false,
-  email: 'erin@eringerm.com',
-  password: '1234abcd',
-  phone_number_normalized: '+15552222222',
-  locale: 'en',
-)
-
-gerald = User.create!(
-  name: 'Gerald Huff',
-  available: false,
-  email: 'gerald.huff@gmail.com',
-  password: '1234abcd',
-  phone_number_normalized: '+15553222222',
-  locale: 'en',
-  city: 'Berkeley',
-  state: 'CA'
-)
 
 john = User.create!(
   name: 'John McGrath',
@@ -59,20 +22,58 @@ john = User.create!(
   email: 'john@fnnny.com',
   password: '1234abcd',
   phone_number: '5552222222',
-  phone_number_normalized: '+15554222222',
+  phone_number_normalized: '+15554222223',
   locale: 'en',
   address1: '1100 Nugget Ave',
   city: 'San Francisco',
   state: 'CA'
 )
 
+# adam = User.create!(
+#   name: 'Adam McAmis',
+#   available: false,
+#   email: 'mcamis@gmail.com',
+#   password: '1234abcd',
+#   phone_number_normalized: '+15550222222',
+#   locale: 'en',
+# )
+
+# albert = User.create!(
+#   name: 'Albert Wong',
+#   available: false,
+#   email: 'awong.public@gmail.com',
+#   password: '1234abcd',
+#   phone_number_normalized: '+15551222222',
+#   locale: 'en',
+# )
+#
+# erin = User.create!(
+#   name: 'Erin Germ',
+#   available: false,
+#   email: 'erin@eringerm.com',
+#   password: '1234abcd',
+#   phone_number_normalized: '+15552222222',
+#   locale: 'en',
+# )
+#
+# gerald = User.create!(
+#   name: 'Gerald Huff',
+#   available: false,
+#   email: 'gerald.huff@gmail.com',
+#   password: '1234abcd',
+#   phone_number_normalized: '+15553222222',
+#   locale: 'en',
+#   city: 'Berkeley',
+#   state: 'CA'
+# )
+
 roles = Role.create( [{name: 'admin'}] )
 
-admin.add_role(:admin)
-adam.add_role(:admin)
-albert.add_role(:admin)
-erin.add_role(:admin)
-gerald.add_role(:admin)
+# admin.add_role(:admin)
+# adam.add_role(:admin)
+# albert.add_role(:admin)
+# erin.add_role(:admin)
+# gerald.add_role(:admin)
 john.add_role(:admin)
 
 # if  Rails.env == "development"
@@ -142,4 +143,3 @@ drivers = User.create!([
 rz = RideZone.find_by_slug('orlando')
 drivers[0].add_role(:unassigned_driver, rz)
 drivers[1].add_role(:unassigned_driver, rz)
-# end

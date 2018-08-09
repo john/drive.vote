@@ -4,7 +4,7 @@ import autobind from 'autobind-decorator';
 import PendingRideDetail from '../components/PendingRideDetail';
 import DispatchMatch from '../components/DispatchMatch';
 
-@autobind
+autobind
 class PendingRide extends React.Component {
 
     constructor(props) {

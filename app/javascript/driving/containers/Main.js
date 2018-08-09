@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import AppError from '../components/AppError';
 import '../styles/drive-vote.css';
 
-@autobind
+autobind
 class Main extends React.Component {
 
     render() {
