@@ -2,42 +2,42 @@
 source 'https://rubygems.org'
 ruby '2.3.1'
 
-gem 'city-state'
-gem 'chronic'
-gem 'coffee-rails' # shouldn't be necessary, not using, but one line in /spec/requests/dispatcher_spec.rb fails without it, super weirdly
-gem 'devise'
-gem 'geocoder'
-gem 'geokit-rails'
-gem 'google-api-client'
-gem 'haml'
-gem 'haml-rails'
+gem 'city-state', '0.0.13'
+gem 'chronic', '0.10.2'
+gem 'coffee-rails', '4.2.1' # shouldnt be necessary, not using, but one line in /spec/requests/dispatcher_spec.rb fails without it, super weirdly
+gem 'devise', '4.3.0'
+gem 'geocoder', '1.4.3'
+gem 'geokit-rails', '2.3.1'
+gem 'google-api-client', '0.10.1'
+# gem 'haml', '4.0.7'
+gem 'haml-rails', '1.0.0'
 gem 'humane-rails'
-gem 'pg'
-gem 'phony_rails'
-gem 'prawn'
-gem 'puma'
-gem 'pundit'
-gem 'rack-timeout'
-gem 'rails', '5.1.0.rc1'
-gem 'redis'
-gem 'redis-namespace'
-gem 'remote_syslog_logger'
-gem 'rolify'
-gem 'rspec'
-gem 'rspec-rails'
-gem 'sass-rails'
+gem 'pg', '0.20.0'
+gem 'phony_rails', '0.14.5' # <---------------- UPGRADING THIS to 0.14.7 BROKE HALF THE FUCKING SPECS.
+gem 'prawn', '2.2.2'
+gem 'puma', '3.8.2'
+gem 'pundit', '1.1.0'
+gem 'rack-timeout', '0.4.2'
+gem 'rails', '5.1.6'
+gem 'redis', '3.3.3'
+gem 'redis-namespace', '1.5.3'
+gem 'remote_syslog_logger', '1.0.3'
+gem 'rolify', '5.1.0'
+gem 'rspec', '3.5.0'
+gem 'rspec-rails', '3.5.2'
+gem 'sass-rails', '5.0.6'
 gem 'sendgrid'
-gem 'sidekiq'
-gem 'sinatra', require: false
-gem 'timezone'
-gem 'tod'
+gem 'sidekiq', '4.2.10'
+gem 'sinatra', '1.0', require: false
+gem 'timezone', '1.2.6'
+gem 'tod', '2.1.0'
 gem 'turbolinks', '~> 5'
-gem 'twilio-ruby'
+gem 'twilio-ruby', '4.13.0'
 gem 'uglifier', '>= 1.3.0'
-gem 'underscore-rails'
-gem 'webpacker'
-gem 'will_paginate'
-# gem 'will_paginate-bootstrap' # I'd like to use this, but it breaks specs, weirdly :/
+gem 'underscore-rails', '1.8.3'
+gem 'webpacker', '1.1'
+gem 'will_paginate', '3.1.5'
+# # gem 'will_paginate-bootstrap' # I'd like to use this, but it breaks specs, weirdly :/
 gem 'zip-codes'
 
 group :development do
@@ -60,9 +60,9 @@ group :development, :test do
 end
 
 group :test do
-  gem 'factory_girl_rails', require: false
-  gem 'shoulda-matchers'
-  gem 'rails-controller-testing'
-  gem 'timecop'
-  gem 'watir', require: false
+  gem 'factory_girl_rails', '4.7.0', require: false
+  gem 'shoulda-matchers', '3.1.1'
+  gem 'rails-controller-testing', '1.0.1'
+  gem 'timecop', '0.8.1'
+  gem 'watir', '6.2.1', require: false
 end

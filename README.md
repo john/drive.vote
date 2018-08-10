@@ -52,7 +52,7 @@ This shouldn't be necessary most of the time.
 1. yarn add webpack-cli -D
 1. yarn add webpack-manifest-plugin -D
 1. Hack https://github.com/webpack/webpack-dev-server/issues/1355 (lower webpack-dev-server version)
-1. rails:webpacker:install
+1. rails webpacker:install
 1. Make sure Redis is running.
 
 
