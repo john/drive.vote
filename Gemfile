@@ -2,10 +2,11 @@
 source 'https://rubygems.org'
 ruby '2.3.1'
 
+gem 'bootsnap', '>= 1.1.0', require: false
 gem 'city-state', '0.0.13'
 gem 'chronic', '0.10.2'
-gem 'coffee-rails', '4.2.1' # shouldnt be necessary, not using, but one line in /spec/requests/dispatcher_spec.rb fails without it, super weirdly
-gem 'devise', '4.3.0'
+gem 'coffee-rails' # shouldnt be necessary, not using, but one line in /spec/requests/dispatcher_spec.rb fails without it, super weirdly
+gem 'devise'
 gem 'geocoder', '1.4.3'
 gem 'geokit-rails', '2.3.1'
 gem 'google-api-client', '0.10.1'
@@ -18,7 +19,7 @@ gem 'prawn', '2.2.2'
 gem 'puma', '3.8.2'
 gem 'pundit', '1.1.0'
 gem 'rack-timeout', '0.4.2'
-gem 'rails', '5.1.6'
+gem 'rails', '5.2.1'
 gem 'redis', '3.3.3'
 gem 'redis-namespace', '1.5.3'
 gem 'remote_syslog_logger', '1.0.3'

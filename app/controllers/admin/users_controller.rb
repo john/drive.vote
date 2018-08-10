@@ -22,7 +22,7 @@ class Admin::UsersController < Admin::AdminApplicationController
     elsif params[:filter].present? && params[:filter].downcase != 'all'
       @users = User.with_role(params[:filter].to_sym, :any).order("#{sort} DESC").paginate(page: page, per_page: per_page)
     else
-      @users = User.users.order("UPPER(#{sort}) ASC").paginate(page: page, per_page: per_page)
+      @users = User.users.order(Arel.sql("UPPER(#{sort}) ASC")).paginate(page: page, per_page: per_page)
     end
   end
 

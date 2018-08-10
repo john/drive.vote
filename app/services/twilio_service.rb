@@ -12,7 +12,9 @@ class TwilioService
     message.ride_zone = @ride_zone
     message.conversation = @conversation
     params.each do |param|
-      message.public_send( "#{param.underscore}=", params[param] ) if message.respond_to? param.underscore
+      if message.respond_to? param[0].underscore
+        message.public_send( "#{param[0].underscore}=", param[1] )
+      end
     end
 
     if @conversation.messages.empty?

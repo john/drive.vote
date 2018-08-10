@@ -86,7 +86,7 @@ module Api::V1
         user = User.find(params[:uid])
         if params[:to_role] == 'driver'
           user.add_role(:driver, @ride_zone)
-          render json: {response: 'success?'}
+          render json: {response: 'successful?'}
         else
           user.remove_role(:driver, @ride_zone)
           render json: {error: 'missing required param'}, status: 422
