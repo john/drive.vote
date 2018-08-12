@@ -38,6 +38,9 @@
 # Python virtual env files.
 venv/
 
+# Rails has standardized on Yarn, so ignore npm-generated lock file
+package-lock.json
+
 # Added by webpack-rails
 /node_modules
 /public/webpack

@@ -13,9 +13,9 @@ services:
       - OVERRIDE_DB_HOST=db
       - OVERRIDE_DB_PASSWORD=
       - REDIS_URL=redis://redis:6379
-    working_dir: /myapp
+    working_dir: /dtv
     volumes:
-      - .:/myapp
+      - .:/dtv
     ports:
       - "3808:3808"
       - "3000:3000"

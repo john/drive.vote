@@ -1,41 +1,21 @@
-# Pull base image.
-FROM ruby:2.3.1
+FROM ruby:2.5.1-alpine3.7
 
-# Install Node.js. Copy-pastaed from official docker-node Dockerfile for LTS.
-# https://github.com/nodejs/docker-node/blob/master/4.6/wheezy/Dockerfile
-######## Start Node.js copy-pasta.
-RUN set -ex \
-  && for key in \
-    9554F04D7259F04124DE6B476D5A82AC7E37093B \
-    94AE36675C464D64BAFA68DD7434390BDBE9B9C5 \
-    0034A06D9D9B0064CE8ADF6BF1747F4AD2306D93 \
-    FD3A5288F042B6850C66B31F09FE44734EB7990E \
-    71DCFD284A79C3B38668286BC97EC7A07EDE3FC1 \
-    DD8F2338BAE7501E3DD5AC78C273792F7D83545D \
-    B9AE9905FFD7803F25714661B63B535A4C206CA9 \
-    C4F0DFFF4E8C1A8236409D08E73BC641CC11F4C8 \
-  ; do \
-    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
-  done
+RUN apk add --update \
+  build-base \
+  postgresql-dev \
+  bash \
+  nodejs \
+  tzdata \
+  && rm -rf /var/cache/apk/*
 
-ENV NPM_CONFIG_LOGLEVEL info
-ENV NODE_VERSION 4.6.0
+RUN gem install bundler
 
-RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
-  && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
-  && gpg --batch --decrypt --output SHASUMS256.txt SHASUMS256.txt.asc \
-  && grep " node-v$NODE_VERSION-linux-x64.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
-  && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
-  && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
-  && ln -s /usr/local/bin/node /usr/local/bin/nodejs
-######## End Node.js copy-pasta.
-
-# Upgrade npm to LTS.
-RUN npm install -g npm@3.8.9
-
-# Bootstrap the bundle install.
-# Since bundle by default dumpts things in /var, the install actually gets shared
-# even if we mount the source code right over things when we up the environment.
-# Thus this is a big time saver.
-COPY Gemfile Gemfile.lock ./
+# First copy the bundle files and install gems to aid caching of this layer
+WORKDIR /dtv
+COPY Gemfile* /dtv/
 RUN bundle install
+
+WORKDIR /dtv
+COPY . /dtv
+
+EXPOSE 3000

@@ -27,7 +27,7 @@ Create a .env file in the app root and add these variables, with the correct val
     SECRET_KEY_BASE=xxxxxxx
 
 ### Running it via docker (in dev only!)
-1. Install docker. For mac, make sure to use the [Docker Mac Beta](https://docs.docker.com/engine/installation/mac/#/docker-for-mac) and not Docker Toolbox.
+1. [Install docker](https://store.docker.com/search?type=edition&offering=community).
 1. Run `docker-compose up`. This will start 2 containers: one for postgres, and one that runs rails + webpack dev server.
 1. If necessary, run `docker-compose exec web bundle exec rails db:create db:schema:load db:seed` to setup the database.
 
@@ -40,6 +40,9 @@ docker-compose exec web bash -l
 ```
 
 This shouldn't be necessary most of the time.
+
+1. To view running containers: `docker container ls`
+1. To shut down the DtV containers: `docker-compose stop`
 
 ### Running it directly.
 1. Install postgresql.

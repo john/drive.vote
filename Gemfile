@@ -1,22 +1,22 @@
 # ruby-gemset=drive.vote
 source 'https://rubygems.org'
-ruby '2.3.1'
+ruby '2.5.1'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'city-state', '0.0.13'
 gem 'chronic', '0.10.2'
 gem 'coffee-rails' # shouldnt be necessary, not using, but one line in /spec/requests/dispatcher_spec.rb fails without it, super weirdly
-gem 'devise'
+gem 'devise', '4.4.3'
 gem 'geocoder', '1.4.3'
 gem 'geokit-rails', '2.3.1'
 gem 'google-api-client', '0.10.1'
-# gem 'haml', '4.0.7'
 gem 'haml-rails', '1.0.0'
 gem 'humane-rails'
-gem 'pg', '0.20.0'
+gem 'nokogiri'
+gem 'pg', '1.0.0'
 gem 'phony_rails', '0.14.5' # <---------------- UPGRADING THIS to 0.14.7 BROKE HALF THE FUCKING SPECS.
 gem 'prawn', '2.2.2'
-gem 'puma', '3.8.2'
+gem 'puma', '3.12.0'
 gem 'pundit', '1.1.0'
 gem 'rack-timeout', '0.4.2'
 gem 'rails', '5.2.1'
@@ -57,7 +57,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'dotenv-rails'
   gem 'vcr', '~> 3.0.3'
-  gem 'webmock', '~> 2.1.0'
+  gem 'webmock', '~> 3.4.2'
 end
 
 group :test do
