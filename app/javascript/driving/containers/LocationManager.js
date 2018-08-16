@@ -24,7 +24,6 @@ class LocationManager extends React.Component {
         }
     }
 
-    // setupLocationStatus() {
     setupLocationStatus = () => {
         console.log('got here');
         console.log('this is: ' + this);
