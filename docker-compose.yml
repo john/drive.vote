@@ -8,7 +8,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    command: bash -c "bundle install && npm install && bundle exec rake foreman:dev"
+    command: bash -c "bundle install && yarn install && bundle exec rake foreman:dev --trace"
     environment:
       - OVERRIDE_DB_HOST=db
       - OVERRIDE_DB_PASSWORD=

@@ -1,21 +1,26 @@
 FROM ruby:2.5.1-alpine3.7
 
-RUN apk add --update \
+RUN apk update
+RUN apk add \
   build-base \
+  python3 \
   postgresql-dev \
   bash \
   nodejs \
+  yarn \
   tzdata \
   && rm -rf /var/cache/apk/*
 
-RUN gem install bundler
+# RUN gem install bundler
 
 # First copy the bundle files and install gems to aid caching of this layer
-WORKDIR /dtv
-COPY Gemfile* /dtv/
+WORKDIR /tmp
+COPY Gemfile* /tmp/
 RUN bundle install
 
-WORKDIR /dtv
-COPY . /dtv
+ENV app /dtv
+RUN mkdir $app
+WORKDIR $app
+ADD . $app
 
 EXPOSE 3000
