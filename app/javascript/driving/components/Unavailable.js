@@ -6,7 +6,7 @@ import AvailableButton from '../components/AvailableButton.js';
 autobind
 class Unavilable extends React.Component {
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.fetchRideZoneStats();
     }
 

@@ -1,8 +1,6 @@
 import React from 'react';
-import autobind from 'autobind-decorator';
 import DriverStatusContainer from '../containers/DriverStatusContainer';
 
-autobind
 class LocationManager extends React.Component {
 
     constructor(props) {
@@ -12,7 +10,7 @@ class LocationManager extends React.Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const queryArgs = this.props.location.query;
         if (queryArgs.latitude && queryArgs.longitude) {
             const testLocation = {
@@ -26,7 +24,7 @@ class LocationManager extends React.Component {
         }
     }
 
-    setupLocationStatus() {
+    setupLocationStatus = () => {
         this.updateLocationState('pending');
         if ("geolocation" in navigator) {
             navigator.geolocation.watchPosition(
@@ -51,7 +49,7 @@ class LocationManager extends React.Component {
         }
     }
 
-    updateLocationState(newState) {
+    updateLocationState = (newState) => {
         this.setState({
             location: newState
         });

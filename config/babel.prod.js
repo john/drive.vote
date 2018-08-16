@@ -8,9 +8,9 @@ module.exports = {
     ].map(require.resolve),
     plugins: [
         'babel-plugin-syntax-trailing-function-commas',
+        'babel-plugin-transform-decorators-legacy',
         'babel-plugin-transform-class-properties',
         'babel-plugin-transform-object-rest-spread',
-        'babel-plugin-transform-decorators-legacy',
         'babel-plugin-transform-react-constant-elements',
     ].map(require.resolve).concat([
         [require.resolve('babel-plugin-transform-runtime'), {

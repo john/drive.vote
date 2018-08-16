@@ -7,7 +7,7 @@ import Loading from '../components/Loading';
 autobind
 class DriverStatusContainer extends React.Component {
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.fetchStatus();
     }
 
@@ -26,4 +26,5 @@ class DriverStatusContainer extends React.Component {
         }
     }
 };
+
 export default DriverStatusContainer;

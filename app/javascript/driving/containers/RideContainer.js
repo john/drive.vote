@@ -31,7 +31,6 @@ class RideContainer extends React.Component {
         }
     }
 
-
     render() {
         if (this.props.state.driverState.active_ride) {
             return <ActiveRide {...this.props} ride={this.props.state.driverState.active_ride} />
