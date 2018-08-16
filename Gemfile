@@ -7,7 +7,7 @@ gem 'city-state', '0.0.13'
 gem 'chronic', '0.10.2'
 gem 'coffee-rails' # shouldnt be necessary, not using, but one line in /spec/requests/dispatcher_spec.rb fails without it, super weirdly
 gem 'devise', '4.4.3'
-gem 'geocoder', '1.4.3'
+gem 'geocoder', '1.5.0'
 gem 'geokit-rails', '2.3.1'
 gem 'google-api-client', '0.10.1'
 gem 'haml-rails', '1.0.0'

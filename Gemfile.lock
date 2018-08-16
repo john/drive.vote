@@ -97,7 +97,7 @@ GEM
     ffi (1.9.25)
     foreman (0.85.0)
       thor (~> 0.19.1)
-    geocoder (1.4.3)
+    geocoder (1.5.0)
     geokit (1.13.1)
     geokit-rails (2.3.1)
       geokit (~> 1.5)
@@ -368,7 +368,7 @@ DEPENDENCIES
   dotenv-rails
   factory_girl_rails (= 4.7.0)
   foreman
-  geocoder (= 1.4.3)
+  geocoder (= 1.5.0)
   geokit-rails (= 2.3.1)
   google-api-client (= 0.10.1)
   haml-rails (= 1.0.0)
