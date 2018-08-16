@@ -25,8 +25,6 @@ class LocationManager extends React.Component {
     }
 
     setupLocationStatus = () => {
-        console.log('got here');
-        console.log('this is: ' + this);
         this.updateLocationState('pending');
         if ("geolocation" in navigator) {
             navigator.geolocation.watchPosition(
@@ -51,7 +49,7 @@ class LocationManager extends React.Component {
         }
     }
 
-    updateLocationState(newState) {
+    updateLocationState = (newState) => {
         this.setState({
             location: newState
         });
@@ -69,8 +67,7 @@ class LocationManager extends React.Component {
                             <h1 className="m-y"><i className="fa fa-map-marker text-info"></i></h1>
                             <h6>Enable Location</h6>
                             <p>Get started by allowing Drive the Vote access to your location.</p>
-                            <p>{this.state.location}</p>
-                  <button className="btn btn-success" onClick={this.setupLocationStatus}>Ok</button>
+                            <button className="btn btn-success" onClick={this.setupLocationStatus}>Ok</button>
                         </div>
                     </div>
                 )
