@@ -1,12 +1,10 @@
 import React from 'react';
-import autobind from 'autobind-decorator';
 import Loading from '../components/Loading.js';
 import AvailableButton from '../components/AvailableButton.js';
 
-autobind
 class Unavilable extends React.Component {
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.fetchRideZoneStats();
     }
 

@@ -1,9 +1,9 @@
 import React from 'react';
-import autobind from 'autobind-decorator';
+// import autobind from 'autobind-decorator';
 import WaitingRidesContainer from '../containers/WaitingRidesContainer';
 import ActiveRide from '../components/ActiveRide';
 
-autobind
+// autobind
 class RideContainer extends React.Component {
 
     componentDidMount() {
@@ -30,7 +30,6 @@ class RideContainer extends React.Component {
             this.locationInterval = setInterval(() => this.props.submitLocation(this.props.state.driverState.location), nextLocationInterval);
         }
     }
-
 
     render() {
         if (this.props.state.driverState.active_ride) {

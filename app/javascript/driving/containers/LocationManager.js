@@ -1,8 +1,6 @@
 import React from 'react';
-import autobind from 'autobind-decorator';
 import DriverStatusContainer from '../containers/DriverStatusContainer';
 
-autobind
 class LocationManager extends React.Component {
 
     constructor(props) {
@@ -12,7 +10,7 @@ class LocationManager extends React.Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const queryArgs = this.props.location.query;
         if (queryArgs.latitude && queryArgs.longitude) {
             const testLocation = {
@@ -26,7 +24,10 @@ class LocationManager extends React.Component {
         }
     }
 
-    setupLocationStatus() {
+    // setupLocationStatus() {
+    setupLocationStatus = () => {
+        console.log('got here');
+        console.log('this is: ' + this);
         this.updateLocationState('pending');
         if ("geolocation" in navigator) {
             navigator.geolocation.watchPosition(
@@ -69,7 +70,8 @@ class LocationManager extends React.Component {
                             <h1 className="m-y"><i className="fa fa-map-marker text-info"></i></h1>
                             <h6>Enable Location</h6>
                             <p>Get started by allowing Drive the Vote access to your location.</p>
-                            <button className="btn btn-success" onClick={this.setupLocationStatus}>Ok</button>
+                            <p>{this.state.location}</p>
+                  <button className="btn btn-success" onClick={this.setupLocationStatus}>Ok</button>
                         </div>
                     </div>
                 )
