@@ -4,6 +4,12 @@ module.exports = {
   test: /\.(scss|sass|css)$/i,
   use: ExtractTextPlugin.extract({
     fallback: 'style-loader',
-    use: ['css-loader', 'postcss-loader', 'sass-loader']
+    use: [
+      'css-loader',
+      { 
+        loader: 'postcss-loader', 
+        options: {  plugins: function() { return []; }} 
+      },
+      'sass-loader']
   })
 }
