@@ -19,6 +19,7 @@ services:
     ports:
       - "3808:3808"
       - "3000:3000"
+      - "8080:8080"
     depends_on:
       - db
     stdin_open: true
