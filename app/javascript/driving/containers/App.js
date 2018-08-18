@@ -5,15 +5,18 @@ import * as actionCreators from '../actions/actionCreators';
 import Main from './Main';
 
 function mapStateToProps(state) {
-    return {
-        state
-    }
+  return {
+    state,
+  };
 }
 
-function mapDispatchToProps(dispatch){
-    return bindActionCreators(actionCreators, dispatch);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(actionCreators, dispatch);
 }
 
-const App = connect(mapStateToProps, mapDispatchToProps)(Main);
+const App = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Main);
 
 export default App;
