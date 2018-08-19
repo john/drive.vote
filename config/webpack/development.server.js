@@ -10,6 +10,8 @@ module.exports = merge(devConfig, {
     host: devServer.host,
     port: devServer.port,
     compress: true,
+    // TODO: Figure out if there are security implications for this in even in local dev
+    disableHostCheck: true,
     historyApiFallback: true,
     contentBase: resolve(paths.output, paths.entry),
     publicPath
