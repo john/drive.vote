@@ -1,6 +1,6 @@
 import React from 'react';
-import Loading from './Loading.js';
-import AvailableButton from './AvailableButton.js';
+import Loading from './Loading';
+import AvailableButton from './AvailableButton';
 
 class Unavilable extends React.Component {
   componentDidMount() {

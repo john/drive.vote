@@ -39,7 +39,6 @@ class LocationManager extends React.Component {
           //   1: permission denied
           //   2: position unavailable (error response from locaton provider)
           //   3: timed out
-          console.log('Something went wrong getting location:', error);
           if (error.code === 1) {
             this.updateLocationState('denied');
           } else if (error.code === 2) {
@@ -133,14 +132,12 @@ class LocationManager extends React.Component {
               <p>Sharing your location is required to drive.</p>
               <p>
                 <strong>
-                  <i className="fa fa-android fa-fw" />
-                  {' '}
-Android:
+                  <i className="fa fa-android fa-fw" /> 
+                  Android:
                 </strong>
-                {' '}
-                For more information on how to re-enable access, visit:
-                {' '}
+                {' For more information on how to re-enable access, visit: '}
                 <a
+                  rel="noopener noreferrer"
                   href="https://support.google.com/chrome/answer/142065?hl=en"
                   target="_blank"
                 >
@@ -149,19 +146,15 @@ Android:
               </p>
               <p>
                 <strong>
-                  <i className="fa fa-apple fa-fw" />
-                  {' '}
-iOS:
+                  <i className="fa fa-apple fa-fw" /> 
+                  iOS: 
                 </strong>
-                {' '}
                 Please refresh the page to try again, if that fails you will
                 need to reset location warnings via the Settings App
               </p>
               <p>
                 <code>
-                  Settings -> General -> Reset -> Reset Location Warnings /
-                  Reset Location & Privacy
-                  {' '}
+                  {`Settings -> General -> Reset -> Reset Location Warnings / Reset Location & Privacy`}
                 </code>
               </p>
             </div>

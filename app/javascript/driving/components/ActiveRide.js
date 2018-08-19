@@ -6,7 +6,7 @@ class ActiveRide extends React.Component {
   render() {
     const { ride, completeRide, pickupRider, cancelRide } = this.props;
     let mapLink;
-    const passengers = 1 + parseInt(ride.additional_passengers);
+    const passengers = 1 + parseInt(ride.additional_passengers, 10);
 
     switch (ride.status) {
       case 'waiting_acceptance':
@@ -26,7 +26,7 @@ class ActiveRide extends React.Component {
               <i className="fa fa-map-marker" />
               Directions
             </a>
-            <label>Picking up:</label>
+            <span className="label">Picking up:</span>
             <h3>{ride.name}</h3>
             <p>
               {ride.from_address}
@@ -77,7 +77,7 @@ class ActiveRide extends React.Component {
               <i className="fa fa-map-marker" />
               Directions
             </a>
-            <label>Dropping off:</label>
+            <span className="label">Dropping off:</span>
             <h3>{ride.name}</h3>
             <p>
               {ride.to_address}

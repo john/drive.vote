@@ -3,30 +3,14 @@ import PendingRide from '../components/PendingRide';
 import UnavailableButton from '../components/UnavailableButton';
 
 const RideListContainer = props => {
-  const availableRides = props.state.driverState.rides;
-  const isFetching = props.state.driverState.isFetching;
-  let completedRide;
-  if (props.state.driverState.completedRide) {
-    completedRide = (
-      <div className="banner banner-success">
-        <h4 className="m-b-0 text-center">
-          <i className="fa fa-thumbs-up pull-left" />
-          {' '}
-          {props.state.driverState.completedRide.name}
-          {' '}
-dropped off
-        </h4>
-      </div>
-    );
-  }
+  const { rides: availableRides, completedRide, isFetching } = props.state.driverState;
+
   let loadingIndicator;
   if (isFetching) {
     loadingIndicator = (
       <p className="display-3">
         <i className="fa fa-circle-o-notch fa-spin" />
-        {' '}
-Checking for new ride
-        requests
+        Checking for new ride requests
       </p>
     );
   } else {
@@ -40,7 +24,15 @@ Checking for new ride
     return (
       <div>
         <ul className="panel-list">
-          {completedRide}
+          {completedRide && (
+            <div className="banner banner-success">
+              <h4 className="m-b-0 text-center">
+                <i className="fa fa-thumbs-up pull-left" />
+                {` ${completedRide.name}`}
+                dropped off
+              </h4>
+            </div>
+          )}
           {availableRides.map((ride, i) => (
             <PendingRide {...props} key={i} i={i} ride={ride} />
           ))}
@@ -60,8 +52,7 @@ Checking for new ride
         <p className="m-t-md display-3">
           <strong className="text-success">
             <i className="fa fa-check-circle-o" />
-            {' '}
-Connected to Dispatch
+            Connected to Dispatch
           </strong>
         </p>
         {loadingIndicator}

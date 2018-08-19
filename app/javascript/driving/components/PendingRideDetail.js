@@ -2,7 +2,7 @@ import React from 'react';
 import ContactVoter from './ContactVoter';
 
 const PendingRideDetail = ({ claimRide, declineRide, ride }) => {
-  const passengers = 1 + parseInt(ride.additional_passengers);
+  const passengers = 1 + parseInt(ride.additional_passengers, 10);
   const mapLink = `https://maps.apple.com/?daddr=${ride.from_address}, ${
     ride.from_city
   }, ${ride.from_state}`;
@@ -10,12 +10,12 @@ const PendingRideDetail = ({ claimRide, declineRide, ride }) => {
   return (
     <div className="panel panel-full p-y-sm">
       <div className="rideDetails">
-        <a className="directionsLink" target="_blank" href={mapLink}>
+        <a className="directionsLink" rel="noopener noreferrer" target="_blank" href={mapLink}>
           <i className="fa fa-map-marker" />
           {' '}
 Directions
         </a>
-        <label>Accept Ride:</label>
+        <span className="label">Accept Ride:</span>
         <h3>{ride.name}</h3>
         <p>
           {ride.from_address}

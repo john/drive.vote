@@ -30,7 +30,7 @@ class PendingRide extends React.Component {
       return <DispatchMatch ride={this.ride} {...this.props} />;
     }
     const time = h.formatTime(ride.pickup_at);
-    const passengers = 1 + parseInt(ride.additional_passengers);
+    const passengers = 1 + parseInt(ride.additional_passengers, 10);
     const name = ride.name ? ride.name : ride.voter_phone_number;
     let specialRequests;
     let requestLabel;
