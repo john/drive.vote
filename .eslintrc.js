@@ -1,4 +1,3 @@
-// Instead of rolling our own ruleset, extend React & Airbnb configs and override when necessary
 module.exports = {
   root: true,
 
@@ -25,9 +24,9 @@ module.exports = {
   },
 
   rules: {
-    "camelcase": 0,
-    "react/destructuring-assignment":  0,
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    "camelcase": 0, // API data is returned as snake_case
+    "react/destructuring-assignment":  0, // This doesn’t make sense for one-liners, which pop up a lot.
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]  // Allow .js for React components, default is .jsx only
   },
 
   settings: {

@@ -14,7 +14,7 @@ class RideContainer extends React.Component {
     );
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const currentRidesInterval = this.props.state.driverState
       .waiting_rides_interval;
     const nextRidesInterval =
