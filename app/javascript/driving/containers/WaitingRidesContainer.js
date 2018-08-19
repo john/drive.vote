@@ -3,7 +3,11 @@ import PendingRide from '../components/PendingRide';
 import UnavailableButton from '../components/UnavailableButton';
 
 const RideListContainer = props => {
-  const { rides: availableRides, completedRide, isFetching } = props.state.driverState;
+  const {
+    rides: availableRides,
+    completedRide,
+    isFetching,
+  } = props.state.driverState;
 
   let loadingIndicator;
   if (isFetching) {
@@ -20,19 +24,23 @@ const RideListContainer = props => {
     );
   }
 
+  let completedRideComponent;
+  if (completedRide) {
+    completedRideComponent = (
+      <div className="banner banner-success">
+        <h4 className="m-b-0 text-center">
+          <i className="fa fa-thumbs-up pull-left" /> {completedRide.name}{' '}
+          dropped off
+        </h4>
+      </div>
+    );
+  }
+
   if (availableRides.length) {
     return (
       <div>
         <ul className="panel-list">
-          {completedRide && (
-            <div className="banner banner-success">
-              <h4 className="m-b-0 text-center">
-                <i className="fa fa-thumbs-up pull-left" />
-                {` ${completedRide.name}`}
-                dropped off
-              </h4>
-            </div>
-          )}
+          {completedRide && completedRideComponent}
           {availableRides.map((ride, i) => (
             <PendingRide {...props} key={i} i={i} ride={ride} />
           ))}
@@ -43,7 +51,7 @@ const RideListContainer = props => {
   }
   return (
     <div className="searching-container">
-      {completedRide}
+      {completedRide && completedRideComponent}
       <div className="jumbotron text-center">
         <h1>
           <i className="fa fa-map-o text-info" />

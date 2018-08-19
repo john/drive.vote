@@ -67,8 +67,8 @@ function driverState(
         isFetching: false,
         waiting_rides_interval: 0,
         active_ride: {
-          status: 'driver_assigned',
           ...action.active_ride,
+          status: 'driver_assigned',
         },
         changePending: false,
       });
@@ -82,8 +82,8 @@ function driverState(
       return Object.assign({}, state, {
         isFetching: false,
         active_ride: {
-          status: 'picked_up',
           ...action.active_ride,
+          status: 'picked_up',
         },
         changePending: false,
         completedRide: null,
@@ -95,8 +95,8 @@ function driverState(
         active_ride: null,
         changePending: false,
         completedRide: {
-          status: 'complete',
           ...action.active_ride,
+          status: 'complete',
         },
         rides: [],
       });

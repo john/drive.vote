@@ -132,7 +132,7 @@ class LocationManager extends React.Component {
               <p>Sharing your location is required to drive.</p>
               <p>
                 <strong>
-                  <i className="fa fa-android fa-fw" /> 
+                  <i className="fa fa-android fa-fw" />
                   Android:
                 </strong>
                 {' For more information on how to re-enable access, visit: '}
@@ -146,8 +146,8 @@ class LocationManager extends React.Component {
               </p>
               <p>
                 <strong>
-                  <i className="fa fa-apple fa-fw" /> 
-                  iOS: 
+                  <i className="fa fa-apple fa-fw" />
+                  iOS:
                 </strong>
                 Please refresh the page to try again, if that fails you will
                 need to reset location warnings via the Settings App

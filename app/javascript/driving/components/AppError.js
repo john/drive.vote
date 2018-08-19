@@ -15,9 +15,7 @@ const AppError = ({ errorState }) =>
         transitionAppearTimeout={500}
       >
         <div className="errorBanner" key={1}>
-          <i className="fa fa-exclamation" /> 
-          {' '}
-          {this.props.errorState}
+          <i className="fa fa-exclamation" /> {this.props.errorState}
           <a className="pull-right" onClick={this.props.clearError}>
             <i className="fa fa-close" />
           </a>

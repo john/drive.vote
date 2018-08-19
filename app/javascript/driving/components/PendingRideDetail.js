@@ -10,21 +10,20 @@ const PendingRideDetail = ({ claimRide, declineRide, ride }) => {
   return (
     <div className="panel panel-full p-y-sm">
       <div className="rideDetails">
-        <a className="directionsLink" rel="noopener noreferrer" target="_blank" href={mapLink}>
-          <i className="fa fa-map-marker" />
-          {' '}
-Directions
+        <a
+          className="directionsLink"
+          rel="noopener noreferrer"
+          target="_blank"
+          href={mapLink}
+        >
+          <i className="fa fa-map-marker" /> Directions
         </a>
         <span className="label">Accept Ride:</span>
         <h3>{ride.name}</h3>
         <p>
           {ride.from_address}
           <br />
-          {ride.from_city}
-,
-          {ride.from_state} 
-          {' '}
-          {ride.from_zip}
+          {ride.from_city},{ride.from_state} {ride.from_zip}
         </p>
         <ContactVoter voter_phone_number={ride.voter_phone_number} />
         <div className="secondary-info m-t">

@@ -39,6 +39,9 @@ module.exports = {
       node: {
         extensions: ['.js', '.json']
       }
-    }
+    },
+    "react": {
+      "version": "16.4.2",
+    },
   },
 };
