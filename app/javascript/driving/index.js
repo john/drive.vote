@@ -11,11 +11,11 @@ require('./styles/drive-vote.css');
 const router = (
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/driving"  component={App}>
-        <IndexRoute component={LocationManager}></IndexRoute>
+      <Route path="/driving" component={App}>
+        <IndexRoute component={LocationManager} />
       </Route>
     </Router>
   </Provider>
-)
+);
 
 render(router, document.getElementById('root'));

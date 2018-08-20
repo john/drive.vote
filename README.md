@@ -21,7 +21,7 @@ Here's what the Philadelphia dispatch and driver apps looked like on election mo
 1. `git clone git@github.com:john/drive.vote.git; cd drive.vote`
 1. `cd drive.vote`
 
-### Set up your environmnt
+### Set up your environment
 Create a .env file in the app root and add these variables, with the correct values for your local env:
 
     REDIS_URL=redis://localhost:6379
