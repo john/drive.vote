@@ -6,7 +6,7 @@ import store, { history } from './store';
 import App from './containers/App';
 import LocationManager from './containers/LocationManager';
 
-require('./styles/drive-vote.css');
+require('./styles/drive-vote.scss');
 
 const router = (
   <Provider store={store}>

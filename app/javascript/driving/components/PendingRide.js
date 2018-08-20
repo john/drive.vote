@@ -1,7 +1,9 @@
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 import h from '../helpers/helpers';
 import PendingRideDetail from './PendingRideDetail';
-import DispatchMatch from './DispatchMatch';
+import ActiveRide from './ActiveRide';
 
 class PendingRide extends React.Component {
   constructor(props) {
@@ -26,8 +28,17 @@ class PendingRide extends React.Component {
 
   render() {
     const { ride } = this.props;
+
     if (ride.status === 'waiting_acceptance') {
-      return <DispatchMatch ride={this.ride} {...this.props} />;
+      return (
+        <ReactCSSTransitionGroup
+          transitionName="dispatchMatch"
+          transitionAppear
+          transitionAppearTimeout={500}
+        >
+          <ActiveRide ride={this.ride} {...this.props} />
+        </ReactCSSTransitionGroup>
+      );
     }
     const time = h.formatTime(ride.pickup_at);
     const passengers = 1 + parseInt(ride.additional_passengers, 10);

@@ -4,40 +4,65 @@ import ActiveRide from '../components/ActiveRide';
 
 class RideContainer extends React.Component {
   componentDidMount() {
+    const {
+      fetchWaitingRides,
+      submitLocation,
+      state: {
+        driverState: {
+          location,
+          update_location_interval,
+          waiting_rides_interval,
+        },
+      },
+    } = this.props;
+    // Immediately send location instead of waiting for first interval to hit:
+    submitLocation(location);
+
     this.locationInterval = setInterval(
-      () => this.props.submitLocation(this.props.state.driverState.location),
-      this.props.state.driverState.update_location_interval
+      () => submitLocation(location),
+      update_location_interval
     );
     this.ridesInterval = setInterval(
-      () => this.props.fetchWaitingRides(this.props.state.driverState.location),
-      this.props.state.driverState.waiting_rides_interval
+      () => fetchWaitingRides(location),
+      waiting_rides_interval
     );
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const currentRidesInterval = this.props.state.driverState
-      .waiting_rides_interval;
-    const nextRidesInterval =
-      nextProps.state.driverState.waiting_rides_interval;
-    const currentLoactionInterval = this.props.state.driverState
-      .update_location_interval;
-    const nextLocationInterval =
-      nextProps.state.driverState.update_location_interval;
-    if (nextRidesInterval && currentRidesInterval !== nextRidesInterval) {
+  UNSAFE_componentWillReceiveProps({
+    state: {
+      driverState: {
+        waiting_rides_interval: nextRidesInterval,
+        update_location_interval: nextLocationInterval,
+      },
+    },
+  }) {
+    const {
+      fetchWaitingRides,
+      submitLocation,
+      state: {
+        driverState: {
+          location,
+          update_location_interval,
+          waiting_rides_interval,
+        },
+      },
+    } = this.props;
+
+    if (nextRidesInterval && waiting_rides_interval !== nextRidesInterval) {
       clearInterval(this.ridesInterval);
       this.ridesInterval = setInterval(
-        () =>
-          this.props.fetchWaitingRides(this.props.state.driverState.location),
+        () => fetchWaitingRides(location),
         nextRidesInterval
       );
     }
+
     if (
       nextLocationInterval &&
-      currentLoactionInterval !== nextLocationInterval
+      update_location_interval !== nextLocationInterval
     ) {
       clearInterval(this.locationInterval);
       this.locationInterval = setInterval(
-        () => this.props.submitLocation(this.props.state.driverState.location),
+        () => submitLocation(location),
         nextLocationInterval
       );
     }
@@ -49,15 +74,11 @@ class RideContainer extends React.Component {
   }
 
   render() {
-    if (this.props.state.driverState.active_ride) {
-      return (
-        <ActiveRide
-          {...this.props}
-          ride={this.props.state.driverState.active_ride}
-        />
-      );
+    const { active_ride } = this.props.state.driverState;
+    if (!active_ride) {
+      return <WaitingRidesContainer {...this.props} />;
     }
-    return <WaitingRidesContainer {...this.props} />;
+    return <ActiveRide ride={active_ride} {...this.props} />;
   }
 }
 

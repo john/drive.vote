@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import ContactVoter from './ContactVoter';
+import ContactVoter from './rides/ContactVoter';
 
 const DispatchMatch = ({ ride, claimRide, cancelRide }) => {
   const passengers = 1 + parseInt(ride.additional_passengers, 10);
