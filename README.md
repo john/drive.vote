@@ -22,6 +22,7 @@ Here's what the Philadelphia dispatch and driver apps looked like on election mo
 1. `cd drive.vote`
 
 ### Docker
+
 1. [Install docker](https://store.docker.com/search?type=edition&offering=community).
 1. Run `docker-compose up`. This will start three containers: one for postgres, one for redis and one that runs rails + the webpack dev server.
 1. If necessary, run `docker-compose exec web bundle exec rails db:create db:schema:load db:seed` to setup the database. You'll need to do this on first run.
@@ -37,8 +38,8 @@ docker-compose exec web bash -l
 
 This shouldn't be necessary most of the time.
 
-
 ### Directly.
+
 1. Create a .env file in the app root and add these variables, with the correct values for your local env:
 
   ```
