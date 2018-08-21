@@ -21,7 +21,7 @@ Here's what the Philadelphia dispatch and driver apps looked like on election mo
 1. `git clone git@github.com:john/drive.vote.git; cd drive.vote`
 1. `cd drive.vote`
 
-### Running it via docker (in dev only, at the moment)
+### Docker
 1. [Install docker](https://store.docker.com/search?type=edition&offering=community).
 1. Run `docker-compose up`. This will start three containers: one for postgres, one for redis and one that runs rails + the webpack dev server.
 1. If necessary, run `docker-compose exec web bundle exec rails db:create db:schema:load db:seed` to setup the database. You'll need to do this on first run.
@@ -38,7 +38,7 @@ docker-compose exec web bash -l
 This shouldn't be necessary most of the time.
 
 
-### Running it directly.
+### Directly.
 1. Create a .env file in the app root and add these variables, with the correct values for your local env:
 
   ```
@@ -60,16 +60,6 @@ For production, instead of `foreman:dev`, run
   1. `rake foreman:prod`
 
 If you don't want to use foreman, you have to run the rails server (Puma) and the webpack server in separate terminals: `bundle exec rails server` and `bundle exec ./bin/webpack-dev-server`, respectively.
-
-### Running it using Vagrant
-1. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-1. Install [Vagrant](https://www.vagrantup.com/downloads.html)
-1. `git clone git@github.com:john/drive.vote.git`
-1. `cd drive.vote`
-1. `vagrant up`
-1. `vagrant ssh` to access the virtual machine
-1. `cd /opt/drive.vote && rake foreman:dev` to start the app
-1. Visit http://192.168.42.100:3000/
 
 ## Running specs
 
@@ -167,6 +157,8 @@ https://www.labnol.org/internet/geo-location/27878/ ?
 1. Commit your changes: `git commit -am 'Add some feature'`
 1. Push upstream: `git push origin my-new-feature`
 1. Create new Pull Request
+1. Request a code review
+1. After review and approval, merge your own work to master
 
 ## License
 
