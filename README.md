@@ -21,16 +21,10 @@ Here's what the Philadelphia dispatch and driver apps looked like on election mo
 1. `git clone git@github.com:john/drive.vote.git; cd drive.vote`
 1. `cd drive.vote`
 
-### Set up your environment
-Create a .env file in the app root and add these variables, with the correct values for your local env:
-
-    REDIS_URL=redis://localhost:6379
-    SECRET_KEY_BASE=xxxxxxx
-
 ### Running it via docker (in dev only, at the moment)
 1. [Install docker](https://store.docker.com/search?type=edition&offering=community).
 1. Run `docker-compose up`. This will start three containers: one for postgres, one for redis and one that runs rails + the webpack dev server.
-1. If necessary, run `docker-compose exec web bundle exec rails db:create db:schema:load db:seed` to setup the database.
+1. If necessary, run `docker-compose exec web bundle exec rails db:create db:schema:load db:seed` to setup the database. You'll need to do this on first run.
 1. To shut down the DtV containers: `docker-compose stop`
 
 Your current directory will be mounted into the docker instances so changes to the files should go live immediately without restarting the envrionment. If you need to restart the rails server, just run `docker-compose up` again.
@@ -45,6 +39,13 @@ This shouldn't be necessary most of the time.
 
 
 ### Running it directly.
+1. Create a .env file in the app root and add these variables, with the correct values for your local env:
+
+  ```
+    REDIS_URL=redis://localhost:6379
+    SECRET_KEY_BASE=xxxxxxx
+  ```
+
 1. Install postgresql
 1. Install Redis (to run: `redis-server /usr/local/etc/redis.conf`)
 1. Install bundler: `gem install bundler`
