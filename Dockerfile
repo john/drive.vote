@@ -5,6 +5,7 @@ RUN apk add \
   build-base \
   python3 \
   postgresql-dev \
+  postgresql-client \
   bash \
   nodejs \
   yarn \
