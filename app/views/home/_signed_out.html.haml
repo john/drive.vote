@@ -13,44 +13,9 @@
 
   %p
     = t(:how_it_works_copy)
-
-  -#
-    / %h3
-    /   = t(:how_to_help)
-    / %p
-    /   If you have a car and can be in <b>Philadelphia</b>, <b>Pittsburgh</b>, or <b>Salt Lake City</b> on election day, volunteer to be a driver! Help get voters to the polls on November 8th and make sure everyone has a vote.
-    /
-    / %p
-    /   %table.btns
-    /     %tr
-    /       %td.vol
-    /         = link_to "javascript:alert('Sorry, Philadelphia is at capacity! You can still volunteer for Pittsburgh.');" do
-    /           %button.btn.btn-default.btn-home.btn-lft{role: 'button'}
-    /             Volunteer for Philadelphia
-    /       %td.ride
-    /         = link_to "/ride/philadelphia" do
-    /           %button.btn.btn-success.btn-home.btn-rgt{role: 'button'}
-    /             Request ride in Philadelphia
-    /     %tr
-    /       %td.vol
-    /         = link_to '/volunteer/pittsburgh' do
-    /           %button.btn.btn-info.btn-home.btn-lft{role: 'button'}
-    /             Volunteer for Pittsburgh
-    /       %td.ride
-    /         = link_to '/ride/pittsburgh' do
-    /           %button.btn.btn-success.btn-home.btn-rgt{role: 'button'}
-    /             Request ride in Pittsburgh
-    /
-    /     %tr
-    /       %td.vol
-    /         = link_to '/volunteer/salt_lake_county' do
-    /           %button.btn.btn-info.btn-home.btn-lft{role: 'button'}
-    /             Volunteer for Salt Lake
-    /       %td.ride
-    /         = link_to '/ride/salt_lake_county' do
-    /           %button.btn.btn-success.btn-home.btn-rgt{role: 'button'}
-    /             Request ride in Salt Lake
-    /
-    / %p{style: "text-align: center; margin: 25px 0;"}
-    /   To request a ride in Pennsylvania over the phone,<br>
-    /   please call the voter hotline at 878-777-3861.
+    
+  %h3.how-to-help
+    = t(:how_to_help)
+    
+  %p
+    Drive the Vote will be deployed in select swing races. If you live an area with a tight national race, are affiliated with a campaign organization or similar group, and are willing to devote significant time to organizing and training drivers and running a ride system, please contact <a href="mailto:hello@drive.vote">hello@drive.vote</a>.
