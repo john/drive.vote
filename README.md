@@ -18,18 +18,15 @@ Here's what the Philadelphia dispatch and driver apps looked like on election mo
 
 ### Check out the repo
 
-`git clone git@github.com:john/drive.vote.git; cd drive.vote`
+1. `git clone git@github.com:john/drive.vote.git; cd drive.vote`
+1. `cd drive.vote`
 
-### Set up your environmnt
-Create a .env file in the app root and add these variables, with the correct values for your local env:
+### Docker
 
-    REDIS_URL=redis://localhost:6379
-    SECRET_KEY_BASE=xxxxxxx
-
-### Running it via docker (in dev only!)
 1. [Install docker](https://store.docker.com/search?type=edition&offering=community).
-1. Run `docker-compose up`. This will start 2 containers: one for postgres, and one that runs rails + webpack dev server.
-1. If necessary, run `docker-compose exec web bundle exec rails db:create db:schema:load db:seed` to setup the database.
+1. Run `docker-compose up`. This will start three containers: one for postgres, one for redis and one that runs rails + the webpack dev server.
+1. If necessary, run `docker-compose exec web bundle exec rails db:create db:schema:load db:seed` to setup the database. You'll need to do this on first run.
+1. To shut down the DtV containers: `docker-compose stop`
 
 Your current directory will be mounted into the docker instances so changes to the files should go live immediately without restarting the envrionment. If you need to restart the rails server, just run `docker-compose up` again.
 
@@ -41,22 +38,22 @@ docker-compose exec web bash -l
 
 This shouldn't be necessary most of the time.
 
-1. To view running containers: `docker container ls`
-1. To shut down the DtV containers: `docker-compose stop`
+### Directly.
 
-### Running it directly.
-1. Install postgresql.
-1. Install Redis
-1. Run it: redis-server /usr/local/etc/redis.conf
+1. Create a .env file in the app root and add these variables, with the correct values for your local env:
+
+  ```
+    REDIS_URL=redis://localhost:6379
+    SECRET_KEY_BASE=xxxxxxx
+  ```
+
+1. Install postgresql
+1. Install Redis (to run: `redis-server /usr/local/etc/redis.conf`)
 1. Install bundler: `gem install bundler`
 1. Install gems: `bundle install`
 1. Run `rake pg:first_run` on the first run, and `rake pg:start` for subsequent runs to start the DB
 1. To set up the db: `rake db:create; rake db:migrate; rake db:seed`.
-1. bundle exec rails webpacker:install
-1. yarn add webpack-cli -D
-1. yarn add webpack-manifest-plugin -D
-1. Hack https://github.com/webpack/webpack-dev-server/issues/1355 (lower webpack-dev-server version)
-
+1. bundle exec rails webpacker:install (I think?)
 1. Run `bundle exec rake foreman:dev` to start the server in dev mode. You can check Procfile.dev to see the servers this starts.
 
 For production, instead of `foreman:dev`, run
@@ -64,16 +61,6 @@ For production, instead of `foreman:dev`, run
   1. `rake foreman:prod`
 
 If you don't want to use foreman, you have to run the rails server (Puma) and the webpack server in separate terminals: `bundle exec rails server` and `bundle exec ./bin/webpack-dev-server`, respectively.
-
-### Running it using Vagrant
-1. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-1. Install [Vagrant](https://www.vagrantup.com/downloads.html)
-1. `git clone git@github.com:john/drive.vote.git`
-1. `cd drive.vote`
-1. `vagrant up`
-1. `vagrant ssh` to access the virtual machine
-1. `cd /opt/drive.vote && rake foreman:dev` to start the app
-1. Visit http://192.168.42.100:3000/
 
 ## Running specs
 
@@ -158,16 +145,21 @@ Useful URLs:
   * http://local.drive.vote:3000/admin -- Admin console Default page shows all dev Ride Zones.
   * http://local.drive.vote:3000/dispatch/[slug] -- Dispatch app. The slug should correspond to the ride zone attached to the logged in user. Linked to for each ride from the admin page.
   * http://local.drive.vote/driving -- Driver app. It'll be connected to the Ride Zone the account is driving for.
+  
+### Spoofing location in the browser
+https://www.labnol.org/internet/geo-location/27878/ ?
 
 ## Contributing
 
 1. Fork it
 1. Create your feature branch: `git checkout -b my-new-feature`
 1. Follow rails [core team coding conventions](http://guides.rubyonrails.org/contributing_to_ruby_on_rails.html#write-your-code)
-1. Provide test coverage/specs, make sure all specs pass `bundle exec rake`
+1. Provide test coverage/specs for your changes, and make sure all specs pass: `bundle exec rake`
 1. Commit your changes: `git commit -am 'Add some feature'`
 1. Push upstream: `git push origin my-new-feature`
 1. Create new Pull Request
+1. Request a code review
+1. After review and approval, merge your own work to master
 
 ## License
 

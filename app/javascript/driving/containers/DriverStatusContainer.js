@@ -1,30 +1,22 @@
 import React from 'react';
-import autobind from 'autobind-decorator';
-import RideContainer from '../containers/RideContainer';
+import RideContainer from './RideContainer';
 import Unavailable from '../components/Unavailable';
 import Loading from '../components/Loading';
 
-autobind
 class DriverStatusContainer extends React.Component {
+  componentDidMount() {
+    this.props.fetchStatus();
+  }
 
-    componentDidMount() {
-        this.props.fetchStatus();
+  render() {
+    if (!this.props.state.driverState.initialFetch) {
+      if (this.props.state.driverState.available) {
+        return <RideContainer {...this.props} />;
+      }
+      return <Unavailable {...this.props} />;
     }
-
-    render() {
-        if (!this.props.state.driverState.initialFetch) {
-
-            if (this.props.state.driverState.available) {
-                return (
-                    <RideContainer {...this.props} />
-                )
-            } else {
-                return <Unavailable {...this.props} />
-            }
-        } else {
-            return <Loading />
-        }
-    }
-};
+    return <Loading />;
+  }
+}
 
 export default DriverStatusContainer;

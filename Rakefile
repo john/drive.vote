@@ -8,7 +8,7 @@ Rails.application.load_tasks
 task default: 'bundler:audit'
 
 # Hook webpack to run along with asset precompilation.
-Rake::Task['assets:precompile'].enhance ['webpack:compile']
+Rake::Task['assets:precompile'].enhance ['webpacker:compile']
 
 namespace :foreman do
   task :prod do

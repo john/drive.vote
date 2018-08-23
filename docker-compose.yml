@@ -1,9 +1,11 @@
 version: '2'
 services:
   db:
-    image: postgres
+    image: 'postgres:10.5-alpine'
+    
   redis:
-    image: redis
+    image: 'redis:4.0.11-alpine'
+    
   web:
     build:
       context: ./
@@ -19,6 +21,7 @@ services:
     ports:
       - "3808:3808"
       - "3000:3000"
+      - "8080:8080"
     depends_on:
       - db
     stdin_open: true
