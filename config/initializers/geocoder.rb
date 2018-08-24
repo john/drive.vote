@@ -5,7 +5,7 @@ GEO_NEARBY_DISTANCE = 75
 Geocoder.configure(
 
   # geocoding service (see below for supported options):
-  # :lookup => :google,
+  :lookup => :google,
 
   # IP address geocoding service (see below for supported options):
   # :ip_lookup => :maxmind,
