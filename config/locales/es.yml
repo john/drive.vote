@@ -127,7 +127,7 @@ es:
   # voter form
   thanks_requesting: 'Gracias por su interés en un paseo el %{time}. Txt este número con preguntas, o enviar correo electrónico a %{email}.'
   schedule_ride: 'Programar un viaje gratis'
-  can_text_to: 'Utilice este formulario o envíe un texto a'
+  can_text_to: 'On day scheduled  rider can text for updates:'
   to_or_from: 'hacia o desde su lugar de votación'
   sign_in_to_edit: 'Por favor, inicie sesión para cambiar su solicitud paseo existente'
   voter_name: 'Cuál es su nombre?'

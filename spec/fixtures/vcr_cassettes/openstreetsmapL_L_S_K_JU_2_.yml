@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://nominatim.openstreetmap.org/search?accept-language=en&addressdetails=1&format=json&q=43601
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 24 Aug 2018 20:19:53 GMT
+      Server:
+      - Apache/2.4.29 (Ubuntu)
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Expect-Ct:
+      - max-age=0, report-uri="https://openstreetmap.report-uri.com/r/d/ct/reportOnly"
+      Upgrade:
+      - h2
+      Connection:
+      - Upgrade, close
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/json; charset=UTF-8
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        W3sicGxhY2VfaWQiOiIyMDA0MTk2ODciLCJsaWNlbmNlIjoiRGF0YSDCqSBPcGVuU3RyZWV0TWFwIGNvbnRyaWJ1dG9ycywgT0RiTCAxLjAuIGh0dHBzOlwvXC9vc20ub3JnXC9jb3B5cmlnaHQiLCJib3VuZGluZ2JveCI6WyI0MS42NDE5MTIiLCI0MS42NDIwMTIiLCItODMuNTQ0NjM5IiwiLTgzLjU0NDUzOSJdLCJsYXQiOiI0MS42NDE5NjIiLCJsb24iOiItODMuNTQ0NTg5IiwiZGlzcGxheV9uYW1lIjoiVG9sZWRvLCBPaGlvLCA0MzYwMSwgVW5pdGVkIFN0YXRlcyBvZiBBbWVyaWNhIiwiY2xhc3MiOiJwbGFjZSIsInR5cGUiOiJwb3N0Y29kZSIsImltcG9ydGFuY2UiOjAuMzM1LCJhZGRyZXNzIjp7ImNpdHkiOiJUb2xlZG8iLCJzdGF0ZSI6Ik9oaW8iLCJwb3N0Y29kZSI6IjQzNjAxIiwiY291bnRyeSI6IlVuaXRlZCBTdGF0ZXMgb2YgQW1lcmljYSIsImNvdW50cnlfY29kZSI6InVzIn19LHsicGxhY2VfaWQiOiIxOTk1MTU4MjIiLCJsaWNlbmNlIjoiRGF0YSDCqSBPcGVuU3RyZWV0TWFwIGNvbnRyaWJ1dG9ycywgT0RiTCAxLjAuIGh0dHBzOlwvXC9vc20ub3JnXC9jb3B5cmlnaHQiLCJib3VuZGluZ2JveCI6WyI1MC42MTI0MTEzODI1MDYiLCI1MC42MTI1MTEzODI1MDYiLCIxMy42MDY2NTQ0OTA2NzYiLCIxMy42MDY3NTQ0OTA2NzYiXSwibGF0IjoiNTAuNjEyNDYxMzgyNTA1NiIsImxvbiI6IjEzLjYwNjcwNDQ5MDY3NTciLCJkaXNwbGF5X25hbWUiOiJNZXppYm/FmcOtIHUgTGl0dsOtbm92YSwgTm9ydGh3ZXN0LCA0MzYwMSwgQ3plY2hpYSIsImNsYXNzIjoicGxhY2UiLCJ0eXBlIjoicG9zdGNvZGUiLCJpbXBvcnRhbmNlIjowLjMzNSwiYWRkcmVzcyI6eyJzdWJ1cmIiOiJNZXppYm/FmcOtIHUgTGl0dsOtbm92YSIsInN0YXRlIjoiTm9ydGh3ZXN0IiwicG9zdGNvZGUiOiI0MzYwMSIsImNvdW50cnkiOiJDemVjaGlhIiwiY291bnRyeV9jb2RlIjoiY3oifX0seyJwbGFjZV9pZCI6IjE4OTA3ODkxIiwibGljZW5jZSI6IkRhdGEgwqkgT3BlblN0cmVldE1hcCBjb250cmlidXRvcnMsIE9EYkwgMS4wLiBodHRwczpcL1wvb3NtLm9yZ1wvY29weXJpZ2h0Iiwib3NtX3R5cGUiOiJub2RlIiwib3NtX2lkIjoiMTgyMzc3NDQ1OCIsImJvdW5kaW5nYm94IjpbIjUwLjU5ODQ1OTQiLCI1MC41OTg1NTk0IiwiMTMuNjEwNjQ4NCIsIjEzLjYxMDc0ODQiXSwibGF0IjoiNTAuNTk4NTA5NCIsImxvbiI6IjEzLjYxMDY5ODQiLCJkaXNwbGF5X25hbWUiOiJMaXR2w61ub3YgMSwgbsOhbcSbc3TDrSBNw61ydSwgSG9ybsOtIExpdHbDrW5vdiwgTGl0dsOtbm92LCBva3JlcyBNb3N0LCDDmnN0ZWNrw70ga3JhaiwgTm9ydGh3ZXN0LCA0MzYwMSwgQ3plY2hpYSIsImNsYXNzIjoiYW1lbml0eSIsInR5cGUiOiJwb3N0X29mZmljZSIsImltcG9ydGFuY2UiOjAuMTExMDAwMDAwMDAwMDAwMDIsImljb24iOiJodHRwczpcL1wvbm9taW5hdGltLm9wZW5zdHJlZXRtYXAub3JnXC9pbWFnZXNcL21hcGljb25zXC9hbWVuaXR5X3Bvc3Rfb2ZmaWNlLnAuMjAucG5nIiwiYWRkcmVzcyI6eyJwb3N0X29mZmljZSI6IkxpdHbDrW5vdiAxIiwiZm9vdHdheSI6Im7DoW3Em3N0w60gTcOtcnUiLCJzdWJ1cmIiOiJIb3Juw60gTGl0dsOtbm92IiwidG93biI6IkxpdHbDrW5vdiIsImNvdW50eSI6Im9rcmVzIE1vc3QiLCJzdGF0ZSI6Ik5vcnRod2VzdCIsInBvc3Rjb2RlIjoiNDM2MDEiLCJjb3VudHJ5IjoiQ3plY2hpYSIsImNvdW50cnlfY29kZSI6ImN6In19XQ==
+    http_version: 
+  recorded_at: Fri, 24 Aug 2018 20:19:53 GMT
+recorded_with: VCR 3.0.3

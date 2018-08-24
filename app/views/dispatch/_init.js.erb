@@ -1,7 +1,7 @@
 var dispatchMapController;
 var dispatchController;
 
-var gmap = new Map(document.getElementById('dispatch-map'), onMapLoaded,
+var gmap = new Mapp(document.getElementById('dispatch-map'), onMapLoaded,
                    {'google_api_key': "<%= ENV['GOOGLE_API_KEY'] %>",
                     lat: <%= @ride_zone.latitude %>, lon: <%= @ride_zone.longitude %>, zoom: 13});
 

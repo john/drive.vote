@@ -4,7 +4,7 @@
 // Loaded map is passed to callback when ready for use.
 "use strict";
 
-function Map(element, callback, args)
+function Mapp(element, callback, args)
 {
   // 3rd-party map instances - exactly one of these should be defined.
   this._gmap = null;
@@ -40,7 +40,7 @@ function Map(element, callback, args)
 }
 
 // Built-in icon options.
-Map.icons = {
+Mapp.icons = {
   driver:  {w: 30, h: 45, url: "<%= asset_path('driver-waiting-assignment.png')%>"},
   poll:    {w: 30, h: 45, url: "<%= asset_path('icon-poll.svg')%>"},
   open_driver: {w: 30, h: 45, url: "<%= asset_path('driver-waiting-assignment.png')%>"},
@@ -55,7 +55,7 @@ Map.icons = {
   default: {w: 30, h: 45, url: "<%= asset_path('/icon-default.svg')%>"}
 };
 
-Map.prototype = {
+Mapp.prototype = {
 
   // Add a marker with an optional text-only popup.
   // Returns the new marker ID.
@@ -63,7 +63,7 @@ Map.prototype = {
   {
     var marker,
       content = this._prepareMarkerContent(name, href),
-      _icon = (icon || Map.icons.default);
+      _icon = (icon || Mapp.icons.default);
 
     if(this._gmap) {
       marker = this._addGoogleMarker(lat, lon, _icon, name, content);
@@ -86,7 +86,7 @@ Map.prototype = {
   {
     var marker = this._markers[id],
       content = this._prepareMarkerContent(name, href),
-      _icon = (icon || Map.icons.default);
+      _icon = (icon || Mapp.icons.default);
 
     if(marker && this._gmap) {
       this._updateGoogleMarker(marker, lat, lon, _icon, name, content);
