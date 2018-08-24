@@ -67,12 +67,13 @@ Rails.application.routes.draw do
     end
   end
 
-  # get 'ride/:ride_zone_id' => 'rides#new', as: 'get_a_ride'
-  # get 'get_a_ride/:ride_zone_id', to: redirect("/ride/%{ride_zone_id}")
-  # get 'conseguir_un_paseo/:ride_zone_id' => 'rides#new'
-  get 'ride/:ride_zone_id', as: 'get_a_ride', to: redirect("/")
-  get 'get_a_ride/:ride_zone_id', to: redirect("/")
-  get 'conseguir_un_paseo/:ride_zone_id', to: redirect("/")
+  get 'ride/:ride_zone_id' => 'rides#new', as: 'get_a_ride'
+  get 'get_a_ride/:ride_zone_id', to: redirect("/ride/%{ride_zone_id}")
+  get 'conseguir_un_paseo/:ride_zone_id' => 'rides#new'
+  
+  # get 'ride/:ride_zone_id', as: 'get_a_ride', to: redirect("/")
+  # get 'get_a_ride/:ride_zone_id', to: redirect("/")
+  # get 'conseguir_un_paseo/:ride_zone_id', to: redirect("/")
 
   resources :rides, only: [:create, :edit, :update]
 

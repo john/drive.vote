@@ -24,15 +24,15 @@ DispatchMapController.prototype = {
       label = obj.name + ' ' + obj.phone,
       ride = obj.active_ride,
       available = obj.available,
-      icon = Map.icons.open_driver;
+      icon = Mapp.icons.open_driver;
 
     if(lat == undefined || lat == null || lon == undefined || lon == null) { return }
     if(ride != undefined && ride.status != 'complete' && ride.status != 'canceled') {
       // this driver has an active ride
       if (ride.status == 'driver_assigned') {
-        icon = Map.icons.assigned_driver;
+        icon = Mapp.icons.assigned_driver;
       } else {
-        icon = Map.icons.driving_driver;
+        icon = Mapp.icons.driving_driver;
         ride.from_latitude = lat;   // move the ride with the driver
         ride.from_longitude = lon;
         this.processRide(ride, true);
@@ -81,7 +81,7 @@ DispatchMapController.prototype = {
       lon = parseFloat(ride.from_longitude),
       label = ride.name,
       now = (new Date()).getTime() / 1000,
-      icon = Map.icons.waiting_assignment;
+      icon = Mapp.icons.waiting_assignment;
 
     var pickupWarning, notPickedUpWarning;
     if (ride.pickup_at != undefined) {
@@ -93,17 +93,17 @@ DispatchMapController.prototype = {
     if (ride.status == 'waiting_assignment' || ride.status == 'new_ride') {
       if (pickupWarning != undefined && now > pickupWarning) {
         // this ride is overdue for a driver
-        icon = Map.icons.overdue_assignment;
+        icon = Mapp.icons.overdue_assignment;
         label = label + ' Pickup time: ' + strftime('%l:%M%P', new Date(ride.pickup_at*1000))
       }
     } else if (ride.status == 'driver_assigned' || ride.status == 'waiting_acceptance') {
       // this ride has an assigned driver
       if (notPickedUpWarning != undefined && now > notPickedUpWarning) {
         // this ride is overdue to be picked up
-        icon = Map.icons.overdue_pickup;
+        icon = Mapp.icons.overdue_pickup;
         label = label + ' Pickup time: ' + strftime('%l:%M%P', new Date(ride.pickup_at*1000))
       } else {
-        icon = Map.icons.waiting_pickup;
+        icon = Mapp.icons.waiting_pickup;
       }
     } else if (ride.status == 'complete' || ride.status == 'canceled') {
       visible = false;

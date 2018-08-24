@@ -131,7 +131,7 @@ en:
 
   # voter form
   schedule_ride: 'Schedule a free ride'
-  can_text_to: 'Use this form, or text'
+  can_text_to: 'On day scheduled  rider can text for updates:'
   to_or_from: 'to or from your voting place'
   sign_in_to_edit: 'Please sign in to change your existing ride request'
   voter_name: 'What is your name?'
