@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://nominatim.openstreetmap.org/reverse?accept-language=en&addressdetails=1&format=json&lat=41.641962&lon=-83.544589
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 24 Aug 2018 20:19:54 GMT
+      Server:
+      - Apache/2.4.29 (Ubuntu)
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Expect-Ct:
+      - max-age=0, report-uri="https://openstreetmap.report-uri.com/r/d/ct/reportOnly"
+      Upgrade:
+      - h2
+      Connection:
+      - Upgrade, close
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/json; charset=UTF-8
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJwbGFjZV9pZCI6IjE3MjAzNTM2NCIsImxpY2VuY2UiOiJEYXRhIMKpIE9wZW5TdHJlZXRNYXAgY29udHJpYnV0b3JzLCBPRGJMIDEuMC4gaHR0cHM6XC9cL29zbS5vcmdcL2NvcHlyaWdodCIsIm9zbV90eXBlIjoid2F5Iiwib3NtX2lkIjoiNDMwMDc3NjMzIiwibGF0IjoiNDEuNjQxNzA0MyIsImxvbiI6Ii04My41NDM2NzU1ODkwOTYyIiwiZGlzcGxheV9uYW1lIjoiVG9sZWRvIE1haW4gUG9zdCBPZmZpY2UsIFNvdXRoIFNhaW50IENsYWlyIFN0cmVldCwgTWlkZGxlIEdyb3VuZHMsIFRvbGVkbywgTHVjYXMgQ291bnR5LCBPaGlvLCA0MzYwMiwgVW5pdGVkIFN0YXRlcyBvZiBBbWVyaWNhIiwiYWRkcmVzcyI6eyJwb3N0X29mZmljZSI6IlRvbGVkbyBNYWluIFBvc3QgT2ZmaWNlIiwicm9hZCI6IlNvdXRoIFNhaW50IENsYWlyIFN0cmVldCIsIm5laWdoYm91cmhvb2QiOiJNaWRkbGUgR3JvdW5kcyIsImNpdHkiOiJUb2xlZG8iLCJjb3VudHkiOiJMdWNhcyBDb3VudHkiLCJzdGF0ZSI6Ik9oaW8iLCJwb3N0Y29kZSI6IjQzNjAyIiwiY291bnRyeSI6IlVuaXRlZCBTdGF0ZXMgb2YgQW1lcmljYSIsImNvdW50cnlfY29kZSI6InVzIn0sImJvdW5kaW5nYm94IjpbIjQxLjY0MDc0ODUiLCI0MS42NDI2NzUyIiwiLTgzLjU0NTEyMDQiLCItODMuNTQyODM4MyJdfQ==
+    http_version: 
+  recorded_at: Fri, 24 Aug 2018 20:19:54 GMT
+recorded_with: VCR 3.0.3

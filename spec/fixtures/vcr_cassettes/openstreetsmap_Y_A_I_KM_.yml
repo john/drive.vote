@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://nominatim.openstreetmap.org/reverse?accept-language=en&addressdetails=1&format=json&lat=37.7949269477&lon=-122.3998225858
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 24 Aug 2018 20:20:35 GMT
+      Server:
+      - Apache/2.4.29 (Ubuntu)
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Expect-Ct:
+      - max-age=0, report-uri="https://openstreetmap.report-uri.com/r/d/ct/reportOnly"
+      Upgrade:
+      - h2
+      Connection:
+      - Upgrade, close
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/json; charset=UTF-8
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJwbGFjZV9pZCI6IjM4MTIwOTM5IiwibGljZW5jZSI6IkRhdGEgwqkgT3BlblN0cmVldE1hcCBjb250cmlidXRvcnMsIE9EYkwgMS4wLiBodHRwczpcL1wvb3NtLm9yZ1wvY29weXJpZ2h0Iiwib3NtX3R5cGUiOiJub2RlIiwib3NtX2lkIjoiMjkwNjQ3OTM2NCIsImxhdCI6IjM3Ljc5NTA2NTciLCJsb24iOiItMTIyLjM5OTkwODgiLCJkaXNwbGF5X25hbWUiOiJCaWcgQnVzIFRvdXJzIFN0b3AgNCwgRW1iYXJjYWRlcm8sIENsYXkgU3RyZWV0LCBGaW5hbmNpYWwgRGlzdHJpY3QsIFNhbiBGcmFuY2lzY28sIFNhbiBGcmFuY2lzY28gQ2l0eSBhbmQgQ291bnR5LCBDYWxpZm9ybmlhLCA5NDExMSwgVW5pdGVkIFN0YXRlcyBvZiBBbWVyaWNhIiwiYWRkcmVzcyI6eyJidXNfc3RvcCI6IkJpZyBCdXMgVG91cnMgU3RvcCA0LCBFbWJhcmNhZGVybyIsInJvYWQiOiJDbGF5IFN0cmVldCIsIm5laWdoYm91cmhvb2QiOiJGaW5hbmNpYWwgRGlzdHJpY3QiLCJjaXR5IjoiU2FuIEZyYW5jaXNjbyIsImNvdW50eSI6IlNhbiBGcmFuY2lzY28gQ2l0eSBhbmQgQ291bnR5Iiwic3RhdGUiOiJDYWxpZm9ybmlhIiwicG9zdGNvZGUiOiI5NDExMSIsImNvdW50cnkiOiJVbml0ZWQgU3RhdGVzIG9mIEFtZXJpY2EiLCJjb3VudHJ5X2NvZGUiOiJ1cyJ9LCJib3VuZGluZ2JveCI6WyIzNy43OTQ5NjU3IiwiMzcuNzk1MTY1NyIsIi0xMjIuNDAwMDA4OCIsIi0xMjIuMzk5ODA4OCJdfQ==
+    http_version: 
+  recorded_at: Fri, 24 Aug 2018 20:20:36 GMT
+recorded_with: VCR 3.0.3

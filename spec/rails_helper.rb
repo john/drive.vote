@@ -44,6 +44,9 @@ VCR.configure do |config|
     VCR.use_cassette("googleapi_#{OpenSSL::Digest::SHA256.new.digest request.uri}", &request)
   end
 
+  config.around_http_request(lambda { |req| req.uri =~ /nominatim.openstreetmap.org/ }) do |request|
+    VCR.use_cassette("openstreetsmap#{OpenSSL::Digest::SHA256.new.digest request.uri}", &request)
+  end
 end
 
 RSpec.configure do |config|

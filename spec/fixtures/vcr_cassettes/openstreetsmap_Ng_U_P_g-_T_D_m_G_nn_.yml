@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://nominatim.openstreetmap.org/search?accept-language=en&addressdetails=1&format=json&q=,%20,%20Carnegie,%20PA,%2015106,%20
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 24 Aug 2018 20:19:48 GMT
+      Server:
+      - Apache/2.4.29 (Ubuntu)
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Expect-Ct:
+      - max-age=0, report-uri="https://openstreetmap.report-uri.com/r/d/ct/reportOnly"
+      Upgrade:
+      - h2
+      Connection:
+      - Upgrade, close
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/json; charset=UTF-8
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        W3sicGxhY2VfaWQiOiIxOTc4ODM4MjEiLCJsaWNlbmNlIjoiRGF0YSDCqSBPcGVuU3RyZWV0TWFwIGNvbnRyaWJ1dG9ycywgT0RiTCAxLjAuIGh0dHBzOlwvXC9vc20ub3JnXC9jb3B5cmlnaHQiLCJvc21fdHlwZSI6InJlbGF0aW9uIiwib3NtX2lkIjoiMTg3NDIzIiwiYm91bmRpbmdib3giOlsiNDAuMzk4NDEyIiwiNDAuNDE5OTY3IiwiLTgwLjA5OTk5MTMiLCItODAuMDY3NDI0Il0sImxhdCI6IjQwLjQwODY4MDIiLCJsb24iOiItODAuMDgzMzg4NSIsImRpc3BsYXlfbmFtZSI6IkNhcm5lZ2llLCBBbGxlZ2hlbnkgQ291bnR5LCBQZW5uc3lsdmFuaWEsIDE1MTA2LCBVbml0ZWQgU3RhdGVzIG9mIEFtZXJpY2EiLCJjbGFzcyI6ImJvdW5kYXJ5IiwidHlwZSI6ImFkbWluaXN0cmF0aXZlIiwiaW1wb3J0YW5jZSI6MC41OTcwMjcwMDUwOTk4OTQsImljb24iOiJodHRwczpcL1wvbm9taW5hdGltLm9wZW5zdHJlZXRtYXAub3JnXC9pbWFnZXNcL21hcGljb25zXC9wb2lfYm91bmRhcnlfYWRtaW5pc3RyYXRpdmUucC4yMC5wbmciLCJhZGRyZXNzIjp7ImNpdHkiOiJDYXJuZWdpZSIsImNvdW50eSI6IkFsbGVnaGVueSBDb3VudHkiLCJzdGF0ZSI6IlBlbm5zeWx2YW5pYSIsInBvc3Rjb2RlIjoiMTUxMDYiLCJjb3VudHJ5IjoiVW5pdGVkIFN0YXRlcyBvZiBBbWVyaWNhIiwiY291bnRyeV9jb2RlIjoidXMifX0seyJwbGFjZV9pZCI6IjQ4MjM0MDcwIiwibGljZW5jZSI6IkRhdGEgwqkgT3BlblN0cmVldE1hcCBjb250cmlidXRvcnMsIE9EYkwgMS4wLiBodHRwczpcL1wvb3NtLm9yZ1wvY29weXJpZ2h0Iiwib3NtX3R5cGUiOiJub2RlIiwib3NtX2lkIjoiMzY3MDY4MDY1NiIsImJvdW5kaW5nYm94IjpbIjQwLjQwNjE4OTYiLCI0MC40MDYyODk2IiwiLTgwLjA5MDEwMzEiLCItODAuMDkwMDAzMSJdLCJsYXQiOiI0MC40MDYyMzk2IiwibG9uIjoiLTgwLjA5MDA1MzEiLCJkaXNwbGF5X25hbWUiOiJDYXJuZWdpZSwgV2VzdCBCdXN3YXksIENhcm5lZ2llLCBBbGxlZ2hlbnkgQ291bnR5LCBQZW5uc3lsdmFuaWEsIDE1MTA2LCBVbml0ZWQgU3RhdGVzIG9mIEFtZXJpY2EiLCJjbGFzcyI6ImFtZW5pdHkiLCJ0eXBlIjoiYnVzX3N0YXRpb24iLCJpbXBvcnRhbmNlIjowLjIyMTAwMDAwMDAwMDAwMDAzLCJpY29uIjoiaHR0cHM6XC9cL25vbWluYXRpbS5vcGVuc3RyZWV0bWFwLm9yZ1wvaW1hZ2VzXC9tYXBpY29uc1wvdHJhbnNwb3J0X2J1c19zdGF0aW9uLnAuMjAucG5nIiwiYWRkcmVzcyI6eyJidXNfc3RhdGlvbiI6IkNhcm5lZ2llIiwicm9hZCI6Ildlc3QgQnVzd2F5IiwiY2l0eSI6IkNhcm5lZ2llIiwiY291bnR5IjoiQWxsZWdoZW55IENvdW50eSIsInN0YXRlIjoiUGVubnN5bHZhbmlhIiwicG9zdGNvZGUiOiIxNTEwNiIsImNvdW50cnkiOiJVbml0ZWQgU3RhdGVzIG9mIEFtZXJpY2EiLCJjb3VudHJ5X2NvZGUiOiJ1cyJ9fV0=
+    http_version: 
+  recorded_at: Fri, 24 Aug 2018 20:19:48 GMT
+recorded_with: VCR 3.0.3

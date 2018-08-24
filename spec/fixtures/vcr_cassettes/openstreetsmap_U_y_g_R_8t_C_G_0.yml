@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://nominatim.openstreetmap.org/reverse?accept-language=en&addressdetails=1&format=json&lat=40.4802201&lon=-79.955384
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 24 Aug 2018 20:20:39 GMT
+      Server:
+      - Apache/2.4.29 (Ubuntu)
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Expect-Ct:
+      - max-age=0, report-uri="https://openstreetmap.report-uri.com/r/d/ct/reportOnly"
+      Upgrade:
+      - h2
+      Connection:
+      - Upgrade, close
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/json; charset=UTF-8
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJwbGFjZV9pZCI6IjIyNzMwMDQ3MiIsImxpY2VuY2UiOiJEYXRhIMKpIE9wZW5TdHJlZXRNYXAgY29udHJpYnV0b3JzLCBPRGJMIDEuMC4gaHR0cHM6XC9cL29zbS5vcmdcL2NvcHlyaWdodCIsIm9zbV90eXBlIjoid2F5Iiwib3NtX2lkIjoiMjMxMDAxMTMxIiwibGF0IjoiNDAuNDgwMTU4IiwibG9uIjoiLTc5Ljk1NTM0NSIsImRpc3BsYXlfbmFtZSI6IjEsIFN0cmFzYnVyZyBTdHJlZXQsIFVwcGVyIExhd3JlbmNldmlsbGUsIFBpdHRzYnVyZ2gsIEFsbGVnaGVueSBDb3VudHksIFBlbm5zeWx2YW5pYSwgMTUyMDEsIFVuaXRlZCBTdGF0ZXMgb2YgQW1lcmljYSIsImFkZHJlc3MiOnsiaG91c2VfbnVtYmVyIjoiMSIsInJvYWQiOiJTdHJhc2J1cmcgU3RyZWV0Iiwic3VidXJiIjoiVXBwZXIgTGF3cmVuY2V2aWxsZSIsImNpdHkiOiJQaXR0c2J1cmdoIiwiY291bnR5IjoiQWxsZWdoZW55IENvdW50eSIsInN0YXRlIjoiUGVubnN5bHZhbmlhIiwicG9zdGNvZGUiOiIxNTIwMSIsImNvdW50cnkiOiJVbml0ZWQgU3RhdGVzIG9mIEFtZXJpY2EiLCJjb3VudHJ5X2NvZGUiOiJ1cyJ9LCJib3VuZGluZ2JveCI6WyI0MC40ODAwNTgiLCI0MC40ODAyNTgiLCItNzkuOTU1NDQ1IiwiLTc5Ljk1NTI0NSJdfQ==
+    http_version: 
+  recorded_at: Fri, 24 Aug 2018 20:20:39 GMT
+recorded_with: VCR 3.0.3
