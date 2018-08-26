@@ -12,7 +12,7 @@ Search: &nbsp;
   %input#q{type: 'text', value: "#{@q}"}
 
 - if @q.present?
-  = link_to 'clear', admin_users_path, style: "font-size: 13px; color: #777; margin-left: 10px;"
+  = link_to 'clear', '/admin/voters', style: "font-size: 13px; color: #777; margin-left: 10px;"
 
 %table.table-hover.admin
   %thead
