@@ -1,7 +1,7 @@
 :css
   h4 { margin: 30px 0 20px 0;}
-  #user-filter { margin: 0 0 20px 0;}
-  #user-search { display: inline;}
+  #driver-filter { margin: 0 0 20px 0;}
+  #driver-search { display: inline;}
   th { font-weight: bold; }
   td { font-size: 14px; }
   .name { font-size: 16px; max-width: 250px; font-weight: bold; }
@@ -11,22 +11,26 @@
 
 %h1
   Drivers
+  
+View: &nbsp;
+%select#driver-filter
+  %option{value: 'unassigned'} Unassigned
+  - if params[:assigned]
+    %option{value: 'assigned', selected: 'selected'} Assigned
+  - else
+    %option{value: 'assigned'} Assigned
+  - if params[:all]
+    %option{value: 'all', selected: 'selected'} All
+  - else
+    %option{value: 'all'} All
 
-.div{style: "margin: 5px 0 15px 0;"}
-  View: &nbsp;&nbsp;
-  %select#driver-filter
-    %option{value: 'unassigned'} Unassigned
-
-    - if params[:assigned]
-      %option{value: 'assigned', selected: 'selected'} Assigned
-    - else
-      %option{value: 'assigned'} Assigned
-
-
-    - if params[:all]
-      %option{value: 'all', selected: 'selected'} All
-    - else
-      %option{value: 'all'} All
+%span{style: "margin-left: 25px"}
+  Search: &nbsp;
+  %form#driver-search
+    %input#q{type: 'text', value: "#{@q}"}
+    
+  - if @q.present?
+    = link_to 'clear', '/admin/drivers', style: "font-size: 13px; color: #777; margin-left: 10px;"
 
 
 %table.table-hover.admin
@@ -73,6 +77,10 @@
       window.location.reload()
     }).fail(function() {
       alert( "FAIL!" );
+    });
   });
-
+  
+  $( "#driver-search" ).submit(function( event ) {
+    window.location.href = "/admin/drivers?q=" + $('#q').val();
+    event.preventDefault();
   });

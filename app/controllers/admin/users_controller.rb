@@ -3,7 +3,7 @@ class Admin::UsersController < Admin::AdminApplicationController
 
   before_action :set_user, only: [:show, :edit, :update, :destroy, :qa_clear]
 
-  USER_SEARCH = "(lower(users.name) LIKE ?) OR (users.phone_number LIKE ?) OR (users.email LIKE ?)".freeze
+  USER_SEARCH = "(lower(users.name) LIKE ?) OR (users.phone_number LIKE ?) OR (users.email LIKE ?) OR (lower(users.city) LIKE ?)".freeze
 
   def show
     @admin_zones = RideZone.with_user_in_role(:admin, @user)
@@ -18,7 +18,7 @@ class Admin::UsersController < Admin::AdminApplicationController
     sort = params[:sort] || 'name'
     if params[:q].present?
       @q = params[:q].downcase
-      @users = User.where(USER_SEARCH, "%#{@q}%", "%#{@q}%", "%#{@q}%").order("UPPER(#{sort}) DESC").paginate(page: page, per_page: per_page)
+      @users = User.where(USER_SEARCH, "%#{@q}%", "%#{@q}%", "%#{@q}%", "%#{@q}%").order("UPPER(#{sort}) DESC").paginate(page: page, per_page: per_page)
     elsif params[:filter].present? && params[:filter].downcase != 'all'
       @users = User.with_role(params[:filter].to_sym, :any).order("#{sort} DESC").paginate(page: page, per_page: per_page)
     else
@@ -32,7 +32,7 @@ class Admin::UsersController < Admin::AdminApplicationController
     sort = params[:sort] || 'users.name'
     if params[:q].present?
       @q = params[:q].downcase
-      @users = User.voters.where(USER_SEARCH, "%#{@q}%", "%#{@q}%", "%#{@q}%").order("#{sort} DESC").paginate(page: page, per_page: per_page)
+      @users = User.voters.where(USER_SEARCH, "%#{@q}%", "%#{@q}%", "%#{@q}%", "%#{@q}%").order("#{sort} DESC").paginate(page: page, per_page: per_page)
     else
       @users = User.voters.order(:name).paginate(page: page, per_page: per_page)
     end
