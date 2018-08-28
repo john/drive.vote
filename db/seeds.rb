@@ -69,7 +69,7 @@ john = User.create!(
 
 roles = Role.create( [{name: 'admin'}] )
 
-# admin.add_role(:admin)
+admin.add_role(:admin)
 # adam.add_role(:admin)
 # albert.add_role(:admin)
 # erin.add_role(:admin)
