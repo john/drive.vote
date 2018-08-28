@@ -128,8 +128,9 @@ const ActiveRide = props => {
         <p>Total Passengers: {passengers}</p>
         <p>Special requests: {special_requests}</p>
       </div>
-      <div className="bottom-controls secondary" />
-      {renderButtons(props)}
+      <div className="bottom-controls secondary">
+        {renderButtons(props)}
+      </div>
     </div>
   );
 };

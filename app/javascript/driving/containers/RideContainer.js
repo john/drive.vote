@@ -17,6 +17,7 @@ class RideContainer extends React.Component {
     } = this.props;
     // Immediately send location instead of waiting for first interval to hit:
     submitLocation(location);
+    fetchWaitingRides(location);
 
     this.locationInterval = setInterval(
       () => submitLocation(location),
