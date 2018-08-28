@@ -67,7 +67,13 @@ john = User.create!(
 #   state: 'CA'
 # )
 
-roles = Role.create( [{name: 'admin'}] )
+roles = Role.create([
+  {name: 'admin'},
+  {name: 'dispatcher'},
+  {name: 'driver'},
+  {name: 'unassigned_driver'},
+  {name: 'voter'},
+])
 
 admin.add_role(:admin)
 # adam.add_role(:admin)
