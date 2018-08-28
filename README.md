@@ -144,7 +144,7 @@ Useful URLs:
 
   * http://local.drive.vote:3000/admin -- Admin console Default page shows all dev Ride Zones.
   * http://local.drive.vote:3000/dispatch/[slug] -- Dispatch app. The slug should correspond to the ride zone attached to the logged in user. Linked to for each ride from the admin page.
-  * http://local.drive.vote/driving -- Driver app. It'll be connected to the Ride Zone the account is driving for.
+  * http://local.drive.vote:3000/driving -- Driver app. It'll be connected to the Ride Zone the account is driving for.
   
 ### Spoofing location in the browser
 https://www.labnol.org/internet/geo-location/27878/ ?
