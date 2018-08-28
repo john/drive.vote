@@ -36,11 +36,12 @@ p {
     border-radius: 0;
 }
 
+
 .jumbotron p {
     line-height: 25px;
 }
 
-.label {
+label {
     display: block;
     text-transform: uppercase;
     font-size: 14px;
@@ -50,6 +51,19 @@ p {
     font-size: 100px;
 }
 
+#root {
+    .label {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 2.3;
+    color: #34495e;
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    padding: 0;
+    }
+}
 
 /* Utilities */
 
@@ -106,7 +120,7 @@ p {
 }
 
 .m-t-md {
-    margin-top: 2em;
+    margin-top: 2em !important;
 }
 
 .m-b {
@@ -347,13 +361,12 @@ p.display-3 {
 
 .pending-ride p {
     font-size: 12px;
-    color: RGBA(93, 95, 98);
-    color: RGBA(93, 95, 98);
+    color: rgba(93, 95, 98, 1);
     margin: 0;
 }
 
 .dispatcher-match {
-    background: linear-gradient(to bottom, RGBA(246, 230, 85) 0%, white 140px);
+    background: linear-gradient(to bottom, rgb(246, 230, 85) 0%, white 140px);
     background-repeat: no-repeat;
     background-position: top;
 }

@@ -1,124 +1,138 @@
 import React from 'react';
 import ContactVoter from './ContactVoter';
-import DispatchMatch from './DispatchMatch';
 
-const ActiveRide = props => {
-  const { ride, completeRide, pickupRider, cancelRide } = props;
-  let mapLink;
-  const passengers = 1 + parseInt(ride.additional_passengers, 10);
+const renderAddress = ride => (
+  <p>
+    {ride.status === 'picked_up' ? ride.to_address : ride.from_address}
+    <br />
+    {ride.status === 'picked_up'
+      ? `${ride.to_city}, ${ride.to_state}`
+      : `${ride.from_city}, ${ride.from_state}`}
+  </p>
+);
+
+const getRideLabel = status => {
+  if (status === 'driver_assigned') {
+    return 'Picking up';
+  }
+  return 'Dropping off';
+};
+
+const getMapLink = ride => {
+  const mapPrefix = 'https://maps.apple.com/?daddr=';
+  if (ride.status === 'picked_up') {
+    return `${mapPrefix}${ride.to_address}, ${ride.to_city}, ${ride.to_state}`;
+  }
+  return `${mapPrefix}${ride.from_address}, ${ride.from_city}, ${
+    ride.from_state
+  }`;
+};
+
+const renderButtons = props => {
+  const { ride, claimRide, cancelRide, pickupRider, completeRide } = props;
 
   switch (ride.status) {
     case 'waiting_acceptance':
-      return <DispatchMatch ride={ride} {...props} />;
+      return (
+        <React.Fragment>
+          <button
+            type="button"
+            className="btn btn-success btn-api"
+            onClick={() => claimRide(ride)}
+          >
+            Accept Ride
+          </button>
+          <button
+            type="button"
+            className="btn btn-danger btn-api"
+            onClick={() => cancelRide(ride)}
+          >
+            Decline Ride
+          </button>
+        </React.Fragment>
+      );
+
     case 'driver_assigned':
-      mapLink = `https://maps.apple.com/?daddr=${ride.from_address}, ${
-        ride.from_city
-      }, ${ride.from_state}`;
       return (
-        <div className="panel panel-full p-y-sm">
-          <a
-            className="directionsLink"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={mapLink}
+        <React.Fragment>
+          <button
+            type="button"
+            className="btn btn-success btn-api"
+            onClick={() => pickupRider(ride)}
           >
-            <i className="fa fa-map-marker" />
-            Directions
-          </a>
-          <span className="label">Picking up:</span>
-          <h3>{ride.name}</h3>
-          <p>
-            {ride.from_address}
-            <br />
-            {`${ride.from_city},${ride.from_state} ${ride.from_zip}`}
-          </p>
-          <ContactVoter voter_phone_number={ride.voter_phone_number} />
-          <div className="secondary-info">
-            <p>
-              Total Passengers:
-              {passengers}
-            </p>
-            <p>
-              Special requests:
-              {ride.special_requests}
-            </p>
-          </div>
-          <div className="bottom-controls secondary">
-            <button
-              type="button"
-              className="btn btn-success btn-api"
-              onClick={() => pickupRider(ride)}
-            >
-              Rider picked up
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger btn-api"
-              onClick={() => cancelRide(ride)}
-            >
-              Cancel Ride
-            </button>
-          </div>
-        </div>
+            Rider picked up
+          </button>
+          <button
+            type="button"
+            className="btn btn-danger btn-api"
+            onClick={() => cancelRide(ride)}
+          >
+            Cancel Ride
+          </button>
+        </React.Fragment>
       );
+
     case 'picked_up':
-      mapLink = `https://maps.apple.com/?daddr=${ride.to_address}, ${
-        ride.to_city
-      }, ${ride.to_state}`;
       return (
-        <div className="panel panel-full p-y-sm">
-          <a
-            className="directionsLink"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={mapLink}
+        <React.Fragment>
+          <button
+            type="button"
+            className="btn btn-success btn-api"
+            onClick={() => completeRide(ride)}
           >
-            <i className="fa fa-map-marker" />
-            Directions
-          </a>
-          <span className="label">Dropping off:</span>
-          <h3>{ride.name}</h3>
-          <p>
-            {ride.to_address}
-            <br />
-            {`${ride.from_city},${ride.from_state} ${ride.from_zip}`}
-          </p>
-          <ContactVoter voter_phone_number={ride.voter_phone_number} />
-          <div className="secondary-info">
-            <p>
-              Total Passengers:
-              {passengers}
-            </p>
-            <p>
-              Special requests:
-              {ride.special_requests}
-            </p>
-          </div>
-          <div className="bottom-controls secondary">
-            <button
-              type="button"
-              className="btn btn-success btn-api"
-              onClick={() => completeRide(ride)}
-            >
-              Complete Ride
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger btn-api"
-              onClick={() => cancelRide(ride)}
-            >
-              Cancel Ride
-            </button>
-          </div>
-        </div>
+            Complete Ride
+          </button>
+          <button
+            type="button"
+            className="btn btn-danger btn-api"
+            onClick={() => cancelRide(ride)}
+          >
+            Cancel Ride
+          </button>
+        </React.Fragment>
       );
+
     default:
-      return (
-        <div className="panel panel-full p-y-sm dispatcher-match">
-          <h2>Ride with an unknown Status!</h2>
-        </div>
-      );
+      return <p>{ride.status}</p>;
   }
+};
+
+const ActiveRide = props => {
+  const {
+    ride,
+    ride: { additional_passengers, name, status, special_requests },
+  } = props;
+  const passengers = 1 + parseInt(additional_passengers, 10);
+  return (
+    <div
+      className={`panel panel-full p-y-sm ${
+        status === 'waiting_acceptance' ? 'dispatcher-match' : ''
+      }`}
+    >
+      {ride.status === 'waiting_acceptance' && (
+        <h2 className="m-b-0">Ride Assigned by Dispatch</h2>
+      )}
+      <a
+        className="directionsLink"
+        target="_blank"
+        rel="noopener noreferrer"
+        href={getMapLink(ride)}
+      >
+        <i className="fa fa-map-marker" /> Directions
+      </a>
+      <span className="label">{getRideLabel(status)}:</span>
+      <h3>{name}</h3>
+      {renderAddress(ride)}
+      <ContactVoter voter_phone_number={ride.voter_phone_number} />
+      <div className="secondary-info">
+        <p>Total Passengers: {passengers}</p>
+        <p>Special requests: {special_requests}</p>
+      </div>
+      <div className="bottom-controls secondary">
+        {renderButtons(props)}
+      </div>
+    </div>
+  );
 };
 
 export default ActiveRide;

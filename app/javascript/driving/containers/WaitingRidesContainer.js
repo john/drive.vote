@@ -2,7 +2,7 @@ import React from 'react';
 import PendingRide from '../components/PendingRide';
 import UnavailableButton from '../components/UnavailableButton';
 
-const RideListContainer = props => {
+const WaitingRidesContainer = props => {
   const {
     rides: availableRides,
     completedRide,
@@ -70,4 +70,4 @@ const RideListContainer = props => {
   );
 };
 
-export default RideListContainer;
+export default WaitingRidesContainer;
