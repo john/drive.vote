@@ -138,13 +138,16 @@ Per above make sure you have aws profiles defined in ~/.aws/credentials.
 
 
 ## Using the app.
+
 It's recommended to create an entry in /etc/hosts for local.drive.vote, associated with 127.0.0.1. If you do, go to http://local.drive.vote:3000 to log in (or http://localhost:3000 if you don't). To log in as the generic admin use `seeds@drive.vote` as you login email, with password `1234abcd`. Since this account has admin privileges, logging in with it takes you directly to the admin site. If it has only driver privileges, it would take you to the driver app, and if only dispatcher privileges, to the dispatch page for the ride zone attached to your account. If for some reason your account has no privileges at all, you'll end up at the homepage, but that shouldn't happen.
 
 Useful URLs:
 
   * http://local.drive.vote:3000/admin -- Admin console Default page shows all dev Ride Zones.
   * http://local.drive.vote:3000/dispatch/[slug] -- Dispatch app. The slug should correspond to the ride zone attached to the logged in user. Linked to for each ride from the admin page.
-  * http://local.drive.vote/driving -- Driver app. It'll be connected to the Ride Zone the account is driving for.
+  * http://local.drive.vote:3000/driving -- Driver app. It'll be connected to the Ride Zone the account is driving for.
+
+Note: browsers block geolocation APIs on `http://` (insecure) websites except `localhost`. If you're working on features that require geolocation, such as `/driving`, you'll need to access the application at `http://localhost:3000/`.
   
 ### Spoofing location in the browser
 https://www.labnol.org/internet/geo-location/27878/ ?
