@@ -143,9 +143,32 @@ drivers = User.create!([
     image_url: '',
     locale: 'en',
     zip: '84122'
+  }, {
+    name: 'Danny Driver',
+    available: false,
+    email: 'danny@fnnny.com',
+    password: '1234abcd',
+    phone_number: '2133328710',
+    phone_number_normalized: '+15556222222',
+    image_url: '',
+    locale: 'en',
+    zip: '84122'
+  }, {
+    name: 'Donnie Driver',
+    available: false,
+    email: 'donnie@fnnny.com',
+    password: '1234abcd',
+    phone_number: '2133328711',
+    phone_number_normalized: '+15556222222',
+    image_url: '',
+    locale: 'en',
+    zip: '84122'
   }
 ])
 
-rz = RideZone.find_by_slug('orlando')
-drivers[0].add_role(:unassigned_driver, rz)
-drivers[1].add_role(:unassigned_driver, rz)
+sf = RideZone.find_by_slug('san_francisco')
+orlando = RideZone.find_by_slug('orlando')
+drivers[0].add_role(:unassigned_driver, sf)
+drivers[1].add_role(:driver, orlando)
+drivers[2].add_role(:driver, orlando)
+drivers[2].add_role(:unassigned_driver, orlando)
