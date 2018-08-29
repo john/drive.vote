@@ -103,16 +103,29 @@ export function claimRideSuccess(ride) {
   };
 }
 
+export function attemptArchive() {
+  return {
+    type: 'RIDE_ARCHIVE_ATTEMPT',
+  };
+}
+
+export function archiveRideSuccess(active_ride) {
+  return {
+    type: 'RIDE_ARCHIVED',
+    active_ride,
+  };
+}
+
 export function attemptCancel() {
   return {
     type: 'RIDE_CANCEL_ATTEMPT',
   };
 }
 
-export function cancelRideSuccess() {
+export function cancelRideSuccess(active_ride) {
   return {
     type: 'RIDE_CANCELLED',
-    active_ride: null,
+    active_ride,
   };
 }
 
@@ -246,6 +259,19 @@ export function claimRide(ride) {
     })
       .then(parseJSON)
       .then(() => dispatch(claimRideSuccess(ride)))
+      .catch(error => dispatch(apiError(error)));
+  };
+}
+
+export function archiveRide(ride) {
+  return dispatch => {
+    dispatch(attemptArchive());
+    fetch(`${api}/cancel_ride?ride_id=${ride.id}`, {
+      credentials: 'include',
+      method: 'POST',
+    })
+      .then(parseJSON)
+      .then(() => dispatch(archiveRideSuccess(ride)))
       .catch(error => dispatch(apiError(error)));
   };
 }
