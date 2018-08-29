@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import RideContainer from './RideContainer';
 import Unavailable from '../components/Unavailable';
 import Loading from '../components/Loading';
@@ -9,14 +10,29 @@ class DriverStatusContainer extends React.Component {
   }
 
   render() {
-    if (!this.props.state.driverState.initialFetch) {
-      if (this.props.state.driverState.available) {
-        return <RideContainer {...this.props} />;
-      }
-      return <Unavailable {...this.props} />;
+    if (this.props.initialFetch) {
+      return <Loading />;
     }
-    return <Loading />;
+    if (this.props.available) {
+      return <RideContainer {...this.props} />;
+    }
+    return (
+      <Unavailable
+        ride_zone_stats={this.props.ride_zone_stats}
+        fetchRideZoneStats={this.props.fetchRideZoneStats}
+        submitAvailable={this.props.submitAvailable}
+      />
+    );
   }
 }
+
+DriverStatusContainer.propTypes = {
+  available: PropTypes.bool.isRequired,
+  fetchStatus: PropTypes.func.isRequired,
+  fetchRideZoneStats: PropTypes.func.isRequired,
+  initialFetch: PropTypes.bool.isRequired,
+  ride_zone_stats: PropTypes.object,
+  submitAvailable: PropTypes.func.isRequired,
+};
 
 export default DriverStatusContainer;
