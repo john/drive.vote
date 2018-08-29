@@ -23,6 +23,7 @@ function driverState(state = defaultState, action) {
     case 'RIDE_CANCEL_ATTEMPT':
     case 'RIDER_PICKUP_ATTEMPT':
     case 'RIDE_COMPLETE_ATTEMPT':
+    case 'RIDE_ARCHIVE_ATTEMPT':
       return {
         ...state,
         changePending: true,
@@ -82,10 +83,12 @@ function driverState(state = defaultState, action) {
         changePending: false,
       };
     case 'RIDE_CANCELLED':
+    case 'RIDE_ARCHIVED':
       return {
         ...state,
         isFetching: false,
         active_ride: null,
+        rides: state.rides.filter(ride => ride.id !== action.active_ride.id),
         changePending: false,
       };
     case 'RIDER_PICKUP':

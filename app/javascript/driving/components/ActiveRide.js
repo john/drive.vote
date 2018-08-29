@@ -32,7 +32,14 @@ const getMapLink = ride => {
 };
 
 const renderButtons = props => {
-  const { ride, claimRide, cancelRide, pickupRider, completeRide } = props;
+  const {
+    archiveRide,
+    cancelRide,
+    claimRide,
+    completeRide,
+    pickupRider,
+    ride,
+  } = props;
 
   switch (ride.status) {
     case 'waiting_acceptance':
@@ -55,6 +62,7 @@ const renderButtons = props => {
         </React.Fragment>
       );
 
+    // TODO: Double confirm for archvie ride
     case 'driver_assigned':
       return (
         <React.Fragment>
@@ -72,6 +80,18 @@ const renderButtons = props => {
           >
             Cancel Ride
           </button>
+          <p className="text-center">
+            Cancelling a ride will make it available to other drivers
+          </p>
+          <button
+            className="btn btn-outline btn-api m-t-md"
+            onClick={() => archiveRide(ride)}
+          >
+            Archive Ride
+          </button>
+          <p className="text-center">
+            Archive a ride when a rider has already voted.
+          </p>
         </React.Fragment>
       );
 
@@ -138,6 +158,7 @@ const ActiveRide = props => {
 
 ActiveRide.propTypes = {
   ride: RidePropTypes,
+  archiveRide: PropTypes.func.isRequired,
   claimRide: PropTypes.func.isRequired,
   cancelRide: PropTypes.func.isRequired,
   pickupRider: PropTypes.func.isRequired,

@@ -273,6 +273,13 @@ label {
     text-align: center;
 }
 
+.btn-outline {
+    border: 2px solid #e74c3c;
+    &:hover {
+        background: #e74c3c;
+    }
+}
+
 
 /* Rides */
 
