@@ -47,6 +47,7 @@ export const RidePropTypes = PropTypes.shape({
   from_zip: PropTypes.string.isRequired,
   name: PropTypes.string,
   special_requests: PropTypes.string,
+  // TODO: Setup enum for ride.status
   status: PropTypes.oneOf([
     'driver_assigned',
     'picked_up',

@@ -69,7 +69,7 @@ class RideContainer extends React.Component {
     if (!this.props.active_ride) {
       return <WaitingRidesContainer {...this.props} />;
     }
-    return <ActiveRide active_ride={this.props.active_ride} {...this.props} />;
+    return <ActiveRide ride={this.props.active_ride} {...this.props} />;
   }
 }
 

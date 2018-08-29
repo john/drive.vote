@@ -89,7 +89,7 @@ class PendingRide extends React.Component {
   }
 }
 
-ActiveRide.propTypes = {
+PendingRide.propTypes = {
   ride: RidePropTypes,
   claimRide: PropTypes.func.isRequired,
   cancelRide: PropTypes.func.isRequired,
