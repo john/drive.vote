@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import WaitingRidesContainer from './WaitingRidesContainer';
 import ActiveRide from '../components/ActiveRide';
 
@@ -8,10 +10,9 @@ class RideContainer extends React.Component {
       fetchWaitingRides,
       submitLocation,
 
-          location,
-          update_location_interval,
-          waiting_rides_interval,
-
+      location,
+      update_location_interval,
+      waiting_rides_interval,
     } = this.props;
     // Immediately send location instead of waiting for first interval to hit:
     submitLocation(location);
@@ -28,17 +29,15 @@ class RideContainer extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps({
-
-        waiting_rides_interval: nextRidesInterval,
-        update_location_interval: nextLocationInterval,
+    waiting_rides_interval: nextRidesInterval,
+    update_location_interval: nextLocationInterval,
   }) {
     const {
       fetchWaitingRides,
       submitLocation,
-
-          location,
-          update_location_interval,
-          waiting_rides_interval,
+      location,
+      update_location_interval,
+      waiting_rides_interval,
     } = this.props;
 
     if (nextRidesInterval && waiting_rides_interval !== nextRidesInterval) {
@@ -70,8 +69,16 @@ class RideContainer extends React.Component {
     if (!this.props.active_ride) {
       return <WaitingRidesContainer {...this.props} />;
     }
-    return <ActiveRide ride={this.props.active_ride} {...this.props} />;
+    return <ActiveRide active_ride={this.props.active_ride} {...this.props} />;
   }
 }
+
+RideContainer.propTypes = {
+  active_ride: PropTypes.object,
+  fetchWaitingRides: PropTypes.func.isRequired,
+  submitLocation: PropTypes.func.isRequired,
+  update_location_interval: PropTypes.number.isRequired,
+  waiting_rides_interval: PropTypes.number.isRequired,
+};
 
 export default RideContainer;

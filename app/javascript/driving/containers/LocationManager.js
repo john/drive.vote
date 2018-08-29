@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import DriverStatusContainer from './DriverStatusContainer';
 
 class LocationManager extends React.Component {
@@ -57,10 +59,12 @@ class LocationManager extends React.Component {
     });
   }
 
+  // TODO: DRY up this render method
   render() {
     switch (this.state.location) {
       case 'available':
         return <DriverStatusContainer {...this.props} />;
+
       case 'prompt':
         return (
           <div className="container">
@@ -166,5 +170,10 @@ class LocationManager extends React.Component {
     }
   }
 }
+
+LocationManager.propTypes = {
+  // TODO: Figure out why this is failing .isRequired on initial render
+  setLocation: PropTypes.func,
+};
 
 export default LocationManager;

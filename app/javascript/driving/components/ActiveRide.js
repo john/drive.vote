@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { RidePropTypes } from '../helpers/helpers';
 
 import ContactVoter from './ContactVoter';
 
@@ -136,16 +137,7 @@ const ActiveRide = props => {
 };
 
 ActiveRide.propTypes = {
-  ride: PropTypes.shape({
-    additional_passengers: PropTypes.number,
-    name: PropTypes.string,
-    status: PropTypes.oneOf([
-      'driver_assigned',
-      'picked_up',
-      'waiting_acceptance',
-    ]),
-    special_requests: PropTypes.string,
-  }),
+  ride: RidePropTypes,
   claimRide: PropTypes.func.isRequired,
   cancelRide: PropTypes.func.isRequired,
   pickupRider: PropTypes.func.isRequired,

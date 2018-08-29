@@ -2,9 +2,12 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
 const defaultState = {
+  available: false,
+  error: '',
+  completedRide: null,
+  changePending: false,
   initialFetch: true,
   isFetching: true,
-  error: '',
   rides: [],
 };
 function driverState(state = defaultState, action) {

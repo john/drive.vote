@@ -9,4 +9,8 @@ const UnavailableButton = ({ submitUnavailable }) => (
   </div>
 );
 
+UnavailableButton.propTypes = {
+  submitUnavailable: PropTypes.func.isRequired,
+};
+
 export default UnavailableButton;

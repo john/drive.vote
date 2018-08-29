@@ -1,13 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import PendingRide from '../components/PendingRide';
 import UnavailableButton from '../components/UnavailableButton';
 
 const WaitingRidesContainer = props => {
-  const {
-    rides: availableRides,
-    completedRide,
-    isFetching,
-  } = props;
+  const { rides: availableRides, completedRide, isFetching } = props;
 
   let loadingIndicator;
   if (isFetching) {
@@ -18,7 +15,6 @@ const WaitingRidesContainer = props => {
       </p>
     );
   } else {
-    // TODO: Transition state to make this not jarring on very fast connections
     loadingIndicator = (
       <p className="display-3">New rides will load automatically</p>
     );
@@ -68,6 +64,13 @@ const WaitingRidesContainer = props => {
       <UnavailableButton submitUnavailable={props.submitUnavailable} />
     </div>
   );
+};
+
+WaitingRidesContainer.propTypes = {
+  completedRide: PropTypes.object,
+  isFetching: PropTypes.bool.isRequired,
+  rides: PropTypes.array.isRequired,
+  submitUnavailable: PropTypes.func.isRequired,
 };
 
 export default WaitingRidesContainer;

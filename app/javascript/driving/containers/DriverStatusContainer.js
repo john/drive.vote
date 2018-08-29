@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import RideContainer from './RideContainer';
 import Unavailable from '../components/Unavailable';
 import Loading from '../components/Loading';
@@ -24,5 +25,14 @@ class DriverStatusContainer extends React.Component {
     );
   }
 }
+
+DriverStatusContainer.propTypes = {
+  available: PropTypes.bool.isRequired,
+  fetchStatus: PropTypes.func.isRequired,
+  fetchRideZoneStats: PropTypes.func.isRequired,
+  initialFetch: PropTypes.bool.isRequired,
+  ride_zone_stats: PropTypes.object,
+  submitAvailable: PropTypes.func.isRequired,
+};
 
 export default DriverStatusContainer;
