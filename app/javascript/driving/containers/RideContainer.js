@@ -7,13 +7,11 @@ class RideContainer extends React.Component {
     const {
       fetchWaitingRides,
       submitLocation,
-      state: {
-        driverState: {
+
           location,
           update_location_interval,
           waiting_rides_interval,
-        },
-      },
+
     } = this.props;
     // Immediately send location instead of waiting for first interval to hit:
     submitLocation(location);
@@ -30,23 +28,17 @@ class RideContainer extends React.Component {
   }
 
   UNSAFE_componentWillReceiveProps({
-    state: {
-      driverState: {
+
         waiting_rides_interval: nextRidesInterval,
         update_location_interval: nextLocationInterval,
-      },
-    },
   }) {
     const {
       fetchWaitingRides,
       submitLocation,
-      state: {
-        driverState: {
+
           location,
           update_location_interval,
           waiting_rides_interval,
-        },
-      },
     } = this.props;
 
     if (nextRidesInterval && waiting_rides_interval !== nextRidesInterval) {
@@ -75,11 +67,10 @@ class RideContainer extends React.Component {
   }
 
   render() {
-    const { active_ride } = this.props.state.driverState;
-    if (!active_ride) {
+    if (!this.props.active_ride) {
       return <WaitingRidesContainer {...this.props} />;
     }
-    return <ActiveRide ride={active_ride} {...this.props} />;
+    return <ActiveRide ride={this.props.active_ride} {...this.props} />;
   }
 }
 

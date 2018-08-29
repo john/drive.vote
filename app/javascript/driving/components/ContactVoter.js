@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const ContactVoter = ({ voter_phone_number }) => (
   <div className="row m-b">
@@ -16,5 +17,9 @@ const ContactVoter = ({ voter_phone_number }) => (
     </div>
   </div>
 );
+
+ContactVoter.propTypes = {
+  voter_phone_number: PropTypes.string.isRequired,
+};
 
 export default ContactVoter;

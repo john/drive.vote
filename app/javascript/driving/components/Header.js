@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Header = ({ ride_zone_id }) => (
   <nav className="container text-center p-y-sm">
@@ -14,5 +15,9 @@ const Header = ({ ride_zone_id }) => (
     </div>
   </nav>
 );
+
+Header.propTypes = {
+  ride_zone_id: PropTypes.number,
+};
 
 export default Header;

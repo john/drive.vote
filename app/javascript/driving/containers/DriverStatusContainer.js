@@ -9,13 +9,19 @@ class DriverStatusContainer extends React.Component {
   }
 
   render() {
-    if (!this.props.state.driverState.initialFetch) {
-      if (this.props.state.driverState.available) {
-        return <RideContainer {...this.props} />;
-      }
-      return <Unavailable {...this.props} />;
+    if (this.props.initialFetch) {
+      return <Loading />;
     }
-    return <Loading />;
+    if (this.props.available) {
+      return <RideContainer {...this.props} />;
+    }
+    return (
+      <Unavailable
+        ride_zone_stats={this.props.ride_zone_stats}
+        fetchRideZoneStats={this.props.fetchRideZoneStats}
+        submitAvailable={this.props.submitAvailable}
+      />
+    );
   }
 }
 

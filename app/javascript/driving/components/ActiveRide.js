@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import ContactVoter from './ContactVoter';
 
 const renderAddress = ride => (
@@ -128,11 +130,26 @@ const ActiveRide = props => {
         <p>Total Passengers: {passengers}</p>
         <p>Special requests: {special_requests}</p>
       </div>
-      <div className="bottom-controls secondary">
-        {renderButtons(props)}
-      </div>
+      <div className="bottom-controls secondary">{renderButtons(props)}</div>
     </div>
   );
+};
+
+ActiveRide.propTypes = {
+  ride: PropTypes.shape({
+    additional_passengers: PropTypes.number,
+    name: PropTypes.string,
+    status: PropTypes.oneOf([
+      'driver_assigned',
+      'picked_up',
+      'waiting_acceptance',
+    ]),
+    special_requests: PropTypes.string,
+  }),
+  claimRide: PropTypes.func.isRequired,
+  cancelRide: PropTypes.func.isRequired,
+  pickupRider: PropTypes.func.isRequired,
+  completeRide: PropTypes.func.isRequired,
 };
 
 export default ActiveRide;

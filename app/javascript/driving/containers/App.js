@@ -7,10 +7,10 @@ import Header from '../components/Header';
 import AppError from '../components/AppError';
 
 const AppUnconnected = props => (
-  <div className={props.state.driverState.changePending ? 'fetching' : ''}>
+  <div className={props.changePending ? 'fetching' : ''}>
     <Header ride_zone_id={props.ride_zone_id} />
     <AppError
-      errorState={props.state.driverState.error}
+      errorState={props.error}
       clearError={props.clearError}
     />
     <div className="container p-a-0">
@@ -21,7 +21,7 @@ const AppUnconnected = props => (
 
 function mapStateToProps(state) {
   return {
-    state,
+    ...state.driverState
   };
 }
 

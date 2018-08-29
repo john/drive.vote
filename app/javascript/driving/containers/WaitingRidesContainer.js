@@ -7,7 +7,7 @@ const WaitingRidesContainer = props => {
     rides: availableRides,
     completedRide,
     isFetching,
-  } = props.state.driverState;
+  } = props;
 
   let loadingIndicator;
   if (isFetching) {
