@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const AvailableButton = ({ submitAvailable }) => (
   <div className="bottom-controls fixed">
@@ -11,5 +12,9 @@ const AvailableButton = ({ submitAvailable }) => (
     </button>
   </div>
 );
+
+AvailableButton.propTypes = {
+  submitAvailable: PropTypes.func.isRequired,
+};
 
 export default AvailableButton;

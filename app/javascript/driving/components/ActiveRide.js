@@ -1,4 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { RidePropTypes } from '../helpers/helpers';
+
 import ContactVoter from './ContactVoter';
 
 const renderAddress = ride => (
@@ -128,11 +131,17 @@ const ActiveRide = props => {
         <p>Total Passengers: {passengers}</p>
         <p>Special requests: {special_requests}</p>
       </div>
-      <div className="bottom-controls secondary">
-        {renderButtons(props)}
-      </div>
+      <div className="bottom-controls secondary">{renderButtons(props)}</div>
     </div>
   );
+};
+
+ActiveRide.propTypes = {
+  ride: RidePropTypes,
+  claimRide: PropTypes.func.isRequired,
+  cancelRide: PropTypes.func.isRequired,
+  pickupRider: PropTypes.func.isRequired,
+  completeRide: PropTypes.func.isRequired,
 };
 
 export default ActiveRide;

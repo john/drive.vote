@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const UnavailableButton = ({ submitUnavailable }) => (
   <div className="bottom-controls fixed">
@@ -7,5 +8,9 @@ const UnavailableButton = ({ submitUnavailable }) => (
     </button>
   </div>
 );
+
+UnavailableButton.propTypes = {
+  submitUnavailable: PropTypes.func.isRequired,
+};
 
 export default UnavailableButton;

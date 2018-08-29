@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 // Not sure if automatically dismissing the banner is needed?
@@ -6,8 +8,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 //     this.props.clearError();
 // }, 10000);
 
-const AppError = ({ errorState }) =>
-  errorState && (
+const AppError = ({ error, clearError }) =>
+  error && (
     <div>
       <ReactCSSTransitionGroup
         transitionName="banner"
@@ -16,13 +18,18 @@ const AppError = ({ errorState }) =>
       >
         <div className="errorBanner" key={1}>
           <i className="fa fa-exclamation" />
-          {this.props.errorState}
-          <a className="pull-right" onClick={this.props.clearError}>
+          {error}
+          <a className="pull-right" onClick={clearError}>
             <i className="fa fa-close" />
           </a>
         </div>
       </ReactCSSTransitionGroup>
     </div>
   );
+
+AppError.propTypes = {
+  error: PropTypes.string,
+  clearError: PropTypes.func.isRequired,
+};
 
 export default AppError;

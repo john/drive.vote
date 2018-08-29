@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import h from '../helpers/helpers';
+import h, { RidePropTypes } from '../helpers/helpers';
 import PendingRideDetail from './PendingRideDetail';
 import ActiveRide from './ActiveRide';
 
@@ -87,5 +88,13 @@ class PendingRide extends React.Component {
     return <PendingRideDetail {...this.props} declineRide={this.declineRide} />;
   }
 }
+
+PendingRide.propTypes = {
+  ride: RidePropTypes,
+  claimRide: PropTypes.func.isRequired,
+  cancelRide: PropTypes.func.isRequired,
+  pickupRider: PropTypes.func.isRequired,
+  completeRide: PropTypes.func.isRequired,
+};
 
 export default PendingRide;

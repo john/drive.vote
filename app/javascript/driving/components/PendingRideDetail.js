@@ -1,4 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { RidePropTypes } from '../helpers/helpers';
+
 import ContactVoter from './ContactVoter';
 
 const PendingRideDetail = ({ claimRide, declineRide, ride }) => {
@@ -55,6 +58,12 @@ const PendingRideDetail = ({ claimRide, declineRide, ride }) => {
       </div>
     </div>
   );
+};
+
+PendingRideDetail.propTypes = {
+  claimRide: PropTypes.func.isRequired,
+  declineRide: PropTypes.func.isRequired,
+  ride: RidePropTypes,
 };
 
 export default PendingRideDetail;
