@@ -9,8 +9,8 @@ const renderAddress = ride => (
     {ride.status === 'picked_up' ? ride.to_address : ride.from_address}
     <br />
     {ride.status === 'picked_up'
-      ? `${ride.to_city}, ${ride.to_state}`
-      : `${ride.from_city}, ${ride.from_state}`}
+      ? `${ride.to_city}, ${ride.to_state} ${ride.to_zip}`
+      : `${ride.from_city}, ${ride.from_state} ${ride.from_zip}`}
   </p>
 );
 
