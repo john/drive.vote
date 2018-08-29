@@ -109,10 +109,10 @@ export function attemptArchive() {
   };
 }
 
-export function archiveRideSuccess() {
+export function archiveRideSuccess(active_ride) {
   return {
     type: 'RIDE_ARCHIVED',
-    active_ride: null,
+    active_ride,
   };
 }
 
@@ -122,10 +122,10 @@ export function attemptCancel() {
   };
 }
 
-export function cancelRideSuccess() {
+export function cancelRideSuccess(active_ride) {
   return {
     type: 'RIDE_CANCELLED',
-    active_ride: null,
+    active_ride,
   };
 }
 

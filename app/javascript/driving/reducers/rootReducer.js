@@ -88,6 +88,7 @@ function driverState(state = defaultState, action) {
         ...state,
         isFetching: false,
         active_ride: null,
+        rides: state.rides.filter(ride => ride.id !== action.active_ride.id),
         changePending: false,
       };
     case 'RIDER_PICKUP':

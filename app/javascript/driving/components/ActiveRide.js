@@ -34,11 +34,11 @@ const getMapLink = ride => {
 const renderButtons = props => {
   const {
     archiveRide,
-    ride,
-    claimRide,
     cancelRide,
-    pickupRider,
+    claimRide,
     completeRide,
+    pickupRider,
+    ride,
   } = props;
 
   switch (ride.status) {
@@ -87,7 +87,7 @@ const renderButtons = props => {
             className="btn btn-outline btn-api m-t-md"
             onClick={() => archiveRide(ride)}
           >
-            Archive Ride{' '}
+            Archive Ride
           </button>
           <p className="text-center">
             Archive a ride when a rider has already voted.
