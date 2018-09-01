@@ -92,6 +92,7 @@ class RidesController < ApplicationController
         UserMailer.welcome_email_voter_ride(@user, @ride).deliver_later
         render :success
       else
+        @user = nil
         flash[:notice] = "Problem creating a ride."
         render :new and return
       end
