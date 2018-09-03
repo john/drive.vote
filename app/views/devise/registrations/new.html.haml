@@ -47,8 +47,16 @@
     = f.telephone_field :phone_number, class: 'form-control', required: 'true', maxlength: 17
 
   .col-sm-8.field
+    = f.label :drivers_license, "#{t(:drivers_license)} *"
+    = f.text_field :drivers_license, class: 'form-control', required: 'true', maxlength: 20
+
+  .col-sm-8.field
     = f.label :description, "#{t(:vehicle_description)} *"
     = f.text_field :description, class: 'form-control', required: 'true', maxlength: 50
+
+  .col-sm-8.field
+    = f.label :license_plate, "#{t(:vehicle_license_plate)} *"
+    = f.text_field :license_plate, class: 'form-control', required: 'true', maxlength: 20
 
   - unless @ride_zone.present?
     .col-sm-8.field
