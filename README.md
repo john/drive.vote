@@ -74,6 +74,15 @@ When code is merged into master, CircleCI triggers an automatic deployment to ht
 
 ### Setup
 
+#### Config
+You'll need to create these env vars: 
+GOOGLE_API_KEY
+TWILIO_SID
+TWILIO_TOKEN
+SEND_GRID_USER_NAME
+SEND_GRID_PASSWORD
+
+
 #### Deployment setup: Preparing for manual deployment
 
 Code is typically deployed automatically, this documents manual deployment. Code is deployed using AWS Elastic Beanstalk CLI tool which is a python script. To execute a deploy,
