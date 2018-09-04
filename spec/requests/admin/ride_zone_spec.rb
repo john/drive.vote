@@ -22,7 +22,7 @@ RSpec.describe "RideZones", type: :request do
       sign_in user
 
       get admin_ride_zones_path
-      expect(response).to have_http_status(200)
+      expect(response).to be_successful
     end
 
     it "redirects ride zones if you're not logged in" do
@@ -59,7 +59,7 @@ RSpec.describe "RideZones", type: :request do
       sign_in user
 
       get admin_ride_zone_path(ride_zone)
-      expect(response).to have_http_status(200)
+      expect(response).to be_successful
     end
 
   end

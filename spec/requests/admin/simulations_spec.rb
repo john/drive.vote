@@ -21,7 +21,7 @@ RSpec.describe "Simulations", type: :request do
       sign_in user
 
       get admin_simulations_path
-      expect(response).to have_http_status(200)
+      expect(response).to be_successful
     end
 
   end

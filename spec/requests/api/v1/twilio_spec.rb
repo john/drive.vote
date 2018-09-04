@@ -8,7 +8,7 @@ RSpec.describe "Twilio", type: :request do
 
     it "succeeds if you're not logged in, since it's an external service" do
       post api_v1_twilio_sms_path, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
-      expect(response).to have_http_status(200)
+      expect(response).to be_successful
     end
 
     it "succeeds if you're logged in as an admin" do
@@ -16,7 +16,7 @@ RSpec.describe "Twilio", type: :request do
       sign_in user
 
       post api_v1_twilio_sms_path, params: {'From' => from_number, 'To' => to_number, 'Body' => msg}
-      expect(response).to have_http_status(200)
+      expect(response).to be_successful
     end
   end
 end
