@@ -32,7 +32,9 @@ en:
   thanks: 'Thanks'
   name: 'Name'
   full_name: 'Full name'
+  drivers_license: "Driver's license number"
   vehicle_description: 'Describe your vehicle (e.g. white toyota camry)'
+  vehicle_license_plate: 'License plate'
   save: 'Save'
   volunteer_to_drive: 'Volunteer to drive'
   saving: 'Saving'

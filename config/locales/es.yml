@@ -27,7 +27,9 @@ es:
   thanks: 'Gracias'
   name: 'Nombre'
   full_name: 'Nombre'
+  drivers_license: "Licencia de conducir"
   vehicle_description: 'Describir su vehículo (por ejemplo, blanco toyota camry)'
+  vehicle_license_plate: 'Placa'
   save: 'Guardar'
   volunteer_to_drive: 'Voluntario para conducir'
   saving: 'Guardiendo'
