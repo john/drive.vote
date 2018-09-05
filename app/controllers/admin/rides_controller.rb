@@ -38,7 +38,7 @@ class Admin::RidesController < Admin::AdminApplicationController
 
     if @ride.save
       @ride.conversation = Conversation.find(params[:conversation_id]) if params[:conversation_id]
-      redirect_to [:admin, @ride], notice: 'Ride was successfully created.'
+      redirect_to [:admin, @ride], notice: 'Ride was successfully created.', status: :see_other
     else
       render :new
     end

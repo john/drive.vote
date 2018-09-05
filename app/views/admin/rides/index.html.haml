@@ -55,7 +55,7 @@
         %td
           = ride.additional_passengers
         %td{style: "font-size: 12px;"}
-          = ride.status.nil? ? 'none' : ride.status
+          = ride.status_str
         %td{style: "font-size: 12px;"}
           = link_to 'Show', [:admin, ride]
           &nbsp; &#183; &nbsp;

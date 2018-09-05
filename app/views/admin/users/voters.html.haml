@@ -20,7 +20,7 @@ Search: &nbsp;
       %th Name
       %th Created
       %th Location
-      %th Roles
+      %th Ride
       %th
 
   %tbody
@@ -33,7 +33,8 @@ Search: &nbsp;
         %td
           #{[user.city, user.state, user.zip].reject(&:blank?).join(', ')}
         %td
-          = user.roles.collect{|r| r.name.gsub('_', ' ')}.join(', ')
+          - if ride = user.active_ride
+            = ride.pickup_at.strftime("%-m/%-d, %-H:%M %P") + " " + ride.status_str
         %td{style: "font-size: 13px;"}
           = link_to 'Edit', edit_admin_user_path(user)
           &nbsp; &#183; &nbsp;
