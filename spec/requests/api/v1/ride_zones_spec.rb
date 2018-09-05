@@ -15,7 +15,7 @@ RSpec.describe "RideZones", type: :request do
       sign_in user
 
       get conversations_api_v1_ride_zone_path(rz)
-      expect(response).to have_http_status(200)
+      expect(response).to be_successful
     end
   end
 end

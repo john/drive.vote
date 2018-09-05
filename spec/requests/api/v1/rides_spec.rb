@@ -14,7 +14,7 @@ RSpec.describe "Rides", type: :request do
       sign_in user
 
       post update_attribute_api_v1_ride_path(ride), params: {name: 'from_city', value: 'Cleveland, OH'}
-      expect(response).to have_http_status(200)
+      expect(response).to be_successful
     end
   end
 end

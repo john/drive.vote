@@ -68,17 +68,17 @@ RSpec.describe "Dispatcher", type: :request do
 
       it "lets you view the dispatch page" do
         get dispatch_path(ride_zone)
-        expect(response).to have_http_status(200)
+        expect(response).to be_successful
       end
 
       it "lets you view map page" do
         get map_dispatch_path(ride_zone)
-        expect(response).to have_http_status(200)
+        expect(response).to be_successful
       end
 
       it "lets you view drivers page" do
         get drivers_dispatch_path(ride_zone)
-        expect(response).to have_http_status(200)
+        expect(response).to be_successful
       end
 
       it "doesn't let you download drivers" do
@@ -98,7 +98,7 @@ RSpec.describe "Dispatcher", type: :request do
 
       it "lets you download drivers.csv if you're a zone admin" do
         get drivers_dispatch_path(ride_zone, format: 'csv')
-        expect(response).to have_http_status(200)
+        expect(response).to be_successful
       end
 
       it "csv downloads with the correct Content-Type header" do

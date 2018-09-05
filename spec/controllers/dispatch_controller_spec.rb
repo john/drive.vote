@@ -24,7 +24,7 @@ RSpec.describe DispatchController, :type => :controller do
 
       it "succeeds" do
         get :show, params: {id: rz.id}
-        expect(response).to have_http_status(:success)
+        expect(response).to be_successful
       end
     end
   end
@@ -143,7 +143,7 @@ RSpec.describe DispatchController, :type => :controller do
 
       it "succeeds" do
         get :drivers, params: {id: rz.id}
-        expect(response).to have_http_status(:success)
+        expect(response).to be_successful
       end
     end
 
@@ -172,7 +172,7 @@ RSpec.describe DispatchController, :type => :controller do
 
       it "succeeds" do
         get :map, params: {id: rz.id}
-        expect(response).to have_http_status(:success)
+        expect(response).to be_successful
       end
     end
 

@@ -15,7 +15,7 @@ RSpec.describe "Conversations", type: :request do
       sign_in user
 
       get api_v1_conversation_path(convo)
-      expect(response).to have_http_status(200)
+      expect(response).to be_successful
     end
   end
 end

@@ -17,7 +17,7 @@ RSpec.describe "Places", type: :request do
       sign_in user
 
       get api_v1_places_search_path, params: {query: 'test'}
-      expect(response).to have_http_status(200)
+      expect(response).to be_successful
     end
   end
 end
