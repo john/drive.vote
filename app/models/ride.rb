@@ -220,6 +220,10 @@ class Ride < ApplicationRecord
     self.additional_passengers + 1
   end
 
+  def status_str
+    self.status ? self.status.gsub('_', ' ').titleize : 'N/A'
+  end
+
   def cancel(username)
     timestamp = self.ride_zone.current_time.strftime('%m/%d %l:%M%P %Z')
     self.status = :canceled
