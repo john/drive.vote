@@ -114,6 +114,16 @@ RSpec.describe Conversation, type: :model do
     end
   end
 
+  describe 'readable strings' do
+    it 'titleizes status' do
+      expect(Conversation.new(status: 'ride_created').status_str).to eq('Ride Created')
+    end
+
+    it 'titleizes lifecycle' do
+      expect(Conversation.new(lifecycle: 'info_complete').lifecycle_str).to eq('Info Complete')
+    end
+  end
+
   describe 'lifecycle hooks' do
 
     describe 'saving status' do

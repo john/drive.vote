@@ -5,8 +5,13 @@ RSpec.describe Admin::RidesController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Ride. As you add validations to Ride, be sure to
   # adjust the attributes here as well.
+  let(:voter) { create :voter }
+
   let(:valid_attributes) {
-    {voter_id: 1, name: 'foo', description: 'bar'}
+    {
+      name: 'A ride',
+      voter_id: voter.id,
+    }
   }
 
   let(:invalid_attributes) {
@@ -80,10 +85,22 @@ RSpec.describe Admin::RidesController, type: :controller do
     end
   end
 
-  describe "GET #create" do
+  describe "POST #create" do
     it "redirects if not logged in" do
-      post :create, params: {id: ride.to_param}
+      post :create, params: {ride: valid_attributes}
+      expect(Ride.all.length).to be(0)
       expect(response).to redirect_to('/404.html')
+    end
+
+    context "as admin" do
+      login_admin
+
+      it "accepts JSON with a single ride's info" do
+        post :create, params: {ride: valid_attributes}
+        expect(response).to have_http_status(:see_other)
+        expect(response.headers['Location']).to match(/\/admin\/rides\/\d+/)
+        expect(assigns(:ride)).to be_a(Ride)
+      end
     end
   end
 

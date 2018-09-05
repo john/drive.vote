@@ -168,6 +168,14 @@ class Conversation < ApplicationRecord
     end
   end
 
+  def status_str
+    self.status.gsub('_', ' ').titleize
+  end
+
+  def lifecycle_str
+    self.lifecycle.gsub('_', ' ').titleize
+  end
+  
   def message_count
     self.messages.count
   end

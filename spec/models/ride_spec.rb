@@ -61,6 +61,16 @@ RSpec.describe Ride, type: :model do
     expect(Ride.completed.count).to eq(2)
   end
 
+  describe 'status string' do
+    it 'returns N/A' do
+      expect(Ride.new.status_str).to eq('N/A')
+    end
+
+    it 'titleizes' do
+      expect(Ride.new(status: 'waiting_assignment').status_str).to eq('Waiting Assignment')
+    end
+  end
+
   describe 'event generation' do
     let!(:driver) { create :driver_user }
     let!(:new_driver) { create :driver_user }
