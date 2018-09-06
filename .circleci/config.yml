@@ -10,7 +10,7 @@ jobs:
       CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
       
     docker:
-    - image: johnmcgrath/drivevote_web
+    - image: johnmcgrath/drivevote_web:add_git
     - image: postgres:10.5-alpine
     
     steps:

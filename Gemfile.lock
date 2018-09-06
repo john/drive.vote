@@ -57,8 +57,6 @@ GEM
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
-    city-state (0.0.13)
-      rubyzip (~> 1.1)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0)
@@ -261,7 +259,7 @@ GEM
     ruby_dep (1.5.0)
     ruby_parser (3.11.0)
       sexp_processor (~> 4.9)
-    rubyzip (1.2.1)
+    rubyzip (1.2.2)
     safe_yaml (1.0.4)
     sass (3.5.7)
       sass-listen (~> 4.0.0)
@@ -362,7 +360,6 @@ DEPENDENCIES
   bundler-audit
   byebug
   chronic (= 0.10.2)
-  city-state (= 0.0.13)
   coffee-rails
   devise (= 4.4.3)
   dotenv-rails
@@ -417,4 +414,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.3
+   1.16.4
