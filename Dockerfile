@@ -2,14 +2,15 @@ FROM ruby:2.5.1-alpine3.7
 
 RUN apk update
 RUN apk add \
+  bash \
   build-base \
+  git \
+  nodejs \
   python3 \
   postgresql-dev \
   postgresql-client \
-  bash \
-  nodejs \
-  yarn \
   tzdata \
+  yarn \
   && rm -rf /var/cache/apk/*
 
 # RUN gem install bundler
