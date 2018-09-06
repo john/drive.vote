@@ -1,10 +1,3 @@
-GIT
-  remote: https://github.com/john/city-state.git
-  revision: 24a1c99e435ea2f0bc80ae0d4edb27d641ac0948
-  specs:
-    city-state (0.0.13)
-      rubyzip (~> 1.2.2)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -367,7 +360,6 @@ DEPENDENCIES
   bundler-audit
   byebug
   chronic (= 0.10.2)
-  city-state!
   coffee-rails
   devise (= 4.4.3)
   dotenv-rails
