@@ -280,14 +280,15 @@ h3.dispatch { margin: 0 0 0 10px; }
 
 #conv-modal-title {
   font-size: 25px;
+  padding-right: 30px;
   color: #777;
   span {
     font-size: 18px;
   }
 }
 
-#archive-btn {
-  margin-right: 50px;
+.archive-convo {
+  margin-top: 10px;
 }
 
 .modal-ride-status {

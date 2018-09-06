@@ -9,7 +9,7 @@
         = message.body
 
 -# just to make the javascript below a little easier to read
-- close_button = j( link_to 'Cancel Ride', '#', class: 'btn btn-sm btn-info archive-convo' )
+- close_button = j( link_to 'Cancel Ride', '#', class: 'btn btn-xs btn-warning archive-convo' )
 
 - if @conversation.user.name.include?('via sms')
   - title = @conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')
