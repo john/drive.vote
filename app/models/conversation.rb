@@ -248,7 +248,9 @@ class Conversation < ApplicationRecord
 
   def notify_voter_of_assignment(driver)
     if driver
-      body = I18n.t(:driver_assigned, locale: user_language, name: driver.name, vehicle: driver.description)
+      desc = driver.description
+      desc += (" - %s" % driver.license_plate) unless driver.license_plate.blank?
+      body = I18n.t(:driver_assigned, locale: user_language, name: driver.name, description: desc)
     else
       body = I18n.t(:driver_cleared, locale: user_language)
     end

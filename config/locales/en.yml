@@ -155,5 +155,5 @@ en:
   additional_passengers: 'Additional passengers:'
   special_requests_label: 'Special requests:'
   to_change_request: 'to change your request (sign in with password required)'
-  driver_assigned: '%{name} will be your driver and is on the way - look for a %{vehicle}'
+  driver_assigned: '%{name} will be your driver and is on the way - look for a %{description}'
   driver_cleared: 'Sorry, your driver had to cancel. We are looking for another driver.'
