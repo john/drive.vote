@@ -259,13 +259,15 @@ RSpec.describe Conversation, type: :model do
   describe 'notification of driver assigned' do
     let(:rz) { create :ride_zone }
     let(:user) { create :user, language: :en }
-    let(:driver) { create :driver_user, rz: rz, name: 'FOO', description: 'BAR' }
+    let(:driver) { create :driver_user, rz: rz, name: 'FOO', description: 'BAR', license_plate: 'LP' }
     let(:convo) { create :conversation_with_messages, ride_zone: rz, user: user, pickup_at: 5.minutes.from_now }
-    let(:body) { 'FOO has been assigned - look for a BAR'}
+    let(:body) { 'FOO has been assigned - look for a BAR - LP'}
     let(:twilio_msg) { OpenStruct.new(error_code: nil, status: 'delivered', body: body, sid: 'sid', from: rz.phone_number_normalized, to: user.phone_number_normalized) }
 
     before :each do
-      allow(TwilioService).to receive(:send_message).and_return(twilio_msg)
+      allow(TwilioService).to receive(:send_message) { |payload|
+        expect(payload[:body] =~ /FOO.*BAR - LP/).to_not be_nil # as formatted by conversation
+      }.and_return(twilio_msg)
     end
 
     it 'calls twilio service' do
@@ -280,7 +282,7 @@ RSpec.describe Conversation, type: :model do
 
     it 'formats message with driver name and vehicle info' do
       convo.notify_voter_of_assignment(driver)
-      expect(convo.reload.messages.last.body =~ /FOO.*BAR/).to_not be_nil
+      expect(convo.reload.messages.last.body =~ /FOO.*BAR - LP/).to_not be_nil
     end
 
     it 'uses cleared message with no driver' do

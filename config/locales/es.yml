@@ -150,7 +150,7 @@ es:
   additional_passengers: 'Pasajeros adicionales:'
   special_requests_label: 'Solicitudes especiales:'
   to_change_request: 'para cambiar su solicitud (sesión con la contraseña necesaria)'
-  driver_assigned: '%{name} será su conductor y está en camino - busque un %{vehicle}'
+  driver_assigned: '%{name} será su conductor y está en camino - busque un %{description}'
   driver_cleared: 'Lo sentimos, el conductor tuvo que cancelar. Estamos en busca de otro conductor.'
 
   # https://gist.github.com/jordigg/30fe17c6328d5deab9ec
