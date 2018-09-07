@@ -31,11 +31,11 @@
           %td= link_to conversation.ride.name, admin_ride_path(conversation.ride)
         - else
           %td Not yet
-        %td= link_to 'Close', close_admin_conversation_path(conversation), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure?' }, method: :POST
+        %td= link_to 'Close', close_admin_conversation_path(conversation), class: 'btn btn-warning btn-xs', data: { confirm: 'This will permanently close the conversation and ride and remove the rider from the pool.' }, method: :POST
         - if conversation.voter_phone_blacklisted?
-          %td= link_to 'Unblacklist #', unblacklist_voter_phone_admin_conversation_path(conversation), class: 'btn btn-default btn-xs', data: { confirm: "Are you sure you want to unblacklist phone number: #{conversation.from_phone}?" }, method: :POST
+          %td= link_to 'Unblacklist #', unblacklist_voter_phone_admin_conversation_path(conversation), class: 'btn btn-default btn-xs', data: { confirm: "Are you sure you want to unblacklist phone number #{conversation.from_phone}?" }, method: :POST
         - else
-          %td= link_to 'Blacklist #', blacklist_voter_phone_admin_conversation_path(conversation), class: 'btn btn-default btn-xs', data: { confirm: "Are you sure you want to blacklist phone number: #{conversation.from_phone}" }, method: :POST
+          %td= link_to 'Blacklist #', blacklist_voter_phone_admin_conversation_path(conversation), class: 'btn btn-danger btn-xs', data: { confirm: "Are you sure you want to blacklist phone number #{conversation.from_phone}?" }, method: :POST
 
 
         - if include_show
