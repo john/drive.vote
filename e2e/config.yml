@@ -1,6 +1,0 @@
-development:
-  url: http://localhost:3000
-staging:
-  url: https://staging.drive.vote
-production:
-  url: https://drive.vote
