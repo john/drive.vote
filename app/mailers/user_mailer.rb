@@ -15,6 +15,14 @@ class UserMailer < ApplicationMailer
   # once they've been inlined:
 
   # http://templates.mailchimp.com/resources/inline-css/
+  
+  def notify_scheduled_ride(user, ride=nil)
+    sendgrid_category "notify_rider"
+    @user = user
+    @ride = ride
+
+    mail(to: @user.email_with_name, subject: 'Your ride to the polls is coming soon')
+  end
 
   def welcome_email_driver(user, ride_zone=nil)
     sendgrid_category "welcome_driver"

@@ -219,6 +219,10 @@ class Conversation < ApplicationRecord
     result = 'waiting_confirmation'
     if self.ride_confirmed.nil? && self.user
       body = I18n.t(:confirm_ride, locale: user_language, time: ride.pickup_in_time_zone.strftime('%l:%M %P'))
+      
+      # Send email confirmation first.
+      UserMailer.notify_scheduled_ride(user, ride).deliver_now
+      
       sms = Conversation.send_staff_sms(ride_zone, user, body, Rails.configuration.twilio_timeout)
       if Conversation.unreachable_phone_error(sms)
         # go ahead and promote b/c we can't reach the voter
