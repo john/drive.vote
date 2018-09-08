@@ -1,0 +1,532 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAT7H77zXjsUfWFWM8C_R9aa1tGjIqAz28&language=en&latlng=28.533609,-81.406011&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 08 Sep 2018 05:10:10 GMT
+      Expires:
+      - Sun, 09 Sep 2018 05:10:10 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '1380'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "2000",
+                       "short_name" : "2000",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Jacobs Place",
+                       "short_name" : "Jacobs Pl",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Lake Sunset",
+                       "short_name" : "Lake Sunset",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "Orlando",
+                       "short_name" : "Orlando",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Orange County",
+                       "short_name" : "Orange County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "32805",
+                       "short_name" : "32805",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "2000 Jacobs Pl, Orlando, FL 32805, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 28.5337142,
+                       "lng" : -81.4057078
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 28.5350631802915,
+                          "lng" : -81.40435881970851
+                       },
+                       "southwest" : {
+                          "lat" : 28.5323652197085,
+                          "lng" : -81.40705678029151
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJEUKNHrZ754gR7UarUHtRJzc",
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Lake Sunset",
+                       "short_name" : "Lake Sunset",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "Orlando",
+                       "short_name" : "Orlando",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Orange County",
+                       "short_name" : "Orange County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "32805",
+                       "short_name" : "32805",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Lake Sunset, Orlando, FL 32805, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 28.5406279,
+                          "lng" : -81.4053919
+                       },
+                       "southwest" : {
+                          "lat" : 28.53178,
+                          "lng" : -81.4180921
+                       }
+                    },
+                    "location" : {
+                       "lat" : 28.5366082,
+                       "lng" : -81.41004030000001
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 28.5406279,
+                          "lng" : -81.4053919
+                       },
+                       "southwest" : {
+                          "lat" : 28.53178,
+                          "lng" : -81.4180921
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJz0csCcx754gROKowPt_NfXs",
+                 "types" : [ "neighborhood", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Southwest Orlando",
+                       "short_name" : "Southwest Orlando",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "Orlando",
+                       "short_name" : "Orlando",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Orange County",
+                       "short_name" : "Orange County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Southwest Orlando, Orlando, FL, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 28.547279,
+                          "lng" : -81.385992
+                       },
+                       "southwest" : {
+                          "lat" : 28.447435,
+                          "lng" : -81.50773
+                       }
+                    },
+                    "location" : {
+                       "lat" : 28.5094057,
+                       "lng" : -81.46085599999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 28.547279,
+                          "lng" : -81.385992
+                       },
+                       "southwest" : {
+                          "lat" : 28.447435,
+                          "lng" : -81.50773
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJb1tCKUt554gR3jVUNbS7DSg",
+                 "types" : [ "neighborhood", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Orlando",
+                       "short_name" : "Orlando",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Orange County",
+                       "short_name" : "Orange County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Orlando, FL, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 28.6143519,
+                          "lng" : -81.22977
+                       },
+                       "southwest" : {
+                          "lat" : 28.3479859,
+                          "lng" : -81.50773
+                       }
+                    },
+                    "location" : {
+                       "lat" : 28.5383355,
+                       "lng" : -81.3792365
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 28.6143519,
+                          "lng" : -81.22977
+                       },
+                       "southwest" : {
+                          "lat" : 28.3479859,
+                          "lng" : -81.50773
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJd7zN_thz54gRnr-lPAaywwo",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "32805",
+                       "short_name" : "32805",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "Orlando",
+                       "short_name" : "Orlando",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Orange County",
+                       "short_name" : "Orange County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Orlando, FL 32805, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 28.552975,
+                          "lng" : -81.38105899999999
+                       },
+                       "southwest" : {
+                          "lat" : 28.5030919,
+                          "lng" : -81.43439599999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 28.5345501,
+                       "lng" : -81.40042269999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 28.552975,
+                          "lng" : -81.38105899999999
+                       },
+                       "southwest" : {
+                          "lat" : 28.5030919,
+                          "lng" : -81.43439599999999
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJgd85VF9554gRm0zHqTy3qOM",
+                 "types" : [ "postal_code" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Orange County",
+                       "short_name" : "Orange County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Orange County, FL, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 28.7860889,
+                          "lng" : -80.8629079
+                       },
+                       "southwest" : {
+                          "lat" : 28.346725,
+                          "lng" : -81.658599
+                       }
+                    },
+                    "location" : {
+                       "lat" : 28.4844995,
+                       "lng" : -81.2518833
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 28.7860889,
+                          "lng" : -80.8629079
+                       },
+                       "southwest" : {
+                          "lat" : 28.346725,
+                          "lng" : -81.658599
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJLUsuoVaY54gRS_Ma3ZvbwUQ",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Orlando Metropolitan Area",
+                       "short_name" : "Orlando Metropolitan Area",
+                       "types" : [ "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Orlando Metropolitan Area, FL, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 29.27675,
+                          "lng" : -80.861395
+                       },
+                       "southwest" : {
+                          "lat" : 27.6419901,
+                          "lng" : -81.95764109999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 28.5828156,
+                       "lng" : -81.3399414
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 29.27675,
+                          "lng" : -80.861395
+                       },
+                       "southwest" : {
+                          "lat" : 27.6419901,
+                          "lng" : -81.95764109999999
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJnZnf_xd954gRqQz4C7QedMg",
+                 "types" : [ "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Florida, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 31.000968,
+                          "lng" : -79.974306
+                       },
+                       "southwest" : {
+                          "lat" : 24.396308,
+                          "lng" : -87.634896
+                       }
+                    },
+                    "location" : {
+                       "lat" : 27.6648274,
+                       "lng" : -81.5157535
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 32.3607674,
+                          "lng" : -77.8049338
+                       },
+                       "southwest" : {
+                          "lat" : 22.8285924,
+                          "lng" : -89.8042682
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJvypWkWV2wYgR0E7HW9MTLvc",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "United States",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 71.5388001,
+                          "lng" : -66.885417
+                       },
+                       "southwest" : {
+                          "lat" : 18.7763,
+                          "lng" : 170.5957
+                       }
+                    },
+                    "location" : {
+                       "lat" : 37.09024,
+                       "lng" : -95.712891
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 49.38,
+                          "lng" : -66.94
+                       },
+                       "southwest" : {
+                          "lat" : 25.82,
+                          "lng" : -124.39
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJCzYy5IS16lQRQrfeQ5K5Oxw",
+                 "types" : [ "country", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 08 Sep 2018 05:10:09 GMT
+recorded_with: VCR 3.0.3

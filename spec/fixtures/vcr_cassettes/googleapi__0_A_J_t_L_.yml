@@ -1,0 +1,111 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?address=15106&key=AIzaSyAT7H77zXjsUfWFWM8C_R9aa1tGjIqAz28&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 08 Sep 2018 05:09:24 GMT
+      Expires:
+      - Sun, 09 Sep 2018 05:09:24 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '505'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "Heidelberg",
+                       "short_name" : "Heidelberg",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Allegheny County",
+                       "short_name" : "Allegheny County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Heidelberg, PA 15106, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.434948,
+                          "lng" : -80.0570259
+                       },
+                       "southwest" : {
+                          "lat" : 40.380127,
+                          "lng" : -80.1701448
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4088514,
+                       "lng" : -80.11494139999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.434948,
+                          "lng" : -80.0570259
+                       },
+                       "southwest" : {
+                          "lat" : 40.380127,
+                          "lng" : -80.1701448
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJ8Yhm7GNYNIgRQWpx-IVW-Dw",
+                 "postcode_localities" : [ "Carnegie", "Heidelberg" ],
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 08 Sep 2018 05:09:23 GMT
+recorded_with: VCR 3.0.3

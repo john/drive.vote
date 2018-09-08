@@ -1,0 +1,171 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?address=,%20,%20Carnegie,%20PA,%2004101,%20&key=AIzaSyAT7H77zXjsUfWFWM8C_R9aa1tGjIqAz28&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 08 Sep 2018 05:10:12 GMT
+      Expires:
+      - Sun, 09 Sep 2018 05:10:12 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '659'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Carnegie",
+                       "short_name" : "Carnegie",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Allegheny County",
+                       "short_name" : "Allegheny County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Carnegie, PA 15106, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.4198689,
+                          "lng" : -80.067376
+                       },
+                       "southwest" : {
+                          "lat" : 40.3981489,
+                          "lng" : -80.099768
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4086802,
+                       "lng" : -80.0833885
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4198689,
+                          "lng" : -80.067376
+                       },
+                       "southwest" : {
+                          "lat" : 40.3981489,
+                          "lng" : -80.099768
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "ChIJ-cHyC7pZNIgR39BNv8QzWpI",
+                 "types" : [ "locality", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "04101",
+                       "short_name" : "04101",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "Portland",
+                       "short_name" : "Portland",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Cumberland County",
+                       "short_name" : "Cumberland County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Maine",
+                       "short_name" : "ME",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Portland, ME 04101, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 43.676981,
+                          "lng" : -70.236193
+                       },
+                       "southwest" : {
+                          "lat" : 43.644905,
+                          "lng" : -70.28447109999999
+                       }
+                    },
+                    "location" : {
+                       "lat" : 43.6629964,
+                       "lng" : -70.2568775
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 43.676981,
+                          "lng" : -70.236193
+                       },
+                       "southwest" : {
+                          "lat" : 43.644905,
+                          "lng" : -70.28447109999999
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "ChIJx6F12WycskwRV8dNqEI1FX0",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 08 Sep 2018 05:10:11 GMT
+recorded_with: VCR 3.0.3

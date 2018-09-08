@@ -32,7 +32,9 @@ RSpec.describe RidesController, type: :controller do
     let(:rz) { create :ride_zone }
 
     let(:good_data) { {"ride_zone_id"=>rz.id, "ride"=>
-        { "name"=>"Gob", "from_address"=>"330 Cabrillo St.", "from_city_state"=>"Carnegie, PA",
+        { "name"=>"Gob",
+          "from_address"=>"541 Carothers Ave",
+          "from_city_state"=>"Carnegie, PA",
           "from_city"=>"Carnegie", "from_state"=>"PA", "pickup_at(1i)"=>"2016", "pickup_at(2i)"=>"11", "pickup_at(3i)"=>"8",
           "pickup_at(4i)"=>"05", "pickup_at(5i)"=>"00", "phone_number"=>"2083328765"}} }
 

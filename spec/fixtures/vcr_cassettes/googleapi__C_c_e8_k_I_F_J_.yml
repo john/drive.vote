@@ -1,0 +1,111 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?address=,%20,%20Pittsburgh,%20PA,%2015201,%20&key=AIzaSyAT7H77zXjsUfWFWM8C_R9aa1tGjIqAz28&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 08 Sep 2018 05:10:11 GMT
+      Expires:
+      - Sun, 09 Sep 2018 05:10:11 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '509'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15201",
+                       "short_name" : "15201",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "ARSENAL",
+                       "short_name" : "ARSENAL",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Allegheny County",
+                       "short_name" : "Allegheny County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "ARSENAL, PA 15201, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.49156989999999,
+                          "lng" : -79.93112310000001
+                       },
+                       "southwest" : {
+                          "lat" : 40.4239199,
+                          "lng" : -79.980621
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4737114,
+                       "lng" : -79.96123679999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.49156989999999,
+                          "lng" : -79.93112310000001
+                       },
+                       "southwest" : {
+                          "lat" : 40.4239199,
+                          "lng" : -79.980621
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJH7Pi81DyNIgRYC1TkTt84Wk",
+                 "postcode_localities" : [ "ARSENAL", "Pittsburgh" ],
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 08 Sep 2018 05:10:10 GMT
+recorded_with: VCR 3.0.3
