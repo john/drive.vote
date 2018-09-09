@@ -7,7 +7,7 @@ import ActiveRide from '../components/ActiveRide';
 class RideContainer extends React.Component {
   componentDidMount() {
     const {
-      fetchWaitingRides,
+      fetchRides,
       submitLocation,
 
       location,
@@ -16,14 +16,14 @@ class RideContainer extends React.Component {
     } = this.props;
     // Immediately send location instead of waiting for first interval to hit:
     submitLocation(location);
-    fetchWaitingRides(location);
+    fetchRides(location);
 
     this.locationInterval = setInterval(
       () => submitLocation(location),
       update_location_interval
     );
     this.ridesInterval = setInterval(
-      () => fetchWaitingRides(location),
+      () => fetchRides(location),
       waiting_rides_interval
     );
   }
@@ -33,7 +33,7 @@ class RideContainer extends React.Component {
     update_location_interval: nextLocationInterval,
   }) {
     const {
-      fetchWaitingRides,
+      fetchRides,
       submitLocation,
       location,
       update_location_interval,
@@ -43,7 +43,7 @@ class RideContainer extends React.Component {
     if (nextRidesInterval && waiting_rides_interval !== nextRidesInterval) {
       clearInterval(this.ridesInterval);
       this.ridesInterval = setInterval(
-        () => fetchWaitingRides(location),
+        () => fetchRides(location),
         nextRidesInterval
       );
     }
@@ -66,16 +66,16 @@ class RideContainer extends React.Component {
   }
 
   render() {
-    if (!this.props.active_ride) {
+    if (!this.props.rides.active_ride) {
       return <WaitingRidesContainer {...this.props} />;
     }
-    return <ActiveRide ride={this.props.active_ride} {...this.props} />;
+    return <ActiveRide ride={this.props.rides.active_ride} {...this.props} />;
   }
 }
 
 RideContainer.propTypes = {
   active_ride: PropTypes.object,
-  fetchWaitingRides: PropTypes.func.isRequired,
+  fetchRides: PropTypes.func.isRequired,
   submitLocation: PropTypes.func.isRequired,
   update_location_interval: PropTypes.number.isRequired,
   waiting_rides_interval: PropTypes.number.isRequired,

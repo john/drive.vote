@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actionCreators from '../actions/actionCreators';
+import * as rideActions from '../actions/rides';
 
 import Header from '../components/Header';
 import AppError from '../components/AppError';
@@ -20,11 +21,12 @@ const AppUnconnected = props => (
 function mapStateToProps(state) {
   return {
     ...state.driverState,
+    rides: state.rides,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actionCreators, dispatch);
+  return bindActionCreators({ ...actionCreators, ...rideActions }, dispatch);
 }
 
 const App = connect(

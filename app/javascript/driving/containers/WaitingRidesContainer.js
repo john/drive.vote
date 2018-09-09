@@ -4,7 +4,11 @@ import PendingRide from '../components/PendingRide';
 import UnavailableButton from '../components/UnavailableButton';
 
 const WaitingRidesContainer = props => {
-  const { rides: availableRides, completedRide, isFetching } = props;
+  const {
+    rides: { waiting_rides },
+    completedRide,
+    isFetching,
+  } = props;
 
   let loadingIndicator;
   if (isFetching) {
@@ -32,12 +36,12 @@ const WaitingRidesContainer = props => {
     );
   }
 
-  if (availableRides.length) {
+  if (waiting_rides.length) {
     return (
       <div>
         <ul className="panel-list">
           {completedRide && completedRideComponent}
-          {availableRides.map((ride, i) => (
+          {waiting_rides.map((ride, i) => (
             <PendingRide {...props} key={i} i={i} ride={ride} />
           ))}
         </ul>
@@ -69,7 +73,7 @@ const WaitingRidesContainer = props => {
 WaitingRidesContainer.propTypes = {
   completedRide: PropTypes.object,
   isFetching: PropTypes.bool.isRequired,
-  rides: PropTypes.array.isRequired,
+  rides: PropTypes.object.isRequired,
   submitUnavailable: PropTypes.func.isRequired,
 };
 
