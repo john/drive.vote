@@ -11,28 +11,10 @@ export const fetchRides = location => {
   };
 };
 
-// fetchAndCatch
-// export const claimRide = ride => {
-//   const url = `accept_ride?ride_id=${ride.id}`;
-
-//   return {
-//     type: 'CLAIM_RIDE',
-//     payload: createApiRequest(url),
-//     meta: {
-//       active_ride: {
-//         ...ride,
-//         status: 'driver_assigned',
-//       },
-//     },
-//   };
-// };
-
 export function claimRide(ride) {
-    const url = `accept_ride?ride_id=${ride.id}`;
-    
   return fetchAndCatch({
     type: 'CLAIM_RIDE',
-    url,
+    url: `accept_ride?ride_id=${ride.id}`,
     meta: {
       active_ride: ride
     }

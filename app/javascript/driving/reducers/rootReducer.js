@@ -72,19 +72,6 @@ function driverState(state = defaultState, action) {
         update_location_interval: action.update_location_interval * 1000,
       };
 
-    case 'FETCH_RIDES_REJECTED':
-    case 'CLAIM_RIDE_REJECTED':
-    case 'ARCHIVE_RIDE_REJECTED':
-    case 'CANCEL_RIDE_REJECTED':
-    case 'PICKUP_RIDE_REJECTED':
-    case 'COMPLETE_RIDE_REJECTED':
-      return {
-        ...state,
-        error: String(action.payload.error),
-        isFetching: false,
-        changePending: false,
-      };
-
     case 'API_ERROR':
       return {
         ...state,
@@ -100,7 +87,6 @@ function driverState(state = defaultState, action) {
         changePending: false,
       };
     case 'API_ERROR_CLEAR':
-    case 'FETCH_RIDES_REJECTED':
       return {
         ...state,
         error: '',

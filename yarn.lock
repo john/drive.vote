@@ -6559,6 +6559,10 @@ redux-logger@^2.6.1:
   dependencies:
     deep-diff "0.3.4"
 
+redux-promise-middleware@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/redux-promise-middleware/-/redux-promise-middleware-5.1.1.tgz#37689339a58a33d1fda675ed1ba2053a2d196b8d"
+
 redux-router@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/redux-router/-/redux-router-2.1.2.tgz#034724bad08f41baf754db4d22e2d858adb64f11"

@@ -1,5 +1,3 @@
-import { combineReducers } from 'redux';
-
 const defaultState = {
   active_ride: null,
   completedRide: null,
@@ -30,7 +28,10 @@ export default (state = defaultState, { meta, type, payload }) => {
       return {
         ...state,
         isFetching: false,
-        active_ride: meta.active_ride,
+        active_ride: {
+          ...meta.active_ride,
+          status: 'driver_assigned',
+        }
       };
     case 'ARCHIVE_RIDE_FULFILLED':
     case 'CANCEL_RIDE_FULFILLED':
@@ -50,7 +51,7 @@ export default (state = defaultState, { meta, type, payload }) => {
         active_ride: meta.active_ride,
       };
 
-    case 'COMPLETE_RIDE_PENDING':
+    case 'COMPLETE_RIDE_FULFILLED':
       return {
         ...state,
         isFetching: false,
