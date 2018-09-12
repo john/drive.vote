@@ -53,7 +53,7 @@ export const RidePropTypes = PropTypes.shape({
     'picked_up',
     'waiting_assignment',
     'waiting_acceptance',
-  ]),
+  ]).isRequired,
   to_address: PropTypes.string.isRequired,
   to_city: PropTypes.string.isRequired,
   to_zip: PropTypes.string.isRequired,
