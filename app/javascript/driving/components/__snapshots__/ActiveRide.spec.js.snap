@@ -1,0 +1,379 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActiveRide handles ride states driver_assigned 1`] = `
+<div
+  className="panel panel-full p-y-sm "
+>
+  <a
+    className="directionsLink"
+    href="https://maps.apple.com/?daddr=123 Jest Street, Testville, CA"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    <i
+      className="fa fa-map-marker"
+    />
+     Directions
+  </a>
+  <span
+    className="label"
+  >
+    Picking up
+    :
+  </span>
+  <h3>
+    Dan Abramov
+  </h3>
+  <p>
+    123 Jest Street
+    <br />
+    Testville, CA 11222
+  </p>
+  <div
+    className="row m-b"
+  >
+    <div
+      className="col-xs-6"
+    >
+      <a
+        className="btn btn-gray btn-block"
+        href="tel:312-867-5309"
+      >
+        <i
+          className="fa fa-phone p-r"
+        />
+        Call
+      </a>
+    </div>
+    <div
+      className="col-xs-6 p-l-0"
+    >
+      <a
+        className="btn btn-gray btn-block"
+        href="sms:312-867-5309"
+      >
+        <i
+          className="fa fa-comment p-r"
+        />
+        Message
+      </a>
+    </div>
+  </div>
+  <div
+    className="secondary-info"
+  >
+    <p>
+      Total Passengers: 
+      1
+    </p>
+    <p>
+      Special requests: 
+      
+    </p>
+  </div>
+  <div
+    className="bottom-controls secondary"
+  >
+    <button
+      className="btn btn-success btn-api"
+      onClick={[Function]}
+      type="button"
+    >
+      Rider picked up
+    </button>
+    <button
+      className="btn btn-danger btn-api"
+      onClick={[Function]}
+      type="button"
+    >
+      Cancel Ride
+    </button>
+    <p
+      className="text-center"
+    >
+      Cancelling a ride will make it available to other drivers
+    </p>
+    <button
+      className="btn btn-outline btn-api m-t-md"
+      onClick={[Function]}
+    >
+      Archive Ride
+    </button>
+    <p
+      className="text-center"
+    >
+      Archive a ride when a rider has already voted.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`ActiveRide handles ride states picked_up 1`] = `
+<div
+  className="panel panel-full p-y-sm "
+>
+  <a
+    className="directionsLink"
+    href="https://maps.apple.com/?daddr=456 Foobarbaz Blvd, Snapshot City, CA"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    <i
+      className="fa fa-map-marker"
+    />
+     Directions
+  </a>
+  <span
+    className="label"
+  >
+    Dropping off
+    :
+  </span>
+  <h3>
+    Dan Abramov
+  </h3>
+  <p>
+    456 Foobarbaz Blvd
+    <br />
+    Snapshot City, CA 60622
+  </p>
+  <div
+    className="row m-b"
+  >
+    <div
+      className="col-xs-6"
+    >
+      <a
+        className="btn btn-gray btn-block"
+        href="tel:312-867-5309"
+      >
+        <i
+          className="fa fa-phone p-r"
+        />
+        Call
+      </a>
+    </div>
+    <div
+      className="col-xs-6 p-l-0"
+    >
+      <a
+        className="btn btn-gray btn-block"
+        href="sms:312-867-5309"
+      >
+        <i
+          className="fa fa-comment p-r"
+        />
+        Message
+      </a>
+    </div>
+  </div>
+  <div
+    className="secondary-info"
+  >
+    <p>
+      Total Passengers: 
+      1
+    </p>
+    <p>
+      Special requests: 
+      
+    </p>
+  </div>
+  <div
+    className="bottom-controls secondary"
+  >
+    <button
+      className="btn btn-success btn-api"
+      onClick={[Function]}
+      type="button"
+    >
+      Complete Ride
+    </button>
+    <button
+      className="btn btn-danger btn-api"
+      onClick={[Function]}
+      type="button"
+    >
+      Cancel Ride
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ActiveRide handles ride states waiting_acceptance 1`] = `
+<div
+  className="panel panel-full p-y-sm dispatcher-match"
+>
+  <h2
+    className="m-b-0"
+  >
+    Ride Assigned by Dispatch
+  </h2>
+  <a
+    className="directionsLink"
+    href="https://maps.apple.com/?daddr=123 Jest Street, Testville, CA"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    <i
+      className="fa fa-map-marker"
+    />
+     Directions
+  </a>
+  <span
+    className="label"
+  >
+    Dropping off
+    :
+  </span>
+  <h3>
+    Dan Abramov
+  </h3>
+  <p>
+    123 Jest Street
+    <br />
+    Testville, CA 11222
+  </p>
+  <div
+    className="row m-b"
+  >
+    <div
+      className="col-xs-6"
+    >
+      <a
+        className="btn btn-gray btn-block"
+        href="tel:312-867-5309"
+      >
+        <i
+          className="fa fa-phone p-r"
+        />
+        Call
+      </a>
+    </div>
+    <div
+      className="col-xs-6 p-l-0"
+    >
+      <a
+        className="btn btn-gray btn-block"
+        href="sms:312-867-5309"
+      >
+        <i
+          className="fa fa-comment p-r"
+        />
+        Message
+      </a>
+    </div>
+  </div>
+  <div
+    className="secondary-info"
+  >
+    <p>
+      Total Passengers: 
+      1
+    </p>
+    <p>
+      Special requests: 
+      
+    </p>
+  </div>
+  <div
+    className="bottom-controls secondary"
+  >
+    <button
+      className="btn btn-success btn-api"
+      onClick={[Function]}
+      type="button"
+    >
+      Accept Ride
+    </button>
+    <button
+      className="btn btn-danger btn-api"
+      onClick={[Function]}
+      type="button"
+    >
+      Decline Ride
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ActiveRide handles ride states waiting_assignment 1`] = `
+<div
+  className="panel panel-full p-y-sm "
+>
+  <a
+    className="directionsLink"
+    href="https://maps.apple.com/?daddr=123 Jest Street, Testville, CA"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    <i
+      className="fa fa-map-marker"
+    />
+     Directions
+  </a>
+  <span
+    className="label"
+  >
+    Dropping off
+    :
+  </span>
+  <h3>
+    Dan Abramov
+  </h3>
+  <p>
+    123 Jest Street
+    <br />
+    Testville, CA 11222
+  </p>
+  <div
+    className="row m-b"
+  >
+    <div
+      className="col-xs-6"
+    >
+      <a
+        className="btn btn-gray btn-block"
+        href="tel:312-867-5309"
+      >
+        <i
+          className="fa fa-phone p-r"
+        />
+        Call
+      </a>
+    </div>
+    <div
+      className="col-xs-6 p-l-0"
+    >
+      <a
+        className="btn btn-gray btn-block"
+        href="sms:312-867-5309"
+      >
+        <i
+          className="fa fa-comment p-r"
+        />
+        Message
+      </a>
+    </div>
+  </div>
+  <div
+    className="secondary-info"
+  >
+    <p>
+      Total Passengers: 
+      1
+    </p>
+    <p>
+      Special requests: 
+      
+    </p>
+  </div>
+  <div
+    className="bottom-controls secondary"
+  >
+    <p>
+      waiting_assignment
+    </p>
+  </div>
+</div>
+`;
