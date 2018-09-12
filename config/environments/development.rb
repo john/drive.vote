@@ -44,6 +44,10 @@ Rails.application.configure do
 
   config.assets.quiet = true
 
+  logger = ActiveSupport::Logger.new(STDOUT)
+  logger.formatter = config.log_formatter
+  config.logger = ActiveSupport::TaggedLogging.new(logger)
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
