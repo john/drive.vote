@@ -204,7 +204,7 @@ class Ride < ApplicationRecord
     Ride.where(status: :scheduled).where('pickup_at < ?', SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now).each do |ride|
       
       # disabling the bot previously disabled confirmation, but I think we need those regardless...
-      if ride.conversation && ride.ride_zone # && !ride.ride_zone.bot_disabled
+      if ride.conversation && ride.ride_zone
         begin
           result = ride.conversation.attempt_confirmation
           results[result] += 1
