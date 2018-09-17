@@ -31,7 +31,7 @@ export default (state = defaultState, { meta, type, payload }) => {
         active_ride: {
           ...meta.active_ride,
           status: 'driver_assigned',
-        }
+        },
       };
     case 'ARCHIVE_RIDE_FULFILLED':
     case 'CANCEL_RIDE_FULFILLED':
@@ -39,9 +39,7 @@ export default (state = defaultState, { meta, type, payload }) => {
         ...state,
         isFetching: false,
         active_ride: null,
-        rides: state.rides.filter(
-          ride => ride.id !== meta.active_ride.id
-        ),
+        rides: state.rides.filter(ride => ride.id !== meta.active_ride.id),
       };
 
     case 'PICKUP_RIDE_FULFILLED':
@@ -71,7 +69,7 @@ export default (state = defaultState, { meta, type, payload }) => {
     case 'PICKUP_RIDE_REJECTED':
       return {
         ...state,
-        isFetching: true,
+        isFetching: false,
       };
 
     // case 'RECEIVE_STATUS':

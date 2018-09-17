@@ -16,8 +16,8 @@ export function claimRide(ride) {
     type: 'CLAIM_RIDE',
     url: `accept_ride?ride_id=${ride.id}`,
     meta: {
-      active_ride: ride
-    }
+      active_ride: ride,
+    },
   });
 }
 

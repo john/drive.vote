@@ -16,7 +16,6 @@ export function apiError(message) {
   };
 }
 
-
 const API = '/driving';
 
 const createHeaders = method => ({
@@ -27,30 +26,24 @@ const createHeaders = method => ({
 export const createApiRequest = (query, { method = 'POST' } = {}) =>
   fetch(`${API}/${query}`, createHeaders(method))
     .then(response => {
-      console.log(response);
       if (!response.ok) {
         return Promise.reject(response);
       }
       return response.json();
     })
-    .then(body => body)
+    .then(body => body);
 
-export function fetchAndCatch({
-  url,
-  meta,
-  type,
-}) {
+export function fetchAndCatch({ url, meta, type, options }) {
   return dispatch =>
     dispatch({
       type,
       meta,
       payload: {
-        promise: createApiRequest(url),
+        promise: createApiRequest(url, options),
       },
-    })
-    .catch(response => {
-     if(response.body) {
-        return response.json().then(({error}) => {
+    }).catch(response => {
+      if (response.body) {
+        return response.json().then(({ error }) => {
           console.error(error);
           return dispatch(apiError(error));
         });
@@ -58,7 +51,5 @@ export function fetchAndCatch({
       console.log(response);
       console.error('Something went wrong');
       return dispatch(apiError(response));
-    })
-
+    });
 }
-    
