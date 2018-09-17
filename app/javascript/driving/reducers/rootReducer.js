@@ -33,6 +33,12 @@ function driverState(state = defaultState, action) {
         isFetching: false,
       };
 
+    case 'FETCH_RIDES_FULFILLED':
+      return {
+        ...state,
+        waiting_rides_interval: action.payload.waiting_rides_interval * 1000,
+      };
+
     case 'FETCH_STATUS_FULFILLED':
       return {
         ...state,
@@ -43,7 +49,6 @@ function driverState(state = defaultState, action) {
         waiting_rides_interval: action.payload.waiting_rides_interval * 1000,
         update_location_interval:
           action.payload.update_location_interval * 1000,
-        active_ride: action.payload.active_ride,
       };
 
     case 'FETCH_RIDE_ZONE_STATS_FULFILLED':

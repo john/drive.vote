@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import h, { RidePropTypes } from '../helpers/helpers';
+import { formatTime, RidePropTypes } from '../utilities/helpers';
 import PendingRideDetail from './PendingRideDetail';
 import ActiveRide from './ActiveRide';
 
@@ -41,7 +41,7 @@ class PendingRide extends React.Component {
         </ReactCSSTransitionGroup>
       );
     }
-    const time = h.formatTime(ride.pickup_at);
+    const time = formatTime(ride.pickup_at);
     const passengers = 1 + parseInt(ride.additional_passengers, 10);
     const name = ride.name ? ride.name : ride.voter_phone_number;
     let specialRequests;

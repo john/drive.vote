@@ -1,4 +1,4 @@
-import { createApiRequest, fetchAndCatch } from '../helpers/fetch';
+import { createApiRequest, fetchAndCatch } from '../utilities/fetch';
 
 export const fetchRides = location => {
   let url = 'waiting_rides';

@@ -1,5 +1,5 @@
 // import fetch from 'isomorphic-fetch';
-import { createApiRequest, fetchAndCatch } from '../helpers/fetch';
+import { createApiRequest, fetchAndCatch } from '../utilities/fetch';
 
 // Expect API to be served off the same origin.
 const api = '/driving';

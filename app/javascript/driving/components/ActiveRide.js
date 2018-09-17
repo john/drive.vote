@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { RidePropTypes } from '../helpers/helpers';
+import { RidePropTypes } from '../utilities/helpers';
 
 import ContactVoter from './ContactVoter';
 

@@ -34,9 +34,9 @@ describe('ActiveRide', () => {
     });
 
     it('waiting_assignment', () => {
-      const tree = renderer.create(
-        <ActiveRide {...makeProps({ status: 'waiting_assignment' })} />
-      ).toJSON();
+      const tree = renderer
+        .create(<ActiveRide {...makeProps({ status: 'waiting_assignment' })} />)
+        .toJSON();
       expect(tree).toMatchSnapshot();
     });
 

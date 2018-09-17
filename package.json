@@ -50,7 +50,7 @@
     "lint": "eslint ./app/javascript/driving",
     "lint:fix": "eslint --fix ./app/javascript/driving/",
     "prettier": "prettier --single-quote --trailing-comma es5 --write './app/javascript/driving/**/*.js'",
-    "test": "jest",
+    "test": "jest --verbose",
     "test:watch": "jest --watch"
   }
 }

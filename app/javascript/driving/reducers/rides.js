@@ -1,4 +1,4 @@
-const defaultState = {
+export const defaultState = {
   active_ride: null,
   completedRide: null,
   isFetching: false,
@@ -22,7 +22,6 @@ export default (state = defaultState, { meta, type, payload }) => {
         ...state,
         isFetching: false,
         waiting_rides: payload.response,
-        waiting_rides_interval: payload.waiting_rides_interval * 1000,
       };
     case 'CLAIM_RIDE_FULFILLED':
       return {
@@ -72,10 +71,10 @@ export default (state = defaultState, { meta, type, payload }) => {
         isFetching: false,
       };
 
-    // case 'RECEIVE_STATUS':
-    //   return {
-    //     active_ride: action.active_ride,
-    //   };
+    case 'FETCH_STATUS_FULFILLED':
+      return {
+        active_ride: payload.active_ride,
+      };
 
     default:
       return state;
