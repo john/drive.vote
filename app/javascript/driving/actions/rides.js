@@ -52,10 +52,7 @@ export const pickupRider = ride => {
     type: 'PICKUP_RIDE',
     payload: createApiRequest(url),
     meta: {
-      active_ride: {
-        ...ride,
-        status: 'picked_up',
-      },
+      active_ride: ride,
     },
   };
 };
@@ -67,10 +64,7 @@ export const completeRide = ride => {
     type: 'COMPLETE_RIDE',
     payload: createApiRequest(url),
     meta: {
-      active_ride: {
-        ...ride,
-        status: 'picked_up',
-      },
+      active_ride: ride,
     },
   };
 };

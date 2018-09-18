@@ -38,14 +38,19 @@ export default (state = defaultState, { meta, type, payload }) => {
         ...state,
         isFetching: false,
         active_ride: null,
-        rides: state.rides.filter(ride => ride.id !== meta.active_ride.id),
+        waiting_rides: state.waiting_rides.filter(
+          ride => ride.id !== meta.active_ride.id
+        ),
       };
 
     case 'PICKUP_RIDE_FULFILLED':
       return {
         ...state,
         isFetching: false,
-        active_ride: meta.active_ride,
+        active_ride: {
+          ...meta.active_ride,
+          status: 'picked_up',
+        },
       };
 
     case 'COMPLETE_RIDE_FULFILLED':
@@ -73,6 +78,7 @@ export default (state = defaultState, { meta, type, payload }) => {
 
     case 'FETCH_STATUS_FULFILLED':
       return {
+        ...state,
         active_ride: payload.active_ride,
       };
 
