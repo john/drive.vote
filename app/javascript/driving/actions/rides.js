@@ -1,15 +1,18 @@
 import { createApiRequest, fetchAndCatch } from '../utilities/fetch';
 
-export const fetchRides = location => {
+export function fetchRides(location) {
   let url = 'waiting_rides';
   if (location) {
     url += `?latitude=${location.latitude}&longitude=${location.longitude}`;
   }
-  return {
+  return fetchAndCatch({
     type: 'FETCH_RIDES',
-    payload: createApiRequest(url, { method: 'GET' }),
-  };
-};
+    url,
+    options: {
+      method: 'GET',
+    },
+  });
+}
 
 export function claimRide(ride) {
   return fetchAndCatch({
@@ -21,31 +24,27 @@ export function claimRide(ride) {
   });
 }
 
-export const archiveRide = ride => {
-  const url = `cancel_ride?ride_id=${ride.id}`;
-
-  return {
+export function archiveRide(ride) {
+  return fetchAndCatch({
     type: 'ARCHIVE_RIDE',
-    payload: createApiRequest(url),
+    url: `cancel_ride?ride_id=${ride.id}`,
     meta: {
       active_ride: ride,
     },
-  };
-};
+  });
+}
 
-export const cancelRide = ride => {
-  const url = `unaccept_ride?ride_id=${ride.id}`;
-
-  return {
+export function cancelRide(ride) {
+  return fetchAndCatch({
     type: 'CANCEL_RIDE',
-    payload: createApiRequest(url),
+    url: `unaccept_ride?ride_id=${ride.id}`,
     meta: {
       active_ride: ride,
     },
-  };
-};
+  });
+}
 
-export const pickupRider = ride => {
+export function pickupRide(ride) {
   const url = `pickup_ride?ride_id=${ride.id}`;
 
   return {
@@ -55,7 +54,7 @@ export const pickupRider = ride => {
       active_ride: ride,
     },
   };
-};
+}
 
 export const completeRide = ride => {
   const url = `complete_ride?ride_id=${ride.id}`;
