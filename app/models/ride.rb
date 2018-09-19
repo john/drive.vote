@@ -207,7 +207,7 @@ class Ride < ApplicationRecord
       if ride.conversation && ride.ride_zone
         
         # If we have an email it was probably a scheduled ride, use it to send a notification.
-        if ride.voter.present? && ride.vote.email.present?
+        if ride.voter.present? && ride.voter.email.present?
           UserMailer.notify_scheduled_ride(ride).deliver_now
         end
         
