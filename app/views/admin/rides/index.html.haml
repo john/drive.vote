@@ -43,7 +43,7 @@
           - if ride.voter.nil?
             none
           - else
-            #{ride.voter.name}
+            = link_to "#{ride.voter.name}", admin_user_path(ride.voter)
             %div{style: 'font-size: 12px; margin-top: 0px; color: #999'}
               #{[ride.from_address, ride.from_state].join(', ')}
         %td

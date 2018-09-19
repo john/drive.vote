@@ -34,9 +34,11 @@ Search: &nbsp;
           #{[user.city, user.state, user.zip].reject(&:blank?).join(', ')}
         %td
           - if ride = user.active_ride
-            = ride.pickup_at.strftime("%-m/%-d, %-H:%M %P") + " " + ride.status_str
+            #{ride.pickup_at.strftime("%-m/%-d, %-H:%M %P")} #{ride.status_str}
+            = link_to "(edit ride)", admin_ride_path(ride)
+            
         %td{style: "font-size: 13px;"}
-          = link_to 'Edit', edit_admin_user_path(user)
+          = link_to 'Edit voter', edit_admin_user_path(user)
           &nbsp; &#183; &nbsp;
           = link_to 'Destroy', admin_user_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }
           &nbsp; &#183; &nbsp;
