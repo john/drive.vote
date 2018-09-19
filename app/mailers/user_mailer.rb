@@ -1,9 +1,7 @@
 class UserMailer < ApplicationMailer
-  include SendGrid
 
   layout 'mailer'
 
-  sendgrid_enable   :ganalytics, :opentrack, :clicktrack
   default from: 'hello@drive.vote'
 
   # Use the previewer to check emails:
@@ -16,16 +14,14 @@ class UserMailer < ApplicationMailer
 
   # http://templates.mailchimp.com/resources/inline-css/
   
-  def notify_scheduled_ride(user, ride=nil)
-    sendgrid_category "notify_rider"
-    @user = user
+  def notify_scheduled_ride(ride)
     @ride = ride
+    @user = ride.voter
 
     mail(to: @user.email_with_name, subject: 'Your ride to the polls is coming soon')
   end
 
   def welcome_email_driver(user, ride_zone=nil)
-    sendgrid_category "welcome_driver"
     @user = user
     @ride_zone = ride_zone
 
@@ -33,21 +29,18 @@ class UserMailer < ApplicationMailer
   end
 
   def welcome_email_voter(user)
-    sendgrid_category "welcome_voter"
     @user = user
 
     mail(to: @user.email_with_name, subject: 'Welcome to Drive the Vote, Voter!')
   end
 
   def welcome_email_voter_ride(user, ride)
-    sendgrid_category "welcome_voter_ride"
     @user = user
     @ride = ride
     mail(to: @user.email_with_name, subject: 'Welcome to Drive the Vote!')
   end
 
   def welcome_email_not_inlined(user)
-    sendgrid_category "welcome_not_inlined"
     @user = user
 
     mail(to: @user.email_with_name, subject: 'Welcome to Drive the Vote!')

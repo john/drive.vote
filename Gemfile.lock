@@ -140,7 +140,6 @@ GEM
     hurley (0.2)
     i18n (1.1.0)
       concurrent-ruby (~> 1.0)
-    json (2.1.0)
     jwt (1.5.6)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -275,8 +274,6 @@ GEM
     selenium-webdriver (3.14.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.2)
-    sendgrid (1.2.4)
-      json
     sexp_processor (4.11.0)
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
@@ -388,7 +385,6 @@ DEPENDENCIES
   rspec (= 3.5.0)
   rspec-rails (= 3.5.2)
   sass-rails (= 5.0.6)
-  sendgrid
   shoulda-matchers (= 3.1.1)
   sidekiq (= 4.2.10)
   sinatra (= 1.0)

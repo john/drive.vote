@@ -205,6 +205,12 @@ class Ride < ApplicationRecord
       
       # disabling the bot previously disabled confirmation, but I think we need those regardless...
       if ride.conversation && ride.ride_zone
+        
+        # If we have an email it was probably a scheduled ride, use it to send a notification.
+        if ride.voter.present? && ride.vote.email.present?
+          UserMailer.notify_scheduled_ride(ride).deliver_now
+        end
+        
         begin
           result = ride.conversation.attempt_confirmation
           results[result] += 1
