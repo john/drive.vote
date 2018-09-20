@@ -67,12 +67,3 @@ export const completeRide = ride => {
     },
   };
 };
-
-// export function receveWaitingRides(rides) {
-//   return {
-//     type: 'RECEIVE_RIDES',
-//     rides: rides.response,
-//     waiting_rides_interval: rides.waiting_rides_interval,
-//   ^^^^^^^^^^^
-//   };
-// }

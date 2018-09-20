@@ -21,12 +21,14 @@ export default (state = defaultState, { meta, type, payload }) => {
       return {
         ...state,
         isFetching: false,
+        completedRide: null,
         waiting_rides: payload.response,
       };
     case 'CLAIM_RIDE_FULFILLED':
       return {
         ...state,
         isFetching: false,
+        completedRide: null,
         active_ride: {
           ...meta.active_ride,
           status: 'driver_assigned',
@@ -37,6 +39,7 @@ export default (state = defaultState, { meta, type, payload }) => {
       return {
         ...state,
         isFetching: false,
+        completedRide: null,
         active_ride: null,
         waiting_rides: state.waiting_rides.filter(
           ride => ride.id !== meta.active_ride.id
