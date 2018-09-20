@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
-import rides from './rides';
 import { routerReducer } from 'react-router-redux';
+
+import rides from './rides';
 
 export const defaultState = {
   available: false,

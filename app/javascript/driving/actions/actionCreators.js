@@ -1,17 +1,7 @@
-// import fetch from 'isomorphic-fetch';
-import { createApiRequest, fetchAndCatch } from '../utilities/fetch';
+import { fetchAndCatch } from '../utilities/fetch';
 
 // Expect API to be served off the same origin.
 const api = '/driving';
-
-function parseJSON(response) {
-  if (response.ok) {
-    return response.json();
-  }
-  return response.json().then(parsedResponse => {
-    throw new Error(parsedResponse.error);
-  });
-}
 
 export function apiError(message) {
   // The Fetch API leaves you in a lurch for detecting generic network errors,

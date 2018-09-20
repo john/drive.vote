@@ -45,7 +45,7 @@ describe('appReducer', () => {
         available: true,
         ride_zone_id: 666,
         waiting_rides_interval: 666,
-        update_location_interval: 666
+        update_location_interval: 666,
       },
     });
     expect(result).toEqual({
@@ -63,11 +63,11 @@ describe('appReducer', () => {
     const result = appReducer(defaultState, {
       type: 'FETCH_RIDE_ZONE_STATS_FULFILLED',
       payload: {
-          total_drivers: 1,
-          available_drivers: 2,
-          completed_rides: 3,
-          active_rides: 4,
-          scheduled_rides: 5,
+        total_drivers: 1,
+        available_drivers: 2,
+        completed_rides: 3,
+        active_rides: 4,
+        scheduled_rides: 5,
       },
     });
     expect(result).toEqual({
@@ -109,14 +109,14 @@ describe('appReducer', () => {
       type: 'LOCATION_UPDATED',
       location: {
         latitude: 'foo',
-        longitude: 'bar'
+        longitude: 'bar',
       },
     });
     expect(result).toEqual({
       ...defaultState,
       location: {
         latitude: 'foo',
-        longitude: 'bar'
+        longitude: 'bar',
       },
     });
   });
@@ -130,41 +130,44 @@ describe('appReducer', () => {
     });
     expect(result).toEqual({
       ...defaultState,
-      update_location_interval: 1 * 1000
+      update_location_interval: 1 * 1000,
     });
   });
 
   it('handles API_ERROR', () => {
     const result = appReducer(defaultState, {
       type: 'API_ERROR',
-      message: "foo bar baz"
+      message: 'foo bar baz',
     });
     expect(result).toEqual({
       ...defaultState,
       isFetching: false,
-      error: "foo bar baz"
+      error: 'foo bar baz',
     });
   });
   it('handles CONNECTION_ERROR', () => {
     const result = appReducer(defaultState, {
       type: 'CONNECTION_ERROR',
-      message: "foo bar baz"
+      message: 'foo bar baz',
     });
     expect(result).toEqual({
       ...defaultState,
       isFetching: false,
-      connectionError: "foo bar baz"
+      connectionError: 'foo bar baz',
     });
   });
 
   it('handles API_ERROR_CLEAR', () => {
-    const result = appReducer({
-      ...defaultState,
-      error: "foo bar baz",
-      connectionError: 'foo bar baz'
-     }, {
-      type: 'API_ERROR_CLEAR',
-    });
+    const result = appReducer(
+      {
+        ...defaultState,
+        error: 'foo bar baz',
+        connectionError: 'foo bar baz',
+      },
+      {
+        type: 'API_ERROR_CLEAR',
+      }
+    );
     expect(result).toEqual({
       ...defaultState,
     });

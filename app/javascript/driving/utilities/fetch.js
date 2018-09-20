@@ -44,12 +44,12 @@ export function fetchAndCatch({ url, meta, type, options }) {
     }).catch(response => {
       if (response.body) {
         return response.json().then(({ error }) => {
-          console.error(error);
+          console.error(error); // eslint-disable-line no-console
           return dispatch(apiError(error));
         });
       }
-      console.log(response);
-      console.error('Something went wrong');
+      console.log(response); // eslint-disable-line no-console
+      console.error('Something went wrong'); // eslint-disable-line no-console
       return dispatch(apiError(response));
     });
 }
