@@ -92,9 +92,6 @@ class PendingRide extends React.Component {
 PendingRide.propTypes = {
   ride: RidePropTypes,
   claimRide: PropTypes.func.isRequired,
-  cancelRide: PropTypes.func.isRequired,
-  pickupRider: PropTypes.func.isRequired,
-  completeRide: PropTypes.func.isRequired,
 };
 
 export default PendingRide;

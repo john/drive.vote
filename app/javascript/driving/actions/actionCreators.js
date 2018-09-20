@@ -1,8 +1,5 @@
 import { fetchAndCatch } from '../utilities/fetch';
 
-// Expect API to be served off the same origin.
-const api = '/driving';
-
 export function apiError(message) {
   // The Fetch API leaves you in a lurch for detecting generic network errors,
   // Not sure if there's any way to catch this besides a RegExp
@@ -69,7 +66,7 @@ export function setLocation(location) {
 export function submitLocation(location) {
   return fetchAndCatch({
     type: 'SUBMIT_LOCATION',
-    url: `${api}/location?latitude=${location.latitude}&longitude=${
+    url: `location?latitude=${location.latitude}&longitude=${
       location.longitude
     }`,
   });

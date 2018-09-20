@@ -23,7 +23,7 @@ const makeProps = rideProps => ({
   claimRide: () => {},
   cancelRide: () => {},
   completeRide: () => {},
-  pickupRider: () => {},
+  pickupRide: () => {},
 });
 
 describe('ActiveRide', () => {

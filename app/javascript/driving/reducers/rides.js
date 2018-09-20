@@ -58,7 +58,9 @@ export default (state = defaultState, { meta, type, payload }) => {
         ...state,
         isFetching: false,
         active_ride: null,
-
+        waiting_rides: state.waiting_rides.filter(
+          ride => ride.id !== meta.active_ride.id
+        ),
         completedRide: {
           ...meta.active_ride,
           status: 'complete',
@@ -79,7 +81,7 @@ export default (state = defaultState, { meta, type, payload }) => {
     case 'FETCH_STATUS_FULFILLED':
       return {
         ...state,
-        active_ride: payload.active_ride,
+        active_ride: payload.response.active_ride,
       };
 
     case 'SUBMIT_UNAVAILABLE_FULFILLED':

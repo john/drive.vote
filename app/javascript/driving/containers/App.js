@@ -9,7 +9,7 @@ import Header from '../components/Header';
 import AppError from '../components/AppError';
 
 const AppUnconnected = props => (
-  <div className={props.changePending ? 'fetching' : ''}>
+  <div className={props.isFetching ? 'fetching' : ''}>
     <Header ride_zone_id={props.ride_zone_id} />
     <AppError error={props.error} clearError={props.clearError} />
     <div className="container p-a-0">
@@ -35,7 +35,7 @@ const App = connect(
 )(AppUnconnected);
 
 AppUnconnected.propTypes = {
-  changePending: PropTypes.bool.isRequired,
+  isFetching: PropTypes.bool.isRequired,
   children: PropTypes.node,
   clearError: PropTypes.func.isRequired,
   error: PropTypes.string,

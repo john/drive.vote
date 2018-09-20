@@ -5,8 +5,7 @@ import UnavailableButton from '../components/UnavailableButton';
 
 const WaitingRidesContainer = props => {
   const {
-    rides: { waiting_rides },
-    completedRide,
+    rides: { completedRide, waiting_rides },
     isFetching,
   } = props;
 

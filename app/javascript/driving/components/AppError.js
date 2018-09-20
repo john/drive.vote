@@ -15,11 +15,12 @@ const AppError = ({ error, clearError }) =>
         transitionName="banner"
         transitionAppear
         transitionAppearTimeout={500}
+        transitionLeaveTimeout={0}
+        transitionEnterTimeout={0}
       >
         <div className="errorBanner" key={1}>
-          <i className="fa fa-exclamation" />
           {error}
-          <a className="pull-right" onClick={clearError}>
+          <a className="close-button" onClick={clearError}>
             <i className="fa fa-close" />
           </a>
         </div>

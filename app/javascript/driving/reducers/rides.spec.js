@@ -135,7 +135,9 @@ describe('rides reducer', () => {
     const result = reducer(defaultState, {
       type: 'FETCH_STATUS_FULFILLED',
       payload: {
-        active_ride: sampleRide,
+        response: {
+          active_ride: sampleRide,
+        },
       },
     });
     expect(result).toEqual({

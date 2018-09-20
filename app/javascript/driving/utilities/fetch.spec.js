@@ -59,25 +59,5 @@ describe('async utilities', () => {
         expect(store.getActions()).toEqual(expectedActions);
       });
     });
-    it('dispatches CONNECTION_ERROR when a generic network error occurs', () => {
-      const store = mockStore(defaultState);
-      const errorMessage = 'TypeError: Failed to fetch';
-      const expectedActions = [
-        { type: 'FETCH_RIDES_PENDING' },
-        {
-          error: true,
-          type: 'FETCH_RIDES_REJECTED',
-          payload: errorMessage,
-        },
-        { message: errorMessage, type: 'CONNECTION_ERROR' },
-      ];
-
-      expect.assertions(1);
-      fetchMock.mock('*', { throws: errorMessage });
-
-      store.dispatch(fetchRides()).then(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-      });
-    });
   });
 });

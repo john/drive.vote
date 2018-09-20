@@ -6,27 +6,22 @@ import rides from './rides';
 export const defaultState = {
   available: false,
   error: '',
-  connectionError: '',
   initialFetch: true,
   isFetching: true,
 };
 export function appReducer(state = defaultState, action) {
   switch (action.type) {
     case 'FETCH_STATUS_PENDING':
-    case 'FETCH_RIDE_ZONE_STATS_PENDING':
     case 'SUBMIT_UNAVAILABLE_PENDING':
     case 'SUBMIT_AVAILABLE_PENDING':
-    case 'SUBMIT_LOCATION_PENDING':
       return {
         ...state,
         isFetching: true,
       };
 
     case 'FETCH_STATUS_REJECTED':
-    case 'FETCH_RIDE_ZONE_STATS_REJECTED':
     case 'SUBMIT_UNAVAILABLE_REJECTED':
     case 'SUBMIT_AVAILABLE_REJECTED':
-    case 'SUBMIT_LOCATION_REJECTED':
       return {
         ...state,
         isFetching: false,
@@ -43,11 +38,12 @@ export function appReducer(state = defaultState, action) {
         ...state,
         initialFetch: false,
         isFetching: false,
-        available: action.payload.available,
-        ride_zone_id: action.payload.ride_zone_id,
-        waiting_rides_interval: action.payload.waiting_rides_interval * 1000,
+        available: action.payload.response.available,
+        ride_zone_id: action.payload.response.ride_zone_id,
+        waiting_rides_interval:
+          action.payload.response.waiting_rides_interval * 1000,
         update_location_interval:
-          action.payload.update_location_interval * 1000,
+          action.payload.response.update_location_interval * 1000,
       };
 
     case 'FETCH_RIDE_ZONE_STATS_FULFILLED':
@@ -86,8 +82,9 @@ export function appReducer(state = defaultState, action) {
     case 'SUBMIT_LOCATION_FULFILLED':
       return {
         ...state,
+        isFetching: false,
         update_location_interval:
-          action.payload.update_location_interval * 1000,
+          action.payload.response.update_location_interval * 1000,
       };
 
     case 'API_ERROR':
@@ -96,16 +93,9 @@ export function appReducer(state = defaultState, action) {
         error: String(action.message),
         isFetching: false,
       };
-    case 'CONNECTION_ERROR':
-      return {
-        ...state,
-        connectionError: String(action.message),
-        isFetching: false,
-      };
     case 'API_ERROR_CLEAR':
       return {
         ...state,
-        connectionError: '',
         error: '',
       };
 

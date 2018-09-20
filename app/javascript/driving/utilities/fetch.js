@@ -4,15 +4,15 @@ export function apiError(message) {
   // The Fetch API leaves you in a lurch for detecting generic network errors,
   // Not sure if there's any way to catch this besides a RegExp
   const pattern = new RegExp(`TypeError: Failed to fetch`);
+  let errorMessage = message;
   if (pattern.test(message)) {
-    return {
-      type: 'CONNECTION_ERROR',
-      message,
-    };
+    errorMessage =
+      "It looks like there's something wrong with your internet connection";
   }
+
   return {
     type: 'API_ERROR',
-    message,
+    message: errorMessage,
   };
 }
 
@@ -42,14 +42,15 @@ export function fetchAndCatch({ url, meta, type, options }) {
         promise: createApiRequest(url, options),
       },
     }).catch(response => {
+      if (response.status === 500) {
+        return dispatch(apiError('Oops, something went wrong'));
+      }
       if (response.body) {
         return response.json().then(({ error }) => {
           console.error(error); // eslint-disable-line no-console
           return dispatch(apiError(error));
         });
       }
-      console.log(response); // eslint-disable-line no-console
-      console.error('Something went wrong'); // eslint-disable-line no-console
       return dispatch(apiError(response));
     });
 }

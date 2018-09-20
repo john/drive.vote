@@ -42,10 +42,12 @@ describe('appReducer', () => {
     const result = appReducer(defaultState, {
       type: 'FETCH_STATUS_FULFILLED',
       payload: {
-        available: true,
-        ride_zone_id: 666,
-        waiting_rides_interval: 666,
-        update_location_interval: 666,
+        response: {
+          available: true,
+          ride_zone_id: 666,
+          waiting_rides_interval: 666,
+          update_location_interval: 666,
+        },
       },
     });
     expect(result).toEqual({
@@ -125,11 +127,12 @@ describe('appReducer', () => {
     const result = appReducer(defaultState, {
       type: 'SUBMIT_LOCATION_FULFILLED',
       payload: {
-        update_location_interval: 1,
+        response: { update_location_interval: 1 },
       },
     });
     expect(result).toEqual({
       ...defaultState,
+      isFetching: false,
       update_location_interval: 1 * 1000,
     });
   });
@@ -145,24 +148,12 @@ describe('appReducer', () => {
       error: 'foo bar baz',
     });
   });
-  it('handles CONNECTION_ERROR', () => {
-    const result = appReducer(defaultState, {
-      type: 'CONNECTION_ERROR',
-      message: 'foo bar baz',
-    });
-    expect(result).toEqual({
-      ...defaultState,
-      isFetching: false,
-      connectionError: 'foo bar baz',
-    });
-  });
 
   it('handles API_ERROR_CLEAR', () => {
     const result = appReducer(
       {
         ...defaultState,
         error: 'foo bar baz',
-        connectionError: 'foo bar baz',
       },
       {
         type: 'API_ERROR_CLEAR',
