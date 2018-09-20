@@ -2,16 +2,14 @@ import { combineReducers } from 'redux';
 import rides from './rides';
 import { routerReducer } from 'react-router-redux';
 
-const defaultState = {
+export const defaultState = {
   available: false,
   error: '',
-  completedRide: null,
-  changePending: false,
+  connectionError: '',
   initialFetch: true,
   isFetching: true,
-  // rides: [],
 };
-function driverState(state = defaultState, action) {
+export function appReducer(state = defaultState, action) {
   switch (action.type) {
     case 'FETCH_STATUS_PENDING':
     case 'FETCH_RIDE_ZONE_STATS_PENDING':
@@ -54,6 +52,7 @@ function driverState(state = defaultState, action) {
     case 'FETCH_RIDE_ZONE_STATS_FULFILLED':
       return {
         ...state,
+        isFetching: false,
         ride_zone_stats: {
           total_drivers: action.payload.total_drivers,
           available_drivers: action.payload.available_drivers,
@@ -67,8 +66,6 @@ function driverState(state = defaultState, action) {
         ...state,
         isFetching: false,
         available: false,
-        active_ride: null,
-        completedRide: null,
       };
     case 'SUBMIT_AVAILABLE_FULFILLED':
       return {
@@ -97,18 +94,17 @@ function driverState(state = defaultState, action) {
         ...state,
         error: String(action.message),
         isFetching: false,
-        changePending: false,
       };
     case 'CONNECTION_ERROR':
       return {
         ...state,
         connectionError: String(action.message),
         isFetching: false,
-        changePending: false,
       };
     case 'API_ERROR_CLEAR':
       return {
         ...state,
+        connectionError: '',
         error: '',
       };
 
@@ -118,7 +114,7 @@ function driverState(state = defaultState, action) {
 }
 
 const rootReducer = combineReducers({
-  driverState,
+  appState: appReducer,
   rides,
   routing: routerReducer,
 });

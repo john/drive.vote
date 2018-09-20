@@ -20,7 +20,7 @@ const AppUnconnected = props => (
 
 function mapStateToProps(state) {
   return {
-    ...state.driverState,
+    ...state.appState,
     rides: state.rides,
   };
 }

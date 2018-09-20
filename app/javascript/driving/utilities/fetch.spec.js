@@ -3,7 +3,7 @@ import promiseMiddleware from 'redux-promise-middleware';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { createApiRequest, fetchAndCatch } from './fetch';
+import { createApiRequest } from './fetch';
 
 import { defaultState } from '../reducers/rides';
 import { fetchRides } from '../actions/rides';
@@ -41,21 +41,39 @@ describe('async utilities', () => {
 
   describe('fetchAndCatch', () => {
     it('catches network errors and dispatches error actions', () => {
-      expect.assertions(1);
-
       const store = mockStore(defaultState);
-
-      fetchMock.mock('*', { throws: 'oh no!' });
-
-      const expectedActions = [{ type: 'FETCH_RIDES_PENDING' }];
-      expectedActions.push(
+      const expectedActions = [
+        { type: 'FETCH_RIDES_PENDING' },
         {
           error: true,
           type: 'FETCH_RIDES_REJECTED',
           payload: 'oh no!',
         },
-        { message: 'oh no!', type: 'API_ERROR' }
-      );
+        { message: 'oh no!', type: 'API_ERROR' },
+      ];
+
+      expect.assertions(1);
+      fetchMock.mock('*', { throws: 'oh no!' });
+
+      store.dispatch(fetchRides()).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+    it('dispatches CONNECTION_ERROR when a generic network error occurs', () => {
+      const store = mockStore(defaultState);
+      const errorMessage = 'TypeError: Failed to fetch';
+      const expectedActions = [
+        { type: 'FETCH_RIDES_PENDING' },
+        {
+          error: true,
+          type: 'FETCH_RIDES_REJECTED',
+          payload: errorMessage,
+        },
+        { message: errorMessage, type: 'CONNECTION_ERROR' },
+      ];
+
+      expect.assertions(1);
+      fetchMock.mock('*', { throws: errorMessage });
 
       store.dispatch(fetchRides()).then(() => {
         expect(store.getActions()).toEqual(expectedActions);

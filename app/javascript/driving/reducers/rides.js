@@ -82,6 +82,13 @@ export default (state = defaultState, { meta, type, payload }) => {
         active_ride: payload.active_ride,
       };
 
+      case 'SUBMIT_UNAVAILABLE_FULFILLED':
+        return {
+          ...state,
+          active_ride: null,
+          completedRide: null,
+        };
+
     default:
       return state;
   }
