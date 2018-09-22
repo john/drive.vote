@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception, prepend: true
 
   rescue_from(ActionController::RoutingError, ActiveRecord::RecordNotFound) do
+    # render file: "#{Rails.root}/public/404", status: :not_found
     redirect_to '/404.html'
   end
 

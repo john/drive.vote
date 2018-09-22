@@ -13,6 +13,7 @@ class Admin::AdminApplicationController < ApplicationController
 
   def require_admin_privileges
     unless user_signed_in? && (current_user.has_role?(:admin) || (@ride_zone && current_user.has_role?(:admin, @ride_zone)))
+      # render file: "#{Rails.root}/public/404", status: :not_found
       redirect_to '/404.html'
     end
   end
