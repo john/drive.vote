@@ -6,67 +6,6 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-admin = User.create!(
-  name: 'Generic Admin',
-  available: false,
-  email: 'seeds@drive.vote',
-  password: '1234abcd',
-  phone_number_normalized: '+15550222222',
-  locale: 'en',
-)
-
-
-john = User.create!(
-  name: 'John McGrath',
-  available: false,
-  email: 'john@fnnny.com',
-  password: '1234abcd',
-  phone_number: '5552222222',
-  phone_number_normalized: '+15554222223',
-  locale: 'en',
-  address1: '1100 Nugget Ave',
-  city: 'San Francisco',
-  state: 'CA'
-)
-
-# adam = User.create!(
-#   name: 'Adam McAmis',
-#   available: false,
-#   email: 'mcamis@gmail.com',
-#   password: '1234abcd',
-#   phone_number_normalized: '+15550222222',
-#   locale: 'en',
-# )
-
-# albert = User.create!(
-#   name: 'Albert Wong',
-#   available: false,
-#   email: 'awong.public@gmail.com',
-#   password: '1234abcd',
-#   phone_number_normalized: '+15551222222',
-#   locale: 'en',
-# )
-#
-# erin = User.create!(
-#   name: 'Erin Germ',
-#   available: false,
-#   email: 'erin@eringerm.com',
-#   password: '1234abcd',
-#   phone_number_normalized: '+15552222222',
-#   locale: 'en',
-# )
-#
-# gerald = User.create!(
-#   name: 'Gerald Huff',
-#   available: false,
-#   email: 'gerald.huff@gmail.com',
-#   password: '1234abcd',
-#   phone_number_normalized: '+15553222222',
-#   locale: 'en',
-#   city: 'Berkeley',
-#   state: 'CA'
-# )
-
 roles = Role.create([
   {name: 'admin'},
   {name: 'dispatcher'},
@@ -75,14 +14,6 @@ roles = Role.create([
   {name: 'voter'},
 ])
 
-admin.add_role(:admin)
-# adam.add_role(:admin)
-# albert.add_role(:admin)
-# erin.add_role(:admin)
-# gerald.add_role(:admin)
-john.add_role(:admin)
-
-# if  Rails.env == "development"
 zones = RideZone.create!([
   {
     name: 'Berkeley, CA',
@@ -99,7 +30,7 @@ zones = RideZone.create!([
   },
   {
     name: 'San Francisco, CA',
-    phone_number: '+14152002626',
+    phone_number: '+14158519528',
     email: 'sf@fnnny.com',
     slug: 'san_francisco',
     city: 'San Francisco',
@@ -125,24 +56,67 @@ zones = RideZone.create!([
   }
 ])
 
+sf = RideZone.find_by_slug('san_francisco')
+orlando = RideZone.find_by_slug('orlando')
+
+generic_admin = User.create!(
+  name: 'Generic Admin',
+  available: false,
+  email: 'seeds@drive.vote',
+  password: '1234abcd',
+  phone_number: '5552222222',
+  phone_number_normalized: '+15550222222',
+  locale: 'en',
+)
+
+john = User.create!(
+  name: 'John McGrath',
+  available: false,
+  email: 'john@fnnny.com',
+  password: '1234abcd',
+  phone_number: '5552222223',
+  phone_number_normalized: '+15554222223',
+  locale: 'en',
+  address1: '1100 Nugget Ave',
+  city: 'San Francisco',
+  state: 'CA'
+)
+
+sf_admin =  User.create!(
+  name: 'SF Zone Admin',
+  available: false,
+  email: 'sfadmin@fnnny.com',
+  password: '1234abcd',
+  phone_number: '5552222224',
+  phone_number_normalized: '+15554222224',
+  locale: 'en',
+  address1: '1100 Nugget Ave',
+  city: 'San Francisco',
+  state: 'CA'
+)
+
+generic_admin.add_role(:admin)
+john.add_role(:admin)
+sf_admin.add_role(:admin, sf)
+
 drivers = User.create!([
   {
     name: 'Deborah Driver',
     available: false,
     email: 'deborah@fnnny.com',
     password: '1234abcd',
-    phone_number: '2123328709',
-    phone_number_normalized: '+15555222222',
+    phone_number: '2073328709',
+    phone_number_normalized: '+12073328709',
     image_url: '',
     locale: 'en',
-    zip: '84122'
+    zip: '94121'
   }, {
     name: 'Doug Driver',
     available: false,
     email: 'doug@fnnny.com',
     password: '1234abcd',
-    phone_number: '2133328709',
-    phone_number_normalized: '+15556222222',
+    phone_number: '5552222226',
+    phone_number_normalized: '+15556222226',
     image_url: '',
     locale: 'en',
     zip: '84122'
@@ -151,8 +125,8 @@ drivers = User.create!([
     available: false,
     email: 'danny@fnnny.com',
     password: '1234abcd',
-    phone_number: '2133328710',
-    phone_number_normalized: '+15556222222',
+    phone_number: '5552222227',
+    phone_number_normalized: '+15556222227',
     image_url: '',
     locale: 'en',
     zip: '84122'
@@ -161,17 +135,30 @@ drivers = User.create!([
     available: false,
     email: 'donnie@fnnny.com',
     password: '1234abcd',
-    phone_number: '2133328711',
-    phone_number_normalized: '+15556222222',
+    phone_number: '5552222228',
+    phone_number_normalized: '+15556222228',
     image_url: '',
     locale: 'en',
     zip: '84122'
   }
 ])
 
-sf = RideZone.find_by_slug('san_francisco')
-orlando = RideZone.find_by_slug('orlando')
+dispatchers = User.create!([
+  name: 'SF Dispatcher',
+  available: false,
+  email: 'sfdispatch@fnnny.com',
+  password: '1234abcd',
+  phone_number: '5552222229',
+  phone_number_normalized: '+15554222229',
+  locale: 'en',
+  address1: '1100 Nugget Ave',
+  city: 'San Francisco',
+  state: 'CA'
+])
+
 drivers[0].add_role(:unassigned_driver, sf)
-drivers[1].add_role(:driver, orlando)
-drivers[2].add_role(:driver, orlando)
-drivers[2].add_role(:unassigned_driver, orlando)
+drivers[1].add_role(:driver, sf)
+drivers[2].add_role(:driver, sf)
+drivers[3].add_role(:unassigned_driver, orlando)
+
+dispatchers[0].add_role(:dispatcher, sf)

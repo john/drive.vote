@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_03_172250) do
+ActiveRecord::Schema.define(version: 2018_09_20_020234) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 2018_09_03_172250) do
     t.decimal "nearby_radius", precision: 6, scale: 2, default: "10.0"
     t.string "email"
     t.decimal "max_pickup_radius", precision: 6, scale: 2, default: "20.0"
+    t.string "organization_name", default: ""
     t.index ["phone_number"], name: "index_ride_zones_on_phone_number", unique: true
     t.index ["slug"], name: "index_ride_zones_on_slug", unique: true
   end

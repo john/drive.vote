@@ -27,6 +27,10 @@
     = f.telephone_field :email, class: 'form-control', required: 'true', maxlength: 50
 
   .col-sm-8.field
+    = f.label :organization_name, 'Organization'
+    = f.text_field :organization_name, class: 'form-control', maxlength: 50
+
+  .col-sm-8.field
     = f.label :zip
     = f.text_field :zip, class: 'form-control', required: true, maxlength: 12
 

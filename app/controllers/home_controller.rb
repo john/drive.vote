@@ -2,6 +2,7 @@ class HomeController < ApplicationController
 
   def index
     @is_new_user = params['is_new_user'].present?
+    @hide_help = true
   end
 
   def confirm

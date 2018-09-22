@@ -14,7 +14,11 @@ class DriverStatusContainer extends React.Component {
       return <Loading />;
     }
     if (this.props.available) {
-      return <RideContainer {...this.props} />;
+      return (
+        <div className={this.props.rides.isFetching ? 'fetching' : ''}>
+          <RideContainer {...this.props} />
+        </div>
+      );
     }
     return (
       <Unavailable

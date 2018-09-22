@@ -36,6 +36,7 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   def setup_edit
     @zone_dispatchers = @ride_zone.dispatchers
     @zone_drivers = @ride_zone.drivers
+    @zone_unassigned_drivers = @ride_zone.unassigned_drivers
     @zone_admins = @ride_zone.admins
 
     # TODO: scope to nearby when adding proximity

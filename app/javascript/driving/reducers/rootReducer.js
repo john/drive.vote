@@ -1,121 +1,75 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-const defaultState = {
+import rides from './rides';
+
+export const defaultState = {
   available: false,
   error: '',
-  completedRide: null,
-  changePending: false,
   initialFetch: true,
   isFetching: true,
-  rides: [],
 };
-function driverState(state = defaultState, action) {
+export function appReducer(state = defaultState, action) {
   switch (action.type) {
-    case 'REQUEST_STATUS':
-    case 'REQUEST_TOGGLE':
-    case 'REQUEST_RIDES':
+    case 'FETCH_STATUS_PENDING':
+    case 'SUBMIT_UNAVAILABLE_PENDING':
+    case 'SUBMIT_AVAILABLE_PENDING':
       return {
         ...state,
         isFetching: true,
       };
-    case 'RIDE_CLAIM_ATTEMPT':
-    case 'RIDE_CANCEL_ATTEMPT':
-    case 'RIDER_PICKUP_ATTEMPT':
-    case 'RIDE_COMPLETE_ATTEMPT':
-    case 'RIDE_ARCHIVE_ATTEMPT':
+
+    case 'FETCH_STATUS_REJECTED':
+    case 'SUBMIT_UNAVAILABLE_REJECTED':
+    case 'SUBMIT_AVAILABLE_REJECTED':
       return {
         ...state,
-        changePending: true,
+        isFetching: false,
       };
-    case 'RECEIVE_STATUS':
+
+    case 'FETCH_RIDES_FULFILLED':
+      return {
+        ...state,
+        waiting_rides_interval: action.payload.waiting_rides_interval * 1000,
+      };
+
+    case 'FETCH_STATUS_FULFILLED':
       return {
         ...state,
         initialFetch: false,
         isFetching: false,
-        available: action.available,
-        ride_zone_id: action.ride_zone_id,
-        waiting_rides_interval: action.waiting_rides_interval * 1000,
-        update_location_interval: action.update_location_interval * 1000,
-        active_ride: action.active_ride,
+        available: action.payload.response.available,
+        ride_zone_id: action.payload.response.ride_zone_id,
+        waiting_rides_interval:
+          action.payload.response.waiting_rides_interval * 1000,
+        update_location_interval:
+          action.payload.response.update_location_interval * 1000,
       };
-    case 'RECEIVE_RIDE_ZONE_STATS':
+
+    case 'FETCH_RIDE_ZONE_STATS_FULFILLED':
       return {
         ...state,
+        isFetching: false,
         ride_zone_stats: {
-          total_drivers: action.total_drivers,
-          available_drivers: action.available_drivers,
-          completed_rides: action.completed_rides,
-          active_rides: action.active_rides,
-          scheduled_rides: action.scheduled_rides,
+          total_drivers: action.payload.total_drivers,
+          available_drivers: action.payload.available_drivers,
+          completed_rides: action.payload.completed_rides,
+          active_rides: action.payload.active_rides,
+          scheduled_rides: action.payload.scheduled_rides,
         },
       };
-    case 'DRIVER_UNAVAILABLE':
+    case 'SUBMIT_UNAVAILABLE_FULFILLED':
       return {
         ...state,
         isFetching: false,
         available: false,
-        active_ride: null,
-        completedRide: null,
       };
-    case 'DRIVER_AVAILABLE':
+    case 'SUBMIT_AVAILABLE_FULFILLED':
       return {
         ...state,
         isFetching: false,
         available: true,
       };
-    case 'RECEIVE_RIDES':
-      return {
-        ...state,
-        isFetching: false,
-        rides: action.rides,
-        waiting_rides_interval: action.waiting_rides_interval * 1000,
-      };
-    case 'RIDE_CLAIMED':
-      return {
-        ...state,
-        isFetching: false,
-        waiting_rides_interval: 0,
-        active_ride: {
-          ...action.active_ride,
-          status: 'driver_assigned',
-        },
-        changePending: false,
-      };
-    case 'RIDE_CANCELLED':
-    case 'RIDE_ARCHIVED':
-      return {
-        ...state,
-        isFetching: false,
-        active_ride: null,
-        rides: state.rides.filter(ride => ride.id !== action.active_ride.id),
-        changePending: false,
-      };
-    case 'RIDER_PICKUP':
-      return {
-        ...state,
-        isFetching: false,
-        active_ride: {
-          ...action.active_ride,
-          status: 'picked_up',
-        },
-        changePending: false,
-        completedRide: null,
-      };
-
-    case 'RIDE_COMPLETE':
-      return {
-        ...state,
-        isFetching: false,
-        active_ride: null,
-        changePending: false,
-        completedRide: {
-          ...action.active_ride,
-          status: 'complete',
-        },
-        rides: [],
-      };
-
     case 'LOCATION_UPDATED':
       return {
         ...state,
@@ -125,24 +79,19 @@ function driverState(state = defaultState, action) {
         },
       };
 
-    case 'LOCATION_SUBMITTED':
+    case 'SUBMIT_LOCATION_FULFILLED':
       return {
         ...state,
-        update_location_interval: action.update_location_interval * 1000,
+        isFetching: false,
+        update_location_interval:
+          action.payload.response.update_location_interval * 1000,
       };
+
     case 'API_ERROR':
       return {
         ...state,
         error: String(action.message),
         isFetching: false,
-        changePending: false,
-      };
-    case 'CONNECTION_ERROR':
-      return {
-        ...state,
-        connectionError: String(action.message),
-        isFetching: false,
-        changePending: false,
       };
     case 'API_ERROR_CLEAR':
       return {
@@ -156,7 +105,8 @@ function driverState(state = defaultState, action) {
 }
 
 const rootReducer = combineReducers({
-  driverState,
+  appState: appReducer,
+  rides,
   routing: routerReducer,
 });
 

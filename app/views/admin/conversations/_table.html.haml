@@ -41,6 +41,6 @@
         - if include_show
           %td= link_to 'Show', admin_conversation_path(conversation)
 
-- if conversations.present? && include_show
+-# if conversations.present? && include_show
   %nav{'aria-label': 'pagination'}
     = will_paginate conversations

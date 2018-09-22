@@ -33,15 +33,15 @@ class Conversation < ApplicationRecord
     info_complete: 1000,
     requested_confirmation: 1100,
   }
-
+  
   def api_json(include_messages = false)
     fields = [:id, :user_id, :pickup_at, :status, :lifecycle, :from_phone,
-              :from_latitude, :from_longitude, :to_latitude, :to_longitude, :additional_passengers]
+              :from_latitude, :from_longitude, :to_latitude, :to_longitude, :additional_passengers, :blacklisted_phone_number]
     j = self.as_json(only: fields, methods: [:message_count])
     if include_messages
       j['messages'] = self.messages.map(&:api_json)
     end
-    %w(from_address from_city to_address to_city special_requests).each do |field|
+    %w(from_address from_city to_address to_city special_requests ).each do |field|
       j[field] = CGI::escape_html(send(field) || '')
     end
     last_msg = self.messages.order('created_at ASC').last
@@ -54,6 +54,7 @@ class Conversation < ApplicationRecord
     j['status_updated_at'] = self.status_updated_at.to_i
     j['name'] = CGI::escape_html(username || '')
     j['ride'] = ride.api_json if ride
+    j['blacklisted_phone_number'] = self.blacklisted_phone.phone if self.blacklisted_phone.present?
     j
   end
 

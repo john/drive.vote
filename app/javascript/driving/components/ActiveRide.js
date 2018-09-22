@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { RidePropTypes } from '../helpers/helpers';
+import { RidePropTypes } from '../utilities/helpers';
 
 import ContactVoter from './ContactVoter';
 
@@ -37,7 +37,7 @@ const renderButtons = props => {
     cancelRide,
     claimRide,
     completeRide,
-    pickupRider,
+    pickupRide,
     ride,
   } = props;
 
@@ -69,7 +69,7 @@ const renderButtons = props => {
           <button
             type="button"
             className="btn btn-success btn-api"
-            onClick={() => pickupRider(ride)}
+            onClick={() => pickupRide(ride)}
           >
             Rider picked up
           </button>
@@ -161,7 +161,7 @@ ActiveRide.propTypes = {
   archiveRide: PropTypes.func.isRequired,
   claimRide: PropTypes.func.isRequired,
   cancelRide: PropTypes.func.isRequired,
-  pickupRider: PropTypes.func.isRequired,
+  pickupRide: PropTypes.func.isRequired,
   completeRide: PropTypes.func.isRequired,
 };
 

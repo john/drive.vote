@@ -14,7 +14,7 @@
   %p{style: "background-color: #ffffe0; font-size: 20px; font-weight: bold;"}
     = flash[:notice]
 
-%table
+%table.col-sm-9
   %th
     %tr
       %td
@@ -43,7 +43,7 @@
           Add admin:
           %select#add-admin
             %option
-            = options_for_select( (@local_users-@zone_admins).map{ |u| [u.name, u.id] } )
+            = options_for_select( (@zone_dispatchers).map{ |u| [u.name, u.id] } )
 
       %td
         - if @zone_dispatchers.present?
@@ -57,7 +57,7 @@
           Add dispatcher:
           %select#add-dispatcher
             %option
-            = options_for_select( (@local_users-@zone_dispatchers).map{ |u| [u.name, u.id] } )
+            = options_for_select( (@zone_drivers + @zone_unassigned_drivers).map{ |u| [u.name, u.id] } )
 
       %td
         - if @zone_drivers.present?
@@ -71,7 +71,8 @@
           Add driver:
           %select#add-driver
             %option
-            = options_for_select( (@local_users-@zone_drivers).map{ |u| [u.name, u.id] } )
+            / = options_for_select( (@local_users-@zone_drivers).map{ |u| [u.name, u.id] } )
+            = options_for_select( (@zone_unassigned_drivers).map{ |u| [u.name, u.id] } )
 
 :javascript
 
