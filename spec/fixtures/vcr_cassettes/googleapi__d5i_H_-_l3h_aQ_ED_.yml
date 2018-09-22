@@ -1,0 +1,479 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAT7H77zXjsUfWFWM8C_R9aa1tGjIqAz28&language=en&latlng=41.6998261,-83.6508025&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 08 Sep 2018 05:10:09 GMT
+      Expires:
+      - Sun, 09 Sep 2018 05:10:09 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '1434'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "5157",
+                       "short_name" : "5157",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Monroe Street",
+                       "short_name" : "Monroe St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Toledo",
+                       "short_name" : "Toledo",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Sylvania Township",
+                       "short_name" : "Sylvania Township",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Lucas County",
+                       "short_name" : "Lucas County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Ohio",
+                       "short_name" : "OH",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "43623",
+                       "short_name" : "43623",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "5157 Monroe St, Toledo, OH 43623, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 41.6995747,
+                       "lng" : -83.65055869999999
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.7009236802915,
+                          "lng" : -83.64920971970848
+                       },
+                       "southwest" : {
+                          "lat" : 41.6982257197085,
+                          "lng" : -83.6519076802915
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJ7bw4S_F-PIgRK-cIgk6AjDo",
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "43623",
+                       "short_name" : "43623",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "Toledo",
+                       "short_name" : "Toledo",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Lucas County",
+                       "short_name" : "Lucas County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Ohio",
+                       "short_name" : "OH",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Toledo, OH 43623, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 41.7280009,
+                          "lng" : -83.6141289
+                       },
+                       "southwest" : {
+                          "lat" : 41.685355,
+                          "lng" : -83.6964979
+                       }
+                    },
+                    "location" : {
+                       "lat" : 41.6998261,
+                       "lng" : -83.6508025
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.7280009,
+                          "lng" : -83.6141289
+                       },
+                       "southwest" : {
+                          "lat" : 41.685355,
+                          "lng" : -83.6964979
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJOzzHpmF-PIgRRKDRq-sGSSM",
+                 "postcode_localities" : [ "Sylvania", "Toledo" ],
+                 "types" : [ "postal_code" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Sylvania Township",
+                       "short_name" : "Sylvania Township",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Lucas County",
+                       "short_name" : "Lucas County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Ohio",
+                       "short_name" : "OH",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Sylvania Township, OH, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 41.727382,
+                          "lng" : -83.6449049
+                       },
+                       "southwest" : {
+                          "lat" : 41.6582459,
+                          "lng" : -83.7814439
+                       }
+                    },
+                    "location" : {
+                       "lat" : 41.68989550000001,
+                       "lng" : -83.74116309999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.727382,
+                          "lng" : -83.6449049
+                       },
+                       "southwest" : {
+                          "lat" : 41.6582459,
+                          "lng" : -83.7814439
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJPRXd8T58PIgRyRUaOVHfFCw",
+                 "types" : [ "administrative_area_level_3", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Lucas County",
+                       "short_name" : "Lucas County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Ohio",
+                       "short_name" : "OH",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Lucas County, OH, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 41.9594101,
+                          "lng" : -82.995572
+                       },
+                       "southwest" : {
+                          "lat" : 41.41413490000001,
+                          "lng" : -83.8832341
+                       }
+                    },
+                    "location" : {
+                       "lat" : 41.6894388,
+                       "lng" : -83.37893889999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.9594101,
+                          "lng" : -82.995572
+                       },
+                       "southwest" : {
+                          "lat" : 41.41413490000001,
+                          "lng" : -83.8832341
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJS5kUC-SAO4gRIxIketBtTLY",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Toledo, OH",
+                       "short_name" : "Toledo, OH",
+                       "types" : [ "political" ]
+                    },
+                    {
+                       "long_name" : "Ohio",
+                       "short_name" : "OH",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Toledo, OH, OH, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 41.732647,
+                          "lng" : -82.69472209999999
+                       },
+                       "southwest" : {
+                          "lat" : 41.165751,
+                          "lng" : -84.3994309
+                       }
+                    },
+                    "location" : {
+                       "lat" : 41.5074258,
+                       "lng" : -83.67739279999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.732647,
+                          "lng" : -82.69472209999999
+                       },
+                       "southwest" : {
+                          "lat" : 41.165751,
+                          "lng" : -84.3994309
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJ3fQPDh10PIgRymSwkJzaeZE",
+                 "types" : [ "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Ohio",
+                       "short_name" : "OH",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Ohio, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 42.327132,
+                          "lng" : -80.51819999999999
+                       },
+                       "southwest" : {
+                          "lat" : 38.4034229,
+                          "lng" : -84.8203049
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4172871,
+                       "lng" : -82.90712300000001
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 42.327132,
+                          "lng" : -80.51819999999999
+                       },
+                       "southwest" : {
+                          "lat" : 38.4034229,
+                          "lng" : -84.8203049
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJwY5NtXrpNogRFtmfnDlkzeU",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "United States",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 71.5388001,
+                          "lng" : -66.885417
+                       },
+                       "southwest" : {
+                          "lat" : 18.7763,
+                          "lng" : 170.5957
+                       }
+                    },
+                    "location" : {
+                       "lat" : 37.09024,
+                       "lng" : -95.712891
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 49.38,
+                          "lng" : -66.94
+                       },
+                       "southwest" : {
+                          "lat" : 25.82,
+                          "lng" : -124.39
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJCzYy5IS16lQRQrfeQ5K5Oxw",
+                 "types" : [ "country", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Monroe & Talmadge NW",
+                       "short_name" : "Monroe & Talmadge NW",
+                       "types" : [
+                          "bus_station",
+                          "establishment",
+                          "point_of_interest",
+                          "transit_station"
+                       ]
+                    },
+                    {
+                       "long_name" : "Franklin Park",
+                       "short_name" : "Franklin Park",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "Toledo",
+                       "short_name" : "Toledo",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Lucas County",
+                       "short_name" : "Lucas County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Ohio",
+                       "short_name" : "OH",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "43623",
+                       "short_name" : "43623",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "Monroe & Talmadge NW, Toledo, OH 43623, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 41.700886,
+                       "lng" : -83.649558
+                    },
+                    "location_type" : "GEOMETRIC_CENTER",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 41.7022349802915,
+                          "lng" : -83.64820901970849
+                       },
+                       "southwest" : {
+                          "lat" : 41.6995370197085,
+                          "lng" : -83.6509069802915
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJE129v_Z-PIgRxZ6jP3cU4nw",
+                 "types" : [
+                    "bus_station",
+                    "establishment",
+                    "point_of_interest",
+                    "transit_station"
+                 ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 08 Sep 2018 05:10:08 GMT
+recorded_with: VCR 3.0.3

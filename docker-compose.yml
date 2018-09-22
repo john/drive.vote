@@ -1,12 +1,5 @@
 version: '2'
 services:
-  db:
-    image: 'postgres:10.5-alpine'
-    ports:
-      - "5432:5432"
-    
-  redis:
-    image: 'redis:4.0.11-alpine'
     
   web:
     build:
@@ -21,10 +14,23 @@ services:
     volumes:
       - .:/dtv
     ports:
-      - "3808:3808"
       - "3000:3000"
-      - "8080:8080"
     depends_on:
       - db
     stdin_open: true
     tty: true
+    
+  db:
+    image: 'postgres:10.5-alpine'
+    ports:
+      - "5432:5432"
+    
+  redis:
+    image: 'redis:4.0.11-alpine'
+    ports:
+      - "6379:6379"
+    
+  mail:
+    image: mailhog/mailhog:latest
+    ports:
+      - 8025:8025

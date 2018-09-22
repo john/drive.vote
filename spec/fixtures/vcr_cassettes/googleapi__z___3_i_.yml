@@ -1,0 +1,114 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?address=So%20%26%20and%20%3Cimg%3E,%20So%20%26%20and%20%3Cimg%3E&key=AIzaSyAT7H77zXjsUfWFWM8C_R9aa1tGjIqAz28&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 08 Sep 2018 05:09:54 GMT
+      Expires:
+      - Sun, 09 Sep 2018 05:09:54 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '620'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "5650",
+                       "short_name" : "5650",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Bollettieri Boulevard",
+                       "short_name" : "Bollettieri Blvd",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Bradenton",
+                       "short_name" : "Bradenton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Manatee County",
+                       "short_name" : "Manatee County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Florida",
+                       "short_name" : "FL",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "34210",
+                       "short_name" : "34210",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "5650 Bollettieri Blvd, Bradenton, FL 34210, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 27.4408534,
+                       "lng" : -82.6086662
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 27.4422023802915,
+                          "lng" : -82.60731721970849
+                       },
+                       "southwest" : {
+                          "lat" : 27.43950441970849,
+                          "lng" : -82.61001518029151
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJUaEB7NYVw4gR2q2TPZg_oJI",
+                 "plus_code" : {
+                    "compound_code" : "C9RR+8G South Bradenton, Florida, United States",
+                    "global_code" : "76VVC9RR+8G"
+                 },
+                 "types" : [ "establishment", "health", "point_of_interest", "school", "stadium" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sat, 08 Sep 2018 05:09:52 GMT
+recorded_with: VCR 3.0.3

@@ -26,7 +26,6 @@ gem 'rolify', '5.1.0'
 gem 'rspec', '3.5.0'
 gem 'rspec-rails', '3.5.2'
 gem 'sass-rails', '5.0.6'
-gem 'sendgrid'
 gem 'sidekiq', '4.2.10'
 gem 'sinatra', '1.0', require: false
 gem 'timezone', '1.2.6'

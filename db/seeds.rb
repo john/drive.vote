@@ -18,6 +18,7 @@ zones = RideZone.create!([
   {
     name: 'Berkeley, CA',
     phone_number: '+15102579445',
+    email: 'berkeley@fnnny.com',
     slug: 'berkeley',
     city: 'Berkeley',
     state: 'CA',
@@ -30,6 +31,7 @@ zones = RideZone.create!([
   {
     name: 'San Francisco, CA',
     phone_number: '+14158519528',
+    email: 'sf@fnnny.com',
     slug: 'san_francisco',
     city: 'San Francisco',
     state: 'CA',
@@ -42,6 +44,7 @@ zones = RideZone.create!([
   {
     name: 'Orlando, FL',
     phone_number: '+14073095953',
+    email: 'orlando@fnnny.com',
     slug: 'orlando',
     city: 'Orlando',
     state: 'FL',
