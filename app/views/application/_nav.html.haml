@@ -15,6 +15,11 @@
 
     #navbar.collapse.navbar-collapse
       .pull-right.nav-links
+      
+        = link_to 'Privacy', privacy_path, class: 'visible-xs-inline'
+        
+        .visible-xs-inline
+          &nbsp; &#183; &nbsp;
 
         - unless user_signed_in?
           = link_to t(:sign_in), new_user_session_path
@@ -26,13 +31,13 @@
           &nbsp; &#183; &nbsp;
 
           - if current_user.is_super_admin? || current_user.is_zone_admin?
-            = link_to 'admin', admin_ride_zones_path, style: 'color: red;'
+            = link_to 'Admin', admin_ride_zones_path, style: 'color: red;'
 
           - elsif current_user.is_dispatcher?
-            = link_to 'dispatch', dispatch_path( RideZone.with_user_in_role(current_user, :dispatcher).first.slug), target: '_blank'
+            = link_to 'Dispatch', dispatch_path( RideZone.with_user_in_role(current_user, :dispatcher).first.slug), target: '_blank'
 
           - elsif current_user.is_driver?
-            = link_to 'driving app', driving_index_path
+            = link_to 'Driving app', driving_index_path
 
 
         .btn.btn-info.btn-xs{style: 'margin: 5px 0 0 20px;'}

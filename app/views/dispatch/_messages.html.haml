@@ -11,6 +11,13 @@
 -# just to make the javascript below a little easier to read
 - close_button = j( link_to 'Cancel Ride', '#', class: 'btn btn-xs btn-warning archive-convo' )
 
+
+- if @conversation.voter_phone_blacklisted?
+  - block_button = j( link_to 'Unblock #', '#', class: 'btn btn-default btn-xs unblock-convo' )
+- else
+  - block_button = j( link_to 'Block #', '#', class: 'btn btn-danger btn-xs block-convo' )
+  
+
 - if @conversation.user.name.include?('via sms')
   - title = @conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')
 - else
@@ -25,7 +32,9 @@
     $(this).text( strftime('%l:%M%P', new Date( $(this).text()*1000)) );
   });
 
-  $('#archive-btn').html("<span style='font-weight: normal;'>#{close_button}</span>")
+  $('#archive-btn').html("<span style='font-weight: normal;'>#{close_button}</span> \
+  <span style='font-weight: normal;'>#{block_button}</span> \
+  ")
 
   $('.archive-convo').click(function(e) {
     if (confirm("Are you sure? This will end the conversation and cancel the ride no matter what state it is in, and you will not be able to reopen or reassign it. This is a complete cancellation of this voter's ride" )) {
@@ -34,6 +43,28 @@
         humane.log ('Conversation archived');
       }).fail(function() {
         humane.log ('Unable to archive conversation');
+      });
+    }
+    e.preventDefault();
+  });
+  
+  $('.unblock-convo').click(function(e) {
+    if (confirm("Are you sure you want to unblock phone number #{@conversation.from_phone}?" )) {
+      $.post( "#{unblacklist_voter_phone_admin_conversation_path(@conversation)}", function(responseData, status, xhr) {
+        humane.log ('number unblocked');
+      }).fail(function() {
+        humane.log ('Unable to unblock number');
+      });
+    }
+    e.preventDefault();
+  });
+  
+  $('.block-convo').click(function(e) {
+    if (confirm("Are you sure you want to permanently block this phone number, #{@conversation.from_phone}?" )) {
+      $.post( "#{blacklist_voter_phone_admin_conversation_path(@conversation)}", function(responseData, status, xhr) {
+        humane.log ('number blocked');
+      }).fail(function() {
+        humane.log ('Unable to block number');
       });
     }
     e.preventDefault();

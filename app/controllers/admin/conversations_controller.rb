@@ -1,5 +1,6 @@
 class Admin::ConversationsController < Admin::AdminApplicationController
 
+  skip_before_action :require_admin_privileges, only: [:blacklist_voter_phone, :unblacklist_voter_phone] 
   before_action :set_conversation, only: [:show, :messages, :ride_pane, :update_attribute, :close, :blacklist_voter_phone, :unblacklist_voter_phone]
 
   # GET /admin/conversations
