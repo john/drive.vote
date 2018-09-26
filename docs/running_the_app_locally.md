@@ -18,7 +18,14 @@ And that too has a link to the ride scheduling form, labelled ‘Schedule a ride
 
 When you set up your local DB it creates a driver in San Francisco, Deborah Driver, but she’s “unassigned,” which is a bit of a misnomer--it means she hasn’t been approved to drive yet. That’s because we want to allow our partners to vet drivers, and approve them once they've been vetted. If you go to the ‘Drivers’ tab of the admin page, and select “View: All”, you should see her at the top of the list. Use the dropdown to promote her to a driver for SF.
 
-Once Deborah has been promoted to legit driver, log into an incognito browser using her credentials (deborah@fnnny.com/1234abcd). We’ll use this window to spoof the driver app, which should be what you're now looking at.
+Once Deborah has been promoted to legit driver, log into an incognito browser using her credentials (deborah@fnnny.com/1234abcd). We’ll use this window to spoof the driver app.
+
+which should be what you're now looking at, at the url
+
+- Open the Chrome dev tools
+- Click the vertical '...' on the right-hand side
+- Select 'More tools', and then 'Sensors'
+- In the lower left of the window you should see a 'Geolocation' option, set to 'No override'. Either select a preset override, or enter a custom lat/long. Note that it must be in decimal notation (not degrees/minutes), and not go longer than six decimal places.
 
 
 
