@@ -28,6 +28,9 @@ class RideContainer extends React.Component {
     );
   }
 
+  /**
+   * Update interval functions if API-based delays have changed
+   */
   UNSAFE_componentWillReceiveProps({
     waiting_rides_interval: nextRidesInterval,
     update_location_interval: nextLocationInterval,
