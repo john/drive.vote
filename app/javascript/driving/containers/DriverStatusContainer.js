@@ -4,9 +4,20 @@ import RideContainer from './RideContainer';
 import Unavailable from '../components/Unavailable';
 import Loading from '../components/Loading';
 
+const FETCH_STATUS_INTERVAL = 60000;
+
 class DriverStatusContainer extends React.Component {
   componentDidMount() {
     this.props.fetchStatus();
+
+    this.statusInterval = setInterval(
+      () => this.props.fetchStatus(),
+      FETCH_STATUS_INTERVAL
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.statusInterval);
   }
 
   render() {
