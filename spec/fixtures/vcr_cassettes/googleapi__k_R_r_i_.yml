@@ -21,9 +21,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Sat, 08 Sep 2018 05:09:24 GMT
+      - Sat, 29 Sep 2018 19:51:35 GMT
       Expires:
-      - Sun, 09 Sep 2018 05:09:24 GMT
+      - Sun, 30 Sep 2018 19:51:35 GMT
       Cache-Control:
       - public, max-age=86400
       Access-Control-Allow-Origin:
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - mafe
       Content-Length:
-      - '1243'
+      - '1635'
       X-Xss-Protection:
       - 1; mode=block
       X-Frame-Options:
@@ -42,7 +42,90 @@ http_interactions:
       encoding: ASCII-8BIT
       string: |
         {
+           "plus_code" : {
+              "compound_code" : "CV5P+G2 Robinson Township, PA, USA",
+              "global_code" : "86GXCV5P+G2"
+           },
            "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "229",
+                       "short_name" : "229",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Ewing Road",
+                       "short_name" : "Ewing Rd",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Carnegie",
+                       "short_name" : "Carnegie",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Collier Township",
+                       "short_name" : "Collier Township",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Allegheny County",
+                       "short_name" : "Allegheny County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "1507",
+                       "short_name" : "1507",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "229 Ewing Rd, Carnegie, PA 15106, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.4094038,
+                          "lng" : -80.1141975
+                       },
+                       "southwest" : {
+                          "lat" : 40.4092146,
+                          "lng" : -80.1144449
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.4092899,
+                       "lng" : -80.11430880000002
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.41065818029151,
+                          "lng" : -80.1129722197085
+                       },
+                       "southwest" : {
+                          "lat" : 40.40796021970851,
+                          "lng" : -80.1156701802915
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJ4XuN-mNYNIgR8081APDEZhU",
+                 "types" : [ "premise" ]
+              },
               {
                  "address_components" : [
                     {
@@ -105,10 +188,29 @@ http_interactions:
                     }
                  },
                  "place_id" : "ChIJQ9Pb82NYNIgR6kXWggzGc28",
+                 "plus_code" : {
+                    "compound_code" : "CV5P+MF Robinson Township, PA, United States",
+                    "global_code" : "86GXCV5P+MF"
+                 },
                  "types" : [ "street_address" ]
               },
               {
                  "address_components" : [
+                    {
+                       "long_name" : "219",
+                       "short_name" : "219",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Ewing Road",
+                       "short_name" : "Ewing Rd",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Carnegie",
+                       "short_name" : "Carnegie",
+                       "types" : [ "locality", "political" ]
+                    },
                     {
                        "long_name" : "Collier Township",
                        "short_name" : "Collier Township",
@@ -128,38 +230,101 @@ http_interactions:
                        "long_name" : "United States",
                        "short_name" : "US",
                        "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "postal_code" ]
                     }
                  ],
-                 "formatted_address" : "Collier Township, PA, USA",
+                 "formatted_address" : "219 Ewing Rd, Carnegie, PA 15106, USA",
                  "geometry" : {
-                    "bounds" : {
-                       "northeast" : {
-                          "lat" : 40.433588,
-                          "lng" : -80.09267699999999
-                       },
-                       "southwest" : {
-                          "lat" : 40.361069,
-                          "lng" : -80.170435
-                       }
-                    },
                     "location" : {
-                       "lat" : 40.3832942,
-                       "lng" : -80.11626029999999
+                       "lat" : 40.409182,
+                       "lng" : -80.11389199999999
                     },
-                    "location_type" : "APPROXIMATE",
+                    "location_type" : "ROOFTOP",
                     "viewport" : {
                        "northeast" : {
-                          "lat" : 40.433588,
-                          "lng" : -80.09267699999999
+                          "lat" : 40.4105309802915,
+                          "lng" : -80.1125430197085
                        },
                        "southwest" : {
-                          "lat" : 40.361069,
-                          "lng" : -80.170435
+                          "lat" : 40.40783301970851,
+                          "lng" : -80.1152409802915
                        }
                     }
                  },
-                 "place_id" : "ChIJF69YS09YNIgRtNd1ZSLNUAo",
-                 "types" : [ "administrative_area_level_3", "political" ]
+                 "place_id" : "ChIJ9ZrY82NYNIgRQNpOOBkq1po",
+                 "plus_code" : {
+                    "compound_code" : "CV5P+MC Robinson Township, PA, United States",
+                    "global_code" : "86GXCV5P+MC"
+                 },
+                 "types" : [ "church", "establishment", "place_of_worship", "point_of_interest" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "221",
+                       "short_name" : "221",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Ewing Road",
+                       "short_name" : "Ewing Rd",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Carnegie",
+                       "short_name" : "Carnegie",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Collier Township",
+                       "short_name" : "Collier Township",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Allegheny County",
+                       "short_name" : "Allegheny County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "221 Ewing Rd, Carnegie, PA 15106, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 40.4092318,
+                       "lng" : -80.1138826
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.4105807802915,
+                          "lng" : -80.11253361970849
+                       },
+                       "southwest" : {
+                          "lat" : 40.4078828197085,
+                          "lng" : -80.11523158029151
+                       }
+                    }
+                 },
+                 "place_id" : "EiUyMjEgRXdpbmcgUmQsIENhcm5lZ2llLCBQQSAxNTEwNiwgVVNBIhsSGQoUChIJyXnheWRYNIgR5TsEU5IkVrcQ3QE",
+                 "types" : [ "street_address" ]
               },
               {
                  "address_components" : [
@@ -224,6 +389,60 @@ http_interactions:
               {
                  "address_components" : [
                     {
+                       "long_name" : "Collier Township",
+                       "short_name" : "Collier Township",
+                       "types" : [ "administrative_area_level_3", "political" ]
+                    },
+                    {
+                       "long_name" : "Allegheny County",
+                       "short_name" : "Allegheny County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "Pennsylvania",
+                       "short_name" : "PA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Collier Township, PA, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 40.433588,
+                          "lng" : -80.09267699999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.361069,
+                          "lng" : -80.170435
+                       }
+                    },
+                    "location" : {
+                       "lat" : 40.3832942,
+                       "lng" : -80.11626029999999
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 40.433588,
+                          "lng" : -80.09267699999999
+                       },
+                       "southwest" : {
+                          "lat" : 40.361069,
+                          "lng" : -80.170435
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJF69YS09YNIgRtNd1ZSLNUAo",
+                 "types" : [ "administrative_area_level_3", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
                        "long_name" : "Allegheny County",
                        "short_name" : "Allegheny County",
                        "types" : [ "administrative_area_level_2", "political" ]
@@ -269,55 +488,6 @@ http_interactions:
                  },
                  "place_id" : "ChIJu-PIH-y5NIgRVFV1McCaCyw",
                  "types" : [ "administrative_area_level_2", "political" ]
-              },
-              {
-                 "address_components" : [
-                    {
-                       "long_name" : "Pittsburgh Metropolitan Area",
-                       "short_name" : "Pittsburgh Metropolitan Area",
-                       "types" : [ "political" ]
-                    },
-                    {
-                       "long_name" : "Pennsylvania",
-                       "short_name" : "PA",
-                       "types" : [ "administrative_area_level_1", "political" ]
-                    },
-                    {
-                       "long_name" : "United States",
-                       "short_name" : "US",
-                       "types" : [ "country", "political" ]
-                    }
-                 ],
-                 "formatted_address" : "Pittsburgh Metropolitan Area, PA, USA",
-                 "geometry" : {
-                    "bounds" : {
-                       "northeast" : {
-                          "lat" : 41.1731849,
-                          "lng" : -78.974649
-                       },
-                       "southwest" : {
-                          "lat" : 39.7207129,
-                          "lng" : -80.5192179
-                       }
-                    },
-                    "location" : {
-                       "lat" : 40.3565093,
-                       "lng" : -79.9192702
-                    },
-                    "location_type" : "APPROXIMATE",
-                    "viewport" : {
-                       "northeast" : {
-                          "lat" : 41.1731849,
-                          "lng" : -78.974649
-                       },
-                       "southwest" : {
-                          "lat" : 39.7207129,
-                          "lng" : -80.5192179
-                       }
-                    }
-                 },
-                 "place_id" : "ChIJiWjZkAfsNIgRSXopSLGQlS4",
-                 "types" : [ "political" ]
               },
               {
                  "address_components" : [
@@ -390,12 +560,12 @@ http_interactions:
                     "location_type" : "APPROXIMATE",
                     "viewport" : {
                        "northeast" : {
-                          "lat" : 49.38,
-                          "lng" : -66.94
+                          "lat" : 71.5388001,
+                          "lng" : -66.885417
                        },
                        "southwest" : {
-                          "lat" : 25.82,
-                          "lng" : -124.39
+                          "lat" : 18.7763,
+                          "lng" : 170.5957
                        }
                     }
                  },
@@ -406,5 +576,5 @@ http_interactions:
            "status" : "OK"
         }
     http_version: 
-  recorded_at: Sat, 08 Sep 2018 05:09:23 GMT
+  recorded_at: Sat, 29 Sep 2018 19:51:33 GMT
 recorded_with: VCR 3.0.3

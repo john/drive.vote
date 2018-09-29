@@ -21,9 +21,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Sat, 08 Sep 2018 05:10:09 GMT
+      - Sat, 29 Sep 2018 19:52:17 GMT
       Expires:
-      - Sun, 09 Sep 2018 05:10:09 GMT
+      - Sun, 30 Sep 2018 19:52:17 GMT
       Cache-Control:
       - public, max-age=86400
       Access-Control-Allow-Origin:
@@ -106,5 +106,5 @@ http_interactions:
            "status" : "OK"
         }
     http_version: 
-  recorded_at: Sat, 08 Sep 2018 05:10:08 GMT
+  recorded_at: Sat, 29 Sep 2018 19:52:15 GMT
 recorded_with: VCR 3.0.3

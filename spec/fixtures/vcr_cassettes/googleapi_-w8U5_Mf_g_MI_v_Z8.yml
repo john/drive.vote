@@ -21,9 +21,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Sat, 08 Sep 2018 05:10:10 GMT
+      - Sat, 29 Sep 2018 19:52:18 GMT
       Expires:
-      - Sun, 09 Sep 2018 05:10:10 GMT
+      - Sun, 30 Sep 2018 19:52:18 GMT
       Cache-Control:
       - public, max-age=86400
       Access-Control-Allow-Origin:
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - mafe
       Content-Length:
-      - '65'
+      - '106'
       X-Xss-Protection:
       - 1; mode=block
       X-Frame-Options:
@@ -42,9 +42,12 @@ http_interactions:
       encoding: ASCII-8BIT
       string: |
         {
+           "plus_code" : {
+              "global_code" : "846W2222+22"
+           },
            "results" : [],
            "status" : "ZERO_RESULTS"
         }
     http_version: 
-  recorded_at: Sat, 08 Sep 2018 05:10:08 GMT
+  recorded_at: Sat, 29 Sep 2018 19:52:16 GMT
 recorded_with: VCR 3.0.3

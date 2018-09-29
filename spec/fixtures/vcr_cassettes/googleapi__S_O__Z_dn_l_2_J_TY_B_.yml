@@ -21,9 +21,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Sat, 08 Sep 2018 05:10:09 GMT
+      - Sat, 29 Sep 2018 19:52:17 GMT
       Expires:
-      - Sun, 09 Sep 2018 05:10:09 GMT
+      - Sun, 30 Sep 2018 19:52:17 GMT
       Cache-Control:
       - public, max-age=86400
       Access-Control-Allow-Origin:
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - mafe
       Content-Length:
-      - '1608'
+      - '1429'
       X-Xss-Protection:
       - 1; mode=block
       X-Frame-Options:
@@ -42,12 +42,84 @@ http_interactions:
       encoding: ASCII-8BIT
       string: |
         {
+           "plus_code" : {
+              "compound_code" : "QHWX+9X Financial District, San Francisco, CA, USA",
+              "global_code" : "849VQHWX+9X"
+           },
            "results" : [
               {
                  "address_components" : [
                     {
-                       "long_name" : "339",
-                       "short_name" : "339",
+                       "long_name" : "100",
+                       "short_name" : "100",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Pine Street",
+                       "short_name" : "Pine St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Financial District",
+                       "short_name" : "Financial District",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "San Francisco",
+                       "short_name" : "SF",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "San Francisco County",
+                       "short_name" : "San Francisco County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "California",
+                       "short_name" : "CA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "94111",
+                       "short_name" : "94111",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "100 Pine St, San Francisco, CA 94111, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 37.79593620000001,
+                       "lng" : -122.4000032
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 37.79728518029151,
+                          "lng" : -122.3986542197085
+                       },
+                       "southwest" : {
+                          "lat" : 37.79458721970851,
+                          "lng" : -122.4013521802915
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJBYu-PF-BhYARUsgi1EFhywQ",
+                 "plus_code" : {
+                    "compound_code" : "QHWX+9X Financial District, San Francisco, CA, United States",
+                    "global_code" : "849VQHWX+9X"
+                 },
+                 "types" : [ "establishment", "point_of_interest" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "359",
+                       "short_name" : "359",
                        "types" : [ "street_number" ]
                     },
                     {
@@ -91,85 +163,26 @@ http_interactions:
                        "types" : [ "postal_code_suffix" ]
                     }
                  ],
-                 "formatted_address" : "339 Washington St, San Francisco, CA 94111, USA",
+                 "formatted_address" : "359 Washington St, San Francisco, CA 94111, USA",
                  "geometry" : {
                     "location" : {
-                       "lat" : 37.7959767,
-                       "lng" : -122.3997404
+                       "lat" : 37.7959444,
+                       "lng" : -122.4000039
                     },
                     "location_type" : "RANGE_INTERPOLATED",
                     "viewport" : {
                        "northeast" : {
-                          "lat" : 37.7973256802915,
-                          "lng" : -122.3983914197085
+                          "lat" : 37.7972933802915,
+                          "lng" : -122.3986549197085
                        },
                        "southwest" : {
-                          "lat" : 37.7946277197085,
-                          "lng" : -122.4010893802915
+                          "lat" : 37.7945954197085,
+                          "lng" : -122.4013528802915
                        }
                     }
                  },
-                 "place_id" : "Ei8zMzkgV2FzaGluZ3RvbiBTdCwgU2FuIEZyYW5jaXNjbywgQ0EgOTQxMTEsIFVTQSIbEhkKFAoSCSeuZRVggIWAEaKjhIlaxZpKENMC",
+                 "place_id" : "Ei8zNTkgV2FzaGluZ3RvbiBTdCwgU2FuIEZyYW5jaXNjbywgQ0EgOTQxMTEsIFVTQSIbEhkKFAoSCSeuZRVggIWAEaKjhIlaxZpKEOcC",
                  "types" : [ "street_address" ]
-              },
-              {
-                 "address_components" : [
-                    {
-                       "long_name" : "Laramar Apartments",
-                       "short_name" : "Laramar Apartments",
-                       "types" : [ "establishment", "point_of_interest" ]
-                    },
-                    {
-                       "long_name" : "Financial District",
-                       "short_name" : "Financial District",
-                       "types" : [ "neighborhood", "political" ]
-                    },
-                    {
-                       "long_name" : "San Francisco",
-                       "short_name" : "SF",
-                       "types" : [ "locality", "political" ]
-                    },
-                    {
-                       "long_name" : "San Francisco County",
-                       "short_name" : "San Francisco County",
-                       "types" : [ "administrative_area_level_2", "political" ]
-                    },
-                    {
-                       "long_name" : "California",
-                       "short_name" : "CA",
-                       "types" : [ "administrative_area_level_1", "political" ]
-                    },
-                    {
-                       "long_name" : "United States",
-                       "short_name" : "US",
-                       "types" : [ "country", "political" ]
-                    },
-                    {
-                       "long_name" : "94111",
-                       "short_name" : "94111",
-                       "types" : [ "postal_code" ]
-                    }
-                 ],
-                 "formatted_address" : "Laramar Apartments, San Francisco, CA 94111, USA",
-                 "geometry" : {
-                    "location" : {
-                       "lat" : 37.79593620000001,
-                       "lng" : -122.4000032
-                    },
-                    "location_type" : "GEOMETRIC_CENTER",
-                    "viewport" : {
-                       "northeast" : {
-                          "lat" : 37.79728518029151,
-                          "lng" : -122.3986542197085
-                       },
-                       "southwest" : {
-                          "lat" : 37.79458721970851,
-                          "lng" : -122.4013521802915
-                       }
-                    }
-                 },
-                 "place_id" : "ChIJq6qq6l-AhYARr4UjQw1dT6s",
-                 "types" : [ "establishment", "point_of_interest" ]
               },
               {
                  "address_components" : [
@@ -229,60 +242,6 @@ http_interactions:
                  },
                  "place_id" : "ChIJzTVIQGCAhYARfKdHVy3QcLk",
                  "types" : [ "neighborhood", "political" ]
-              },
-              {
-                 "address_components" : [
-                    {
-                       "long_name" : "San Francisco",
-                       "short_name" : "SF",
-                       "types" : [ "locality", "political" ]
-                    },
-                    {
-                       "long_name" : "San Francisco County",
-                       "short_name" : "San Francisco County",
-                       "types" : [ "administrative_area_level_2", "political" ]
-                    },
-                    {
-                       "long_name" : "California",
-                       "short_name" : "CA",
-                       "types" : [ "administrative_area_level_1", "political" ]
-                    },
-                    {
-                       "long_name" : "United States",
-                       "short_name" : "US",
-                       "types" : [ "country", "political" ]
-                    }
-                 ],
-                 "formatted_address" : "San Francisco, CA, USA",
-                 "geometry" : {
-                    "bounds" : {
-                       "northeast" : {
-                          "lat" : 37.9298239,
-                          "lng" : -122.28178
-                       },
-                       "southwest" : {
-                          "lat" : 37.6398299,
-                          "lng" : -123.173825
-                       }
-                    },
-                    "location" : {
-                       "lat" : 37.7749295,
-                       "lng" : -122.4194155
-                    },
-                    "location_type" : "APPROXIMATE",
-                    "viewport" : {
-                       "northeast" : {
-                          "lat" : 37.812,
-                          "lng" : -122.3482
-                       },
-                       "southwest" : {
-                          "lat" : 37.70339999999999,
-                          "lng" : -122.527
-                       }
-                    }
-                 },
-                 "place_id" : "ChIJIQBpAG2ahYAR_6128GcTUEo",
-                 "types" : [ "locality", "political" ]
               },
               {
                  "address_components" : [
@@ -400,9 +359,14 @@ http_interactions:
               {
                  "address_components" : [
                     {
-                       "long_name" : "San Francisco-Oakland-Fremont, CA",
-                       "short_name" : "San Francisco-Oakland-Fremont, CA",
-                       "types" : [ "political" ]
+                       "long_name" : "San Francisco",
+                       "short_name" : "SF",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "San Francisco County",
+                       "short_name" : "San Francisco County",
+                       "types" : [ "administrative_area_level_2", "political" ]
                     },
                     {
                        "long_name" : "California",
@@ -415,85 +379,36 @@ http_interactions:
                        "types" : [ "country", "political" ]
                     }
                  ],
-                 "formatted_address" : "San Francisco-Oakland-Fremont, CA, CA, USA",
+                 "formatted_address" : "San Francisco, CA, USA",
                  "geometry" : {
                     "bounds" : {
                        "northeast" : {
-                          "lat" : 38.320945,
-                          "lng" : -121.4692749
+                          "lat" : 37.9298239,
+                          "lng" : -122.28178
                        },
                        "southwest" : {
-                          "lat" : 37.1073458,
-                          "lng" : -123.024066
-                       }
-                    },
-                    "location" : {
-                       "lat" : 37.8043507,
-                       "lng" : -121.8107079
-                    },
-                    "location_type" : "APPROXIMATE",
-                    "viewport" : {
-                       "northeast" : {
-                          "lat" : 38.320945,
-                          "lng" : -121.4692749
-                       },
-                       "southwest" : {
-                          "lat" : 37.1073458,
-                          "lng" : -123.024066
-                       }
-                    }
-                 },
-                 "place_id" : "ChIJGUN8-q6Ij4ARZ1tA_OojshE",
-                 "types" : [ "political" ]
-              },
-              {
-                 "address_components" : [
-                    {
-                       "long_name" : "San Francisco Metropolitan Area",
-                       "short_name" : "San Francisco Metropolitan Area",
-                       "types" : [ "political" ]
-                    },
-                    {
-                       "long_name" : "California",
-                       "short_name" : "CA",
-                       "types" : [ "administrative_area_level_1", "political" ]
-                    },
-                    {
-                       "long_name" : "United States",
-                       "short_name" : "US",
-                       "types" : [ "country", "political" ]
-                    }
-                 ],
-                 "formatted_address" : "San Francisco Metropolitan Area, CA, USA",
-                 "geometry" : {
-                    "bounds" : {
-                       "northeast" : {
-                          "lat" : 38.320945,
-                          "lng" : -121.4692139
-                       },
-                       "southwest" : {
-                          "lat" : 37.0538579,
+                          "lat" : 37.6398299,
                           "lng" : -123.173825
                        }
                     },
                     "location" : {
-                       "lat" : 37.7749274,
-                       "lng" : -122.4194254
+                       "lat" : 37.7749295,
+                       "lng" : -122.4194155
                     },
                     "location_type" : "APPROXIMATE",
                     "viewport" : {
                        "northeast" : {
-                          "lat" : 38.320945,
-                          "lng" : -121.4692139
+                          "lat" : 37.9298239,
+                          "lng" : -122.28178
                        },
                        "southwest" : {
-                          "lat" : 37.0538579,
+                          "lat" : 37.6398299,
                           "lng" : -123.173825
                        }
                     }
                  },
-                 "place_id" : "ChIJE156BviCj4ARKrqKa5lkEu4",
-                 "types" : [ "political" ]
+                 "place_id" : "ChIJIQBpAG2ahYAR_6128GcTUEo",
+                 "types" : [ "locality", "political" ]
               },
               {
                  "address_components" : [
@@ -566,12 +481,12 @@ http_interactions:
                     "location_type" : "APPROXIMATE",
                     "viewport" : {
                        "northeast" : {
-                          "lat" : 49.38,
-                          "lng" : -66.94
+                          "lat" : 71.5388001,
+                          "lng" : -66.885417
                        },
                        "southwest" : {
-                          "lat" : 25.82,
-                          "lng" : -124.39
+                          "lat" : 18.7763,
+                          "lng" : 170.5957
                        }
                     }
                  },
@@ -582,5 +497,5 @@ http_interactions:
            "status" : "OK"
         }
     http_version: 
-  recorded_at: Sat, 08 Sep 2018 05:10:08 GMT
+  recorded_at: Sat, 29 Sep 2018 19:52:16 GMT
 recorded_with: VCR 3.0.3
