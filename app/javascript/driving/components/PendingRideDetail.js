@@ -25,7 +25,7 @@ const PendingRideDetail = ({ claimRide, declineRide, ride }) => {
         <span className="label">Accept Ride:</span>
         <h3>{ride.name}</h3>
         <p>
-          {time}
+          Requested Pickup Time: {time}
           <br />
           {ride.from_address}
           <br />
