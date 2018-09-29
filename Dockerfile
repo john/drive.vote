@@ -1,10 +1,25 @@
-FROM ruby:2.5.1-alpine3.7
+# --- Select the image you'd like to use locally
+# FROM ruby:2.5.1-alpine3.7
+FROM heroku/heroku:18-build
 
-RUN apk update
-RUN apk add \
+# --- For Alpine image
+# RUN apk update
+# RUN apk add \
+#   bash \
+#   build-base \
+#   git \
+#   nodejs \
+#   python3 \
+#   postgresql-dev \
+#   postgresql-client \
+#   tzdata \
+#   yarn \
+#   && rm -rf /var/cache/apk/*
+
+# --- For Heroku image
+RUN apt-get update && apt-get install -y \
   bash \
   build-base \
-  git \
   nodejs \
   python3 \
   postgresql-dev \
@@ -13,7 +28,6 @@ RUN apk add \
   yarn \
   && rm -rf /var/cache/apk/*
 
-# RUN gem install bundler
 
 # First copy the bundle files and install gems to aid caching of this layer
 WORKDIR /tmp

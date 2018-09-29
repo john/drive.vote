@@ -21,9 +21,9 @@ http_interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Sat, 08 Sep 2018 05:10:14 GMT
+      - Sat, 29 Sep 2018 19:52:23 GMT
       Expires:
-      - Sun, 09 Sep 2018 05:10:14 GMT
+      - Sun, 30 Sep 2018 19:52:23 GMT
       Cache-Control:
       - public, max-age=86400
       Access-Control-Allow-Origin:
@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - mafe
       Content-Length:
-      - '551'
+      - '488'
       X-Xss-Protection:
       - 1; mode=block
       X-Frame-Options:
@@ -85,15 +85,11 @@ http_interactions:
                     }
                  },
                  "place_id" : "ChIJ31YsYDAjzocRkspAOekyoEc",
-                 "plus_code" : {
-                    "compound_code" : "79RQ+JX Flippin, White River Township, AR, United States",
-                    "global_code" : "868979RQ+JX"
-                 },
                  "types" : [ "establishment", "point_of_interest" ]
               }
            ],
            "status" : "OK"
         }
     http_version: 
-  recorded_at: Sat, 08 Sep 2018 05:10:13 GMT
+  recorded_at: Sat, 29 Sep 2018 19:52:21 GMT
 recorded_with: VCR 3.0.3
