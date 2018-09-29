@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { RidePropTypes } from '../utilities/helpers';
+import { formatTime, RidePropTypes } from '../utilities/helpers';
 
 import ContactVoter from './ContactVoter';
 
@@ -9,6 +9,7 @@ const PendingRideDetail = ({ claimRide, declineRide, ride }) => {
   const mapLink = `https://maps.apple.com/?daddr=${ride.from_address}, ${
     ride.from_city
   }, ${ride.from_state}`;
+  const time = formatTime(ride.pickup_at);
 
   return (
     <div className="panel panel-full p-y-sm">
@@ -24,6 +25,8 @@ const PendingRideDetail = ({ claimRide, declineRide, ride }) => {
         <span className="label">Accept Ride:</span>
         <h3>{ride.name}</h3>
         <p>
+          {time}
+          <br />
           {ride.from_address}
           <br />
           {ride.from_city},{ride.from_state} {ride.from_zip}

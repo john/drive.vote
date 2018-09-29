@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { RidePropTypes } from '../utilities/helpers';
+import { formatTime, RidePropTypes } from '../utilities/helpers';
 
 import ContactVoter from './ContactVoter';
 
@@ -126,6 +126,7 @@ const ActiveRide = props => {
     ride: { additional_passengers, name, status, special_requests },
   } = props;
   const passengers = 1 + parseInt(additional_passengers, 10);
+  const time = formatTime(ride.pickup_at);
   return (
     <div
       className={`panel panel-full p-y-sm ${
@@ -149,6 +150,7 @@ const ActiveRide = props => {
       <ContactVoter voter_phone_number={ride.voter_phone_number} />
       <div className="secondary-info">
         <p>Total Passengers: {passengers}</p>
+        <p>Requested Pickup Time: {time}</p>
         <p>Special requests: {special_requests}</p>
       </div>
       <div className="bottom-controls secondary">{renderButtons(props)}</div>

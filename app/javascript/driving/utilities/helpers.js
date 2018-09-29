@@ -29,6 +29,7 @@ export const RidePropTypes = PropTypes.shape({
   from_city: PropTypes.string.isRequired,
   from_zip: PropTypes.string.isRequired,
   name: PropTypes.string,
+  pickup_at: PropTypes.number,
   special_requests: PropTypes.string,
   // TODO: Setup enum for ride.status
   status: PropTypes.oneOf([
