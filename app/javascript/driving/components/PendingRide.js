@@ -67,14 +67,17 @@ class PendingRide extends React.Component {
           <div className="col-xs-7">
             <h3>{name}</h3>
             <p>
-              Total Passengers:
+              Total Passengers:&nbsp;
               {passengers}
+            </p>
+            <p>
+              Requested Pickup Time:&nbsp;
+              {time}
             </p>
             {requestLabel}
           </div>
           <div className="col-xs-5 p-l-0">
             <h4>
-              {time}
               <span className="p-l">{`${ride.distance_to_voter} mi`}</span>
             </h4>
             <p>{ride.from_address}</p>
