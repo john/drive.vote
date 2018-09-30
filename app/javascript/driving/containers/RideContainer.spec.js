@@ -66,11 +66,7 @@ describe('RideContainer', () => {
     expect(wrapper.find('ActiveRide').length).toEqual(1);
   });
   it('renders WaitingRidesContainer', () => {
-    const wrapper = shallow(
-      <RideContainer
-        {...makeProps()}
-      />
-    );
+    const wrapper = shallow(<RideContainer {...makeProps()} />);
     expect(wrapper.find('WaitingRidesContainer').length).toEqual(1);
   });
 });
