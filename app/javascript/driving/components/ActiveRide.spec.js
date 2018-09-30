@@ -1,24 +1,10 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import ActiveRide from './ActiveRide';
+import { mockRide } from '../utilities/helpers';
 
 const makeProps = rideProps => ({
-  ride: {
-    additional_passengers: 0,
-    from_address: '123 Jest Street',
-    from_city: 'Testville',
-    from_state: 'CA',
-    from_zip: '11222',
-    name: 'Dan Abramov',
-    special_requests: '',
-    status: 'waiting_acceptance',
-    to_address: '456 Foobarbaz Blvd',
-    to_city: 'Snapshot City',
-    to_state: 'CA',
-    to_zip: '60622',
-    voter_phone_number: '312-867-5309',
-    ...rideProps,
-  },
+  ride: mockRide(rideProps),
   archiveRide: () => {},
   claimRide: () => {},
   cancelRide: () => {},
