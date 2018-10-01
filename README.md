@@ -18,17 +18,17 @@ Here's what the Philadelphia dispatch and driver apps looked like on election mo
 
 ### Check out the repo
 
-1. `git clone git@github.com:john/drive.vote.git; cd drive.vote`
+1. `git clone git@github.com:john/drive.vote.git`
 1. `cd drive.vote`
 
-### Docker
+### Option 1: run with Docker (recommended)
 
 1. [Install docker](https://store.docker.com/search?type=edition&offering=community).
 1. Run `docker-compose up`. This will start three containers: one for postgres, one for redis and one that runs rails + the webpack dev server.
-1. If necessary, run `docker-compose exec web bundle exec rails db:create db:schema:load db:seed` to setup the database. You'll need to do this on first run.
+1. On the first run, or after a schema or seed-data change, run `docker-compose exec web bundle exec rails db:create db:schema:load db:seed` to setup the database.
 1. To shut down the DtV containers: `docker-compose stop`
 
-Your current directory will be mounted into the docker instances so changes to the files should go live immediately without restarting the envrionment. If you need to restart the rails server, just run `docker-compose up` again.
+Your current directory will be mounted into the docker instances so changes to the files should go live immediately without restarting the environment. If you need to restart the rails server, just run `docker-compose up` again.
 
 To get a bash shell on the current docker instance, run:
 
@@ -42,7 +42,7 @@ To get a Rails console on the current docker instance, run:
   docker-compose exec web bundle exec rails console
   ```
 
-### Directly.
+### Option 2: run directly
 
 1. Create a .env file in the app root and add these variables, with the correct values for your local env:
 
@@ -85,17 +85,19 @@ To use sms features, you need to create a .env file in the root app directory an
 
 You then need to [create a Twilio number](https://github.com/john/drive.vote/wiki/Buying-and-Configuring-Twilio-Numbers) with sms capabilities, and update a the ride zone you want to work with to use it.
 
-For features that send emails, run (MailHog)[https://github.com/mailhog/MailHog] or (MailCatcher)[https://mailcatcher.me/] locallly. The development environment is configured to send email to the correct port. On macOS you can use brew to install and run Mailhog:
+For features that send emails, run [MailHog](https://github.com/mailhog/MailHog) or [MailCatcher](https://mailcatcher.me/) locally. The development environment is configured to send email to the correct port. On macOS you can use brew to install and run Mailhog:
 
   ```
   brew update && brew install mailhog
   brew services start mailhog
   ```
 
-Once started you can view the Mailhog client at (http://localhost:8025/)[http://localhost:8025/]
+Once started you can view the Mailhog client at [http://localhost:8025/](http://localhost:8025/)
 
 
-It's recommended to create an entry in /etc/hosts for local.drive.vote, associated with 127.0.0.1. If you do, go to http://local.drive.vote:3000 to log in (or http://localhost:3000 if you don't). To log in as the generic admin use `seeds@drive.vote` as you login email, with password `1234abcd`. Since this account has admin privileges, logging in with it takes you directly to the admin site. If it has only driver privileges, it would take you to the driver app, and if only dispatcher privileges, to the dispatch page for the ride zone attached to your account. If for some reason your account has no privileges at all, you'll end up at the homepage, but that shouldn't happen.
+(Note: it was previously recommended to alias `local.drive.vote` in your local `/etc/hosts`, but browser security has tightened, and Chrome, for one, disallows geolocation services on non-secure hosts. There is an [exception for `localhost`](https://sites.google.com/a/chromium.org/dev/Home/chromium-security/deprecating-powerful-features-on-insecure-origins), however.)
+
+Go to http://localhost:3000 and log in as the generic admin with email `seeds@drive.vote` and password `1234abcd`. Since this account has admin privileges, logging in with it takes you directly to the admin site. If it has only driver privileges, it would take you to the driver app, and if only dispatcher privileges, to the dispatch page for the ride zone attached to your account. If for some reason your account has no privileges at all, you'll end up at the homepage, but that shouldn't happen.
 
 Useful URLs:
 
