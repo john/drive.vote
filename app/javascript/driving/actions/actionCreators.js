@@ -52,7 +52,7 @@ export function submitUnavailable() {
 export function submitAvailable() {
   return fetchAndCatch({
     type: 'SUBMIT_AVAILABLE',
-    url: 'unavailable',
+    url: 'available',
   });
 }
 
