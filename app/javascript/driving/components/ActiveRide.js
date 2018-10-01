@@ -78,10 +78,10 @@ const renderButtons = props => {
             className="btn btn-danger btn-api"
             onClick={() => cancelRide(ride)}
           >
-            Cancel Ride
+            Cancel Pickup
           </button>
           <p className="text-center">
-            Cancelling a ride will make it available to other drivers
+            Makes available to other drivers
           </p>
           <button
             className="btn btn-outline btn-api m-t-md"
@@ -90,7 +90,7 @@ const renderButtons = props => {
             Archive Ride
           </button>
           <p className="text-center">
-            Archive a ride when a rider has already voted.
+            Removes entirely (noshow, already voted)
           </p>
         </React.Fragment>
       );
@@ -110,7 +110,7 @@ const renderButtons = props => {
             className="btn btn-danger btn-api"
             onClick={() => cancelRide(ride)}
           >
-            Cancel Ride
+            Cancel Pickup
           </button>
         </React.Fragment>
       );
