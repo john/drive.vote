@@ -343,7 +343,7 @@ DispatchController.prototype = {
         inserted = false;
     tableRows.each(function() {
       var rowTime = self.rowTimestamp($(this));
-      if (timestamp < rowTime) {
+      if (timestamp < rowTime || (tableId === "inactiveConversations" && timestamp > rowTime)) {
         row.insertBefore($(this));
         inserted = true;
         return false;
