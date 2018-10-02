@@ -91,11 +91,11 @@ class Ride < ApplicationRecord
   end
   
   def email
-    self.voter.email
+    self.voter&.email
   end
   
   def phone_number
-    self.voter.phone_number
+    self.voter&.phone_number
   end
 
   # return true if ride can be assigned
