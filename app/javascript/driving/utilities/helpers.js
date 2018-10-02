@@ -43,3 +43,21 @@ export const RidePropTypes = PropTypes.shape({
   to_zip: PropTypes.string.isRequired,
   voter_phone_number: PropTypes.string.isRequired,
 }).isRequired;
+
+export const mockRide = rideFields => ({
+  additional_passengers: 0,
+  from_address: '123 Jest Street',
+  from_city: 'Testville',
+  from_state: 'CA',
+  from_zip: '11222',
+  name: 'Dan Abramov',
+  pickup_at: Date.now(),
+  special_requests: '',
+  status: 'waiting_acceptance',
+  to_address: '456 Foobarbaz Blvd',
+  to_city: 'Snapshot City',
+  to_state: 'CA',
+  to_zip: '60622',
+  voter_phone_number: '312-867-5309',
+  ...rideFields,
+});
