@@ -67,6 +67,10 @@ exports[`ActiveRide handles ride states driver_assigned 1`] = `
       1
     </p>
     <p>
+      Requested Pickup Time: 
+      Now
+    </p>
+    <p>
       Special requests: 
       
     </p>
@@ -175,6 +179,10 @@ exports[`ActiveRide handles ride states picked_up 1`] = `
       1
     </p>
     <p>
+      Requested Pickup Time: 
+      Now
+    </p>
+    <p>
       Special requests: 
       
     </p>
@@ -272,6 +280,10 @@ exports[`ActiveRide handles ride states waiting_acceptance 1`] = `
       1
     </p>
     <p>
+      Requested Pickup Time: 
+      Now
+    </p>
+    <p>
       Special requests: 
       
     </p>
@@ -362,6 +374,10 @@ exports[`ActiveRide handles ride states waiting_assignment 1`] = `
     <p>
       Total Passengers: 
       1
+    </p>
+    <p>
+      Requested Pickup Time: 
+      Now
     </p>
     <p>
       Special requests: 
