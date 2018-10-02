@@ -29,7 +29,7 @@ class Admin::RideZonesController < Admin::AdminApplicationController
       
       format.csv do
         @rides = Ride.where(ride_zone_id: @ride_zone.id, status: 1)
-        send_data @rides.to_csv, filename: "rides-#{Date.today}.csv"
+        send_data @rides.to_csv, filename: "#{@ride_zone.slug}-rides-#{Date.today}.csv"
       end
     end
   end
