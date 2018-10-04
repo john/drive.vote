@@ -9,8 +9,10 @@
         = message.body
 
 -# just to make the javascript below a little easier to read
-- close_button = j( link_to 'Cancel Ride', '#', class: 'btn btn-xs btn-warning archive-convo' )
-
+- if @conversation.ride.status == 'canceled'
+  - close_button = ''
+- else
+  - close_button = j( link_to "Archive Ride", '#', class: 'btn btn-xs btn-warning archive-convo' )
 
 - if @conversation.voter_phone_blacklisted?
   - block_button = j( link_to 'Unblock #', '#', class: 'btn btn-default btn-xs unblock-convo' )

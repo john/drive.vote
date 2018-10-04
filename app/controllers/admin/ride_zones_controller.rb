@@ -21,8 +21,17 @@ class Admin::RideZonesController < Admin::AdminApplicationController
   end
 
   def show
-    @dispatchers = @ride_zone.dispatchers
-    @drivers = @ride_zone.drivers
+    respond_to do |format|
+      format.html do
+        @dispatchers = @ride_zone.dispatchers
+        @drivers = @ride_zone.drivers
+      end
+      
+      format.csv do
+        @rides = Ride.where(ride_zone_id: @ride_zone.id, status: 1)
+        send_data @rides.to_csv, filename: "#{@ride_zone.slug}-rides-#{Date.today}.csv"
+      end
+    end
   end
 
   def new

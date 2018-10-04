@@ -47,6 +47,9 @@
           &nbsp &#183; &nbsp;
 
           = link_to 'Edit', edit_admin_ride_zone_path(ride_zone)
+          &nbsp &#183; &nbsp;
+
+          = link_to 'Export rides', admin_ride_zone_path(ride_zone.slug, format: :csv)
 
           - if current_user.is_super_admin?
             = link_to admin_ride_zone_path(ride_zone), :method => :delete, :data => { :confirm => 'Are you sure? You can never go back.' } do

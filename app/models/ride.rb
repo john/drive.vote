@@ -77,6 +77,26 @@ class Ride < ApplicationRecord
       Ride.create!(attrs)
     end
   end
+  
+  def self.to_csv
+    attributes = %w{name email phone_number pickup_at from_address from_city from_state from_zip to_address to_city to_state to_zip additional_passengers special_requests}
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |ride|
+        csv << attributes.map{ |attr| ride.send(attr) }
+      end
+    end
+  end
+  
+  def email
+    self.voter&.email
+  end
+  
+  def phone_number
+    self.voter&.phone_number
+  end
 
   # return true if ride can be assigned
   def assignable?
