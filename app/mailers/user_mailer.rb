@@ -14,6 +14,13 @@ class UserMailer < ApplicationMailer
 
   # http://templates.mailchimp.com/resources/inline-css/
   
+  def notify_driver_approved(user, ride_zone)
+    @user = user
+    @ride_zone = ride_zone
+
+    mail(to: @user.email_with_name, subject: 'You\'re approved to drive')
+  end
+
   def notify_scheduled_ride(ride)
     @ride = ride
     @user = ride.voter
