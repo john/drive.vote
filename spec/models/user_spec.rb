@@ -291,6 +291,7 @@ RSpec.describe User, :type => :model do
       expect(UserMailer).to receive(:notify_driver_approved) { dummy_mailer }
       u.add_role(:driver, rz)
     end
+
   end
 
   describe 'event generation' do
