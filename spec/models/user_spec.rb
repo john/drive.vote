@@ -271,7 +271,7 @@ RSpec.describe User, :type => :model do
     expect(u.reload.location_updated_at).to_not be_nil
   end
 
-  describe 'enqueues email on creation' do
+  describe 'enqueues email' do
     let(:dummy_mailer) { OpenStruct.new(deliver_later: nil) }
 
     it 'sends driver email for web registration' do
@@ -283,6 +283,15 @@ RSpec.describe User, :type => :model do
       expect(UserMailer).to_not receive(:welcome_email_voter)
       create :sms_voter_user
     end
+
+    it 'sends driver email when approved' do
+      rz = create :ride_zone
+      u = create :unassigned_driver_user, rz: rz
+
+      expect(UserMailer).to receive(:notify_driver_approved) { dummy_mailer }
+      u.add_role(:driver, rz)
+    end
+
   end
 
   describe 'event generation' do
