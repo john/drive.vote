@@ -14,7 +14,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  rolify strict: true, after_add: :if_driver_remove_unassigned, after_remove: :make_unassigned
+  rolify strict: true, after_add: :when_driver_assigned, after_remove: :make_unassigned
 
   geocoded_by :full_address do |user, results|
     if geo = results.first
@@ -281,9 +281,14 @@ class User < ApplicationRecord
     self.email = User.autogenerate_email if self.email.blank?
   end
 
-  def if_driver_remove_unassigned(added_role)
+  def when_driver_assigned(added_role)
     if self.is_driver? && added_role.name != 'unassigned_driver'
       self.remove_role(:unassigned_driver)
+    end
+
+    if added_role.name == 'driver' && added_role.resource_id.present?
+      rz = RideZone.find(added_role.resource_id)
+      UserMailer.notify_driver_approved(self, rz).deliver_later
     end
   end
 
