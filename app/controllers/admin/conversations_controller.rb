@@ -1,5 +1,6 @@
 class Admin::ConversationsController < Admin::AdminApplicationController
-
+  include AccessMethods
+  
   skip_before_action :require_admin_privileges, only: [:blacklist_voter_phone, :unblacklist_voter_phone, :close] 
   before_action :set_conversation, only: [:show, :messages, :ride_pane, :update_attribute, :close, :blacklist_voter_phone, :unblacklist_voter_phone]
 
@@ -19,10 +20,18 @@ class Admin::ConversationsController < Admin::AdminApplicationController
   ## permitting use of close and blacklisting
   
   # POST /admin/conversations/1/close
+  
+  # user_signed_in?
   def close
-    @conversation.close(current_user.name)
-    flash[:notice] = "Conversation closed."
-    redirect_back(fallback_location: root_path) and return
+    @ride_zone = @conversation.ride_zone
+    
+    if user_signed_in? && has_zone_dispatch?
+      @conversation.close(current_user.name)
+      flash[:notice] = "Conversation closed."
+      redirect_back(fallback_location: root_path) and return
+    else
+      render file: "#{Rails.root}/public/404", status: :not_found
+    end
   end
 
   # POST /admin/converations/1/blacklist_voter_phone

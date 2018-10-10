@@ -38,9 +38,9 @@ RSpec.describe Admin::ConversationsController, type: :controller do
   end
 
   describe 'POST #close' do
-    it "redirects if not logged in" do
+    it "404s if not logged in" do
       post :close, params: {id: convo.to_param}
-      expect(response).to redirect_to('/404.html')
+      expect(response.status).to eq(404)
     end
 
     context "as admin" do
