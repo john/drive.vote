@@ -5,13 +5,15 @@
     = @ride_zone.phone_number.phony_formatted(normalize: :US, spaces: '-')
     &nbsp; · &nbsp;
 
-    = link_to(@ride_zone.bot_disabled ? 'Enable Bot' : 'Disable Bot', '', onclick: 'dispatchController.toggleBotDisabled(); return false;', class: 'disp-bot-disable')
-    &nbsp; · &nbsp;
 
     = (action_name == 'show') ? "<b>Dashboard</b>".html_safe : link_to('Dashboard', dispatch_path(@ride_zone.slug))
     &nbsp; · &nbsp;
 
     = (action_name == 'drivers') ? "<b>Drivers</b> (#{@active_driver_count}/#{@driver_count})".html_safe : link_to("Drivers (#{@active_driver_count}/#{@driver_count})", drivers_dispatch_path(@ride_zone.slug))
+    &nbsp; · &nbsp;
+    
+    = (action_name == 'rides') ? "<b>Rides</b>".html_safe : link_to("Rides", rides_dispatch_path(@ride_zone.slug))
+    
     &nbsp; · &nbsp;
 
     = (action_name == 'map') ? "<b>Large Map</b>".html_safe : link_to('Large map', map_dispatch_path(@ride_zone.slug))
@@ -32,9 +34,9 @@
     content += "<div class='disp-extras'>";
     content += "#{j( link_to 'Driver app', driving_index_path, target: '_blank')}";
     content += "</div>";
-
+    
     content += "<div class='disp-extras'>";
-    content += "#{j( link_to 'Contact flyer (pdf)', flyer_dispatch_path(@ride_zone.slug, format: 'pdf'), target: '_blank') }";
+    content += "#{j( link_to @ride_zone.bot_disabled ? 'Enable Bot' : 'Disable Bot', '', onclick: 'dispatchController.toggleBotDisabled(); return false;', class: 'disp-bot-disable') }";
     content += "</div>";
 
     $('.dispatch-xtras').popover({
