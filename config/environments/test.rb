@@ -47,4 +47,13 @@ Rails.application.configure do
   # rspec is run by hand often w/o a server wrapped around it. Force this to false to always build the
   # JS bundle for tests. We can get more fancy if this becomes a productivity bottleneck.
   # config.webpack.dev_server.enabled = false
+
+  # Set this in the calling environment to run tests with verbose debug logging. Via docker,
+  # this might be something like:
+  #
+  # $ docker-compose exec web bundle exec rake spec DTV_TEST_LOGGER_VERBOSE=1
+  if ENV["DTV_TEST_LOGGER_VERBOSE"] == "1"
+    config.logger = Logger.new(STDOUT)
+    config.logger.level = Logger::DEBUG
+  end
 end

@@ -6,7 +6,9 @@ require 'rspec/rails'
 require 'devise'
 require 'support/controller_macros.rb'
 require 'vcr'
-
+require 'uri'
+require 'openssl'
+require 'json'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -36,16 +38,88 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
+# Constants related to Gmaps API calls, and useful below in comparing URIs for
+# VCR record/playback.
+QUERY_PARAM_NAME_GMAPS_API_KEY = "key"
+QUERY_PARAM_NAME_GMAPS_API_KEY_REPLACEMENT_VALUE = "REDACTED"
+
+# Tag constant or Gmaps-related VCR callbacks.
+VCR_TAG_GMAPS = :gmaps
+
 VCR.configure do |config|
   config.cassette_library_dir = "spec/fixtures/vcr_cassettes"
   config.hook_into :webmock # or :fakeweb
 
-  config.around_http_request(lambda { |req| req.uri =~ /maps.googleapis.com/ }) do |request|
-    VCR.use_cassette("googleapi_#{OpenSSL::Digest::SHA256.new.digest request.uri}", &request)
+  # Returns a String object which represents a stable hash of the given URI
+  # ignoring the optional excluded_keys (Array<String>).
+  hash_for_uri = proc do |request_uri, exclude_keys|
+    exclude_keys ||= []
+    request_uri = URI.parse(request_uri.to_s) # clone since we may mutate
+    q = URI.decode_www_form(request_uri.query).
+      reject { |pair| exclude_keys.include?(pair[0]) }.
+      sort { |pairA, pairB| pairA[0].<=>(pairB[0]) }
+    request_uri.query = URI.encode_www_form(q)
+    OpenSSL::Digest::MD5.digest(request_uri.to_s).unpack("H*")
   end
 
-  config.around_http_request(lambda { |req| req.uri =~ /nominatim.openstreetmap.org/ }) do |request|
-    VCR.use_cassette("openstreetsmap#{OpenSSL::Digest::SHA256.new.digest request.uri}", &request)
+  # Returns a String which represents the given URI with all values matching a
+  # key in replacements (Hash<String, String>) replaced as specified.
+  uri_with_replaced_keys = proc do |request_uri, replacements|
+    replacements ||= {}
+    request_uri = URI.parse(request_uri.to_s) # clone since we may mutate
+    q = URI.decode_www_form(request_uri.query).inject([]) do |a, pair|
+      param, value = pair[0], pair[1]
+      if replacements.key?(param)
+        value = replacements[param]
+      end
+      a << [param, value]
+    end
+    request_uri.query = URI.encode_www_form(q)
+    request_uri.to_s
+  end
+
+  # The following config invocations determine how we handle Gmaps API calls
+  # during tests. By default, we use a single cassette to serve all requests.
+  # Any that are not available will be recorded, using live requests to the
+  # Gmaps APIs authenticated using the key in the environment variable
+  # GOOGLE_API_KEY.
+  #
+  # By default this key is not specified during test runs, which means tests
+  # which introduce previously unseen API calls will fail (for lack of a
+  # configured API key). To rebuild the playback cache, remove the cached
+  # cassette and regenerate it by running the test suite with a valid Gmaps API
+  # key (as of this writing, 10/13/2018, the key only needs to invoke the
+  # Geocoding API). From docker, this might be with an invocation like:
+  #
+  # $ rm spec/fixtures/vcr_cassettes/gmaps.yml
+  #
+  # $ docker-compose exec web bundle exec rake spec GOOGLE_API_KEY=YOUR_ACTUAL_KEY
+  config.before_record(VCR_TAG_GMAPS) do |interaction|
+    is_likely_gmaps_api_key_error = proc do
+      JSON.parse(interaction.response.body)["status"] == "REQUEST_DENIED"
+    end
+    if interaction.response.status.code != 200 || is_likely_gmaps_api_key_error.()
+      # Don't bother recording requests that aren't re-usable
+      interaction.ignore!
+    end
+    interaction.request.uri = uri_with_replaced_keys.(interaction.request.uri, {
+      QUERY_PARAM_NAME_GMAPS_API_KEY => QUERY_PARAM_NAME_GMAPS_API_KEY_REPLACEMENT_VALUE,
+    })
+  end
+
+  config.around_http_request(lambda { |req| req.uri =~ /maps\.googleapis\.com/ }) do |request|
+    opts = {
+      tags: [VCR_TAG_GMAPS],
+      record: :new_episodes,
+      match_requests_on: [
+        :method,
+        proc do |req1, req2|
+          hash_for_uri.(req1.uri, [QUERY_PARAM_NAME_GMAPS_API_KEY]) ==
+            hash_for_uri.(req2.uri, [QUERY_PARAM_NAME_GMAPS_API_KEY])
+        end,
+      ],
+    }
+    VCR.use_cassette("gmaps", opts, &request)
   end
 end
 
