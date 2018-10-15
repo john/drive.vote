@@ -57,5 +57,52 @@ RSpec.describe Admin::ConversationsController, type: :controller do
       end
     end
   end
+  
+  describe 'POST #blacklist_voter_phone' do
+    it "404s if not logged in" do
+      post :blacklist_voter_phone, params: {id: convo.to_param}
+      expect(response.status).to eq(404)
+    end
+
+    context "as admin" do
+      login_admin
+
+      it 'assigns the requested conversation as @conversation' do
+        post :blacklist_voter_phone, params: {id: convo.to_param}
+        expect(assigns(:conversation)).to eq(convo)
+      end
+
+      it 'associates a blacklisted_phone' do
+        post :blacklist_voter_phone, params: {id: convo.to_param}
+        expect(assigns(:conversation).blacklisted_phone.phone).to eq(convo.from_phone)
+      end
+    end
+  end
+  
+  describe 'POST #unblacklist_voter_phone' do
+    it "404s if not logged in" do
+      post :unblacklist_voter_phone, params: {id: convo.to_param}
+      expect(response.status).to eq(404)
+    end
+
+    context "as admin" do
+      login_admin
+
+      it 'assigns the requested conversation as @conversation' do
+        post :unblacklist_voter_phone, params: {id: convo.to_param}
+        expect(assigns(:conversation)).to eq(convo)
+      end
+      
+      it 'removes a blacklisted_phone' do
+        post :blacklist_voter_phone, params: {id: convo.to_param}
+        expect(assigns(:conversation).blacklisted_phone.phone).to eq(convo.from_phone)
+        
+        reloaded_convo = assigns(:conversation)
+        reloaded_convo.reload
+        post :unblacklist_voter_phone, params: {id: convo.to_param}
+        expect(reloaded_convo.blacklisted_phone).to be_nil
+      end
+    end
+  end
 
 end

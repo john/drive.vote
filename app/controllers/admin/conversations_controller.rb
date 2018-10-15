@@ -36,20 +36,25 @@ class Admin::ConversationsController < Admin::AdminApplicationController
 
   # POST /admin/converations/1/blacklist_voter_phone
   def blacklist_voter_phone
-    @conversation.blacklist_voter_phone
-    flash[:notice] = "Voter Phone Blacklisted."
-    redirect_back(fallback_location: root_path) and return
+    if user_signed_in? && has_zone_dispatch?
+      @conversation.blacklist_voter_phone
+      flash[:notice] = "Voter Phone Blacklisted."
+      redirect_back(fallback_location: root_path) and return
+    else
+      render file: "#{Rails.root}/public/404", status: :not_found
+    end
   end
 
   # POST /admin/converations/1/unblacklist_voter_phone
   def unblacklist_voter_phone
-    @conversation.unblacklist_voter_phone
-    flash[:notice] = "Voter Phone No Longer Blacklisted."
-    redirect_back(fallback_location: root_path) and return
+    if user_signed_in? && has_zone_dispatch?
+      @conversation.unblacklist_voter_phone
+      flash[:notice] = "Voter Phone No Longer Blacklisted."
+      redirect_back(fallback_location: root_path) and return
+    else
+      render file: "#{Rails.root}/public/404", status: :not_found
+    end
   end
-
-
-
 
   private
   def set_conversation
