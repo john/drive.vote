@@ -22,6 +22,7 @@ class Ride < ApplicationRecord
   has_one :conversation
 
   scope :completed, -> { where(status: Ride.complete_statuses)}
+  scope :upcoming, -> { where(status: Ride.upcoming_statuses) }
 
   validates :voter, presence: true
   validates :name, length: { maximum: 50 }
@@ -217,6 +218,10 @@ class Ride < ApplicationRecord
 
   def self.complete_status_values
     self.complete_statuses.map {|s| Ride.statuses[s]}
+  end
+  
+  def self.upcoming_statuses
+    [:waiting_assignment, :scheduled]
   end
 
   def self.confirm_scheduled_rides
