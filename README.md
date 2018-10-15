@@ -70,6 +70,8 @@ If you don't want to use foreman, you have to run the rails server (Puma) and th
 
 `bundle exec rake spec` executes all tests in the spec directory. Run locally before committing, the app won't deploy if specs don't pass.
 
+If adding or modifying tests that will make new calls to the Google Maps APIs, you'll need to run with a valid `GOOGLE_API_KEY`, both to get your tests to pass, and also to refill the cached test data for use in later runs (including CI). See the discussion in `spec/rails_helpers.rb` for instructions on how to run with a live API Key.
+
 ## Continuous deployment
 
 When code is merged into master, CircleCI triggers an automatic deployment to https://dev.drive.vote. To deploy to production at https://drive.vote, merge master into the production branch.

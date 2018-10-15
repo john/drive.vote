@@ -78,22 +78,31 @@ VCR.configure do |config|
     request_uri.to_s
   end
 
-  # The following config invocations determine how we handle Gmaps API calls
-  # during tests. By default, we use a single cassette to serve all requests.
-  # Any that are not available will be recorded, using live requests to the
-  # Gmaps APIs authenticated using the key in the environment variable
-  # GOOGLE_API_KEY.
+  # The following configuration determines how we handle Gmaps API calls during
+  # tests. By default, we use a single cassette to serve all requests.  Any that
+  # are not available will be recorded, using live requests to the Gmaps APIs
+  # authenticated using the key in the environment variable GOOGLE_API_KEY.
   #
   # By default this key is not specified during test runs, which means tests
-  # which introduce previously unseen API calls will fail (for lack of a
-  # configured API key). To rebuild the playback cache, remove the cached
-  # cassette and regenerate it by running the test suite with a valid Gmaps API
-  # key (as of this writing, 10/13/2018, the key only needs to invoke the
-  # Geocoding API). From docker, this might be with an invocation like:
+  # which introduce previously unseen API calls will fail for lack of a
+  # configured API key. To add these tests' data to the playback cache, re-run
+  # the test suite with a valid Gmaps API key (as of this writing, 10/13/2018,
+  # the key only needs to invoke the Geocoding API). From docker, this might be
+  # with an invocation like:
+  #
+  # $ docker-compose exec web bundle exec rake spec GOOGLE_API_KEY=YOUR_ACTUAL_KEY
+  #
+  # By default, the cassette will not include errors related to invalid or
+  # missing API keys, and so will remain unable to pass new tests until a
+  # successful run with a valid API records the new data. In the event that the
+  # cassette becomes corrupted, for instance with unexpected error response, or
+  # if it needs to be rebuilt for other reasons, just remove it:
   #
   # $ rm spec/fixtures/vcr_cassettes/gmaps.yml
   #
-  # $ docker-compose exec web bundle exec rake spec GOOGLE_API_KEY=YOUR_ACTUAL_KEY
+  # and then re-run the tests with a valid API key to regenerate from scratch
+  # (and in those cases, it is probably a good idea to call out having done so
+  # in the attending code review).
   config.before_record(VCR_TAG_GMAPS) do |interaction|
     is_likely_gmaps_api_key_error = proc do
       JSON.parse(interaction.response.body)["status"] == "REQUEST_DENIED"
