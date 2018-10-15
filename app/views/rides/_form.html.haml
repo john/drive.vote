@@ -56,7 +56,7 @@
 
   .col-sm-8.field
     = f.label :pickup_at, "#{h t(:what_time_pickup)} <sup>*</sup>".html_safe
-    = datetime_select("ride", "pickup_at", start_year: 2018, end_year: 2018)
+    = datetime_select("ride", "pickup_at", selected: Date.new(2018,11,06), start_year: 2018, end_year: 2018)
 
   .col-sm-8.field
     = f.label :phone_number, "#{h t(:mobile_phone_number)} <sup>*</sup>".html_safe

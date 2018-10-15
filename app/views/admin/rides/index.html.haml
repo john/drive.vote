@@ -22,46 +22,7 @@
     - if @q.present?
       = link_to 'clear', admin_rides_path, style: "font-size: 13px; color: #777; margin-left: 10px;"
 
-%table.table-hover.admin
-  %thead
-    %tr
-      %th
-      %th Voter/from
-      %th Zone
-      %th Driver
-      %th Pickup Time
-      %th Xtra Pass.
-      %th Status
-      %th
-
-  %tbody
-    - @rides.each do |ride|
-      %tr
-        %td
-          = ride.id
-        %td
-          - if ride.voter.nil?
-            none
-          - else
-            = link_to "#{ride.voter.name}", admin_user_path(ride.voter)
-            %div{style: 'font-size: 12px; margin-top: 0px; color: #999'}
-              #{[ride.from_address, ride.from_state].join(', ')}
-        %td
-          = ride.ride_zone.nil? ? 'none' : ride.ride_zone.name
-        %td
-          = ride.driver.nil? ? 'none' : ride.driver.name
-        %td
-          = ride.pickup_at.nil? ? 'none' : ride.pickup_in_time_zone.strftime('%m/%d %l:%M %P %Z')
-        %td
-          = ride.additional_passengers
-        %td{style: "font-size: 12px;"}
-          = ride.status_str
-        %td{style: "font-size: 12px;"}
-          = link_to 'Show', [:admin, ride]
-          &nbsp; &#183; &nbsp;
-          = link_to 'Edit', edit_admin_ride_path(ride)
-          &nbsp; &#183; &nbsp;
-          = link_to 'Destroy', [:admin, ride], :method => :delete, :data => { :confirm => 'Are you sure?' }
+= render partial: 'rides/table', locals: {rides: @rides, admin: true}
 
 - if @rides.present?
   %nav{'aria-label': 'pagination'}

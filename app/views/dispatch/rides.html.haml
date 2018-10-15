@@ -1,0 +1,13 @@
+:css
+  h2 { font-size: 20px; font-weight: bold; color: #999; margin: 40px 0 30px 0;}
+  td { border: 0px solid grey;}
+  .created_at {color: grey;}
+
+= render partial: 'dispatch/nav'
+
+%h2
+  Upcoming Ride Requests
+
+.col-md-12
+
+  = render partial: 'rides/table', locals: {rides: @rides, admin: false}

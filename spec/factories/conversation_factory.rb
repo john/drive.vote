@@ -26,6 +26,12 @@ FactoryGirl.define do
     factory :closed_conversation do
       status :closed
     end
+    
+    factory :convo_with_blacklisted_number do
+      after(:create) do |conversation, evaluator|
+        BlacklistedPhone.new(phone: 1234567)
+      end
+    end
 
     factory :complete_conversation do
       from_phone '2073328709'

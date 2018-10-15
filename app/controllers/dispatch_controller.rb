@@ -56,6 +56,10 @@ class DispatchController < ApplicationController
       end
     end
   end
+  
+  def rides
+    @rides = Ride.upcoming.order(:pickup_at)
+  end
 
   def flyer
     respond_to do |format|
