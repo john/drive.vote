@@ -45,6 +45,7 @@ Rails.application.routes.draw do
       get 'messages' => 'dispatch#messages'
       get 'ride_pane' => 'dispatch#ride_pane'
       get 'drivers' => 'dispatch#drivers'
+      get 'rides' => 'dispatch#rides'
       get 'flyer' => 'dispatch#flyer'
       get 'map' => 'dispatch#map'
     end
