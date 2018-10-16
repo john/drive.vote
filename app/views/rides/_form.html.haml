@@ -34,7 +34,7 @@
 
   .col-sm-8.field
     = f.label :from_city_state, "#{h t(:city_for_pickup)} <sup>*</sup>".html_safe
-    = f.text_field :from_city_state, class: 'form-control', required: true, autocomplete: :off, maxlength: 40, pattern: "^.*#{@validation_pattern}\s*$"
+    = f.text_field :from_city_state, :value => !@ride_zone || @ride_zone.name, class: 'form-control', required: true, autocomplete: :off, maxlength: 40, pattern: "^.*#{@validation_pattern}\s*$"
 
     -# populated by location_autocomplete from city_state, which is populated by google places api
     = f.hidden_field :from_city, :value => ''
@@ -46,7 +46,7 @@
     = f.text_field :to_address, class: 'form-control', required: false, maxlength: 100
 
   .col-sm-8.field
-    = f.label :to_city_state, "#{h t(:city_for_pickup)}".html_safe
+    = f.label :to_city_state, "#{h t(:city_for_dropoff)}".html_safe
     = f.text_field :to_city_state, class: 'form-control', required: false, autocomplete: :off, maxlength: 40, pattern: "^.*#{@validation_pattern}\s*$"
 
     -# populated by location_autocomplete from city_state, which is populated by google places api
@@ -81,6 +81,7 @@
 
 :javascript
   $( function() {
-    locationAutocomplete.attach('#ride_from_city_state', '#ride_from_city', '#ride_from_state', '#ride_from_zip');
-    locationAutocomplete.attach('#ride_to_city_state', '#ride_to_city', '#ride_to_state', '#ride_to_zip');
+    locationAutocomplete.attach('#ride_from_city_state', '#ride_to_city_state', '#ride_from_city', '#ride_from_state', '#ride_from_zip');
+    locationAutocomplete.attach('#ride_to_city_state', '', '#ride_to_city', '#ride_to_state', '#ride_to_zip');
+    locationSyncing.attach('#ride_from_city_state', '#ride_to_city_state');
   });
