@@ -21,6 +21,24 @@ Here's what the Philadelphia dispatch and driver apps looked like on election mo
 1. `git clone git@github.com:john/drive.vote.git`
 1. `cd drive.vote`
 
+### Preparing your environment
+
+Certain features require you to add a .env file to the root app directory containing these values:
+
+  ```
+  SECRET_KEY_BASE=wwww
+  TWILIO_SID=xxxx
+  TWILIO_TOKEN=yyyy
+  GOOGLE_API_KEY=zzzz
+  REDIS_URL=redis://localhost:6379
+  ```
+ 
+You can generate the value for SECRET_KEY_BASE by running `bundle exec rake secret`.
+
+The Twilio values are used for sms interactions with voters and can be obtained from your Twilio account, which you'll also use to [create a Twilio number](https://github.com/john/drive.vote/wiki/Buying-and-Configuring-Twilio-Numbers) with sms capabilities, and update the ride zone you want to work with to use it.
+
+GOOGLE_API_KEY is used for geolocation, and can be created in the [Google API console](https://console.cloud.google.com/apis/). Enable all geo APIs for the key.
+
 ### Option 1: run with Docker (recommended)
 
 1. [Install docker](https://store.docker.com/search?type=edition&offering=community).
@@ -44,13 +62,6 @@ To get a Rails console on the current docker instance, run:
 
 ### Option 2: run directly
 
-1. Create a .env file in the app root and add these variables, with the correct values for your local env:
-
-  ```
-    REDIS_URL=redis://localhost:6379
-    SECRET_KEY_BASE=xxxxxxx
-  ```
-
 1. Install postgresql
 1. Install Redis (to run: `redis-server /usr/local/etc/redis.conf`)
 1. Install bundler: `gem install bundler`
@@ -72,20 +83,20 @@ If you don't want to use foreman, you have to run the rails server (Puma) and th
 
 If adding or modifying tests that will make new calls to the Google Maps APIs, you'll need to run with a valid `GOOGLE_API_KEY`, both to get your tests to pass, and also to refill the cached test data for use in later runs (including CI). See the discussion in `spec/rails_helpers.rb` for instructions on how to run with a live API Key.
 
-## Continuous deployment
-
-When code is merged into master, CircleCI triggers an automatic deployment to https://dev.drive.vote. To deploy to production at https://drive.vote, merge master into the production branch.
-
 ## Running the app locally
 
-To use sms features, you need to create a .env file in the root app directory and add these env vars:
+Go to http://localhost:3000 and log in as the generic admin with email `seeds@drive.vote` and password `1234abcd`. Since this account has admin privileges, logging in with it takes you directly to the admin site. If it has only driver privileges, it would take you to the driver app, and if only dispatcher privileges, to the dispatch page for the ride zone attached to your account. If for some reason your account has no privileges at all, you'll end up at the homepage, but that shouldn't happen. Note the accounts in seeds.rb don't exist in production, so don't get cute.
 
-  ```
-  TWILIO_SID=xxxx
-  TWILIO_TOKEN=yyyy
-  ```
+Useful URLs:
 
-You then need to [create a Twilio number](https://github.com/john/drive.vote/wiki/Buying-and-Configuring-Twilio-Numbers) with sms capabilities, and update a the ride zone you want to work with to use it.
+  * http://localhost:3000/admin -- Admin console Default page shows all dev Ride Zones.
+  * http://localhost:3000/dispatch/[slug] -- Dispatch app. The slug should correspond to the ride zone attached to the logged in user. Linked to for each ride zone from the admin page.
+  * http://localhost:3000/driving -- Driver app. It'll be connected to the Ride Zone the account is driving for. If this URL redirects to /, it means the account logging in isn't a driver.
+  
+### Spoofing location in the browser
+https://www.labnol.org/internet/geo-location/27878/ ?
+
+### Testing Emails
 
 For features that send emails, run [MailHog](https://github.com/mailhog/MailHog) or [MailCatcher](https://mailcatcher.me/) locally. The development environment is configured to send email to the correct port. On macOS you can use brew to install and run Mailhog:
 
@@ -95,97 +106,6 @@ For features that send emails, run [MailHog](https://github.com/mailhog/MailHog)
   ```
 
 Once started you can view the Mailhog client at [http://localhost:8025/](http://localhost:8025/)
-
-
-(Note: it was previously recommended to alias `local.drive.vote` in your local `/etc/hosts`, but browser security has tightened, and Chrome, for one, disallows geolocation services on non-secure hosts. There is an [exception for `localhost`](https://sites.google.com/a/chromium.org/dev/Home/chromium-security/deprecating-powerful-features-on-insecure-origins), however.)
-
-Go to http://localhost:3000 and log in as the generic admin with email `seeds@drive.vote` and password `1234abcd`. Since this account has admin privileges, logging in with it takes you directly to the admin site. If it has only driver privileges, it would take you to the driver app, and if only dispatcher privileges, to the dispatch page for the ride zone attached to your account. If for some reason your account has no privileges at all, you'll end up at the homepage, but that shouldn't happen.
-
-Useful URLs:
-
-  * http://local.drive.vote:3000/admin -- Admin console Default page shows all dev Ride Zones.
-  * http://local.drive.vote:3000/dispatch/[slug] -- Dispatch app. The slug should correspond to the ride zone attached to the logged in user. Linked to for each ride zone from the admin page.
-  * http://local.drive.vote:3000/driving -- Driver app. It'll be connected to the Ride Zone the account is driving for. If this URL redirects to /, it means the account logging in isn't a driver.
-
-Note: browsers block geolocation APIs on `http://` (insecure) websites except `localhost`. If you're working on features that require geolocation, such as `/driving`, you'll need to access the application at `http://localhost:3000/`.
-  
-### Spoofing location in the browser
-https://www.labnol.org/internet/geo-location/27878/ ?
-
-## Deployment
-
-### Setup
-
-#### Config
-You'll need to create these env vars: 
-GOOGLE_API_KEY
-TWILIO_SID
-TWILIO_TOKEN
-SEND_GRID_USER_NAME
-SEND_GRID_PASSWORD
-
-
-#### Deployment setup: Preparing for manual deployment
-
-Code is typically deployed automatically, this documents manual deployment. Code is deployed using AWS Elastic Beanstalk CLI tool which is a python script. To execute a deploy,
-configure a python virtualenv, and run the Elastic Beanstalk CLI tool from there.
-
-#### Deployment setup: Install virtualenv
-1. Install [pip](https://pip.pypa.io/en/stable/installing/) if it isn't there. If you're using macOS, it's likely already installed.
-1. Install virtual env. `sudo pip install virtualenv`
-
-#### Deployment setup: Create a venv in your checkout.
-This creates a directory named `venv` which is a little self-consistent Python sandbox that you can install packages into without being root.
-1. `virtualenv venv`
-1. `pip install -r requirements.pip`
-
-Each time you want to use the venv, run this in your terminal: `source venv/bin/activate`. You'll see the name of the current virtual env to the left of the prompt, eg, (venv) Your-computer: > .
-
-Activate a venv to run DtV `eb` commands and rake deployment tasks.
-
-#### Deployment setup: Creating a new Elastic Beanstalk environment
-
-This is to stand up an entirely new environment, it's done infrequently and generally you don't have to worry about it.
-
-If you define profile sections in your ~/.aws/credentials file for drivevote.prod (or dev), then you can set the `AWS_EB_PROFILE` env var before calling the following command in order to use the right set of credentials. Open a termal, start a venv, and run:
-
-```
-RAILS_ENV=production NODE_ENV=production  AWS_EB_PROFILE=drivevote.prod eb create drivevote-prod -db -p 'Ruby 2.3 (Puma)' -db.engine postgres -db.i db.t2.micro -i t2.micro --elb-type application -k aws-eb -r us-west-2 -db.user drivevoteprod --envvars SECRET_KEY_BASE=[somesecret],RAILS_SKIP_ASSET_COMPILATION=true,DTV_ACTION_CABLE_ORIGIN=www.drive.vote,PAPERTRAIL_HOST=logs4.papertrailapp.com,PAPERTRAIL_PORT=46774
-```
-
-This will configure the main web environment and database.  After this, open up the RDS console to find the newly created database. Use the values there for `[endpoint]` in the command below in order to configure the database access. This is because Elastic Beanstalk has no sane way of sharing an RDS instance between envrionments (wtf?).
-
-```
-RAILS_ENV=production NODE_ENV=production  AWS_EB_PROFILE=drivevote.prod eb create drivevote-prod-worker -t worker -p 'Ruby 2.3 (Puma)' -s -k aws-eb -r us-west-2  --envvars "SECRET_KEY_BASE=$(rake secret),RAILS_SKIP_ASSET_COMPILATION=true,DTV_IS_WORKER=TRUE,PAPERTRAIL_HOST=logs4.papertrailapp.com,PAPERTRAIL_PORT=46774,RDS_DB_NAME=ebdb,RDS_HOSTNAME=[endpoint],RDS_PASSWORD=[password],RDS_USERNAME=drivevoteprod,DTV_ACTION_CABLE_ORIGIN=worker-[origin-for-papertrail-logging]"
-```
-
-Next, fix the RDS security group to allow writes from the worker. Open up the RDS console for the EB instance and modify its securtiy group's incoming rules to allow access from the worker.
-
-Finally, do a deploy via
-```
-RAILS_ENV=production NODE_ENV=production  AWS_EB_PROFILE=drivevote.prod rake deploy:prod
-```
-
-to ensure the javascript bundle is built.
-
-And finally, you need to update the enviornment to handle https with something like
-```
-aws elasticbeanstalk --profile drivevote.prod update-environment --environment-name drivevote-prod --option-settings file:///Users/awong/src/DevProgress/drive.vote/elb-prod-acm.json  --region us-west-2
-```
-
-### Deploying code
-
-#### Deploying: Run your elastic beanstalk commands
-
-Per above make sure you have aws profiles defined in ~/.aws/credentials.
-
-
-| Command | Description |
-| ------- | ----------- |
-| `rake deploy:dev` | Deploys to the dev environment in `.elasticbeanstalk/config.yml` from `HEAD` (yes! the last commit! not necessarily what's on your filesystem!). Command blocks until deploy is finished. |
-| `RAILS_ENV=production NODE_ENV=production rake deploy:prod` | Deploys to the prod environment in `.elasticbeanstalk/config.yml` from `HEAD` (yes! the last commit! not necessarily what's on your filesystem!). Command blocks until deploy is finished. Ensure rails and node to run in production mode so the webpack bundle is built with optimizations. |
-| `eb printenv` | Prints environment variables the running app is currently figured with. Warning: has secrets. All people that can deploy can see the secrets. |
-| `eb setenv A=1 B=2` | Sets new environment variables. This will restart the webservers so combine multiple variable updates on one line. Command blocks until deploy is finished.  |
 
 ## Contributing
 
