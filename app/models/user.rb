@@ -36,7 +36,10 @@ class User < ApplicationRecord
   # end
 
   VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
-  VALID_STATES = {'CA' => 'California', 'DC' => 'District of Columbia', 'FL' => 'Florida', 'HI' => 'Hawaii', 'IL' => 'Illinois', 'NV' => 'Nevada', 'NY' => 'New York', 'OH' => 'Ohio', 'PA' =>'Pennsylvania', 'UT' => 'Utah'}
+  
+  # TODO: We should probably remove this check post-midterms, to support drivers who are travelling from out of state to drive.
+  VALID_STATES = {'CA' => 'California', 'DC' => 'District of Columbia', 'FL' => 'Florida', 'HI' => 'Hawaii', 'IL' => 'Illinois', 'NV' => 'Nevada', 'NY' => 'New York', 'OH' => 'Ohio', 'PA' =>'Pennsylvania', 'TN' => 'Tennessee', 'TX' => 'Texas', 'UT' => 'Utah', 'WI' => 'Wisconsin'}
+  
   has_many :rides, foreign_key: :voter_id, dependent: :destroy
   has_many :conversations, foreign_key: :user_id, dependent: :destroy
 
