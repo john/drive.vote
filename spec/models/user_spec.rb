@@ -279,11 +279,6 @@ RSpec.describe User, :type => :model do
       create :driver_user, user_type: :driver
     end
 
-    it 'does not send email for sms voter' do
-      expect(UserMailer).to_not receive(:welcome_email_voter)
-      create :sms_voter_user
-    end
-
     it 'sends driver email when approved' do
       rz = create :ride_zone
       u = create :unassigned_driver_user, rz: rz

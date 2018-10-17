@@ -35,12 +35,6 @@ class UserMailer < ApplicationMailer
     mail(to: @user.email_with_name, subject: 'Thank you for volunteering to Drive the Vote!')
   end
 
-  def welcome_email_voter(user)
-    @user = user
-
-    mail(to: @user.email_with_name, subject: 'Welcome to Drive the Vote, Voter!')
-  end
-
   def welcome_email_voter_ride(user, ride)
     @user = user
     @ride = ride
