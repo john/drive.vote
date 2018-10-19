@@ -1,6 +1,6 @@
 var locationAutocomplete = {
 
-  attach: function( city_state_el, city_el, state_el, zip_el ) {
+  attach: function( city_state_el, to_city_state_el, city_el, state_el, zip_el ) {
     var addressPicker = new AddressPicker({autocompleteService: {types: ['(cities)'], componentRestrictions: {country: 'US'}}});
 
     $( city_state_el ).typeahead({minLength: 0}, {
@@ -22,6 +22,9 @@ var locationAutocomplete = {
       // Washington, DC has several zip codes, so Google Places Service won't give you one.
       var zip = state_zip.length > 1 ? state_zip[1].trim() : '';
 
+      if (typeof(to_city_state_el) !== 'undefined') {
+        $( to_city_state_el ).val(city_state[0] + ', ' + city_state[1])
+      }
       $( city_el ).val( city );
       $( state_el ).val( state );
       $( zip_el ).val( zip );
