@@ -135,7 +135,11 @@ Rails.application.routes.draw do
         post 'unblacklist_voter_phone' => 'conversations#unblacklist_voter_phone'
       end
     end
-    resources :drivers, only: [:index]
+    resources :drivers, only: [:index] do
+      member do
+        post 'toggle_available'
+      end
+    end
     resources :metrics, only: [:index]
     resources :rides
     resources :ride_zones, only: [:index, :show, :new, :create, :edit, :update, :destroy] do

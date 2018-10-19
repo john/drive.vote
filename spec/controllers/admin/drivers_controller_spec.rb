@@ -19,4 +19,35 @@ RSpec.describe Admin::DriversController, type: :controller do
     end
   end
 
+  describe "toggle driver availability" do
+
+    context 'as admin' do
+      login_admin
+
+      it 'makes available driver unavailable' do
+        driver = create :driver_user
+        expect(driver.available).to be false  # verify default
+
+        post :toggle_available, params: {:id => driver.to_param}
+
+        driver.reload
+        expect(driver.available).to be true
+      end
+
+      it 'makes unavailable driver available' do
+        driver = create :driver_user
+        expect(driver.available).to be false # verify default
+
+        post :toggle_available, params: {:id => driver.to_param}
+        driver.reload
+        expect(driver.available).to be true # toggle once
+
+        post :toggle_available, params: {:id => driver.to_param}
+        driver.reload
+        expect(driver.available).to be false # toggle again
+      end
+
+    end
+  end
+
 end

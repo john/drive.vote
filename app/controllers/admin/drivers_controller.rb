@@ -22,4 +22,18 @@ class Admin::DriversController < Admin::AdminApplicationController
     end
   end
 
+  def toggle_available
+    if params[:id].present?
+      driver = User.find(params[:id])
+
+      driver.update_attribute :available, !driver.available
+      driver.save!
+      msg = "#{driver.name} is now #{driver.available? ? 'on' : 'off'} duty"
+    else
+      msg = "I can't really do anything without a driver ID."
+    end
+
+    flash[:notice] = msg
+    redirect_back(fallback_location: root_path)
+  end
 end

@@ -22,11 +22,18 @@
     = link_to 'Download .csv', drivers_dispatch_path(format: 'csv'), class: 'btn btn-info btn-xs'
 
   &nbsp;&nbsp; &#183; &nbsp;&nbsp;
-  🔵 = on duty &nbsp;&nbsp;&nbsp;&nbsp; 🔴 = off duty
+  -# &#128308; = red_circle, &#128309; = blue_circle, &#128661; = taxi
+  &#128309; = on duty &nbsp;&nbsp;&nbsp;&nbsp; &#128308; = off duty &nbsp;&nbsp;&nbsp; &#128661; = mid-ride
 
 :javascript
   $('.sort').change(function() {
     window.location.href = window.location.pathname + "?sort=" + $('.sort option:selected').val();;
+  });
+
+  $(document).ready(function() {
+    $(".no-off-duty").click(function() {
+       alert("You can't take a driver off duty when they are in the middle of a ride.\nAssign a new driver or archive the ride first.");
+    });
   });
 
 .col-md-12
@@ -49,9 +56,9 @@
         %tr
           %td
             = driver.name
-            = driver.available? ? '🔵 ' : '🔴 '
+            != driver.available? ? '&#128309; ' : '&#128308; '
             - if driver.active_ride.present?
-              🚕
+              &#128661;
           %td
             = mail_to driver.email
           %td
@@ -62,6 +69,17 @@
           - if current_user.has_role?(:admin, @ride_zone) || current_user.is_super_admin?
             %td
               = link_to 'demote', change_role_admin_ride_zone_path(@ride_zone, to_role: 'unassigned_driver', driver: driver.id), method: :post
+            %td
+              - if driver.available?
+                -# pause-button emoji
+                - if driver.active_ride.present?
+                  %span.no-off-duty{title: "cannot take driver off duty mid-ride"}
+                    &#9208;
+                - else
+                  = link_to raw('&#9208;'), toggle_available_admin_driver_path(id: driver.id), method: :post, title: "take driver off duty"
+              - else
+                -# play-button emoji
+                = link_to raw('&#9654;'), toggle_available_admin_driver_path(id: driver.id), method: :post, title: "put driver on duty"
 
     - else
       %tr
