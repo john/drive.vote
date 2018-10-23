@@ -22,7 +22,7 @@
           %td= link_to conversation.ride_zone.name, admin_ride_zone_path(conversation.ride_zone)
         - else
           %td None Set
-        %td= conversation&.user&.phone_number&.phony_formatted(normalize: :US, spaces: '-')
+        %td= conversation&.user&.phone_number != '5555555555' ? conversation&.user&.phone_number&.phony_formatted(normalize: :US, spaces: '-') : ''
         %td= conversation&.ride_zone&.phone_number&.phony_formatted(normalize: :US, spaces: '-')
         %td= conversation.status_str
         %td= conversation.lifecycle_str
