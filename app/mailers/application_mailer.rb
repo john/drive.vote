@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'hello@drive.vote'
+  default from: 'Drive the Vote <hello@drive.vote>'
   layout 'mailer'
 end
