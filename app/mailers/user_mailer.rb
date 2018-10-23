@@ -2,7 +2,7 @@ class UserMailer < ApplicationMailer
 
   layout 'mailer'
 
-  default from: 'hello@drive.vote'
+  default from: 'Drive the Vote <hello@drive.vote>'
 
   # Use the previewer to check emails:
   # http://local.drive.vote:3000/rails/mailers/user_mailer/welcome_email_not_inlined
@@ -13,7 +13,7 @@ class UserMailer < ApplicationMailer
   # once they've been inlined:
 
   # http://templates.mailchimp.com/resources/inline-css/
-  
+
   def notify_driver_approved(user, ride_zone)
     @user = user
     @ride_zone = ride_zone
