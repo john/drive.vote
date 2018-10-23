@@ -1,4 +1,4 @@
-- if @conversation.user.phone_number != '5555555555'
+- if @conversation.user.phone_number_normalized != '5555555555'
   .messages
     - @conversation.messages.order('created_at asc').each do |message|
       .message{style: "text-align: #{(message.sent_by == 'Voter') ? 'left' : 'right'}"}
@@ -24,7 +24,7 @@
 - if @conversation.user.name.include?('via sms')
   - title = @conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')
 - else
-  - title = "#{h @conversation.user.name} <span>#{@conversation.user.phone_number != '5555555555' ? @conversation.user.phone_number.phony_formatted(normalize: :US, spaces: '-') : ''}</span>".html_safe
+  - title = "#{h @conversation.user.name} <span>#{@conversation.user.phone_number_normalized != '5555555555' ? @conversation.user.phone_number.phony_formatted(normalize: :US, spaces: '-') : ''}</span>".html_safe
 
 :javascript
   // now that we have the conversation object, populate the modal header
