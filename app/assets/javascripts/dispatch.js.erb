@@ -278,14 +278,18 @@ DispatchController.prototype = {
     } else {
       cells = cells + c.from_phone
     }
-    
+
     if ( typeof c.blacklisted_phone_number === 'undefined') {
       var status_text = this._statusStrings[status]
     } else {
       var status_text = '<i>BLOCKED #</i>'
     }
-    
-    cells = cells + '</b></div>' + msg.truncate(100) + '</td>' +
+
+    cells = cells + '</b></div>' + msg.truncate(100)
+    if (c.special_requests.length > 0) {
+      cells = cells + ' <span class="special-requests-highlight">SR</span>'
+    }
+    cells = cells + '</td>' +
       '<td class="conv-status"><span class="conv-statdisp conv-statdisp-'+status+'">' + status_text + '</span></td>';
 
     if (status == 'complete' || status == 'driving') {

@@ -38,7 +38,7 @@ const PendingRideDetail = ({ claimRide, declineRide, ride }) => {
             {passengers}
           </p>
           <p>
-            Special requests:
+            Special requests:&nbsp;
             {ride.special_requests}
           </p>
         </div>
