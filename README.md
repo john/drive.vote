@@ -30,9 +30,8 @@ Certain features require you to add a .env file to the root app directory contai
   TWILIO_SID=xxxx
   TWILIO_TOKEN=yyyy
   GOOGLE_API_KEY=zzzz
-  REDIS_URL=redis://localhost:6379
   ```
- 
+
 You can generate the value for SECRET_KEY_BASE by running `bundle exec rake secret`.
 
 The Twilio values are used for sms interactions with voters and can be obtained from your Twilio account, which you'll also use to [create a Twilio number](https://github.com/john/drive.vote/wiki/Buying-and-Configuring-Twilio-Numbers) with sms capabilities, and update the ride zone you want to work with to use it.
@@ -92,7 +91,7 @@ Useful URLs:
   * http://localhost:3000/admin -- Admin console Default page shows all dev Ride Zones.
   * http://localhost:3000/dispatch/[slug] -- Dispatch app. The slug should correspond to the ride zone attached to the logged in user. Linked to for each ride zone from the admin page.
   * http://localhost:3000/driving -- Driver app. It'll be connected to the Ride Zone the account is driving for. If this URL redirects to /, it means the account logging in isn't a driver.
-  
+
 ### Spoofing location in the browser
 https://www.labnol.org/internet/geo-location/27878/ ?
 
