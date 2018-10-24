@@ -18,6 +18,14 @@
     %meta{ property: 'og:description', content: "#{t(:long_description)}" }
     %meta{ property:'og:image', content: "#{asset_url(t(:logo_filename))}" }
 
+    %link{ href: '/apple-touch-icon.png', rel: 'apple-touch-icon', sizes: '180x180' }
+    %link{ href: '/favicon-32x32.png', rel: 'icon', sizes: '32x32', type: 'image/png' }
+    %link{ href: '/favicon-16x16.png', rel: 'icon', sizes: '16x16', type: 'image/png' }
+    %link{ href: '/site.webmanifest', rel: 'manifest' }
+    %link{ href: '/safari-pinned-tab.svg', rel: 'mask-icon', color: '#0057b8' }
+    %meta{ name: 'msapplication-TileColor', content: '#0057b8' }
+    %meta{ name: 'theme-color', content: '#0057b8' }
+
     %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js'}
     %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery-ujs/1.2.2/rails.min.js'}
 
