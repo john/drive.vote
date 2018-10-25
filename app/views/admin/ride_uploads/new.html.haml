@@ -1,0 +1,12 @@
+:css
+  h1 { font-size: 22px;}
+
+%h1
+  Scheduled Rides Upload
+  
+%p
+  If you have a properly formatted spreadsheet containing information on voters who need rides on election day, you can use this form to upload it and create pre-scheduled rides in Drive the Vote. The spreadsheet must be saved as a CSV file, and it has to be in [this format]. Once uploaded it will be validated to make sure every row can be converted into a ride, if any can't, you'll be notified which of them need to be fixed or removed. Once everything validates, you'll be asked to confirm, and then Drive the Vote will schedule the rides, which will then be visible in the 'rides' section of your dispatcher app.
+
+= render 'form'
+
+-#= link_to 'Back', admin_ride_zone_ride_uploads_path(@ride_zone)

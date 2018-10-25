@@ -36,7 +36,12 @@ class ApplicationController < ActionController::Base
       root_path
     end
   end
-
+  
+  # used in ride and ride_upload controllers to send a thanks after convo created
+  def thanks_msg(ride)
+    I18n.t(:thanks_for_requesting, locale: (ride.voter.locale.blank? ? 'en' : ride.voter.locale), time: ride.pickup_in_time_zone.strftime('%m/%d %l:%M %P'), email: ride.ride_zone.email)
+  end
+  
   protected
 
   def set_locale

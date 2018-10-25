@@ -6,9 +6,6 @@ class User < ApplicationRecord
       :phone_number_normalized => 'Phone Number' # don't need to expose the "normalized" field to users
   }
 
-  # TODO: when geocoding is enabled
-  # acts_as_mappable :lat_column_name => :latitude, :lng_column_name => :longitude
-
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -31,12 +28,8 @@ class User < ApplicationRecord
   before_validation :autogenerate_email_if_necessary
   after_validation :geocode, if: ->(obj){ obj.new_record? }
 
-  # TODO: when users & ridezones are geocoded
-  # def nearby_ride_zones
-  # end
-
   VALID_ROLES = [:admin, :dispatcher, :driver, :unassigned_driver, :voter]
-  
+
   # TODO: We should probably remove this check post-midterms, to support drivers who are travelling from out of state to drive.
   VALID_STATES = {'CA' => 'California', 'DC' => 'District of Columbia', 'FL' => 'Florida', 'HI' => 'Hawaii', 'IL' => 'Illinois', 'NV' => 'Nevada', 'NY' => 'New York', 'OH' => 'Ohio', 'PA' =>'Pennsylvania', 'TN' => 'Tennessee', 'TX' => 'Texas', 'UT' => 'Utah', 'WI' => 'Wisconsin'}
   
@@ -66,7 +59,9 @@ class User < ApplicationRecord
 
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   validates_format_of :name, with: /\A[^"@\n]*\z/
-  validates :phone_number_normalized, phony_plausible: true, uniqueness: { message: 'already in use by another account' }
+  
+  validates :phone_number_normalized, phony_plausible: true, allow_blank: true, uniqueness: { message: 'already in use by another account' }
+  
   validate :permissible_user_type
   validate :permissible_zip, if: -> (obj) { obj.zip_changed? || obj.new_record? }
   validate :permissible_state, if: -> (obj) { obj.state_changed? || obj.new_record? }
@@ -99,6 +94,7 @@ class User < ApplicationRecord
   end
 
   def self.non_voters(order: 'name', sort: 'ASC')
+    # (:order => "name asc")
     User.where.not(id: User.with_role(:voter, :any)).order("#{order} #{sort}")
   end
 
@@ -137,6 +133,33 @@ class User < ApplicationRecord
         end
       end
     end
+  end
+  
+  def self.find_from_potential_ride( potential_ride )
+    user = User.find_by_email( potential_ride.email )
+    unless potential_ride.phone_number.empty? || potential_ride.phone_number_normalized == '+15555555555'
+      user ||= User.find_by_phone_number_normalized( potential_ride.phone_number_normalized )
+    end
+    user
+  end
+  
+  def self.create_from_potential_ride( potential_ride )
+    attrs = User.potential_ride_user_attrs( potential_ride )
+    logger.debug "--------> about to create user in create_from_potential_ride"
+    user = User.create!( attrs )
+  end
+  
+  def self.potential_ride_user_attrs( potential_ride )
+    phone_number = potential_ride.phone_number.present? ? potential_ride.phone_number : ''
+    {
+      name: potential_ride.name,
+      email: potential_ride.email,
+      phone_number: phone_number,
+      password: SecureRandom.hex(8),
+      city: potential_ride.from_city,
+      state: potential_ride.from_state,
+      user_type: 'voter',
+    }
   end
 
   def api_json
@@ -214,6 +237,11 @@ class User < ApplicationRecord
     Ride.where(driver_id: self.id).or(Ride.where(voter_id: self.id)).where.not(status: Ride.complete_statuses).first
   end
 
+  def active_or_open_rides?
+    c = Ride.where(driver_id: self.id).or(Ride.where(voter_id: self.id)).where(status: Ride.active_statuses + Ride.open_statuses).count
+    (c > 0) ? true : false
+  end
+  
   def recent_complete_ride
     self.rides.merge(Ride.completed).order('updated_at desc').first
   end

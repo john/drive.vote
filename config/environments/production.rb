@@ -26,6 +26,9 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
   
+  # Store files on Amazon S3.
+  config.active_storage.service = :amazon
+  
   # from: https://devcenter.heroku.com/articles/getting-started-with-rails5#local-setup
   if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger           = ActiveSupport::Logger.new(STDOUT)

@@ -1,0 +1,23 @@
+= form_for( @ride_upload, url: admin_ride_zone_ride_uploads_path(@ride_zone)) do |f|
+  - if @ride_upload.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@ride_upload.errors.count, "error")} prohibited this ride_upload from being saved:"
+      %ul
+        - @ride_upload.errors.full_messages.each do |message|
+          %li= message
+
+  .col-sm-8.field
+    = f.label :name
+    = f.text_field :name, autofocus: true, class: 'form-control'
+    
+  .col-sm-8.field
+    = f.label :description
+    = f.text_area :description, class: 'form-control'
+    
+  .col-sm-8.field
+    = f.label :file
+    = f.file_field :csv, class: 'form-control'
+    
+    
+  .col-sm-8.actions
+    = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."

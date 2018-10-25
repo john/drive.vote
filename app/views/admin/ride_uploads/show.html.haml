@@ -1,0 +1,64 @@
+:css
+  h1 { font-size: 20px; }
+  .queued{background-color:orange; padding: 1px;}
+  .pr {font-size: 13px;}
+  .no {margin-right: 5px; background-color:orange; padding: 1px;}
+  .yes {margin-right: 5px; background-color:green; color: white; padding: 1px;}
+
+%h1
+  Ride Upload
+
+%p#notice
+  = notice
+
+%p
+  <b style="font-size:32px;">#{@ride_upload.name}</b>, uploaded by #{@ride_upload.user.name}
+
+- if @ride_upload.description.present?
+  %p
+    = @ride_upload.description
+%p
+  %i Status:
+  %b.queued
+    = @ride_upload.status
+  
+%p
+  %i File:
+  - if @ride_upload.csv.present?
+    = link_to 'Download', rails_blob_path(@ride_upload.csv), target: "_blank" 
+  - else
+    none
+    
+%p{style: 'margin-bottom: 5px;'}
+  %i
+    Potential Rides:
+- @ride_upload.potential_rides.each do |pr|
+  .pr
+    - if pr.ride.blank?
+      %span.no
+        &nbsp;&nbsp;
+    - else
+      %span.yes
+        &nbsp;&nbsp;
+    #{pr.name}, #{pr.from_address}, #{pr.from_city}
+    - if pr.notes.present?
+      [#{pr.notes}]
+    
+
+  
+- if @ride_upload.queued?
+  %p
+    %br
+    = link_to 'Schedule', schedule_admin_ride_zone_ride_upload_path(@ride_upload.ride_zone, @ride_upload), class: 'btn btn-primary'
+    
+- if @failed_potential_rides.present?
+  %h5
+    Failed potential rides from upload:
+  %ul
+    - @failed_potential_rides.each do |fpr|
+      %li
+        = fpr.name
+    
+%hr
+%p
+  = link_to 'Ride Upload Index', admin_ride_zone_ride_uploads_path(@ride_zone.slug)

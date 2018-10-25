@@ -77,7 +77,7 @@ RSpec.describe Conversation, type: :model do
       end
 
       context 'message to/from do not match' do
-        it 'should be valid' do
+        it 'should not be valid' do
           create :message, conversation: convo, to: convo.to_phone, from: convo.from_phone
           create :message, conversation: convo, to: convo.to_phone, from: convo.from_phone
 

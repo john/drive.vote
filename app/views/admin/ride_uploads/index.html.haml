@@ -1,0 +1,41 @@
+:css
+  td { padding-right: 15px; }
+  th { padding-right: 25px; }
+  .pending { background-color: red;}
+
+%h3
+  Uploads for #{@ride_zone.name}
+
+%table
+  %thead
+    %tr
+      %th by
+      %th Name
+      %th Description
+      %th Status
+      %th
+
+  %tbody
+    - @ride_uploads.each do |ride_upload|
+      %tr
+        %td
+          = ride_upload.user.name
+        %td
+          = link_to ride_upload.name, admin_ride_zone_ride_upload_path(@ride_zone.slug, ride_upload)
+        %td
+          = ride_upload.description
+          
+        %td{class: ride_upload.status}
+          = ride_upload.status
+          
+        %td
+          = link_to 'Download', rails_blob_path(ride_upload.csv, disposition: "attachment")
+          
+          
+          -#= link_to 'Edit', edit_ride_upload_path(ride_upload)
+          
+          -#= link_to 'Destroy', ride_upload, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Upload', new_admin_ride_zone_ride_upload_path(@ride_zone.slug), class: 'btn btn-primary'

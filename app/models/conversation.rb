@@ -119,12 +119,17 @@ class Conversation < ApplicationRecord
     to_phone = user.phone_number_normalized
     c = Conversation.create({ride_zone: ride_zone, user: user, from_phone: from_phone,
                             to_phone: to_phone, status: :in_progress}.merge(attrs))
-    sms = send_staff_sms(ride_zone, user, body, timeout)
-    if sms.is_a?(String)
-      # create dummy message so we know what we intended to send
-      sms = OpenStruct.new(sid: 'n/a', status: 'failed', body: "(Failed to send) #{body}", from: from_phone, to: to_phone)
+                            
+    
+    if to_phone.present?
+      sms = send_staff_sms(ride_zone, user, body, timeout)
+      if sms.is_a?(String)
+        # create dummy message so we know what we intended to send
+        sms = OpenStruct.new(sid: 'n/a', status: 'failed', body: "(Failed to send) #{body}", from: from_phone, to: to_phone)
+      end
+      Message.create_from_staff(c, sms)
     end
-    Message.create_from_staff(c, sms)
+    
     c
   end
 
@@ -346,9 +351,10 @@ class Conversation < ApplicationRecord
     Conversation.lifecycles[lckey]
   end
 
+  # Should allow conversations with no phone number, meaning they should have no messages.
   def phone_numbers_match_first_message
-    first_message = self.messages.order(:created_at).first
-    unless first_message.nil?
+    first_message = self.messages.order(:created_at)&.first
+    unless first_message.blank?
       unless self.to_phone == first_message.to
         errors.add(:to_phone, 'must match :to attribute of first Message')
       end

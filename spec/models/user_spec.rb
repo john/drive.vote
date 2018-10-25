@@ -1,6 +1,46 @@
 require 'rails_helper'
 
 RSpec.describe User, :type => :model do
+  
+  describe 'creation' do
+    context 'from potential ride' do
+      let(:potential_ride) { create :potential_ride }
+
+      it "works" do
+        user = User.create_from_potential_ride( potential_ride )
+        expect(user.city).to eq('Palmdale')
+      end
+    end
+  end
+  
+  describe 'find from potential ride' do
+    context 'by email' do
+      let(:potential_ride) { create :potential_ride, email: 'robreider@test.com', phone_number: '' }
+      let(:user) {create :user, city_state: "Palmdale, CA", city: "Palmdale", state: "CA", email: 'robreider@test.com', phone_number: '' }
+
+      it "works" do
+        potential_ride.save
+        user.save
+        found_user = User.find_from_potential_ride( potential_ride )
+
+        expect(found_user.email).to eq( potential_ride.email )
+      end
+    end
+      
+    context 'by phone' do
+      let(:potential_ride) { create :potential_ride, phone_number: '555.555.6789', email: '' }
+      let(:user) {create :user, city_state: "Palmdale, CA", city: "Palmdale", state: "CA", email: '', phone_number: '(555) 555-6789' }
+
+      it "works" do
+        potential_ride.save
+        user.save
+        found_user = User.find_from_potential_ride( potential_ride )
+
+        expect(found_user.phone_number_normalized).to eq( potential_ride.phone_number_normalized )
+      end
+    end
+  end
+  
   describe 'state_city parsing' do
     context 'valid city_state' do
       let(:user) {build :user, city_state: "Carnegie, PA", city: "", state: ""}
