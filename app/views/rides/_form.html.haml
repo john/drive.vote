@@ -46,7 +46,7 @@
     = f.text_field :to_address, class: 'form-control', required: false, maxlength: 100
 
   .col-sm-8.field
-    = f.label :to_city_state, "#{h t(:city_for_dropoff)}".html_safe
+    = f.label :to_city_state, "#{h t(:drop_off_city_state)}".html_safe
     = f.text_field :to_city_state, class: 'form-control', required: false, autocomplete: :off, maxlength: 40, pattern: "^.*#{@validation_pattern}\s*$"
 
     -# populated by location_autocomplete from city_state, which is populated by google places api
@@ -59,14 +59,14 @@
     = datetime_select("ride", "pickup_at", selected: Date.new(2018,11,06), start_year: 2018, end_year: 2018, ampm: true)
 
   .col-sm-8.field
-    = f.label :phone_number, "#{h t(:mobile_phone_number)} <sup>*</sup>".html_safe
+    = f.label :phone_number, "#{h t(:mobile_phone_number)}".html_safe
     -# pretty liberal client-side tel number validation
     = f.telephone_field :phone_number, class: 'form-control', maxlength: 17, placeholder: "ex. 555-555-5555", pattern: '^(\([2-9][0-9][0-9]\)[\- ]?|[2-9][0-9][0-9][\- .]?)[0-9]{3}[\- .]?[0-9]{4}$'
 
   .col-sm-8.field
     = f.label :additional_passengers, t(:how_many_additional)
     &nbsp;
-    = f.select :additional_passengers, [['0 (just me)',0], [1,1], [2,2], [3,3], [4,4]]
+    = f.select :additional_passengers, [['0 (just me)',0], [1,1], [2,2], [3,3], [4,4], [5,5], ['6+ (put number in special requests)',6]]
 
   .col-sm-8.field
     = f.label :special_requests, t(:special_requests)
@@ -83,5 +83,4 @@
   $( function() {
     locationAutocomplete.attach('#ride_from_city_state', '#ride_to_city_state', '#ride_from_city', '#ride_from_state', '#ride_from_zip');
     locationAutocomplete.attach('#ride_to_city_state', '', '#ride_to_city', '#ride_to_state', '#ride_to_zip');
-    locationSyncing.attach('#ride_from_city_state', '#ride_to_city_state');
   });

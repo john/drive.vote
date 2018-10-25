@@ -7,7 +7,19 @@ RSpec.describe Conversation, type: :model do
                              from_latitude: 40.409, from_longitude: -80.090,
                              to_address: 'to', to_city: 'tcity', to_latitude: 3, to_longitude: 4}}
   let(:full_address_attrs) { {from_latitude: 40.4, from_longitude: -80.1, from_confirmed: true, to_latitude: 40.4, to_longitude: -80.1, to_confirmed: true} }
-
+  
+  describe 'creation' do
+    context 'from ride' do
+      let(:ride) { create :scheduled_ride }
+      
+      it "works" do
+        ride.voter.phone_number_normalized = ''
+        returned_conversation = Conversation.create_from_ride(ride, 'foo')
+        expect(returned_conversation).to be_instance_of(Conversation)
+      end
+    end
+  end
+  
   describe 'has_fields_for_ride' do
     context 'has what it needs to create a ride' do
       let(:convo) { create :complete_conversation }

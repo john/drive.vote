@@ -137,6 +137,7 @@ es:
   mobile_phone_number: '¿Cuál es su número de teléfono móvil?'
   where_to_be_picked_up: '¿Dónde desea ser recogido?'
   where_to_be_dropped_off: '¿Dirección de destino?'
+  drop_off_city_state: 'Ciudad y estado de destino?'
   city_for_pickup: '¿Cuál ciudad y estado?'
   what_time_pickup: '¿A qué dia y hora?'
   special_requests: 'Cualquier petición especial (silla de ruedas, asientos para niños)?'
