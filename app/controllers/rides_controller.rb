@@ -30,7 +30,8 @@ class RidesController < ApplicationController
     @user = User.find_by_id(params[:user_id]) if params[:user_id]
     @user ||= User.find_by_email(params[:ride][:email])
     normalized = PhonyRails.normalize_number(params[:ride][:phone_number], default_country_code: 'US')
-    unless normalized.nil? || normalized == '+15555555555'
+    # unless normalized.nil? || normalized == '+15555555555'
+    if normalized.present? && normalized != User::DUMMY_PHONE_NUMBER
       @user ||= User.find_by_phone_number_normalized(normalized)
     end
     

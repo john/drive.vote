@@ -5,6 +5,8 @@ class User < ApplicationRecord
   HUMANIZED_ATTRIBUTES = {
       :phone_number_normalized => 'Phone Number' # don't need to expose the "normalized" field to users
   }
+  
+  DUMMY_PHONE_NUMBER = '+15555555555'
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -238,8 +240,13 @@ class User < ApplicationRecord
   end
 
   def active_or_open_rides?
-    c = Ride.where(driver_id: self.id).or(Ride.where(voter_id: self.id)).where(status: Ride.active_statuses + Ride.open_statuses).count
-    (c > 0) ? true : false
+    # c = Ride.where(driver_id: self.id).or(Ride.where(voter_id: self.id)).where(status: Ride.active_statuses + Ride.open_statuses).count
+    # (c > 0) ? true : false
+    Ride.
+      where(driver_id: self.id).
+      or(Ride.where(voter_id: self.id)).
+      where(status: Ride.active_statuses + Ride.open_statuses).
+      exists?
   end
   
   def recent_complete_ride

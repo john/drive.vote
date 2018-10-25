@@ -347,7 +347,7 @@ RSpec.describe User, :type => :model do
       expect(RideZone).to receive(:event).with(anything, :new_driver, anything, :driver)
       # cannot use factory because it doesn't create users the same way code
       # does with transient attributes
-      User.create! name: 'foo', user_type: 'driver', ride_zone: rz, email: 'foo@example.com', phone_number: '+14155555555', phone_number_normalized: '+14155555555', password: '123456789'
+      User.create! name: 'foo', user_type: 'driver', ride_zone: rz, email: 'foo@example.com', phone_number: '5555555555', phone_number_normalized: User::DUMMY_PHONE_NUMBER, password: '123456789'
     end
 
     it 'sends driver update event on change' do
@@ -466,17 +466,34 @@ RSpec.describe User, :type => :model do
   describe 'rides' do
     let(:user) { create :voter_user }
 
-    it 'returns active and open ride' do
+    it 'returns true for active_ride on assigned_ride' do
       r = create :assigned_ride, voter: user
       expect(user.active_ride.id).to eq(r.id)
+    end
+    
+    it 'does return nil calling active_ride on a complete_ride' do
+      create :complete_ride, voter: user
+      expect(user.active_ride).to be_nil
+    end
+    
+    it 'returns true for open_ride on assigned_ride' do
+      r = create :assigned_ride, voter: user
       expect(user.open_ride.id).to eq(r.id)
     end
-
-    it 'does not returns active and open ride' do
-      create :complete_ride, voter: user
+    
+    it 'does return nil calling open_ride on a cancelled ride' do
       create :canceled_ride, voter: user
-      expect(user.active_ride).to be_nil
       expect(user.open_ride).to be_nil
+    end
+    
+    it 'returns truthy for active_or_open_rides? on an assigned_ride' do
+      r = create :assigned_ride, voter: user
+      expect(user.active_or_open_rides?).to be_truthy
+    end
+    
+    it 'returns falsy for active_or_open_rides? on complete_ride' do
+      r = create :complete_ride, voter: user
+      expect(user.active_or_open_rides?).to be_falsey
     end
   end
 

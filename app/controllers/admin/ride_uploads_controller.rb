@@ -61,6 +61,8 @@ class Admin::RideUploadsController < Admin::AdminApplicationController
   # If all look like they can be scheduled, do so
   def schedule
     fail_count = 0
+    
+    # TODO: refactor to queue jobs to process the potential rides, rather than doing inline like this
     @ride_upload.potential_rides.each do |potential_ride|
       if user = User.find_from_potential_ride( potential_ride )
         if user.active_or_open_rides?
@@ -71,7 +73,7 @@ class Admin::RideUploadsController < Admin::AdminApplicationController
             ride = Ride.create_from_potential_ride( potential_ride, user )
           rescue ActiveRecord::RecordInvalid => e
             potential_ride.fail_because("Found user, but record was invalid: #{e}"); fail_count += 1
-          rescue Exception => e # Never do this!
+          rescue Exception => e
             potential_ride.fail_because("Found user, failed, generally: #{e}"); fail_count += 1
           end
         end
