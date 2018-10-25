@@ -30,14 +30,13 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '0058a0898f00f053fc8cd791f28bbc10411f747d02c5c4d5bd0b60f1bf76b53a39aa1988f593bddaf901dd4eaf3fd2430c3b49c1e4bdb0af6f0cac1c8293538f'
-  config.secret_key = '9b0dc34b94c5fedc83e2b5c79618552f73af5e3e16d430c6873d088046917094ebda9fa14a0448f3543d3a3da66f157053481136a6f946b0d7c1afa06901d2fc'
+  # config.secret_key = 'something long and psuedorandom'
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'hello@drive.vote'
+  config.mailer_sender = 'Drive the Vote <hello@drive.vote>'
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
