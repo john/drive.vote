@@ -4,32 +4,31 @@
   .pr {font-size: 13px;}
   .no {margin-right: 5px; background-color:orange; padding: 1px;}
   .yes {margin-right: 5px; background-color:green; color: white; padding: 1px;}
-
-%h1
-  Ride Upload
+  .desc {margin-top: 0; }
 
 %p#notice
   = notice
 
-%p
-  <b style="font-size:32px;">#{@ride_upload.name}</b>, uploaded by #{@ride_upload.user.name}
+%h2
+  #{@ride_upload.name}
+%div{style: "margin-top: -10px;"}
+  Uploaded #{@ride_upload.created_at.strftime("%B %d, %Y")} by #{@ride_upload.user.name}
 
 - if @ride_upload.description.present?
-  %p
+  .desc
     = @ride_upload.description
+    
 %p
   %i Status:
   %b.queued
     = @ride_upload.status
-  
-%p
-  %i File:
+%div{style: "margin-top: -20px;"}
   - if @ride_upload.csv.present?
-    = link_to 'Download', rails_blob_path(@ride_upload.csv), target: "_blank" 
+    = link_to 'Download file', rails_blob_path(@ride_upload.csv), target: "_blank" 
   - else
     none
     
-%p{style: 'margin-bottom: 5px;'}
+%p{style: 'margin: 20px 0 5px 0;'}
   %i
     Potential Rides:
 - @ride_upload.potential_rides.each do |pr|

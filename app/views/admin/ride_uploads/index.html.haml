@@ -1,10 +1,12 @@
 :css
-  td { padding-right: 15px; }
-  th { padding-right: 25px; }
+  td { padding-right: 30px; }
+  th { padding-right: 30px; font-size: 20px; }
   .pending { background-color: red;}
 
-%h3
-  Uploads for #{@ride_zone.name}
+%h6
+  = @ride_zone.name
+%h3{style: "margin-top: 0;"}
+  Scheduled Ride Uploads
 
 %table
   %thead
@@ -12,8 +14,9 @@
       %th by
       %th Name
       %th Description
+      %th Date
       %th Status
-      %th
+      %th{style: "padding-right: 0;"}
 
   %tbody
     - @ride_uploads.each do |ride_upload|
@@ -24,16 +27,16 @@
           = link_to ride_upload.name, admin_ride_zone_ride_upload_path(@ride_zone.slug, ride_upload)
         %td
           = ride_upload.description
+        %td
+          = ride_upload.created_at.strftime("%B %d, %Y")
           
         %td{class: ride_upload.status}
           = ride_upload.status
           
-        %td
+        %td{style: "padding-right: 0;"}
           = link_to 'Download', rails_blob_path(ride_upload.csv, disposition: "attachment")
           
-          
           -#= link_to 'Edit', edit_ride_upload_path(ride_upload)
-          
           -#= link_to 'Destroy', ride_upload, method: :delete, data: { confirm: 'Are you sure?' }
 
 %br
