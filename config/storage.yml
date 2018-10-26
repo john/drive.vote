@@ -8,7 +8,7 @@ test:
  
 amazon:
   service: S3
-  access_key_id: ""
-  secret_access_key: ""
-  bucket: "ragtag-dtv"
+  access_key_id: <%= ENV['AWS_ACCESS_KEY'] %>
+  secret_access_key: <%= ENV['AWS_SECRET_KEY'] %>
+  bucket: <%= ENV['AWS_BUCKET'] %>
   region: 'us-east-1'
