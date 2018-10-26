@@ -91,7 +91,7 @@ en:
   almost_done: 'Almost done'
   just_sign_up: 'just sign up'
   sign_in: "Sign in"
-  signing_in: "Signing in..."
+  signing_in: "Signing in…"
   sign_out: 'Sign out'
   users: 'users'
   complete_registration: 'Please complete your registration so we can find a match'
@@ -141,6 +141,7 @@ en:
   mobile_phone_number: 'What is your mobile/cell phone number?'
   where_to_be_picked_up: 'Address for pickup?'
   where_to_be_dropped_off: 'Destination address?'
+  drop_off_city_state: 'Destination city and state'
   city_for_pickup: 'What city and state?'
   what_time_pickup: 'What day and time?'
   special_requests: 'Any special requests (wheelchair, child seats)?'

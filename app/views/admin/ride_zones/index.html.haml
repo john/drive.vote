@@ -5,6 +5,7 @@
       max-width:550px;
   }
   .pop { color: grey; }
+  th { font-size: 16px;}
 
 %h1
   Ride Zones
@@ -36,19 +37,22 @@
 
         %td{style: 'font-size: 13px; color: #999;'}
           = link_to 'Dispatch', dispatch_path(ride_zone.slug), target: '_blank'
+          
           &nbsp &#183; &nbsp;
-
           = link_to 'Schedule', get_a_ride_path(ride_zone.slug), target: '_blank'
           = link_to ' ⓘ', '#', class: 'pop', 'data-title': "#{sanitize ride_zone.name}", 'data-content': "The public URL for scheduling rides:<br>#{get_a_ride_url(ride_zone.slug)}", onclick: "return false;"
+          
           &nbsp &#183; &nbsp;
-
           = link_to 'Volunteer', volunteer_to_drive_for_zone_path(ride_zone.slug), target: '_blank'
           = link_to ' ⓘ', '#', class: 'pop', 'data-title': "#{sanitize ride_zone.name}", 'data-content': "The public URL for recruiting drivers:<br>#{volunteer_to_drive_for_zone_url(ride_zone.slug)}", onclick: "return false;"
+          
           &nbsp &#183; &nbsp;
-
-          = link_to 'Edit', edit_admin_ride_zone_path(ride_zone)
+          = link_to 'Edit', edit_admin_ride_zone_path(ride_zone.slug)
+          
           &nbsp &#183; &nbsp;
-
+          = link_to 'Import rides', admin_ride_zone_ride_uploads_path(ride_zone.slug)
+          
+          &nbsp &#183; &nbsp;
           = link_to 'Export rides', admin_ride_zone_path(ride_zone.slug, format: :csv)
 
           - if current_user.is_super_admin?

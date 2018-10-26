@@ -1,4 +1,5 @@
 = form_for [:admin, @ride_zone] do |f|
+
   - if @ride_zone.errors.any?
     #error_explanation
       %h2= "#{pluralize(@ride_zone.errors.count, "error")} prohibited this ride_zone from being saved:"
@@ -43,4 +44,5 @@
     = f.text_field :max_pickup_radius, class: 'form-control', required: true, maxlength: 7
 
   .col-sm-8.actions
-    = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."
+    = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}…"
+    

@@ -6,7 +6,7 @@ Rails.application.configure do
 
   # Websocket for messages
   config.action_cable.url = "ws://localhost:3000/cable"
-  config.action_cable.allowed_request_origins = ['http://local.drive.vote:3000', 'http://localhost:3000']
+  config.action_cable.allowed_request_origins = ['http://local.drive.vote:3000', 'http://localhost:3000', 'http://172.18.0.1:3000', 'http://127.255.255.255:3000', 'http://127.0.0.1:3000']
 
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -24,16 +24,16 @@ Rails.application.configure do
   # Enable/disable caching. By default caching is disabled.
   if Rails.root.join('tmp/caching-dev.txt').exist?
     config.action_controller.perform_caching = true
-
     config.cache_store = :memory_store
     config.public_file_server.headers = {
       'Cache-Control' => 'public, max-age=172800'
     }
   else
     config.action_controller.perform_caching = false
-
     config.cache_store = :null_store
   end
+  
+  config.active_storage.service = :local
 
   config.active_job.queue_adapter = :inline
   

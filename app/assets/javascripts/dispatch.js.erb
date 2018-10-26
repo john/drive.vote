@@ -468,7 +468,7 @@ DispatchController.prototype = {
         args = {'message' : {'body': $('#msg-input').text()}},
         url = '/api/1/conversations/' + this._activeConversationId + '/messages';
 
-    submitButton.text('Sending...').prop('disabled',true);
+    submitButton.text('Sending…').prop('disabled',true);
     msgInput.prop('disabled',true);
     $.ajax(url, {
       type: 'POST',

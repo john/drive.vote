@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_20_020234) do
+ActiveRecord::Schema.define(version: 2018_10_21_052637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "blacklisted_phones", id: :serial, force: :cascade do |t|
     t.string "phone"
@@ -26,8 +47,8 @@ ActiveRecord::Schema.define(version: 2018_09_20_020234) do
   create_table "conversations", id: :serial, force: :cascade do |t|
     t.integer "ride_zone_id", null: false
     t.integer "user_id", null: false
-    t.string "from_phone", default: "", null: false
-    t.string "to_phone", default: "", null: false
+    t.string "from_phone", default: ""
+    t.string "to_phone", default: ""
     t.integer "status", default: 0, null: false
     t.integer "lifecycle", default: 0, null: false
     t.string "from_address", default: ""
@@ -71,6 +92,58 @@ ActiveRecord::Schema.define(version: 2018_09_20_020234) do
     t.datetime "updated_at", null: false
     t.integer "conversation_id"
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+  end
+
+  create_table "potential_rides", force: :cascade do |t|
+    t.bigint "ride_zone_id"
+    t.bigint "ride_upload_id"
+    t.bigint "voter_id"
+    t.bigint "ride_id"
+    t.integer "row_number"
+    t.string "name"
+    t.string "email"
+    t.string "phone_number"
+    t.string "phone_number_normalized"
+    t.text "description"
+    t.integer "status"
+    t.datetime "pickup_at"
+    t.decimal "from_latitude", precision: 15, scale: 10
+    t.decimal "from_longitude", precision: 15, scale: 10
+    t.string "from_address"
+    t.string "from_city"
+    t.string "from_state"
+    t.string "from_zip"
+    t.decimal "to_latitude", precision: 15, scale: 10
+    t.decimal "to_longitude", precision: 15, scale: 10
+    t.string "to_address"
+    t.string "to_city"
+    t.string "to_state"
+    t.string "to_zip"
+    t.integer "additional_passengers"
+    t.text "special_requests"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ride_id"], name: "index_potential_rides_on_ride_id"
+    t.index ["ride_upload_id"], name: "index_potential_rides_on_ride_upload_id"
+    t.index ["ride_zone_id"], name: "index_potential_rides_on_ride_zone_id"
+    t.index ["voter_id"], name: "index_potential_rides_on_voter_id"
+  end
+
+  create_table "ride_uploads", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "ride_zone_id"
+    t.string "name", default: "", null: false
+    t.text "description", default: "", null: false
+    t.integer "status", default: 0, null: false
+    t.integer "total_rows", default: 0, null: false
+    t.integer "successful_rows", default: 0, null: false
+    t.string "csv_hash", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_ride_uploads_on_name", unique: true
+    t.index ["ride_zone_id"], name: "index_ride_uploads_on_ride_zone_id"
+    t.index ["user_id"], name: "index_ride_uploads_on_user_id"
   end
 
   create_table "ride_zones", id: :serial, force: :cascade do |t|
@@ -124,7 +197,9 @@ ActiveRecord::Schema.define(version: 2018_09_20_020234) do
     t.string "from_state", default: "", null: false
     t.string "from_zip", default: "", null: false
     t.string "to_zip", default: "", null: false
+    t.bigint "potential_ride_id"
     t.index ["driver_id"], name: "index_rides_on_driver_id"
+    t.index ["potential_ride_id"], name: "index_rides_on_potential_ride_id"
     t.index ["ride_zone_id"], name: "index_rides_on_ride_zone_id"
     t.index ["voter_id"], name: "index_rides_on_voter_id"
   end
@@ -208,4 +283,9 @@ ActiveRecord::Schema.define(version: 2018_09_20_020234) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  add_foreign_key "potential_rides", "ride_uploads"
+  add_foreign_key "potential_rides", "ride_zones"
+  add_foreign_key "potential_rides", "users", column: "voter_id"
+  add_foreign_key "ride_uploads", "ride_zones"
+  add_foreign_key "ride_uploads", "users"
 end
