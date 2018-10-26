@@ -2,6 +2,8 @@
 source 'https://rubygems.org'
 ruby '2.5.1'
 
+gem 'activestorage'
+gem 'aws-sdk-s3', require: false
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'chronic', '0.10.2'
 gem 'coffee-rails' # shouldnt be necessary, not using, but one line in /spec/requests/dispatcher_spec.rb fails without it, super weirdly

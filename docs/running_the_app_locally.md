@@ -23,7 +23,7 @@ Once Deborah has been promoted to legit driver, log into an incognito browser us
 which should be what you're now looking at, at the url
 
 - Open the Chrome dev tools
-- Click the vertical '...' on the right-hand side
+- Click the vertical '…' on the right-hand side
 - Select 'More tools', and then 'Sensors'
 - In the lower left of the window you should see a 'Geolocation' option, set to 'No override'. Either select a preset override, or enter a custom lat/long. Note that it must be in decimal notation (not degrees/minutes), and not go longer than six decimal places.
 

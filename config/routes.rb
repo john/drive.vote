@@ -9,9 +9,6 @@ Rails.application.routes.draw do
   }
 
   devise_scope :user do
-    # get '/volunteer/:id', :as => 'volunteer_to_drive_for_zone', to: redirect("/")
-    # get '/volunteer_to_drive/:id', to: redirect("/")
-    # get '/volunteer_to_drive', :as => 'volunteer_to_drive', to: redirect("/")
     get '/volunteer/:id', :to => 'users/registrations#new', :as => 'volunteer_to_drive_for_zone'
     get '/volunteer_to_drive/:id', to: redirect("/volunteer/%{id}")
     get '/volunteer_to_drive', :to => 'users/registrations#new', :as => 'volunteer_to_drive'
@@ -71,10 +68,6 @@ Rails.application.routes.draw do
   get 'ride/:ride_zone_id' => 'rides#new', as: 'get_a_ride'
   get 'get_a_ride/:ride_zone_id', to: redirect("/ride/%{ride_zone_id}")
   get 'conseguir_un_paseo/:ride_zone_id' => 'rides#new'
-  
-  # get 'ride/:ride_zone_id', as: 'get_a_ride', to: redirect("/")
-  # get 'get_a_ride/:ride_zone_id', to: redirect("/")
-  # get 'conseguir_un_paseo/:ride_zone_id', to: redirect("/")
 
   resources :rides, only: [:create, :edit, :update]
 
@@ -142,6 +135,7 @@ Rails.application.routes.draw do
     end
     resources :metrics, only: [:index]
     resources :rides
+    
     resources :ride_zones, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
       member do
         get 'drivers'
@@ -149,7 +143,13 @@ Rails.application.routes.draw do
         post 'change_role'
         delete 'remove_role'
       end
+      resources :ride_uploads do
+        member do
+          get 'schedule'
+        end
+      end
     end
+    
     resources :simulations, only: [:index] do
       collection do
         post 'start_new' => 'simulations#start_new'

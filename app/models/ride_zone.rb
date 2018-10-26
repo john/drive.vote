@@ -4,6 +4,7 @@ class RideZone < ApplicationRecord
   has_many :conversations
   has_many :messages
   has_many :rides
+  has_many :ride_uploads
 
   phony_normalize :phone_number, as: :phone_number_normalized, default_country_code: 'US'
 
@@ -148,6 +149,7 @@ class RideZone < ApplicationRecord
   end
 
   private
+  
   def named_role(name)
     Role.where(resource_type: 'RideZone', resource_id: self.id, name: name).first
   end

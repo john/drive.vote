@@ -6128,4 +6128,749 @@ http_interactions:
         }
     http_version: 
   recorded_at: Sun, 14 Oct 2018 20:09:29 GMT
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?address=%2C+%2C+Palmdale%2C+CA%2C+%2C+&key=REDACTED&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 21 Oct 2018 17:10:19 GMT
+      Expires:
+      - Mon, 22 Oct 2018 17:10:19 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '450'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Palmdale",
+                       "short_name" : "Palmdale",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Los Angeles County",
+                       "short_name" : "Los Angeles County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "California",
+                       "short_name" : "CA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Palmdale, CA, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 34.661043,
+                          "lng" : -117.9157469
+                       },
+                       "southwest" : {
+                          "lat" : 34.509813,
+                          "lng" : -118.2871071
+                       }
+                    },
+                    "location" : {
+                       "lat" : 34.5794343,
+                       "lng" : -118.1164613
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 34.661043,
+                          "lng" : -117.9157469
+                       },
+                       "southwest" : {
+                          "lat" : 34.509813,
+                          "lng" : -118.2871071
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJtd1w7IRXwoAROuASrS15bGo",
+                 "types" : [ "locality", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sun, 21 Oct 2018 17:10:17 GMT
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?address=%2C+%2C+Palmdale%2C+CA%2C+15106%2C+&key=REDACTED&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sun, 21 Oct 2018 17:18:44 GMT
+      Expires:
+      - Mon, 22 Oct 2018 17:18:44 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '585'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "15106",
+                       "short_name" : "15106",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Palmdale Road",
+                       "short_name" : "Palmdale Rd",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Victorville",
+                       "short_name" : "Victorville",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "San Bernardino County",
+                       "short_name" : "San Bernardino County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "California",
+                       "short_name" : "CA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "92392",
+                       "short_name" : "92392",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "2501",
+                       "short_name" : "2501",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "15106 Palmdale Rd, Victorville, CA 92392, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 34.5075914,
+                          "lng" : -117.3343091
+                       },
+                       "southwest" : {
+                          "lat" : 34.5072656,
+                          "lng" : -117.3345184
+                       }
+                    },
+                    "location" : {
+                       "lat" : 34.5074559,
+                       "lng" : -117.334424
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 34.5087774802915,
+                          "lng" : -117.3330647697085
+                       },
+                       "southwest" : {
+                          "lat" : 34.5060795197085,
+                          "lng" : -117.3357627302915
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJR9VAPcNlw4ARr1xHDgNI30E",
+                 "types" : [ "premise" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Sun, 21 Oct 2018 17:18:43 GMT
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?address=410-448+E+Ave+Q%2C+Palmdale%2C+CA&key=REDACTED&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 23 Oct 2018 04:05:23 GMT
+      Expires:
+      - Wed, 24 Oct 2018 04:05:23 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '613'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "410",
+                       "short_name" : "410",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "East Avenue Q",
+                       "short_name" : "E Ave Q",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Palmdale",
+                       "short_name" : "Palmdale",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Los Angeles County",
+                       "short_name" : "Los Angeles County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "California",
+                       "short_name" : "CA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "93550",
+                       "short_name" : "93550",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "3749",
+                       "short_name" : "3749",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "410 E Ave Q, Palmdale, CA 93550, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 34.5871819,
+                       "lng" : -118.1219695
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 34.58853088029149,
+                          "lng" : -118.1206205197085
+                       },
+                       "southwest" : {
+                          "lat" : 34.58583291970849,
+                          "lng" : -118.1233184802915
+                       }
+                    }
+                 },
+                 "place_id" : "EiQ0MTAgRSBBdmUgUSwgUGFsbWRhbGUsIENBIDkzNTUwLCBVU0EiGxIZChQKEgnX2V4bLVjCgBFm1PchSFOT_BCaAw",
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Tue, 23 Oct 2018 04:05:22 GMT
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?address=93510&key=REDACTED&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 23 Oct 2018 04:33:02 GMT
+      Expires:
+      - Wed, 24 Oct 2018 04:33:02 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '473'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "93510",
+                       "short_name" : "93510",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "Acton",
+                       "short_name" : "Acton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Los Angeles County",
+                       "short_name" : "Los Angeles County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "California",
+                       "short_name" : "CA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Acton, CA 93510, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 34.5658499,
+                          "lng" : -118.1159269
+                       },
+                       "southwest" : {
+                          "lat" : 34.386989,
+                          "lng" : -118.291486
+                       }
+                    },
+                    "location" : {
+                       "lat" : 34.4600722,
+                       "lng" : -118.2292712
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 34.5658499,
+                          "lng" : -118.1159269
+                       },
+                       "southwest" : {
+                          "lat" : 34.386989,
+                          "lng" : -118.291486
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJO0eivP7zwoARvbohL08DfEk",
+                 "types" : [ "postal_code" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Tue, 23 Oct 2018 04:33:01 GMT
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?key=REDACTED&language=en&latlng=34.4600722%2C-118.2292712&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 23 Oct 2018 04:33:03 GMT
+      Expires:
+      - Wed, 24 Oct 2018 04:33:03 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '1098'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "plus_code" : {
+              "compound_code" : "FQ6C+27 Acton, CA, USA",
+              "global_code" : "8563FQ6C+27"
+           },
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "32350",
+                       "short_name" : "32350",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "North Hughes Canyon Road",
+                       "short_name" : "N Hughes Canyon Rd",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Acton",
+                       "short_name" : "Acton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Los Angeles County",
+                       "short_name" : "Los Angeles County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "California",
+                       "short_name" : "CA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "93510",
+                       "short_name" : "93510",
+                       "types" : [ "postal_code" ]
+                    }
+                 ],
+                 "formatted_address" : "32350 N Hughes Canyon Rd, Acton, CA 93510, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 34.4626115,
+                       "lng" : -118.2327691
+                    },
+                    "location_type" : "RANGE_INTERPOLATED",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 34.4639604802915,
+                          "lng" : -118.2314201197085
+                       },
+                       "southwest" : {
+                          "lat" : 34.46126251970851,
+                          "lng" : -118.2341180802915
+                       }
+                    }
+                 },
+                 "place_id" : "Ei4zMjM1MCBOIEh1Z2hlcyBDYW55b24gUmQsIEFjdG9uLCBDQSA5MzUxMCwgVVNBIhwSGgoUChIJTeL0GEH0woARnZr7F-XKLT0Q3vwB",
+                 "types" : [ "street_address" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "93510",
+                       "short_name" : "93510",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "Acton",
+                       "short_name" : "Acton",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "Los Angeles County",
+                       "short_name" : "Los Angeles County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "California",
+                       "short_name" : "CA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Acton, CA 93510, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 34.5658499,
+                          "lng" : -118.1159269
+                       },
+                       "southwest" : {
+                          "lat" : 34.386989,
+                          "lng" : -118.291486
+                       }
+                    },
+                    "location" : {
+                       "lat" : 34.4600722,
+                       "lng" : -118.2292712
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 34.5658499,
+                          "lng" : -118.1159269
+                       },
+                       "southwest" : {
+                          "lat" : 34.386989,
+                          "lng" : -118.291486
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJO0eivP7zwoARvbohL08DfEk",
+                 "types" : [ "postal_code" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "Los Angeles County",
+                       "short_name" : "Los Angeles County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "California",
+                       "short_name" : "CA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "Los Angeles County, CA, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 34.8231929,
+                          "lng" : -117.6456041
+                       },
+                       "southwest" : {
+                          "lat" : 32.75004,
+                          "lng" : -118.9517211
+                       }
+                    },
+                    "location" : {
+                       "lat" : 34.0522265,
+                       "lng" : -118.2436596
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 34.8231929,
+                          "lng" : -117.6456041
+                       },
+                       "southwest" : {
+                          "lat" : 32.75004,
+                          "lng" : -118.9517211
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJMc1kAdMq3YARKjm9z9YofYM",
+                 "types" : [ "administrative_area_level_2", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "California",
+                       "short_name" : "CA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "California, USA",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 42.0095169,
+                          "lng" : -114.131211
+                       },
+                       "southwest" : {
+                          "lat" : 32.528832,
+                          "lng" : -124.482003
+                       }
+                    },
+                    "location" : {
+                       "lat" : 36.778261,
+                       "lng" : -119.4179324
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 42.0095169,
+                          "lng" : -114.131211
+                       },
+                       "southwest" : {
+                          "lat" : 32.528832,
+                          "lng" : -124.482003
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJPV4oX_65j4ARVW8IJ6IJUYs",
+                 "types" : [ "administrative_area_level_1", "political" ]
+              },
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    }
+                 ],
+                 "formatted_address" : "United States",
+                 "geometry" : {
+                    "bounds" : {
+                       "northeast" : {
+                          "lat" : 71.5388001,
+                          "lng" : -66.885417
+                       },
+                       "southwest" : {
+                          "lat" : 18.7763,
+                          "lng" : 170.5957
+                       }
+                    },
+                    "location" : {
+                       "lat" : 37.09024,
+                       "lng" : -95.712891
+                    },
+                    "location_type" : "APPROXIMATE",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 71.5388001,
+                          "lng" : -66.885417
+                       },
+                       "southwest" : {
+                          "lat" : 18.7763,
+                          "lng" : 170.5957
+                       }
+                    }
+                 },
+                 "place_id" : "ChIJCzYy5IS16lQRQrfeQ5K5Oxw",
+                 "types" : [ "country", "political" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Tue, 23 Oct 2018 04:33:02 GMT
 recorded_with: VCR 3.0.3

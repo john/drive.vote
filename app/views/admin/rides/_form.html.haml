@@ -8,7 +8,7 @@
 
   .col-sm-8.field
     = f.label :name
-    = f.text_field :name, class: 'form-control', maxlength: 50
+    = f.text_field :name, autofocus: true, class: 'form-control', maxlength: 50
 
   .col-sm-8.field
     = f.label :from_address
@@ -47,4 +47,4 @@
     = f.select :status, Ride.statuses.keys.map {|status| [status.titleize, status]}, {prompt: 'None Selected'}
 
   .col-sm-8.actions
-    = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}..."
+    = f.submit t(:save), class: 'btn btn-primary', disable_with: "#{t(:saving)}…"

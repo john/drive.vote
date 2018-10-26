@@ -1,0 +1,38 @@
+= form_for( @ride_upload, url: admin_ride_zone_ride_uploads_path(@ride_zone)) do |f|
+  - if @ride_upload.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@ride_upload.errors.count, "error")} prohibited this ride_upload from being saved:"
+      %ul
+        - @ride_upload.errors.full_messages.each do |message|
+          %li= message
+
+  .col-sm-8.field
+    = f.label :name
+    .small{style: "margin-top: -10px;"}
+      To identify the file, ie, "Precinct 8," "October canvassing," etc.
+    = f.text_field :name, autofocus: true, class: 'form-control'
+    
+  .col-sm-8.field
+    = f.label :description
+    = f.text_area :description, class: 'form-control'
+    
+  .col-sm-8.field
+    = f.label :csv, "CSV file"
+    = f.file_field :csv, class: 'form-control'
+    
+    
+  .col-sm-8.actions
+    = f.submit t(:save), class: 'btn btn-primary', disabled: true, disable_with: "#{t(:saving)}…"
+    
+:javascript
+  $(document).ready(
+    function(){
+      $('input:file').change(
+        function(){
+          if ($(this).val()) {
+            $('input:submit').attr('disabled',false);
+          } 
+        }
+      );
+    }
+  );

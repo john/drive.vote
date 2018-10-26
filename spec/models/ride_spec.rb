@@ -371,4 +371,12 @@ RSpec.describe Ride, type: :model do
     r = create :ride, driver: (create :user, name: '&')
     expect(r.api_json['driver_name']).to eq('&amp;')
   end
+  
+  it 'can be created from a potential_ride' do
+    user = create :user
+    potential_ride = create :potential_ride
+    ride = Ride.create_from_potential_ride( potential_ride, user )
+    expect(ride).to be_a Ride
+    expect(potential_ride.status).to eq("converted")
+  end
 end
