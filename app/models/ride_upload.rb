@@ -1,13 +1,9 @@
 class RideUpload < ApplicationRecord
   ALLOWED_MIME_TYPES = ['text/csv']
   
-  has_one_attached :csv
-  
   before_validation :compute_csv_hash
   
-  def csv_on_disk
-    ActiveStorage::Blob.service.send(:path_for, csv.key)
-  end
+  has_one_attached :csv
   
   belongs_to :user
   belongs_to :ride_zone

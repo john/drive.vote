@@ -27,31 +27,34 @@ class Admin::RideUploadsController < Admin::AdminApplicationController
     @ride_upload.user = current_user
     @ride_upload.ride_zone = @ride_zone
     
-    # TODO: Should a radius check be added to PotentialRide, and should it be made geolocatable?
-    if @ride_upload.save
-      row_number = 0
-      total_rows = 0
-      successful_rows = 0
-      CSV.foreach( @ride_upload.csv_on_disk, headers: true ) do |row|
-        row_number += 1
-        potential_ride = PotentialRide.create(ride_zone: @ride_zone, ride_upload: @ride_upload, status: 0, row_number: row_number)
-        if potential_ride.populate_from_csv_row(row)
-          successful_rows += 1 
-        else
-          potential_ride.fail_because("Failed to populate csv row #{row_number}")
+    if @ride_upload.total_rows > 1000
+      redirect_to admin_ride_zone_ride_uploads_path(@ride_zone.slug), notice: 'CSVs can not be more than 1000 lines long.'
+    else  
+      
+      # TODO: Should a radius check be added to PotentialRide, and should it be made geolocatable?
+      if @ride_upload.save
+        total_rows = 0
+        successful_rows = 0
+        CSV.parse(@ride_upload.csv.download, headers: true) do |row|
+          total_rows += 1
+          potential_ride = PotentialRide.create(ride_zone: @ride_zone, ride_upload: @ride_upload, status: 0, row_number: total_rows)
+          if potential_ride.populate_from_csv_row(row)
+            successful_rows += 1 
+          else
+            potential_ride.fail_because("Failed to populate csv row #{row_number}")
+          end
+          potential_ride.save
         end
-        total_rows += 1
-        potential_ride.save
+      
+        @ride_upload.total_rows = total_rows
+        @ride_upload.successful_rows = successful_rows
+        @ride_upload.queued!
+        @ride_upload.save
+      
+        redirect_to admin_ride_zone_ride_upload_path(@ride_zone.slug, @ride_upload), notice: 'Ride upload was successfully created, you still need to schedule the rides.'
+      else
+        render :new
       end
-      
-      @ride_upload.total_rows = total_rows
-      @ride_upload.successful_rows = successful_rows
-      @ride_upload.queued!
-      @ride_upload.save
-      
-      redirect_to admin_ride_zone_ride_upload_path(@ride_zone.slug, @ride_upload), notice: 'Ride upload was successfully created, you still need to schedule the rides.'
-    else
-      render :new
     end
   end
   
