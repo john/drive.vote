@@ -243,7 +243,7 @@ class ConversationBot
           when '3'
             @conversation.update_attributes(status: :closed)
             @conversation.ride.cancel(@conversation.user.name) if @conversation.ride
-            @response = I18n.t(:thanks_for_using, locale: @locale)
+            @response = I18n.t(:canceled_thanks_for_using, locale: @locale)
             return 0
           when '4'
             stalled
