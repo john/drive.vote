@@ -18,7 +18,7 @@ module Api::V1
 
         if @ride.update_attributes( params[:name] => val )
           
-          # if conversation has an equivalenrt field update that too
+          # if conversation has an equivalent field update that too
           if @ride.conversation.present? && Conversation.method_defined?(params[:name].to_sym)
             @ride.conversation.update_attributes( params[:name] => val )
           end
