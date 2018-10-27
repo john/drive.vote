@@ -4,8 +4,8 @@ Master: [![CircleCI](https://circleci.com/gh/john/drive.vote.svg?style=svg&circl
 Production: [![CircleCI](https://circleci.com/gh/john/drive.vote/tree/production.svg?style=svg&circle-token=59230e969a45b9cbd93ef91e357dd64d07db342b)](https://circleci.com/gh/john/drive.vote/tree/production)
 
 [Drive the Vote](https://drive.vote) helps people arrange free rides to the polls on election day. It consists of:
-* A text-based interface for voters to request rides on-demand--no smartphone required!
 * A scheduling app, so either voters or volunteers can pre-schedule rides.
+* A text-based interface for voters to request rides on-demand--no smartphone required!
 * An app for dispatchers to monitor voters and volunteer drivers in real-time.
 * A location-aware app for drivers, to notify them when a nearby voter has requested or scheduled a ride.
 
@@ -30,7 +30,6 @@ Certain features require you to add a .env file to the root app directory contai
   TWILIO_SID=xxxx
   TWILIO_TOKEN=yyyy
   GOOGLE_API_KEY=zzzz
-  REDIS_URL=redis://localhost:6379
   ```
  
 You can generate the value for SECRET_KEY_BASE by running `bundle exec rake secret`.
