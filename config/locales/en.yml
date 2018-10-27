@@ -91,7 +91,7 @@ en:
   almost_done: 'Almost done'
   just_sign_up: 'just sign up'
   sign_in: "Sign in"
-  signing_in: "Signing in..."
+  signing_in: "Signing in…"
   sign_out: 'Sign out'
   users: 'users'
   complete_registration: 'Please complete your registration so we can find a match'
@@ -127,7 +127,7 @@ en:
   any_special_requests: 'What are your special requests (like wheelchair, car seats)? Or reply none.'
   thanks_will_contact: 'Thank you! We have your info and will contact you before your ride.'
   thanks_wait_for_driver: 'Thank you! We have your info and will contact you when we find a driver for you.'
-  thanks_for_using: 'Thanks for trying Drive the Vote'
+  canceled_thanks_for_using: 'At your request, your ride has been canceled. Thanks for trying Drive the Vote'
   confirm_ride: 'Your Drive the Vote ride is scheduled for %{time}. Reply 1 to confirm, 2 to reschedule, 3 to cancel, 4 to speak to someone'
   ride_not_confirmed: 'Sorry we did not hear from you. Someone will contact you.'
 
@@ -141,6 +141,7 @@ en:
   mobile_phone_number: 'What is your mobile/cell phone number?'
   where_to_be_picked_up: 'Address for pickup?'
   where_to_be_dropped_off: 'Destination address?'
+  drop_off_city_state: 'Destination city and state'
   city_for_pickup: 'What city and state?'
   what_time_pickup: 'What day and time?'
   special_requests: 'Any special requests (wheelchair, child seats)?'

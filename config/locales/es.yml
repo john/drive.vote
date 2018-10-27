@@ -85,7 +85,7 @@ es:
   almost_done: 'Casi termino'
   just_sign_up: 'sólo tiene que registrarse'
   sign_in: "Iniciar sesión"
-  signing_in: "Iniciarando..."
+  signing_in: "Iniciarando…"
   sign_out: 'Cerrar sesión'
   users: 'usuarios'
   complete_registration: 'Por favor completar su registro para que podamos encontrar una coincidencia'
@@ -122,7 +122,7 @@ es:
   any_special_requests: '¿Cuáles son sus peticiones especiales (como silla de ruedas, asientos de bebé)? O responder ninguno.'
   thanks_will_contact: '¡Gracias! Tenemos su información y nos pondremos en contacto con usted antes de su viaje.'
   thanks_wait_for_driver: '¡Gracias! Tenemos su información y nos pondremos en contacto con usted cuando nos encontramos con un conductor para usted.'
-  thanks_for_using: 'Gracias por intentar Conduzca el Voto'
+  canceled_thanks_for_using: 'A su solicitud, su viaje ha sido cancelado. Gracias por intentar Conduzca el Voto.'
   confirm_ride: 'Su paseo está programado para %{time}. Responda 1 para confirmar, 2 para reprogramar, 3 para cancelar, 4 para hablar con alguien.'
   ride_not_confirmed: 'Lo siento, no escuchamos de usted. Alguien se pondrá en contacto con usted.'
 
@@ -137,6 +137,7 @@ es:
   mobile_phone_number: '¿Cuál es su número de teléfono móvil?'
   where_to_be_picked_up: '¿Dónde desea ser recogido?'
   where_to_be_dropped_off: '¿Dirección de destino?'
+  drop_off_city_state: 'Ciudad y estado de destino?'
   city_for_pickup: '¿Cuál ciudad y estado?'
   what_time_pickup: '¿A qué dia y hora?'
   special_requests: 'Cualquier petición especial (silla de ruedas, asientos para niños)?'

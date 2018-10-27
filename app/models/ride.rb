@@ -4,6 +4,7 @@ class Ride < ApplicationRecord
 
   SWITCH_TO_WAITING_ASSIGNMENT = 15 # how long in minutes before pickup time to change status to waiting_assignment
 
+  # TODO: waiting_acceptance doesn't appear to be in use -jm, 10/22/18
   enum status: {
     incomplete_info: 0,
     scheduled: 1,
@@ -16,6 +17,7 @@ class Ride < ApplicationRecord
   }
 
   belongs_to :ride_zone
+  belongs_to :potential_ride
   belongs_to :driver, class_name: 'User', foreign_key: :driver_id
   belongs_to :voter, class_name: 'User', foreign_key: :voter_id
   belongs_to :ride_zone
@@ -52,7 +54,57 @@ class Ride < ApplicationRecord
 
   # transient for returning distance to voter
   attr_accessor :distance_to_voter
+  
+  def self.active_statuses
+    [:waiting_acceptance, :waiting_assignment, :driver_assigned, :picked_up]
+  end
+  
+  def self.open_statuses
+    [:waiting_acceptance, :scheduled, :waiting_assignment]
+  end
+  
+  # archived statuses: incomplete_info, canceled
 
+  def self.active_status_values
+    self.active_statuses.map {|s| Ride.statuses[s]}
+  end
+
+  def self.complete_statuses
+    [:complete, :canceled]
+  end
+
+  def self.complete_status_values
+    self.complete_statuses.map {|s| Ride.statuses[s]}
+  end
+  
+  def self.upcoming_statuses
+    [:waiting_assignment, :scheduled]
+  end
+
+  def self.confirm_scheduled_rides
+    results = Hash.new(0)
+    Ride.where(status: :scheduled).where('pickup_at < ?', SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now).each do |ride|
+      
+      # disabling the bot previously disabled confirmation, but I think we need those regardless...
+      if ride.conversation && ride.ride_zone
+        
+        # If we have an email it was probably a scheduled ride, use it to send a notification.
+        if ride.voter.present? && ride.voter.email.present?
+          UserMailer.notify_scheduled_ride(ride).deliver_now
+        end
+        
+        begin
+          result = ride.conversation.attempt_confirmation
+          results[result] += 1
+        rescue => e
+          logger.error "Got error trying to confirm conversation #{ride.conversation.id}: #{e.message}"
+          results['exception'] += 1
+        end
+      end
+    end
+    logger.warn "Note: Attempted to confirm #{results.count} scheduled rides (#{results})"
+  end
+  
   # create a new ride from the data in a conversation
   def self.create_from_conversation conversation
     attrs = {
@@ -79,12 +131,46 @@ class Ride < ApplicationRecord
     end
   end
   
+  def self.create_from_potential_ride( potential_ride, user )
+    potential_ride.voter = user
+    attrs = {
+      ride_zone: potential_ride.ride_zone,
+      voter: potential_ride.voter,
+      name: potential_ride.name,
+      description: potential_ride.description || '',
+      pickup_at: potential_ride.pickup_at,
+      status: :scheduled,
+      from_address: potential_ride.from_address,
+      from_city: potential_ride.from_city,
+      from_state: potential_ride.from_state || '',
+      from_zip: potential_ride.from_zip || '',
+      from_latitude: potential_ride.from_latitude,
+      from_longitude: potential_ride.from_longitude,
+      to_address: potential_ride.to_address || '',
+      to_city: potential_ride.to_city || '',
+      to_state: potential_ride.to_state || '',
+      to_zip: potential_ride.to_zip || '',
+      to_latitude: potential_ride.to_latitude,
+      to_longitude: potential_ride.to_longitude,
+      additional_passengers: potential_ride.additional_passengers || 0,
+      special_requests: potential_ride.special_requests || '',
+      potential_ride: potential_ride
+    }
+    ActiveRecord::Base.transaction do
+      potential_ride.update_attribute(:status, :converted)
+      ride = Ride.new(attrs)
+      ride.save!
+      
+      potential_ride.ride = ride
+      potential_ride.save!
+      ride
+    end
+  end
+  
   def self.to_csv
     attributes = %w{name email phone_number pickup_at from_address from_city from_state from_zip to_address to_city to_state to_zip additional_passengers special_requests}
-
     CSV.generate(headers: true) do |csv|
       csv << attributes
-
       all.each do |ride|
         csv << attributes.map{ |attr| ride.send(attr) }
       end
@@ -204,50 +290,6 @@ class Ride < ApplicationRecord
     end.map {|pair| pair[1]}[0..limit-1]
   end
 
-  def self.active_statuses
-    [:waiting_acceptance, :waiting_assignment, :driver_assigned, :picked_up]
-  end
-
-  def self.active_status_values
-    self.active_statuses.map {|s| Ride.statuses[s]}
-  end
-
-  def self.complete_statuses
-    [:complete, :canceled]
-  end
-
-  def self.complete_status_values
-    self.complete_statuses.map {|s| Ride.statuses[s]}
-  end
-  
-  def self.upcoming_statuses
-    [:waiting_assignment, :scheduled]
-  end
-
-  def self.confirm_scheduled_rides
-    results = Hash.new(0)
-    Ride.where(status: :scheduled).where('pickup_at < ?', SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now).each do |ride|
-      
-      # disabling the bot previously disabled confirmation, but I think we need those regardless...
-      if ride.conversation && ride.ride_zone
-        
-        # If we have an email it was probably a scheduled ride, use it to send a notification.
-        if ride.voter.present? && ride.voter.email.present?
-          UserMailer.notify_scheduled_ride(ride).deliver_now
-        end
-        
-        begin
-          result = ride.conversation.attempt_confirmation
-          results[result] += 1
-        rescue => e
-          logger.error "Got error trying to confirm conversation #{ride.conversation.id}: #{e.message}"
-          results['exception'] += 1
-        end
-      end
-    end
-    logger.warn "Note: Attempted to confirm #{results.count} scheduled rides (#{results})"
-  end
-
   def passenger_count
     # always include Voter as a passenger
     self.additional_passengers + 1
@@ -309,9 +351,9 @@ class Ride < ApplicationRecord
   def geocoded_and_in_radius
     unless from_address.blank?
       if from_latitude.nil? || from_longitude.nil?
-        errors.add(:from_address, 'could not be found')
+        errors.add(:from_address, 'could not be geocoded.')
       elsif ride_zone && !ride_zone.is_within_pickup_radius?(from_latitude, from_longitude)
-        errors.add(:from_address, 'is outside the coverage area')
+        errors.add(:from_address, 'is outside the coverage area.')
       end
     end
   end

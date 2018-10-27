@@ -45,8 +45,8 @@
             - style += " color: white; background-color: grey;"
           
           %div{style: "#{style}"}
-            / = ride.pickup_at.nil? ? 'none' : ride.pickup_in_time_zone.strftime('%m/%d %l:%M %P %Z')
-            = ride.pickup_at.nil? ? '--' : ride.pickup_at.in_time_zone(ride.ride_zone.time_zone).strftime('%m/%d %l:%M %P')
+            = ride.pickup_at.nil? ? '--' : ride.pickup_in_time_zone.strftime('%m/%d %l:%M %P')
+            / = ride.pickup_at.nil? ? '--' : ride.pickup_at.in_time_zone(ride.ride_zone.time_zone).strftime('%m/%d %l:%M %P')
             / <br />
             / = Time.now.utc.strftime('%m/%d %l:%M %P %Z')
           
@@ -68,4 +68,5 @@
             = link_to 'Destroy', [:admin, ride], :method => :delete, :data => { :confirm => 'Are you sure?' }
             
           - else
-            = link_to 'Archive', close_admin_conversation_path(ride.conversation), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure? Conversations normally close themselves, only use this for orphans, bad actors, etc.' }, method: :POST
+            - if ride.conversation.present?
+              = link_to 'Archive', close_admin_conversation_path(ride.conversation), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure? Conversations normally close themselves, only use this for orphans, bad actors, etc.' }, method: :POST
