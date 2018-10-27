@@ -17,6 +17,12 @@ module Api::V1
         end
 
         if @ride.update_attributes( params[:name] => val )
+          
+          # if conversation has an equivalent field update that too
+          if @ride.conversation.present? && Conversation.method_defined?(params[:name].to_sym)
+            @ride.conversation.update_attributes( params[:name] => val )
+          end
+          
           render json: {response: @ride.reload.api_json}
         else
           render json: {error: @ride.errors}
