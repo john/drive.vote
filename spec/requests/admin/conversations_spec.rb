@@ -28,17 +28,3 @@ RSpec.describe "Conversations", type: :request do
 
   end
   
-  # describe "POST /admin/converations/{}/blacklist_voter_phone" do
-  #   let!(:rz) { create :ride_zone }
-  #   let!(:conversation) { create :conversation, ride_zone: rz }
-  #
-  #   it "succeeds if you're logged in as an admin" do
-  #     user = create(:admin_user)
-  #     sign_in user
-  #
-  #     post blacklist_voter_phone_admin_conversation_path(conversation)
-  #     puts "response---------> #{response.status.inspect}"
-  #     expect(response).to have_http_status 302
-  #   end
-  # end
-end

@@ -67,7 +67,8 @@ RSpec.describe Admin::RideUploadsController, type: :controller do
         
         expect{
           post :create, params: {ride_zone_id: rz.id, ride_upload: {name: 'testup', csv: file }}
-        }.to change(RideUpload, :count).by(0)
+        }.to raise_error("Validation failed: Csv Must be a CSV file")
+        
       end
 
       # it "assigns a newly created scheduled_ride_upload as @scheduled_ride_upload" do

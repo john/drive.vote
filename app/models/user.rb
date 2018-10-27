@@ -59,7 +59,7 @@ class User < ApplicationRecord
 
   phony_normalize :phone_number, as: :phone_number_normalized, default_country_code: 'US'
 
-  validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+  validates_format_of :email, with: URI::MailTo::EMAIL_REGEXP
   validates_format_of :name, with: /\A[^"@\n]*\z/
   
   validates :phone_number_normalized, phony_plausible: true, allow_blank: true, uniqueness: { message: 'already in use by another account' }
@@ -86,7 +86,7 @@ class User < ApplicationRecord
   def self.html5_state_pattern
     "#{VALID_STATES.collect{|s| " #{s[0]}| #{s[0].downcase}|"}.join('')}"
   end
-
+  
   def self.autogenerate_email
     "#{Time.now.to_f}_#{rand(5 ** 10).to_s.rjust(5,'0')}@example.com"
   end
@@ -152,6 +152,7 @@ class User < ApplicationRecord
   
   def self.potential_ride_user_attrs( potential_ride )
     phone_number = potential_ride.phone_number.present? ? potential_ride.phone_number : ''
+    
     {
       name: potential_ride.name,
       email: potential_ride.email,
