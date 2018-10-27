@@ -147,7 +147,6 @@ class User < ApplicationRecord
   
   def self.create_from_potential_ride( potential_ride )
     attrs = User.potential_ride_user_attrs( potential_ride )
-    logger.debug "--------> about to create user in create_from_potential_ride"
     user = User.create!( attrs )
   end
   
