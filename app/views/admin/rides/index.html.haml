@@ -1,9 +1,6 @@
 :css
-  #user-filter { margin: 0 0 20px 0;}
-  #user-search { display: inline;}
   th { font-weight: bold; margin-bottom: 20px;}
   td { font-size: 14px; }
-
 
 = render 'admin/nav', {active: 'rides'}
 
@@ -13,23 +10,10 @@
   %small
     = link_to 'New Ride', new_admin_ride_path, class: 'btn btn-default btn-xs'
 
-%div{style: 'margin: 0 0 30px 0;'}
-  %span{style: "margin-left: 25px"}
-    Search: &nbsp;
-    %form#ride-search
-      %input#q{type: 'text', value: "#{@q}"}
-
-    - if @q.present?
-      = link_to 'clear', admin_rides_path, style: "font-size: 13px; color: #777; margin-left: 10px;"
+= render partial: "application/admin_search", locals: { page: 'rides' }
 
 = render partial: 'rides/table', locals: {rides: @rides, admin: true}
 
 - if @rides.present?
   %nav{'aria-label': 'pagination'}
     = will_paginate @rides
-
-:javascript
-  $( "#ride-search" ).submit(function( event ) {
-    window.location.href = "/admin/rides?q=" + $('#q').val();
-    event.preventDefault();
-  });

@@ -1,0 +1,13 @@
+%span{style: "margin-left: 25px"}
+  Search: &nbsp;
+  %form#admin-search{style: "display: inline;"}
+    %input#q{type: 'text', value: "#{@q}"}
+    
+  - if @q.present?
+    = link_to 'clear', "/admin/#{page}", style: "font-size: 13px; color: #777; margin-left: 10px;"
+
+:javascript
+  $( "#admin-search" ).submit(function( event ) {
+    window.location.href = "/admin/#{page}?q=" + $('#q').val();
+    event.preventDefault();
+  });
