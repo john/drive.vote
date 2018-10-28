@@ -25,6 +25,7 @@ RSpec.describe "Conversations", type: :request do
       get admin_conversations_path
       expect(response).to be_successful
     end
-
   end
+
+end
   
