@@ -1,6 +1,5 @@
 :css
   #user-filter { margin: 0 0 20px 0;}
-  #user-search { display: inline;}
   td { font-size: 14px; }
 
 = render 'admin/nav', {active: 'users'}
@@ -14,13 +13,7 @@ Filter: &nbsp;
     %option{value: role, selected: params[:"filter"] == role}
       = role.gsub('_', ' ')
 
-%span{style: "margin-left: 25px"}
-  Search: &nbsp;
-  %form#user-search
-    %input#q{type: 'text', value: "#{@q}"}
-
-  - if @q.present?
-    = link_to 'clear', admin_users_path, style: "font-size: 13px; color: #777; margin-left: 10px;"
+= render partial: "application/admin_search", locals: { page: 'users' }
 
 %table.table-hover.admin
   %thead
@@ -36,7 +29,7 @@ Filter: &nbsp;
     - @users.each do |user|
       %tr
         %td{style: 'font-size: 16px; max-width: 250px;'}
-          = link_to user.name, admin_user_path(user)
+          = link_to user.name, admin_user_path(user), title: user.id
           %div{style: 'font-size: 12px; margin-top: 0px; color: #999'}
             = user.phone_number.phony_formatted(normalize: :US, spaces: '-')
         %td
@@ -62,9 +55,4 @@ Filter: &nbsp;
 :javascript
   $('#user-filter').change(function() {
     window.location.href = "/admin/users/?filter=" + $(this).val();
-  });
-
-  $( "#user-search" ).submit(function( event ) {
-    window.location.href = "/admin/users?q=" + $('#q').val();
-    event.preventDefault();
   });

@@ -1,18 +1,9 @@
-:css
-  #user-filter { margin: 0 0 20px 0;}
-  #user-search { display: inline;}
-
 = render 'admin/nav', {active: 'voters'}
 
 %h2
   Voters
 
-Search: &nbsp;
-%form#user-search
-  %input#q{type: 'text', value: "#{@q}"}
-
-- if @q.present?
-  = link_to 'clear', '/admin/voters', style: "font-size: 13px; color: #777; margin-left: 10px;"
+= render partial: "application/admin_search", locals: { page: 'voters' }
 
 %table.table-hover.admin
   %thead
@@ -56,9 +47,4 @@ Search: &nbsp;
 :javascript
   $('#user-filter').change(function() {
     window.location.href = "/admin/users/?filter=" + $(this).val();
-  });
-
-  $( "#user-search" ).submit(function( event ) {
-    window.location.href = "/admin/voters?q=" + $('#q').val();
-    event.preventDefault();
   });
