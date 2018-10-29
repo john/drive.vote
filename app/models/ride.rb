@@ -126,20 +126,18 @@ class Ride < ApplicationRecord
       conversation: conversation,
     }
     ActiveRecord::Base.transaction do
-      conversation.update_attribute(:status, :ride_created)
+      conversation.ride_created!
       Ride.create!(attrs)
     end
   end
   
-  def self.create_from_potential_ride( potential_ride, user )
-    potential_ride.voter = user
+  def self.create_from_potential_ride( potential_ride )
     attrs = {
       ride_zone: potential_ride.ride_zone,
       voter: potential_ride.voter,
       name: potential_ride.name,
       description: potential_ride.description || '',
       pickup_at: potential_ride.pickup_at,
-      status: :scheduled,
       from_address: potential_ride.from_address,
       from_city: potential_ride.from_city,
       from_state: potential_ride.from_state || '',
@@ -157,12 +155,11 @@ class Ride < ApplicationRecord
       potential_ride: potential_ride
     }
     ActiveRecord::Base.transaction do
-      potential_ride.update_attribute(:status, :converted)
       ride = Ride.new(attrs)
-      ride.save!
+      ride.scheduled!
       
       potential_ride.ride = ride
-      potential_ride.save!
+      potential_ride.converted!
       ride
     end
   end

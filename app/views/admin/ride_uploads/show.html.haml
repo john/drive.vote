@@ -2,7 +2,9 @@
   h1 { font-size: 20px; }
   .queued{background-color:orange; padding: 1px;}
   .pr {font-size: 13px;}
-  .no {margin-right: 5px; background-color:orange; padding: 1px;}
+  .pending {margin-right: 5px; background-color:yellow; padding: 1px;}
+  .fail {margin-right: 5px; background-color:red; padding: 1px;}
+  .no_ride {margin-right: 5px; background-color:orange; padding: 1px;}
   .yes {margin-right: 5px; background-color:green; color: white; padding: 1px;}
   .desc {margin-top: 0; }
 
@@ -34,8 +36,15 @@
 - @ride_upload.potential_rides.each do |pr|
   .pr
     - if pr.ride.blank?
-      %span.no
-        &nbsp;&nbsp;
+      - if pr.failed?
+        %span.fail
+          &nbsp;&nbsp;
+      - elsif pr.pending?
+        %span.pending
+          &nbsp;&nbsp;
+      - else
+        %span.no_ride
+          &nbsp;&nbsp;
     - else
       %span.yes
         &nbsp;&nbsp;
@@ -56,7 +65,7 @@
   %ul
     - @failed_potential_rides.each do |fpr|
       %li
-        = fpr.name
+        #{fpr.name} (#{fpr.notes})
     
 %hr
 %p

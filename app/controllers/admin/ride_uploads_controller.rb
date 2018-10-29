@@ -32,12 +32,12 @@ class Admin::RideUploadsController < Admin::AdminApplicationController
     else  
       
       # TODO: Should a radius check be added to PotentialRide, and should it be made geolocatable?
-      if @ride_upload.save
+      if @ride_upload.pending!
         total_rows = 0
         successful_rows = 0
         CSV.parse(@ride_upload.csv.download, headers: true) do |row|
           total_rows += 1
-          potential_ride = PotentialRide.create(ride_zone: @ride_zone, ride_upload: @ride_upload, status: 0, row_number: total_rows)
+          potential_ride = PotentialRide.new(ride_zone: @ride_zone, ride_upload: @ride_upload, status: :pending, row_number: total_rows)
           if potential_ride.populate_from_csv_row(row)
             successful_rows += 1 
           else
@@ -65,8 +65,15 @@ class Admin::RideUploadsController < Admin::AdminApplicationController
   def schedule
     fail_count = 0
     
-    # TODO: refactor to queue jobs to process the potential rides, rather than doing inline like this
+    # TODO: queue a single large job to create rides from potential_rides. Needs to be a single big
+    # job, one per ride_upload, so that it can change the status of the ride_upload at the end.
+    # - get rid of fail count, instead rely on counting PotentialRides in RideUpload with :failed status
+    # - Move code below into a job: ConvertPotentialRidesJob
+    # rails generate job convert_potential_rides_job --queue convert_potential_rides
+    # ConvertPotentialRidesJob.perform_later potential_job
+    # - block of code at end
     @ride_upload.potential_rides.each do |potential_ride|
+      
       if user = User.find_from_potential_ride( potential_ride )
         if user.active_or_open_rides?
           potential_ride.fail_because("User already has an active or open ride"); fail_count += 1
@@ -81,11 +88,19 @@ class Admin::RideUploadsController < Admin::AdminApplicationController
           end
         end
       else
-        user = User.create_from_potential_ride( potential_ride )
         begin
-          ride = Ride.create_from_potential_ride( potential_ride, user )
-        rescue Exception => e
-          potential_ride.fail_because("Created user, failed, generally: #{e}"); fail_count += 1
+          user = User.create_from_potential_ride( potential_ride )
+          potential_ride.voter = user
+        rescue ActiveRecord::RecordInvalid => e
+          potential_ride.fail_because("Could not create user: #{e}"); fail_count += 1
+        end
+        
+        if potential_ride.voter.present?
+          begin
+            ride = Ride.create_from_potential_ride( potential_ride )
+          rescue Exception => e
+            potential_ride.fail_because("Created User, could not create Ride: #{e}"); fail_count += 1
+          end
         end
       end
       

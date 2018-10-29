@@ -32,6 +32,7 @@ class Admin::RidesController < Admin::AdminApplicationController
     @ride.to_city_state = [@ride.to_city, @ride.to_state].reject {|s| s.blank?}.compact.join(', ')
   end
 
+  # TODO: there's a similar rides_controller in /admin, which is bad. is this method used? there's a spec for it.
   # POST /rides
   def create
     @ride = Ride.new(ride_params)

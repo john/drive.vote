@@ -83,25 +83,31 @@ class Conversation < ApplicationRecord
   # create a new conversation from the information in a completed ride object
   def self.create_from_ride(ride, thanks_msg)
     attrs = Conversation.ride_conversation_attrs(ride)
-    create_from_staff(ride.ride_zone, ride.voter, thanks_msg, Rails.configuration.twilio_timeout, attrs)
+    # set twilio timeout to -1 since we don't want to send a message
+    create_from_staff(ride.ride_zone, ride.voter, thanks_msg, -1, attrs, :ride_created)
   end
 
   # sets all fields in the conversation as completed based on ride info to prepare for bot
   # followup
   def mark_info_completed(ride)
-    update_attributes(Conversation.ride_conversation_attrs(ride))
+    # update_attributes(Conversation.ride_conversation_attrs(ride))
+    update(Conversation.ride_conversation_attrs(ride))
+    ride_created!
   end
 
   def self.ride_conversation_attrs(ride)
     {
       user: ride.voter,
-      status: :ride_created,
       ride: ride,
       from_address: ride.from_address,
+      from_city: ride.from_city,
+      from_state: ride.from_state,
       from_latitude: ride.from_latitude,
       from_longitude: ride.from_longitude,
       from_confirmed: true,
       to_address: ride.to_address,
+      to_city: ride.to_city,
+      to_state: ride.to_state,
       to_latitude: ride.to_latitude,
       to_longitude: ride.to_longitude,
       to_confirmed: true,
@@ -114,14 +120,14 @@ class Conversation < ApplicationRecord
 
   # create a new conversation initiated by staff
   # returns conversation if successful otherwise an error message
-  def self.create_from_staff(ride_zone, user, body, timeout, attrs = {})
+  def self.create_from_staff(ride_zone, user, body, timeout, attrs = {}, status = :in_progress)
     from_phone = ride_zone.phone_number_normalized
     to_phone = user.phone_number_normalized
     c = Conversation.create({ride_zone: ride_zone, user: user, from_phone: from_phone,
-                            to_phone: to_phone, status: :in_progress}.merge(attrs))
+                            to_phone: to_phone, status: status}.merge(attrs))
                             
     
-    if to_phone.present?
+    if to_phone.present? && timeout != -1
       sms = send_staff_sms(ride_zone, user, body, timeout)
       if sms.is_a?(String)
         # create dummy message so we know what we intended to send

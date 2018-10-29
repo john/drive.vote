@@ -25,13 +25,14 @@ class PotentialRide < ApplicationRecord
   
   def populate_from_csv_row(row)
     row.each do |c|
-      if c[0] == 'pickup_at'
+      fieldname = c[0].downcase
+      if fieldname == 'pickup_at'
         pickup = Chronic.parse(c[1])
         pickup = pickup.change(month: '11', day: '06')
         self.pickup_at = pickup.utc
       else
         val = c[1].present? ? c[1] : ''
-        self.send "#{c[0]}=", val
+        self.send "#{fieldname}=", val
       end
     end
     self
