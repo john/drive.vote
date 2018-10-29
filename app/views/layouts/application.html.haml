@@ -69,6 +69,9 @@
     js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=598384123655141";
     fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));</script>
+    
+    - unless Rails.env.production?
+      = render partial: 'application/staging_banner'
 
     = render partial: 'application/nav', object: "container#{(@fluid.present?) ? '-fluid' : ''}", as: 'container_class'
 
