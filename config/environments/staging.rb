@@ -5,7 +5,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Websocket for messages
-  origin = ENV['DTV_ACTION_CABLE_ORIGIN'] || 'www.drive.vote'
+  origin = ENV['DTV_ACTION_CABLE_ORIGIN'] || 'staging.drive.vote'
   config.action_cable.url = "wss://#{origin}/cable"
   config.action_cable.allowed_request_origins = ["https://#{origin}"]
 
@@ -27,7 +27,7 @@ Rails.application.configure do
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
   
   # Store files on Amazon S3.
-  config.active_storage.service = :amazon
+  config.active_storage.service = :local
   
   # from: https://devcenter.heroku.com/articles/getting-started-with-rails5#local-setup
   if ENV["RAILS_LOG_TO_STDOUT"].present?
@@ -77,7 +77,7 @@ Rails.application.configure do
   config.active_job.queue_adapter = :inline
 
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = { :host => "www.drive.vote" }
+  config.action_mailer.default_url_options = { :host => "staging.drive.vote" }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

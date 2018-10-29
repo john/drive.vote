@@ -158,6 +158,7 @@ class User < ApplicationRecord
       email: potential_ride.email,
       phone_number: phone_number,
       password: SecureRandom.hex(8),
+      locale: 'en',
       city: potential_ride.from_city,
       state: potential_ride.from_state,
       user_type: 'voter',
