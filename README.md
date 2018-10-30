@@ -86,13 +86,13 @@ If adding or modifying tests that will make new calls to the Google Maps APIs, y
 
 A process needs to run every minute or so to check scheduled rides, and promote ones that are approaching their pickup time from 'scheduled' to 'waiting assignment,' so that they become available to drivers. That process needs to POST to this url, which will promote imminent rides: `/api/1/rides/confirm_scheduled`.
 
-The ideal production setup is to run a worker instance, so that it's not putting additional load on the web servers. Any instance acting as a worker (whether it's also a web server or not), needs to have the DTV_IS_WORKER env var set to TRUE.
+The preferred production setup is to run a dedicated worker instance, but any instance acting as a worker (dedicated or not), needs to have the DTV_IS_WORKER env var set to TRUE.
 
-The call to confirm_scheduled can be made via a cron job, or if your environment doesn't support that (Heroku doesn't), a scheduled AWS Lambda.
+The call to confirm_scheduled can be made via cron or using the scheduled AWS Lambda [available in this repo.](https://github.com/john/drive.vote/blob/master/vendor/lambda/lambda_handler.py)
 
 ## The conversation bot
 
-In practice it turns out scheduled rides seem to be the primary use case. The app also supports on-demand rides via SMS. In that case information is gathered by a basic text bot, information about which can be found [here](https://github.com/john/drive.vote/blob/master/docs/converation_bot.md)
+In practice it turns out scheduled rides seem to be the primary use case. The app also supports on-demand rides via SMS. In that case information is gathered by a basic text bot, information about which can be found in [converation_bot.md](https://github.com/john/drive.vote/blob/master/docs/converation_bot.md)
 
 ## Using the app locally
 
