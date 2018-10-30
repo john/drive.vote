@@ -226,6 +226,21 @@ class Conversation < ApplicationRecord
     user.language == 'unknown' ? 'en' : user.language
   end
 
+  # This confirms them immediately, then sends a text so they can talk to someone if they need to
+  def send_confirmation
+    ActiveRecord::Base.transaction do
+      ride.update_attributes(status: :waiting_assignment) if ride.status == 'scheduled'
+      update_attributes(ride_confirmed: true)
+      
+      body = I18n.t(:auto_confirmed_wait_for_driver, locale: user_language, time: ride.pickup_in_time_zone.strftime('%l:%M %P'))
+      
+      sms = Conversation.send_staff_sms(ride_zone, user, body, Rails.configuration.twilio_timeout)
+    end
+    return 'no_response_auto_confirm' # how is this used? Change to scheduled_ride_auto_confirm and then handle that, if it make sense.
+    return 'scheduled_ride_auto_confirm'
+  end
+  
+  # This sends a text and they're confirmed if they respond to it with a '1'
   # returns a string with category of result
   def attempt_confirmation
     result = 'waiting_confirmation'

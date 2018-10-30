@@ -55,11 +55,6 @@ es:
   how_to_help: 'Cómo ayudar'
   how_to_help_copy1: 'Si usted tiene un coche y puede estar en'
   how_to_help_copy2: 'el día de la elección, voluntario para ser un conductor! Ayudar a conseguir que los votantes a las urnas el 8 de noviembre y asegurarse de que todo el mundo tiene un voto.'
-
-# election_is_on: 'La elección presidencial de 2016 es el'
-# election_date: 'martes, 8 de noviembre'
-# thats: 'Eso es '
-# days_away: 'días a partir de ahora'
   will_drive: "Puedo manejar"
   will_drive_signup_description: "Conducir para votar le enviará una confirmación después de su inscripción, y se ponga en contacto antes de la elección con más información."
   i_need_ride: "Necesito que me lleven"
@@ -105,7 +100,7 @@ es:
 
   what_is_your_name: '¡Gracias! ¿Cuál es su nombre?'
   empty_need_name: 'Lo sentimos, por favor, responda con su nombre'
-  bot_stalled: 'Lo siento, no compredo. Alguien se pondrá en contacto en breve'
+  bot_stalled: 'Alguien se pondrá en contacto en breve'
   what_is_pickup_location: 'Hola %{name}. ¿Dónde desea ser recogido - dirección y la ciudad?'
   ride_too_far: 'Esa dirección es demasiado lejos. Por favor, inténtelo de nuevo.'
   too_many_addresses: 'Demasiados partidos! Por favor, responda todas las direcciones y ciudad específica o responder "no sé" o "omitir"'
@@ -122,6 +117,7 @@ es:
   any_special_requests: '¿Cuáles son sus peticiones especiales (como silla de ruedas, asientos de bebé)? O responder ninguno.'
   thanks_will_contact: '¡Gracias! Tenemos su información y nos pondremos en contacto con usted antes de su viaje.'
   thanks_wait_for_driver: '¡Gracias! Tenemos su información y nos pondremos en contacto con usted cuando nos encontramos con un conductor para usted.'
+  auto_confirmed_wait_for_driver: "Su viaje is scheduled for %{time}. You don't need to do anything. Responda 4 para hablar con alguien"
   canceled_thanks_for_using: 'A su solicitud, su viaje ha sido cancelado. Gracias por intentar Conduzca el Voto.'
   confirm_ride: 'Su paseo está programado para %{time}. Responda 1 para confirmar, 2 para reprogramar, 3 para cancelar, 4 para hablar con alguien.'
   ride_not_confirmed: 'Lo siento, no escuchamos de usted. Alguien se pondrá en contacto con usted.'

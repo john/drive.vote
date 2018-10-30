@@ -218,7 +218,7 @@ class ConversationBot
     # Lifecycle: have language and name and confirmed origin and destination and confirmed time and passengers
     # Look for: special requests
     # And fini!
-    @conversation.update_attribute(:special_requests, @body)
+    @conversation.update_attribute(:special_requests, @body) unless @body.downcase.strip == 'none'
     Ride.create_from_conversation(@conversation)
     set_wait_response
     0
@@ -274,7 +274,7 @@ class ConversationBot
           @response = I18n.t(:no_address_match, locale: @locale)
           return @bot_counter + 1
         end
-
+        
         results = GooglePlaces.search(@body + ' ' + @conversation.ride_zone.state)
         if results.count == 1
           result = results.first

@@ -94,7 +94,8 @@ class Ride < ApplicationRecord
         end
         
         begin
-          result = ride.conversation.attempt_confirmation
+          result = ride.conversation.send_confirmation
+          
           results[result] += 1
         rescue => e
           logger.error "Got error trying to confirm conversation #{ride.conversation.id}: #{e.message}"

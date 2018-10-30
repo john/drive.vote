@@ -1,3 +1,6 @@
+-# Most of the content that will fill below gets jacked in by the javascript in _messages.html.haml
+-# since it's only after a ride has been clicked on that we'll know what belongs here.
+
 .modal.fade.modal-body#conv-modal{"aria-labelledby" => "conv-modal-title", :role => "dialog", :tabindex => "-1"}
   .modal-dialog.modal-lg{:role => "document"}
     .modal-content
@@ -19,14 +22,12 @@
 
             %td{style: 'width: 340px;'}
               #conversation-messages
-
-              - if @conversation
-                .msg-reply
-                  #msg-input{ contenteditable: true}
-                  = button_tag 'Send', id: 'msg-submit', class: 'btn btn-send btn-primary btn-xs pull-right'
-              - else
-                %p
-                  = 'No number on record for this voter. No messages available.'
+              .msg-reply
+                #msg-input{ contenteditable: true}
+                = button_tag 'Send', id: 'msg-submit', class: 'btn btn-send btn-primary btn-xs pull-right'
+              %p.no-phone
+                No number on record for this voter.
+                
           %tr
             %td
             %td
