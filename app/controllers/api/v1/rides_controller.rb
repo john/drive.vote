@@ -33,9 +33,14 @@ module Api::V1
       end
     end
 
+    # /api/1/rides/confirm_scheduled
     def confirm_scheduled
-      Ride.confirm_scheduled_rides
-      render text: 'ok'
+      if request.headers["X-Token"].present? && request.headers["X-Token"] == ENV["PING_API_SECRET"]
+        Ride.confirm_scheduled_rides
+        render plain: "OK"
+      else
+        head 404
+      end
     end
   end
 end
