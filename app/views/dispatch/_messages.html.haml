@@ -1,4 +1,6 @@
-- if (@conversation.user.phone_number_normalized.present? && !@conversation.messages.empty?)
+-# Mashing haml around with js is not the way to do this.
+
+- if (@conversation&.user&.phone_number_normalized.present? && @conversation.messages.any?)
   .messages
     - @conversation.messages.order('created_at asc').each do |message|
       - if @conversation.user.phone_number_normalized.present?
@@ -12,7 +14,7 @@
           = message.body
 
 -# just to make the javascript below a little easier to read
-- if @conversation.ride.status == 'canceled'
+- if @conversation&.ride&.status == 'canceled'
   - close_button = ''
 - else
   - close_button = j( link_to "Archive Ride", '#', class: 'btn btn-xs btn-warning archive-convo' )
@@ -21,14 +23,25 @@
   - block_button = j( link_to 'Unblock #', '#', class: 'btn btn-default btn-xs unblock-convo' )
 - else
   - block_button = j( link_to 'Block #', '#', class: 'btn btn-danger btn-xs block-convo' )
-  
+
 
 - if @conversation.user.name.include?('via sms')
   - title = @conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')
 - else
   - title = "#{h @conversation.user.name} <span>#{@conversation.user.phone_number_normalized.present? ? @conversation.user.phone_number.phony_formatted(normalize: :US, spaces: '-') : ''}</span>".html_safe
 
+- if @conversation&.user&.phone_number_normalized.present?
+  - show_messages = "show();"
+  - no_phone = "hide();"
+- else
+  - show_messages = "hide();"
+  - no_phone = "show();"
+
 :javascript
+  $('#conversation-messages').#{show_messages}
+  $('.msg-reply').#{show_messages}
+  $('.no-phone').#{no_phone}
+
   // now that we have the conversation object, populate the modal header
   $('#conv-modal-title').html( "#{title}" );
 
@@ -52,7 +65,7 @@
     }
     e.preventDefault();
   });
-  
+
   $('.unblock-convo').click(function(e) {
     if (confirm("Are you sure you want to unblock phone number #{@conversation.from_phone}?" )) {
       $.post( "#{unblacklist_voter_phone_admin_conversation_path(@conversation)}", function(responseData, status, xhr) {
@@ -63,7 +76,7 @@
     }
     e.preventDefault();
   });
-  
+
   $('.block-convo').click(function(e) {
     if (confirm("Are you sure you want to permanently block this phone number, #{@conversation.from_phone}?" )) {
       $.post( "#{blacklist_voter_phone_admin_conversation_path(@conversation)}", function(responseData, status, xhr) {

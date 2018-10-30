@@ -60,12 +60,6 @@ en:
   how_to_help: 'How to Help'
   how_to_help_copy1: 'If you have a car and can be in'
   how_to_help_copy2:  'on election day, volunteer to be a driver! Help get voters to the polls on November 6th and make sure everyone has a vote.'
-
-# home2: 'You can sign up as either a driver or a passenger--or just join the community to get information about where you polling place is, who your elected officials are, and whose running for office in your community.'
-# election_is_on: 'The 2016 Election is on'
-# election_date: 'Tuesday, November 6'
-# thats: "That's"
-# days_away: 'days from now'
   will_drive: "Volunteer to Drive"
   will_drive_signup_description: "Drive the Vote will send you a confirmation after you sign up, and contact you before the election with more information."
   i_need_ride: "Request a Ride"
@@ -110,7 +104,7 @@ en:
 
   what_is_your_name: 'Thanks! What is your name?'
   empty_need_name: "Sorry, I didn't get a response. What is your name?"
-  bot_stalled: "I'm sorry, I don't understand. Someone will contact you soon"
+  bot_stalled: "Someone will assist you shortly."
   what_is_pickup_location: 'Hello %{name}. Where do you want to be picked up - address and city?'
   ride_too_far: 'That address is too far away. Please try again.'
   too_many_addresses: "Too many matches! Please reply with specific address and city or reply \"don't know\" or \"skip\"."
@@ -127,6 +121,7 @@ en:
   any_special_requests: 'What are your special requests (like wheelchair, car seats)? Or reply none.'
   thanks_will_contact: 'Thank you! We have your info and will contact you before your ride.'
   thanks_wait_for_driver: 'Thank you! We have your info and will contact you when we find a driver for you.'
+  auto_confirmed_wait_for_driver: "Your Drive the Vote ride is scheduled for %{time}. You don't need to do anything. Reply with 4 if you need to speak to someone."
   canceled_thanks_for_using: 'At your request, your ride has been canceled. Thanks for trying Drive the Vote'
   confirm_ride: 'Your Drive the Vote ride is scheduled for %{time}. Reply 1 to confirm, 2 to reschedule, 3 to cancel, 4 to speak to someone'
   ride_not_confirmed: 'Sorry we did not hear from you. Someone will contact you.'

@@ -33,7 +33,7 @@ class Conversation < ApplicationRecord
     info_complete: 1000,
     requested_confirmation: 1100,
   }
-  
+
   def api_json(include_messages = false)
     fields = [:id, :user_id, :pickup_at, :status, :lifecycle, :from_phone,
               :from_latitude, :from_longitude, :to_latitude, :to_longitude, :additional_passengers, :blacklisted_phone_number]
@@ -125,8 +125,8 @@ class Conversation < ApplicationRecord
     to_phone = user.phone_number_normalized
     c = Conversation.create({ride_zone: ride_zone, user: user, from_phone: from_phone,
                             to_phone: to_phone, status: status}.merge(attrs))
-                            
-    
+
+
     if to_phone.present? && timeout != -1
       sms = send_staff_sms(ride_zone, user, body, timeout)
       if sms.is_a?(String)
@@ -135,7 +135,7 @@ class Conversation < ApplicationRecord
       end
       Message.create_from_staff(c, sms)
     end
-    
+
     c
   end
 
@@ -187,7 +187,7 @@ class Conversation < ApplicationRecord
   def lifecycle_str
     self.lifecycle.gsub('_', ' ').titleize
   end
-  
+
   def message_count
     self.messages.count
   end
@@ -226,12 +226,26 @@ class Conversation < ApplicationRecord
     user.language == 'unknown' ? 'en' : user.language
   end
 
+  # This confirms them immediately, then sends a text so they can talk to someone if they need to
+  def send_confirmation
+    ActiveRecord::Base.transaction do
+      ride.update_attributes(status: :waiting_assignment) if ride.status == 'scheduled'
+      update_attributes(ride_confirmed: true)
+
+      body = I18n.t(:auto_confirmed_wait_for_driver, locale: user_language, time: ride.pickup_in_time_zone.strftime('%l:%M %P'))
+
+      sms = Conversation.send_staff_sms(ride_zone, user, body, Rails.configuration.twilio_timeout)
+    end
+    return 'scheduled_ride_auto_confirm'
+  end
+
+  # This sends a text and they're confirmed if they respond to it with a '1'
   # returns a string with category of result
   def attempt_confirmation
     result = 'waiting_confirmation'
     if self.ride_confirmed.nil? && self.user
       body = I18n.t(:confirm_ride, locale: user_language, time: ride.pickup_in_time_zone.strftime('%l:%M %P'))
-      
+
       sms = Conversation.send_staff_sms(ride_zone, user, body, Rails.configuration.twilio_timeout)
       if Conversation.unreachable_phone_error(sms)
         # go ahead and promote b/c we can't reach the voter
@@ -241,15 +255,15 @@ class Conversation < ApplicationRecord
         end
         return 'bad_phone_auto_confirm'
       end
-      
+
       return 'twilio_error' if sms.is_a?(String) # error sending, will try again
-      
+
       ActiveRecord::Base.transaction do
         Message.create_from_bot(self, sms)
         update_attributes(ride_confirmed: false, bot_counter: 0, status: :ride_created)
       end
       result = 'sent_confirm_request'
-      
+
     elsif self.ride_confirmed == false && Time.now > ride.pickup_at
       # ride has not been confirmed and pickup time has passed, auto_confirm
       # go ahead and promote b/c we can't reach the voter

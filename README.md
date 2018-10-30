@@ -34,7 +34,7 @@ Certain features require you to add a .env file to the root app directory contai
  
 You can generate the value for SECRET_KEY_BASE by running `bundle exec rake secret`.
 
-The Twilio values are used for sms interactions with voters and can be obtained from your Twilio account, which you'll also use to [create a Twilio number](https://github.com/john/drive.vote/wiki/Buying-and-Configuring-Twilio-Numbers) with sms capabilities, and update the ride zone you want to work with to use it.
+The Twilio values are used for sms interactions with voters and can be obtained from your Twilio account, which you'll also use to [create a Twilio number](https://github.com/john/drive.vote/wiki/Buying-and-Configuring-Twilio-Numbers) with sms capabilities, and update the ride zone you want to work with to use it. Using Twilio numbers during local dev requires setting up [ngrok](https://www.twilio.com/blog/2013/10/test-your-webhooks-locally-with-ngrok.html).
 
 GOOGLE_API_KEY is used for geolocation, and can be created in the [Google API console](https://console.cloud.google.com/apis/). Enable all geo APIs for the key.
 
@@ -82,7 +82,19 @@ If you don't want to use foreman, you have to run the rails server (Puma) and th
 
 If adding or modifying tests that will make new calls to the Google Maps APIs, you'll need to run with a valid `GOOGLE_API_KEY`, both to get your tests to pass, and also to refill the cached test data for use in later runs (including CI). See the discussion in `spec/rails_helpers.rb` for instructions on how to run with a live API Key.
 
-## Running the app locally
+## Running cron or a scheduled Lambda to promote rides
+
+A process needs to run every minute or so to check scheduled rides, and promote ones that are approaching their pickup time from 'scheduled' to 'waiting assignment,' so that they become available to drivers. That process needs to POST to this url, which will promote imminent rides: `/api/1/rides/confirm_scheduled`.
+
+The preferred production setup is to run a dedicated worker instance, but any instance acting as a worker (dedicated or not), needs to have the DTV_IS_WORKER env var set to TRUE.
+
+The call to confirm_scheduled can be made via cron or using the scheduled AWS Lambda [available in this repo.](https://github.com/john/drive.vote/blob/master/vendor/lambda/lambda_handler.py)
+
+## The conversation bot
+
+In practice it turns out scheduled rides seem to be the primary use case. The app also supports on-demand rides via SMS. In that case information is gathered by a basic text bot, information about which can be found in [converation_bot.md](https://github.com/john/drive.vote/blob/master/docs/converation_bot.md)
+
+## Using the app locally
 
 Go to http://localhost:3000 and log in as the generic admin with email `seeds@drive.vote` and password `1234abcd`. Since this account has admin privileges, logging in with it takes you directly to the admin site. If it has only driver privileges, it would take you to the driver app, and if only dispatcher privileges, to the dispatch page for the ride zone attached to your account. If for some reason your account has no privileges at all, you'll end up at the homepage, but that shouldn't happen. Note the accounts in seeds.rb don't exist in production, so don't get cute.
 

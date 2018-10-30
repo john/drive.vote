@@ -341,7 +341,7 @@ RSpec.describe Ride, type: :model do
       Ride.create_from_conversation(c2).update_attribute(:status, :waiting_assignment)
       Ride.create_from_conversation(c3)
       stub_const('Ride::SWITCH_TO_WAITING_ASSIGNMENT', 30) # only c1 should now match
-      expect_any_instance_of(Conversation).to receive(:attempt_confirmation).once
+      expect_any_instance_of(Conversation).to receive(:send_confirmation).once
       Ride.confirm_scheduled_rides
       expect(c1.reload.status).to eq('ride_created')
     end
