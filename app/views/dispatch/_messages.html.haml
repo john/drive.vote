@@ -1,12 +1,15 @@
-.messages
-  - @conversation.messages.order('created_at asc').each do |message|
-    .message{style: "text-align: #{(message.sent_by == 'Voter') ? 'left' : 'right'}"}
-      %code
-        %span.msg-epoch
-          = message.created_at.to_i
-        , #{message.sent_by}
-      .msg-body
-        = message.body
+- if (@conversation.user.phone_number_normalized.present? && !@conversation.messages.empty?)
+  .messages
+    - @conversation.messages.order('created_at asc').each do |message|
+      - if @conversation.user.phone_number_normalized.present?
+        .message{style: "text-align: #{(message.sent_by == 'Voter') ? 'left' : 'right'}"}
+
+        %code
+          %span.msg-epoch
+            = message.created_at.to_i
+          , #{message.sent_by}
+        .msg-body
+          = message.body
 
 -# just to make the javascript below a little easier to read
 - if @conversation.ride.status == 'canceled'
@@ -23,7 +26,7 @@
 - if @conversation.user.name.include?('via sms')
   - title = @conversation.from_phone.phony_formatted(normalize: :US, spaces: '-')
 - else
-  - title = "#{h @conversation.user.name} <span>#{@conversation.user.phone_number.phony_formatted(normalize: :US, spaces: '-')}</span>".html_safe
+  - title = "#{h @conversation.user.name} <span>#{@conversation.user.phone_number_normalized.present? ? @conversation.user.phone_number.phony_formatted(normalize: :US, spaces: '-') : ''}</span>".html_safe
 
 :javascript
   // now that we have the conversation object, populate the modal header
