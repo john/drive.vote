@@ -1,37 +1,53 @@
 .description
   %h1.hed
     #{t(:drive_the_vote)}
-  %h2.subhed
+  %p.subhed
     = t(:short_description).gsub( /\n+/, "<br>" ).html_safe
 
   %p{style: "text-align: center;"}
     .embed-container
       <iframe width="560" height="315" src="https://www.youtube.com/embed/HVhfCqXHTW0?modestbranding=1&amp;rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-  %h3.how-it-works
-    = t(:how_it_works)
+  %h2
+    Need a ride?
+  %p
+    For 2018, we're working with local partners in three congressional districts to provide rides to the polls. To schedule a ride, call the numbers below, or if you're not in one of these areas call your local Democratic party office.
+
+  %div.row
+    %div.col-md-4
+      %p.text-center
+        California 25th<br>
+        <a href="tel:+12133548858" title="Call for a ride in California 25">(213) 354-8858</a>
+    %div.col-md-4
+      %p.text-center
+        Texas 14th<br>
+        <a href="tel:+17137661273" title="Call for a ride in Texas 14">(713) 766-1273</a>
+    %div.col-md-4
+      %p.text-center
+        Wisconsin 1st<br>
+        <a href="tel:+12626724876" title="Call for a ride in Wisconsin 1">(262) 672-4876</a>
+
+  %h2
+    Want to help?
 
   %p
-    -#= t(:how_it_works_copy)
-      Voters send a text or register online to request a ride, and Drive the Vote connects them with a volunteer driver, who picks them up and takes them to their polling place.
-    
-    Drive the Vote is a ride-matching, dispatching, and monitoring app to help you get out the vote. We work with local partners, who use Drive the Vote to schedule rides either in advance or on-demand. They system then connects them with a volunteer driver, who picks them up and takes them to their polling place.
-    
-  %h3.how-to-help
-    = t(:how_to_help)
-    
-  %p
-    Drive the Vote is produced by Ragtag volunteers. You can learn more at <a href="https://ragtag.org/drive-the-vote">Ragtag.org</a>.
-    
-  -#
-    / %p
-    /   Drive the Vote will be deployed in select swing races. If you live an area with a tight national race, are affiliated with a campaign organization or similar group, and are willing to devote significant time to organizing and training drivers and running a ride system, please contact <a href="mailto:hello@drive.vote">hello@drive.vote</a>.
-    
-    
-  %h3
+    If you'd like to volunteer in one of our three areas, click the button below. If you're not near one of our supported areas, check out <a href="https://thelastweekend.org" title="The Last Weekend">TheLastWeekend.org</a> for volunteer opportunities in your area.
+
+  %div.row
+    %div.col-md-4
+      %p.text-center
+        <a href="/volunteer/ca-25" class="btn btn-info" title="Volunteer to drive in California 25">Drive in California 25th</a>
+    %div.col-md-4
+      %p.text-center
+        <a href="/volunteer/tx-14" class="btn btn-info" title="Volunteer to drive in Texas 14">Drive in Texas 14th</a>
+    %div.col-md-4
+      %p.text-center
+        <a href="/volunteer/wi-1" class="btn btn-info" title="Volunteer to drive in Wisconsin 1">Drive in Wisconsin 1st</a>
+
+  %h2
     About Ragtag
   %p
     Ragtag is a team of tech volunteers who help activists, organizers, non-profits, and candidates break down tech barriers making it easier to achieve their organizing goals. Learn more at <a href="https://ragtag.org">Ragtag.org</a>.
-    
+
   %p.text-center
-    <a href="https://ragtag.org"><img src="https://assets.ragtag.tech/ragtag-mark.svg" width="132.45" height="30" alt="Ragtag"></a>
+    <a href="https://ragtag.org/?utm_medium=web&amp;utm_source=drive.vote&amp;utm_name=empowered-badge"><img src="https://assets.ragtag.tech/empowered-by-ragtag.svg" alt="Empowered by Ragtag"></a>
