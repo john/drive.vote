@@ -19,7 +19,7 @@ const Header = ({ phone_number, ride_zone_id }) => (
 
 Header.propTypes = {
   ride_zone_id: PropTypes.number,
-  phone_number: PropTypes.string
+  phone_number: PropTypes.string,
 };
 
 export default Header;

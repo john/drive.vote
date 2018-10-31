@@ -10,7 +10,10 @@ import AppError from '../components/AppError';
 
 const AppUnconnected = props => (
   <div className={props.isFetching ? 'fetching' : ''}>
-    <Header phone_number={props.ride_zone_stats.phone_number} ride_zone_id={props.ride_zone_id} />
+    <Header
+      phone_number={props.ride_zone_stats.phone_number}
+      ride_zone_id={props.ride_zone_id}
+    />
     <AppError error={props.error} clearError={props.clearError} />
     <div className="container p-a-0">
       {React.cloneElement(props.children, props)}
