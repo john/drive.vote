@@ -111,6 +111,7 @@ class RideZone < ApplicationRecord
   def driving_stats
     # todo: cache this (redis? memcache?) to avoid excessive db queries
     {
+      phone_number: self.phone_number,
       total_drivers: drivers.count,
       available_drivers: drivers.where(available: true).count,
       completed_rides: Ride.where(ride_zone_id: self.id, status: :complete).count,

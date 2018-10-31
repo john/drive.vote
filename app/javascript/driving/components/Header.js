@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Header = ({ ride_zone_id }) => (
+const Header = ({ phone_number, ride_zone_id }) => (
   <nav className="container text-center p-y-sm">
     <a>
       <img
@@ -10,6 +10,7 @@ const Header = ({ ride_zone_id }) => (
       />
     </a>
     <div className="pull-right nav-links">
+      {phone_number && <a href={`tel:${phone_number}`}>Call Dispatch</a>}
       {ride_zone_id && <a href={`./ride/${ride_zone_id}`}>Request a ride</a>}
       <a href="./users/sign_out">Sign out</a>
     </div>
@@ -18,6 +19,7 @@ const Header = ({ ride_zone_id }) => (
 
 Header.propTypes = {
   ride_zone_id: PropTypes.number,
+  phone_number: PropTypes.string
 };
 
 export default Header;

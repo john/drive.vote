@@ -10,7 +10,7 @@ import AppError from '../components/AppError';
 
 const AppUnconnected = props => (
   <div className={props.isFetching ? 'fetching' : ''}>
-    <Header ride_zone_id={props.ride_zone_id} />
+    <Header phone_number={props.ride_zone_stats.phone_number} ride_zone_id={props.ride_zone_id} />
     <AppError error={props.error} clearError={props.clearError} />
     <div className="container p-a-0">
       {React.cloneElement(props.children, props)}
@@ -34,12 +34,17 @@ const App = connect(
   mapDispatchToProps
 )(AppUnconnected);
 
+AppUnconnected.defaultProps = {
+  ride_zone_stats: {},
+};
+
 AppUnconnected.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   children: PropTypes.node,
   clearError: PropTypes.func.isRequired,
   error: PropTypes.string,
   ride_zone_id: PropTypes.number,
+  ride_zone_stats: PropTypes.object,
 };
 
 export default App;

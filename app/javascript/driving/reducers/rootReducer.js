@@ -51,6 +51,7 @@ export function appReducer(state = defaultState, action) {
         ...state,
         isFetching: false,
         ride_zone_stats: {
+          phone_number: action.payload.response.phone_number,
           total_drivers: action.payload.response.total_drivers,
           available_drivers: action.payload.response.available_drivers,
           completed_rides: action.payload.response.completed_rides,

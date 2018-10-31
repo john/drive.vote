@@ -80,9 +80,7 @@ const renderButtons = props => {
           >
             Cancel Pickup
           </button>
-          <p className="text-center">
-            Makes available to other drivers
-          </p>
+          <p className="text-center">Makes available to other drivers</p>
           <button
             className="btn btn-outline btn-api m-t-md"
             onClick={() => archiveRide(ride)}
