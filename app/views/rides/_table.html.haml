@@ -69,4 +69,7 @@
             
           - else
             - if ride.conversation.present?
+              = link_to 'Edit', dispatch_edit_ride_path(ride.ride_zone.slug, ride.id), class: 'btn btn-default btn-xs'
+              &nbsp; 
               = link_to 'Archive', close_admin_conversation_path(ride.conversation), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure? Conversations normally close themselves, only use this for orphans, bad actors, etc.' }, method: :POST
+

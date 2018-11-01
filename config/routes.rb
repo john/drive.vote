@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   match '/terms_of_service' => 'home#terms_of_service', via: :get, as: :terms_of_service
   match '/privacy' => 'home#privacy', via: :get, as: :privacy
 
+  get 'dispatch/:ride_zone_id/ride/:ride_id/edit' => 'dispatch#edit_ride', as: 'dispatch_edit_ride'
   resources :dispatch, only: [:show] do
     member do
       get 'messages' => 'dispatch#messages'
