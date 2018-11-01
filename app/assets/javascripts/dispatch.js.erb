@@ -20,18 +20,18 @@ function DispatchController(rideZoneId, mapController, botDisabled) {
     };
 
   this._statusPinURLs = {
-    messaging: "<%= asset_path('rider-waiting-assignment.png')%>",
-    help_needed: "<%= asset_path('rider-overdue-pickup.png')%>",
-    scheduled: "<%= asset_path('rider-waiting-assignment.png')%>",
-    waiting_acceptance: "<%= asset_path('rider-waiting-assignment.png')%>",
-    waiting_assignment: "<%= asset_path('rider-waiting-assignment.png')%>",
-    new_ride: "<%= asset_path('rider-waiting-assignment.png')%>",
-    assignment_overdue: "<%= asset_path('rider-overdue-assignment.png')%>",
-    waiting_pickup: "<%= asset_path('rider-waiting-pickup.png')%>",
-    pickup_overdue: "<%= asset_path('rider-overdue-pickup.png')%>",
-    driving: "<%= asset_path('driver-driving.png')%>",
-    completion_overdue: "<%= asset_path('driver-driving-overdue.png')%>",
-    complete: "<%= asset_path('driver-driving.png')%>"
+    messaging: "<%= asset_path('rider-needs-driver.svg')%>",
+    help_needed: "<%= asset_path('rider-pickup-overdue.svg')%>",
+    scheduled: "<%= asset_path('rider-needs-driver.svg')%>",
+    waiting_acceptance: "<%= asset_path('rider-needs-driver.svg')%>",
+    waiting_assignment: "<%= asset_path('rider-needs-driver.svg')%>",
+    new_ride: "<%= asset_path('rider-needs-driver.svg')%>",
+    assignment_overdue: "<%= asset_path('rider-assignment-overdue.svg')%>",
+    waiting_pickup: "<%= asset_path('rider-waiting-for-pickup.svg')%>",
+    pickup_overdue: "<%= asset_path('rider-pickup-overdue.svg')%>",
+    driving: "<%= asset_path('driver-driving.svg')%>",
+    completion_overdue: "<%= asset_path('driver-overdue.svg')%>",
+    complete: "<%= asset_path('driver-driving.svg')%>"
   };
 
   // Maps the conversation statuses to the table they should appear in
