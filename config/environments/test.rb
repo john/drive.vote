@@ -17,7 +17,7 @@ Rails.application.configure do
   config.public_file_server.headers = {
     'Cache-Control' => 'public, max-age=3600'
   }
-
+  
 
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
@@ -51,8 +51,6 @@ Rails.application.configure do
   # rspec is run by hand often w/o a server wrapped around it. Force this to false to always build the
   # JS bundle for tests. We can get more fancy if this becomes a productivity bottleneck.
   # config.webpack.dev_server.enabled = false
-
-  config.log_level = :debug
 
   # Set this in the calling environment to run tests with verbose debug logging. Via docker,
   # this might be something like:

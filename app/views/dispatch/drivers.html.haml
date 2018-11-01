@@ -77,6 +77,9 @@
                     &#9208;
                 - else
                   = link_to raw('&#9208;'), toggle_available_admin_driver_path(id: driver.id), method: :post, title: "take driver off duty"
+              - else
+                -# play-button emoji
+                = link_to raw('&#9654;'), toggle_available_admin_driver_path(id: driver.id), method: :post, title: "put driver on duty"
 
     - else
       %tr

@@ -5,7 +5,7 @@ class User < ApplicationRecord
   HUMANIZED_ATTRIBUTES = {
       :phone_number_normalized => 'Phone Number' # don't need to expose the "normalized" field to users
   }
-
+  
   DUMMY_PHONE_NUMBER = '+15555555555'
 
   # Include default devise modules. Others available are:
@@ -34,7 +34,7 @@ class User < ApplicationRecord
 
   # TODO: We should probably remove this check post-midterms, to support drivers who are travelling from out of state to drive.
   VALID_STATES = {'CA' => 'California', 'DC' => 'District of Columbia', 'FL' => 'Florida', 'HI' => 'Hawaii', 'IL' => 'Illinois', 'NV' => 'Nevada', 'NY' => 'New York', 'OH' => 'Ohio', 'PA' =>'Pennsylvania', 'TN' => 'Tennessee', 'TX' => 'Texas', 'UT' => 'Utah', 'WI' => 'Wisconsin'}
-
+  
   has_many :rides, foreign_key: :voter_id, dependent: :destroy
   has_many :conversations, foreign_key: :user_id, dependent: :destroy
 
@@ -61,9 +61,9 @@ class User < ApplicationRecord
 
   validates_format_of :email, with: URI::MailTo::EMAIL_REGEXP
   validates_format_of :name, with: /\A[^"@\n]*\z/
-
+  
   validates :phone_number_normalized, phony_plausible: true, allow_blank: true, uniqueness: { message: 'already in use by another account' }
-
+  
   validate :permissible_user_type
   validate :permissible_zip, if: -> (obj) { obj.zip_changed? || obj.new_record? }
   validate :permissible_state, if: -> (obj) { obj.state_changed? || obj.new_record? }
@@ -86,7 +86,7 @@ class User < ApplicationRecord
   def self.html5_state_pattern
     "#{VALID_STATES.collect{|s| " #{s[0]}| #{s[0].downcase}|"}.join('')}"
   end
-
+  
   def self.autogenerate_email
     "#{Time.now.to_f}_#{rand(5 ** 10).to_s.rjust(5,'0')}@example.com"
   end
@@ -136,7 +136,7 @@ class User < ApplicationRecord
       end
     end
   end
-
+  
   def self.find_from_potential_ride( potential_ride )
     user = User.find_by_email( potential_ride.email )
     unless potential_ride.phone_number.empty? || potential_ride.phone_number_normalized == '+15555555555'
@@ -144,14 +144,15 @@ class User < ApplicationRecord
     end
     user
   end
-
+  
   def self.create_from_potential_ride( potential_ride )
     attrs = User.potential_ride_user_attrs( potential_ride )
     user = User.create!( attrs )
   end
-
+  
   def self.potential_ride_user_attrs( potential_ride )
     phone_number = potential_ride.phone_number.present? ? potential_ride.phone_number : ''
+    
     {
       name: potential_ride.name,
       email: potential_ride.email,
@@ -248,7 +249,7 @@ class User < ApplicationRecord
       where(status: Ride.active_statuses + Ride.open_statuses).
       exists?
   end
-
+  
   def recent_complete_ride
     self.rides.merge(Ride.completed).order('updated_at desc').first
   end

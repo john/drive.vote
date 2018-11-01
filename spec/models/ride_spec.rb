@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Ride, type: :model do
-  #it_behaves_like 'to_from_addressable'
+  it_behaves_like 'to_from_addressable'
 
   it { should belong_to(:ride_zone) }
   it { should belong_to(:voter) }
@@ -371,7 +371,7 @@ RSpec.describe Ride, type: :model do
     r = create :ride, driver: (create :user, name: '&')
     expect(r.api_json['driver_name']).to eq('&amp;')
   end
-
+  
   it 'can be created from a potential_ride' do
     user = create :user
     potential_ride = create :potential_ride
@@ -380,39 +380,4 @@ RSpec.describe Ride, type: :model do
     expect(ride).to be_a Ride
     expect(potential_ride.status).to eq("converted")
   end
-
-  it "has_conversation_with_messages? returns true if they're both true" do
-    ride = create(:ride, from_city_state: 'Houston, TX' )
-    convo = create(:conversation_with_messages)
-    ride.conversation = convo
-    expect(ride.has_conversation_with_messages?).to eq(true)
-  end
-
-  it "has_conversation_with_messages? returns false if only one is true" do
-    # had trouble creating a factory to do this
-    ride = create(:ride, from_city_state: 'Houston, TX' )
-    convo = create(:conversation)
-    ride.conversation = convo
-    expect(ride.has_conversation_with_messages?).to eq(false)
-  end
-
-  it "has_conversation_with_messages? returns false if neither are true" do
-    ride = create(:ride, from_city_state: 'Houston, TX' )
-    expect(ride.has_conversation_with_messages?).to eq(false)
-  end
-
-  it 'breaks out city and state from the combined to_city_state field' do
-    ride = create(:ride, to_city_state: 'Los Angeles, CA' )
-    ride.break_out_city_state( 'to' )
-    expect(ride.to_city).to eq('Los Angeles')
-    expect(ride.to_state).to eq('CA')
-  end
-
-  it 'breaks out city and state from the combined from_city_state field' do
-    ride = create(:ride, from_city_state: 'Houston, TX' )
-    ride.break_out_city_state( 'from' )
-    expect(ride.from_city).to eq('Houston')
-    expect(ride.from_state).to eq('TX')
-  end
-
 end

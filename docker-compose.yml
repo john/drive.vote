@@ -1,6 +1,6 @@
 version: '2'
 services:
-
+    
   web:
     build:
       context: ./
@@ -20,17 +20,17 @@ services:
       - db
     stdin_open: true
     tty: true
-
+    
   db:
     image: 'postgres:10.5-alpine'
     ports:
       - "5432:5432"
-
+    
   redis:
     image: 'redis:4.0.11-alpine'
     ports:
       - "6379:6379"
-
+    
   mail:
     image: mailhog/mailhog:latest
     ports:

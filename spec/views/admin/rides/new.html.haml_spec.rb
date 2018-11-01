@@ -12,5 +12,14 @@ RSpec.describe "admin/rides/new", type: :view do
 
   it "renders" do
     render
+
+    # assert_select "form[action=?][method=?]", rides_path, "post" do
+    #
+    #   assert_select "input#ride_name[name=?]", "ride[name]"
+    #
+    #   assert_select "textarea#ride_description[name=?]", "ride[description]"
+    #
+    #   assert_select "input#ride_status[name=?]", "ride[status]"
+    # end
   end
 end

@@ -3,7 +3,6 @@ FactoryGirl.define do
   factory :ride do
     ride_zone
     status 0
-    to_address '123 Main'
     association :voter, factory: :voter_user
     name "Doug's ride"
     description 'Needs to get to work before 9am'
