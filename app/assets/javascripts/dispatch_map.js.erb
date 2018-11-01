@@ -41,15 +41,15 @@ function Mapp(element, callback, args)
 
 // Built-in icon options.
 Mapp.icons = {
-  driver:  {w: 42, h: 42, url: "<%= asset_path('driver-available.svg')%>"},
+  driver:  {w: 24, h: 24, url: "<%= asset_path('driver-available.svg')%>"},
   poll:    {w: 30, h: 45, url: "<%= asset_path('icon-poll.svg')%>"},
-  open_driver: {w: 42, h: 42, url: "<%= asset_path('driver-available.svg')%>"},
-  assigned_driver: {w: 42, h: 42, url: "<%= asset_path('driver-assigned.svg')%>"},
-  driving_driver: {w: 42, h: 42, url: "<%= asset_path('driver-driving.svg')%>"},
-  waiting_assignment: {w: 20, h: 42, url: "<%= asset_path('rider-needs-driver.svg')%>"},
-  overdue_assignment: {w: 20, h: 42, url: "<%= asset_path('rider-assignment-overdue.svg')%>"},
-  waiting_pickup: {w: 20, h: 42, url: "<%= asset_path('rider-waiting-for-pickup.svg')%>"},
-  overdue_pickup: {w: 20, h: 42, url: "<%= asset_path('rider-pickup-overdue.svg')%>"},
+  open_driver: {w: 24, h: 24, url: "<%= asset_path('driver-available.svg')%>"},
+  assigned_driver: {w: 24, h: 24, url: "<%= asset_path('driver-assigned.svg')%>"},
+  driving_driver: {w: 24, h: 24, url: "<%= asset_path('driver-driving.svg')%>"},
+  waiting_assignment: {w: 16, h: 32, url: "<%= asset_path('rider-needs-driver.svg')%>"},
+  overdue_assignment: {w: 16, h: 32, url: "<%= asset_path('rider-assignment-overdue.svg')%>"},
+  waiting_pickup: {w: 16, h: 32, url: "<%= asset_path('rider-waiting-for-pickup.svg')%>"},
+  overdue_pickup: {w: 16, h: 32, url: "<%= asset_path('rider-pickup-overdue.svg')%>"},
 
   // Used when no other icon is provided.
   default: {w: 30, h: 45, url: "<%= asset_path('/icon-default.svg')%>"}
@@ -168,7 +168,7 @@ Mapp.prototype = {
        gicon = {url: icon.url,
          size: {width: icon.w, height: icon.h},
          anchor: {x: icon.w/2, y: icon.h},
-         scaledSize: new google.maps.Size(21, 34),
+         scaledSize: new google.maps.Size(icon.w, icon.h),
          labelOrigin: {x: icon.w/2, y: 0}},
       gmarker = new google.maps.Marker({
         position: {lat: lat, lng: lon},
