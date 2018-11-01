@@ -23,53 +23,51 @@
             = link_to "#{ride.voter.name}", admin_user_path(ride.voter)
             %div{style: 'font-size: 12px; margin-top: 0px; color: #999'}
               #{[ride.from_address, ride.from_city].join(', ')}
-        
+
         - if admin
           %td
             = ride.ride_zone.nil? ? 'none' : ride.ride_zone.name
         %td
           = ride.driver.nil? ? '' : ride.driver.name
-          
+
         %td
           - style = "font-size: 12px; width: 90px; padding: 3px;"
-          
+
           - if ride.pickup_at.utc < Time.now.utc
-            - style += " color: white; background-color: #d71e14;" 
-          
+            - style += " color: white; background-color: #d71e14;"
+
           - elsif ride.pickup_at.utc < Time.now.utc + 10.minutes
             - style += " color: white; background-color: orange;"
-          
+
           - elsif ride.pickup_at.utc < Time.now.utc + 30.minutes
             - style += " color: grey; background-color: yellow;"
           - else
             - style += " color: white; background-color: grey;"
-          
+
           %div{style: "#{style}"}
             = ride.pickup_at.nil? ? '--' : ride.pickup_in_time_zone.strftime('%m/%d %l:%M %P')
             / = ride.pickup_at.nil? ? '--' : ride.pickup_at.in_time_zone(ride.ride_zone.time_zone).strftime('%m/%d %l:%M %P')
             / <br />
             / = Time.now.utc.strftime('%m/%d %l:%M %P %Z')
-          
+
         %td
           = ride.additional_passengers + 1
         %td{style: "font-size: 12px; color: #999"}
           = ride.special_requests
         %td{style: "width: 100px; font-size: 12px; color: #999"}
           = ride.status_str
-          
+
         %td{style: "font-size: 12px;"}
           - if admin
             = link_to 'Show', [:admin, ride]
-            &nbsp; &#183; &nbsp;
-            
-            = link_to 'Edit', edit_admin_ride_path(ride), class: 'btn btn-default btn-xs'
-          
-            &nbsp; &#183; &nbsp;
-            = link_to 'Destroy', [:admin, ride], :method => :delete, :data => { :confirm => 'Are you sure?' }
-            
-          - else
-            - if ride.conversation.present?
-              = link_to 'Edit', dispatch_edit_ride_path(ride.ride_zone.slug, ride.id), class: 'btn btn-default btn-xs'
-              &nbsp; 
-              = link_to 'Archive', close_admin_conversation_path(ride.conversation), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure? Conversations normally close themselves, only use this for orphans, bad actors, etc.' }, method: :POST
+            -# sort this later--need to verify it handles conversations and messages correctly
+              / &nbsp; &#183; &nbsp;
+              / = link_to 'Destroy', [:admin, ride], :method => :delete, :data => { :confirm => 'Are you sure?' }
+              / &nbsp; &#183; &nbsp;
+
+          - if ride.conversation.present?
+            = link_to 'Edit', dispatch_edit_ride_path(ride.ride_zone.slug, ride.id), class: 'btn btn-default btn-xs'
+            &nbsp;
+
+            = link_to 'Archive', close_admin_conversation_path(ride.conversation), class: 'btn btn-default btn-xs', data: { confirm: 'Are you sure? Conversations normally close themselves, only use this for orphans, bad actors, etc.' }, method: :POST
 
