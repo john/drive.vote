@@ -4,9 +4,9 @@
       %th{colspan: 2} Voter
       %th{colspan: 2} Driver
   %tr
-    %td.key-pin-cell= image_tag "rider-waiting-assignment.png", class: 'key-pin-img'
+    %td.key-pin-cell= image_tag "rider-needs-driver.svg", class: 'key-pin-rider-img'
     %td.key-label     Needs a driver
-    %td.key-pin-cell= image_tag "driver-waiting-assignment.png", class: 'key-pin-img'
+    %td.key-pin-cell= image_tag "driver-available.svg", class: 'key-pin-driver-img'
     %td.key-label     Available
     %td{rowspan: 3, style: 'text-align: center'}
       #dispatch-map-controls{style: 'margin-bottom: 1em; display:none'}
@@ -16,17 +16,17 @@
         %span#out-of-bounds-message{style: 'color: #666; font-size: 13px;'}
 
   %tr
-    %td.key-pin-cell= image_tag "rider-overdue-assignment.png", class: 'key-pin-img'
+    %td.key-pin-cell= image_tag "rider-assignment-overdue.svg", class: 'key-pin-rider-img'
     %td.key-label     Overdue assignment
-    %td.key-pin-cell= image_tag "driver-assigned.png", class: 'key-pin-img'
+    %td.key-pin-cell= image_tag "driver-assigned.svg", class: 'key-pin-driver-img'
     %td.key-label     Assigned
   %tr
-    %td.key-pin-cell= image_tag "rider-waiting-pickup.png", class: 'key-pin-img'
+    %td.key-pin-cell= image_tag "rider-waiting-for-pickup.svg", class: 'key-pin-rider-img'
     %td.key-label     Waiting for pickup
-    %td.key-pin-cell= image_tag "driver-driving.png", class: 'key-pin-img'
+    %td.key-pin-cell= image_tag "driver-driving.svg", class: 'key-pin-driver-img'
     %td.key-label     Driving
   %tr
-    %td.key-pin-cell= image_tag "rider-overdue-pickup.png", class: 'key-pin-img'
+    %td.key-pin-cell= image_tag "rider-pickup-overdue.svg", class: 'key-pin-rider-img'
     %td.key-label     Pickup overdue
-    %td.key-pin-cell= image_tag "driver-driving-overdue.png", class: 'key-pin-img'
+    %td.key-pin-cell= image_tag "driver-overdue.svg", class: 'key-pin-driver-img'
     %td.key-label     Completion overdue
