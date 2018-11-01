@@ -1,11 +1,12 @@
 class DispatchController < ApplicationController
   include RideZoneParams
+  include RideParams
   include AccessMethods
 
-  before_action :set_ride_zone, except: [:messages, :ride_pane]
+  before_action :set_ride_zone, except: [:messages, :ride_pane, :edit_ride]
   before_action :set_conversation, only: [:messages, :ride_pane]
   before_action :require_zone_dispatch
-  before_action :get_driver_count, except: [:messages, :ride_pane]
+  before_action :get_driver_count, except: [:messages, :ride_pane, :edit_ride]
 
   def show
     @fluid = true
@@ -56,9 +57,19 @@ class DispatchController < ApplicationController
       end
     end
   end
-  
+
   def rides
     @rides = Ride.upcoming.order(:pickup_at)
+    render "dispatch/rides/index"
+  end
+
+  def edit_ride
+    @ride = Ride.find(params[:ride_id])
+    # @validation_pattern = VALIDATION_PATTERN
+    I18n.locale = @ride.voter.locale
+    @ride_zone = @ride.ride_zone
+    # @pickup_at = @ride.pickup_in_time_zone
+    render "dispatch/rides/edit"
   end
 
   def flyer

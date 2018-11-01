@@ -34,50 +34,32 @@ class Conversation < ApplicationRecord
     requested_confirmation: 1100,
   }
 
-  def api_json(include_messages = false)
-    fields = [:id, :user_id, :pickup_at, :status, :lifecycle, :from_phone,
-              :from_latitude, :from_longitude, :to_latitude, :to_longitude, :additional_passengers, :blacklisted_phone_number]
-    j = self.as_json(only: fields, methods: [:message_count])
-    if include_messages
-      j['messages'] = self.messages.map(&:api_json)
-    end
-    %w(from_address from_city to_address to_city special_requests ).each do |field|
-      j[field] = CGI::escape_html(send(field) || '')
-    end
-    last_msg = self.messages.order('created_at ASC').last
-    if last_msg
-      j['last_message_time'] = last_msg.created_at.to_i
-      j['last_message_sent_by'] = last_msg.sent_by
-      j['last_message_body'] = CGI::escape_html(last_msg.body || '')
-    end
-    j['from_phone'] = self.from_phone.phony_formatted(normalize: :US, spaces: '-')
-    j['status_updated_at'] = self.status_updated_at.to_i
-    j['name'] = CGI::escape_html(username || '')
-    j['ride'] = ride.api_json if ride
-    j['blacklisted_phone_number'] = self.blacklisted_phone.phone if self.blacklisted_phone.present?
-    j
+  def self.active_statuses
+    Conversation.statuses.keys - ['closed']
   end
 
-  # have language and name and confirmed origin and destination and confirmed time and passengers
-  def has_fields_for_ride
-    if self.user.blank? ||
-      # self.user.name.blank? ||
-      self.from_address.blank? ||
-      self.from_city.blank? ||
-      self.from_latitude.blank? ||
-      self.from_longitude.blank? ||
-      self.pickup_at.blank?
-      false
-    else
-      true
-    end
-  end
+  def self.update_ride_conversation_from_ride(ride)
+    attrs = {
+      from_address: ride.from_address,
+      from_city: ride.from_city,
+      from_state: ride.from_state,
+      from_latitude: ride.from_latitude,
+      from_longitude: ride.from_longitude,
+      to_address: ride.to_address,
+      to_city: ride.to_city,
+      to_state: ride.to_state,
+      to_latitude: ride.to_latitude,
+      to_longitude: ride.to_longitude,
+      additional_passengers: ride.additional_passengers || 0,
+      special_requests: ride.special_requests || '',
+    }
 
-  # send a new SMS from staff on this conversation. returns the Message
-  def send_from_staff(body, timeout)
-    sms = Conversation.send_staff_sms(ride_zone, user, body, timeout)
-    return sms if sms.is_a?(String)
-    Message.create_from_staff(self, sms)
+    # can't change phone numbers if there are messages
+    if !ride.has_conversation_with_messages?
+      attrs[:from_phone] = ride.voter.phone_number
+    end
+
+    ride.conversation.update!(attrs)
   end
 
   # create a new conversation from the information in a completed ride object
@@ -85,14 +67,6 @@ class Conversation < ApplicationRecord
     attrs = Conversation.ride_conversation_attrs(ride)
     # set twilio timeout to -1 since we don't want to send a message
     create_from_staff(ride.ride_zone, ride.voter, thanks_msg, -1, attrs, :ride_created)
-  end
-
-  # sets all fields in the conversation as completed based on ride info to prepare for bot
-  # followup
-  def mark_info_completed(ride)
-    # update_attributes(Conversation.ride_conversation_attrs(ride))
-    update(Conversation.ride_conversation_attrs(ride))
-    ride_created!
   end
 
   def self.ride_conversation_attrs(ride)
@@ -163,6 +137,53 @@ class Conversation < ApplicationRecord
     errormsg.is_a?(String) && errormsg =~ /30003|30005|30006/
   end
 
+
+  def api_json(include_messages = false)
+    fields = [:id, :user_id, :pickup_at, :status, :lifecycle, :from_phone,
+              :from_latitude, :from_longitude, :to_latitude, :to_longitude, :additional_passengers, :blacklisted_phone_number]
+    j = self.as_json(only: fields, methods: [:message_count])
+    if include_messages
+      j['messages'] = self.messages.map(&:api_json)
+    end
+    %w(from_address from_city to_address to_city special_requests ).each do |field|
+      j[field] = CGI::escape_html(send(field) || '')
+    end
+    last_msg = self.messages.order('created_at ASC').last
+    if last_msg
+      j['last_message_time'] = last_msg.created_at.to_i
+      j['last_message_sent_by'] = last_msg.sent_by
+      j['last_message_body'] = CGI::escape_html(last_msg.body || '')
+    end
+    j['from_phone'] = self.from_phone.phony_formatted(normalize: :US, spaces: '-')
+    j['status_updated_at'] = self.status_updated_at.to_i
+    j['name'] = CGI::escape_html(username || '')
+    j['ride'] = ride.api_json if ride
+    j['blacklisted_phone_number'] = self.blacklisted_phone.phone if self.blacklisted_phone.present?
+    j
+  end
+
+  # have language and name and confirmed origin and destination and confirmed time and passengers
+  def has_fields_for_ride
+    if self.user.blank? ||
+      # self.user.name.blank? ||
+      self.from_address.blank? ||
+      self.from_city.blank? ||
+      self.from_latitude.blank? ||
+      self.from_longitude.blank? ||
+      self.pickup_at.blank?
+      false
+    else
+      true
+    end
+  end
+
+  # send a new SMS from staff on this conversation. returns the Message
+  def send_from_staff(body, timeout)
+    sms = Conversation.send_staff_sms(ride_zone, user, body, timeout)
+    return sms if sms.is_a?(String)
+    Message.create_from_staff(self, sms)
+  end
+
   def close(username)
     if ride
       ride.cancel(username) # also closes this convo
@@ -201,6 +222,13 @@ class Conversation < ApplicationRecord
   def set_unknown_destination
     self.to_address = UNKNOWN_ADDRESS
     self.to_confirmed = true
+  end
+
+  # sets all fields in the conversation as completed based on ride info to prepare for bot followup
+  def mark_info_completed(ride)
+    # update_attributes(Conversation.ride_conversation_attrs(ride))
+    update(Conversation.ride_conversation_attrs(ride))
+    ride_created!
   end
 
   def invert_ride_addresses(ride)
@@ -289,10 +317,6 @@ class Conversation < ApplicationRecord
     Message.create_from_bot(self, sms)
   end
 
-  def self.active_statuses
-    Conversation.statuses.keys - ['closed']
-  end
-
   def voter_phone_blacklisted?
     self.reload
     self.blacklisted_phone.nil? ? false : true
@@ -307,6 +331,7 @@ class Conversation < ApplicationRecord
   end
 
   private
+
   def notify_creation
     rz_id = self.ride_zone_id || self.ride_zone.try(:id)
     RideZone.event(rz_id, :new_conversation, self) if rz_id
