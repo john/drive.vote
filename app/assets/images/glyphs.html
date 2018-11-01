@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <title>Drive the Vote Glyphs</title>
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=" crossorigin="anonymous">
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        padding: 2rem;
+      }
+      h1 {
+        margin-top: 0;
+      }
+      .icons {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 128px);
+        grid-gap: 1rem;
+      }
+      .icon {
+        background: rgba(0, 0, 0, 0.01);
+        border-radius: 6px;
+        box-shadow: inset 0px 0px 6px rgba(0, 0, 0, 0.25);
+        text-align: center;
+        padding: 1rem;
+        margin: 0;
+        transition: background-color 0.2s;
+      }
+      .icon:hover {
+        background: rgba(0, 0, 0, 0);
+      }
+      .icon-img {
+        display: block;
+        margin: 0 auto;
+      }
+      .icon-label {
+        display: block;
+        margin: 0.5rem auto 0;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Drive the Vote Status Glyphs</h1>
+    <section class="section">
+      <h2 class="section-label">Riders</h2>
+      <div class="icons">
+        <figure class="icon">
+          <img src="rider-pin.svg" alt="Rider: Default" class="icon-img">
+          <figcaption class="icon-label">Rider</figcaption>
+        </figure>
+        <figure class="icon">
+          <img src="rider-needs-driver.svg" alt="Rider: Needs Driver" class="icon-img">
+          <figcaption class="icon-label">Needs Driver</figcaption>
+        </figure>
+        <figure class="icon">
+          <img src="rider-assignment-overdue.svg" alt="Rider: Assignment Overdue" class="icon-img">
+          <figcaption class="icon-label">Assignment Overdue</figcaption>
+        </figure>
+        <figure class="icon">
+          <img src="rider-waiting-for-pickup.svg" alt="Rider: Waiting for Pickup" class="icon-img">
+          <figcaption class="icon-label">Waiting for Pickup</figcaption>
+        </figure>
+        <figure class="icon">
+          <img src="rider-pickup-overdue.svg" alt="Rider: Pickup Overdue" class="icon-img">
+          <figcaption class="icon-label">Pickup Overdue</figcaption>
+        </figure>
+      </div>
+    </section>
+    <section class="section">
+      <h2 class="section-label">Drivers</h2>
+      <div class="icons">
+        <figure class="icon">
+          <img src="driver-pin.svg" alt="Driver: Default" class="icon-img">
+          <figcaption class="icon-label">Driver</figcaption>
+        </figure>
+        <figure class="icon">
+          <img src="driver-available.svg" alt="Driver: Available" class="icon-img">
+          <figcaption class="icon-label">Available</figcaption>
+        </figure>
+        <figure class="icon">
+          <img src="driver-assigned.svg" alt="Driver: Assigned" class="icon-img">
+          <figcaption class="icon-label">Assigned</figcaption>
+        </figure>
+        <figure class="icon">
+          <img src="driver-driving.svg" alt="Driver: Driving" class="icon-img">
+          <figcaption class="icon-label">Driving</figcaption>
+        </figure>
+        <figure class="icon">
+          <img src="driver-overdue.svg" alt="Driver: Completion Overdue" class="icon-img">
+          <figcaption class="icon-label">Completion Overdue</figcaption>
+        </figure>
+      </div>
+    </section>
+    <section class="section">
+      <h2 class="section-label">Places</h2>
+      <div class="icons">
+        <figure class="icon">
+          <img src="icon-default.svg" alt="Default Place" class="icon-img">
+          <figcaption class="icon-label">Default</figcaption>
+        </figure>
+        <figure class="icon">
+          <img src="icon-poll.svg" alt="Polling Place" class="icon-img">
+          <figcaption class="icon-label">Polling Place</figcaption>
+        </figure>
+        <figure class="icon">
+          <img src="icon-voter.svg" alt="Voter" class="icon-img">
+          <figcaption class="icon-label">Voter</figcaption>
+        </figure>
+      </div>
+    </section>
+  </body>
+</html>
