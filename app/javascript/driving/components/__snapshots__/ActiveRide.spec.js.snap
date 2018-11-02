@@ -90,12 +90,12 @@ exports[`ActiveRide handles ride states driver_assigned 1`] = `
       onClick={[Function]}
       type="button"
     >
-      Cancel Ride
+      Cancel Pickup
     </button>
     <p
       className="text-center"
     >
-      Cancelling a ride will make it available to other drivers
+      Makes available to other drivers
     </p>
     <button
       className="btn btn-outline btn-api m-t-md"
@@ -106,7 +106,7 @@ exports[`ActiveRide handles ride states driver_assigned 1`] = `
     <p
       className="text-center"
     >
-      Archive a ride when a rider has already voted.
+      Removes entirely (noshow, already voted)
     </p>
   </div>
 </div>
@@ -202,7 +202,7 @@ exports[`ActiveRide handles ride states picked_up 1`] = `
       onClick={[Function]}
       type="button"
     >
-      Cancel Ride
+      Cancel Pickup
     </button>
   </div>
 </div>
