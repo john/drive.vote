@@ -24,17 +24,17 @@
   %br
 
   = link_to "Dispatch page", dispatch_path(@ride_zone.slug)
-  
-  &nbsp;&#183;&nbsp;
+
+  &nbsp;·&nbsp;
   = link_to 'Schedule ride form', get_a_ride_url(@ride_zone.slug)
-  
-  &nbsp;&#183;&nbsp;
+
+  &nbsp;·&nbsp;
   = link_to 'Volunteer to drive form', volunteer_to_drive_for_zone_url(@ride_zone.slug)
-  
-  &nbsp &#183; &nbsp;
+
+  &nbsp · &nbsp;
   = link_to 'Ride uploads', admin_ride_zone_ride_uploads_path(@ride_zone.slug)
-  
-  &nbsp;&#183;&nbsp;
+
+  &nbsp;·&nbsp;
   = link_to 'Metrics', admin_metrics_path + "?rz_id=#{@ride_zone.id}"
 
 %h6

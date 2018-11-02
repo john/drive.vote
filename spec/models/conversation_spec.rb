@@ -20,46 +20,46 @@ RSpec.describe Conversation, type: :model do
     end
   end
 
-  describe 'has_fields_for_ride' do
+  describe 'has_fields_for_ride?' do
     context 'has what it needs to create a ride' do
       let(:convo) { create :complete_conversation }
       it 'return true' do
-        expect(convo.has_fields_for_ride).to eq(true)
+        expect(convo.has_fields_for_ride?).to eq(true)
       end
     end
 
     context 'is missing from_address' do
       let(:convo) { create :complete_conversation, from_address: nil }
       it 'return false' do
-        expect(convo.has_fields_for_ride).to eq(false)
+        expect(convo.has_fields_for_ride?).to eq(false)
       end
     end
 
     context 'is missing from_city' do
       let(:convo) { create :complete_conversation, from_city: nil }
       it 'return false' do
-        expect(convo.has_fields_for_ride).to eq(false)
+        expect(convo.has_fields_for_ride?).to eq(false)
       end
     end
 
     context 'is missing from_latitude' do
       let(:convo) { create :complete_conversation, from_latitude: nil }
       it 'return false' do
-        expect(convo.has_fields_for_ride).to eq(false)
+        expect(convo.has_fields_for_ride?).to eq(false)
       end
     end
 
     context 'is missing from_longitude' do
       let(:convo) { create :complete_conversation, from_longitude: nil }
       it 'return false' do
-        expect(convo.has_fields_for_ride).to eq(false)
+        expect(convo.has_fields_for_ride?).to eq(false)
       end
     end
 
     context 'is missing pickup_at' do
       let(:convo) { create :complete_conversation, pickup_at: nil }
       it 'return false' do
-        expect(convo.has_fields_for_ride).to eq(false)
+        expect(convo.has_fields_for_ride?).to eq(false)
       end
     end
   end

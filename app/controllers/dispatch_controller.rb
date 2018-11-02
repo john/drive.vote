@@ -59,16 +59,14 @@ class DispatchController < ApplicationController
   end
 
   def rides
-    @rides = Ride.upcoming.order(:pickup_at)
+    @rides = Ride.where(ride_zone: @ride_zone).upcoming.order(:pickup_at)
     render "dispatch/rides/index"
   end
 
   def edit_ride
     @ride = Ride.find(params[:ride_id])
-    # @validation_pattern = VALIDATION_PATTERN
     I18n.locale = @ride.voter.locale
     @ride_zone = @ride.ride_zone
-    # @pickup_at = @ride.pickup_in_time_zone
     render "dispatch/rides/edit"
   end
 

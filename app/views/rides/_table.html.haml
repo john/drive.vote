@@ -61,9 +61,9 @@
           - if admin
             = link_to 'Show', [:admin, ride]
             -# sort this later--need to verify it handles conversations and messages correctly
-              / &nbsp; &#183; &nbsp;
+              / &nbsp; · &nbsp;
               / = link_to 'Destroy', [:admin, ride], :method => :delete, :data => { :confirm => 'Are you sure?' }
-              / &nbsp; &#183; &nbsp;
+              / &nbsp; · &nbsp;
 
           - if ride.conversation.present?
             = link_to 'Edit', dispatch_edit_ride_path(ride.ride_zone.slug, ride.id), class: 'btn btn-default btn-xs'

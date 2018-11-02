@@ -13,7 +13,7 @@ class RidesController < ApplicationController
   def new
     @locale = params[:locale]
     @validation_pattern = VALIDATION_PATTERN
-    @ride = Ride.new
+    @ride = Ride.new(pickup_at: Date.new(2018,11,6,6))
   end
 
   # TODO: This is similar to the code in ride_upload, they should be refactored to common methods
@@ -120,6 +120,8 @@ class RidesController < ApplicationController
       #update the ride's conversation. SMS artifact; for consistency
       Conversation.update_ride_conversation_from_ride(@ride)
 
+      # TODO post-election, see comments from @jamesarosen here:
+      # https://github.com/john/drive.vote/pull/1085
       if params[:dispatcher] == 'true'
        redirect_to rides_dispatch_path(@ride.ride_zone.slug), notice: "Ride Updated!" and return
       else

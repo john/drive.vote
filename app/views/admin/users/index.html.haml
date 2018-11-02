@@ -43,9 +43,9 @@ Filter: &nbsp;
 
         %td{style: "font-size: 12px;"}
           = link_to 'Edit', edit_admin_user_path(user)
-          &nbsp; &#183; &nbsp;
+          &nbsp; · &nbsp;
           = link_to 'Destroy', admin_user_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }
-          &nbsp; &#183; &nbsp;
+          &nbsp; · &nbsp;
           = link_to 'QA Clear', qa_clear_admin_user_path(user), method: :post, data: { :confirm => "This will delete all conversations, rides, and messages for this user. Are you sure that's what you want to do?" }
 
 - if @users.present?

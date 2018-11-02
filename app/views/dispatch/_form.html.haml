@@ -52,7 +52,7 @@
         = @obj.send(:special_requests)
 
   - if @obj.class == Conversation
-    - @show_create_ride = @obj.has_fields_for_ride
+    - @show_create_ride = @obj.has_fields_for_ride?
 
     %tr.show_create_ride{style: "display: #{@show_create_ride ? 'table-row' : 'none'};"}
       %td.conv-label{colspan: '2'}

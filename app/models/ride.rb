@@ -172,7 +172,7 @@ class Ride < ApplicationRecord
   end
 
   def has_conversation_with_messages?
-    !! conversation.present? && conversation.messages.present?
+    conversation.present? && conversation.messages.present?
   end
 
   def break_out_city_state( direction )
@@ -193,6 +193,17 @@ class Ride < ApplicationRecord
   # number use ride.voter.phone_number directly
   # def phone_number
   #   self.voter&.phone_number
+  # end
+
+  # TODO: See comment on this PR: https://github.com/john/drive.vote/pull/1085
+  # methods below may make sense, but they break specs to we'll look into later.
+  # def phone_number
+  #   voter&.phone_number
+  # end
+  #
+  # def phone_number=(number)
+  #   raise "Cannot set phone_number on a voterless ride" unless voter
+  #   voter.phone_number = number
   # end
 
   # return true if ride can be assigned

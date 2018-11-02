@@ -40,7 +40,7 @@
 
   .col-sm-8.field
     = f.label :from_city_state, "#{h t(:city_for_pickup)} <sup>*</sup>".html_safe
-    = f.text_field :from_city_state, :value => !@ride_zone || @ride_zone.city+', '+@ride_zone.state, class: 'form-control', required: true, autocomplete: :off, maxlength: 40, pattern: "^.*#{@validation_pattern}\s*$"
+    = f.text_field :from_city_state, :value => !@ride_zone || @ride_zone.city+', '+@ride_zone.state, class: 'form-control', required: true, autocomplete: :off, maxlength: 40
 
     -# populated by location_autocomplete from city_state, which is populated by google places api
     = f.hidden_field :from_city, :value => ''
@@ -55,7 +55,7 @@
     = f.label :to_city_state, "#{h t(:drop_off_city_state)}".html_safe
 
     - to_city_state = (@ride.to_city.present? && @ride.to_state.present?) ? @ride.to_city+', '+@ride.to_state : ''
-    = f.text_field :to_city_state, :value => to_city_state, class: 'form-control', required: false, autocomplete: :off, maxlength: 40, pattern: "^.*#{@validation_pattern}\s*$"
+    = f.text_field :to_city_state, :value => to_city_state, class: 'form-control', required: false, autocomplete: :off, maxlength: 40
 
     -# populated by location_autocomplete from city_state, which is populated by google places api
     = f.hidden_field :to_city, :value => ''

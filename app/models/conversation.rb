@@ -163,21 +163,17 @@ class Conversation < ApplicationRecord
   end
 
   # have language and name and confirmed origin and destination and confirmed time and passengers
-  def has_fields_for_ride
-    if self.user.blank? ||
-      # self.user.name.blank? ||
-      self.from_address.blank? ||
-      self.from_city.blank? ||
-      self.from_latitude.blank? ||
-      self.from_longitude.blank? ||
-      self.pickup_at.blank?
-      false
-    else
-      true
-    end
+  def has_fields_for_ride?
+    user.present? &&
+    from_address.present? &&
+    from_city.present? &&
+    from_latitude.present? &&
+    from_longitude.present? &&
+    pickup_at.present?
   end
 
   # send a new SMS from staff on this conversation. returns the Message
+  # TODO: See comment on review about improving the return type: https://github.com/john/drive.vote/pull/1085
   def send_from_staff(body, timeout)
     sms = Conversation.send_staff_sms(ride_zone, user, body, timeout)
     return sms if sms.is_a?(String)
