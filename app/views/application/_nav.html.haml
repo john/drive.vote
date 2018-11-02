@@ -15,11 +15,11 @@
 
     #navbar.collapse.navbar-collapse
       .pull-right.nav-links
-      
+
         = link_to 'Privacy', privacy_path, class: 'visible-xs-inline'
-        
+
         .visible-xs-inline
-          &nbsp; &#183; &nbsp;
+          &nbsp; · &nbsp;
 
         - unless user_signed_in?
           = link_to t(:sign_in), new_user_session_path
@@ -28,7 +28,7 @@
           = link_to t(:sign_out), destroy_user_session_path, {method: :delete}
 
         - if user_signed_in?
-          &nbsp; &#183; &nbsp;
+          &nbsp; · &nbsp;
 
           - if current_user.is_super_admin? || current_user.is_zone_admin?
             = link_to 'Admin', admin_ride_zones_path, style: 'color: red;'

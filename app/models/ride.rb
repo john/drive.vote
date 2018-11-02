@@ -54,16 +54,14 @@ class Ride < ApplicationRecord
 
   # transient for returning distance to voter
   attr_accessor :distance_to_voter
-  
+
   def self.active_statuses
     [:waiting_acceptance, :waiting_assignment, :driver_assigned, :picked_up]
   end
-  
+
   def self.open_statuses
     [:waiting_acceptance, :scheduled, :waiting_assignment]
   end
-  
-  # archived statuses: incomplete_info, canceled
 
   def self.active_status_values
     self.active_statuses.map {|s| Ride.statuses[s]}
@@ -76,7 +74,7 @@ class Ride < ApplicationRecord
   def self.complete_status_values
     self.complete_statuses.map {|s| Ride.statuses[s]}
   end
-  
+
   def self.upcoming_statuses
     [:waiting_assignment, :scheduled]
   end
@@ -84,14 +82,14 @@ class Ride < ApplicationRecord
   def self.confirm_scheduled_rides
     results = Hash.new(0)
     Ride.where(status: :scheduled).where('pickup_at < ?', SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now).each do |ride|
-      
+
       # disabling the bot previously disabled confirmation, but I think we need those regardless...
       if ride.conversation && ride.ride_zone
-        
+
         if ride.voter.present? && ride.voter.email.present?
           UserMailer.notify_scheduled_ride(ride).deliver_now
         end
-        
+
         begin
           result = ride.conversation.send_confirmation
           results[result] += 1
@@ -103,9 +101,9 @@ class Ride < ApplicationRecord
     end
     logger.warn "Note: Attempted to confirm #{results.count} scheduled rides (#{results})"
   end
-  
+
   # create a new ride from the data in a conversation
-  def self.create_from_conversation conversation
+  def self.create_from_conversation(conversation)
     attrs = {
       ride_zone: conversation.ride_zone,
       voter: conversation.user,
@@ -129,7 +127,7 @@ class Ride < ApplicationRecord
       Ride.create!(attrs)
     end
   end
-  
+
   def self.create_from_potential_ride( potential_ride )
     attrs = {
       ride_zone: potential_ride.ride_zone,
@@ -156,13 +154,13 @@ class Ride < ApplicationRecord
     ActiveRecord::Base.transaction do
       ride = Ride.new(attrs)
       ride.scheduled!
-      
+
       potential_ride.ride = ride
       potential_ride.converted!
       ride
     end
   end
-  
+
   def self.to_csv
     attributes = %w{name email phone_number pickup_at from_address from_city from_state from_zip to_address to_city to_state to_zip additional_passengers special_requests}
     CSV.generate(headers: true) do |csv|
@@ -172,14 +170,43 @@ class Ride < ApplicationRecord
       end
     end
   end
-  
+
+  def has_conversation_with_messages?
+    conversation.present? && conversation.messages.present?
+  end
+
+  def break_out_city_state( direction )
+    city_state = self.send("#{direction}_city_state")
+    if city_state.present? && city_state.include?(',')
+      city_state_array = self.send("#{direction}_city_state").split(',')
+      self.send("#{direction}_city=", city_state_array[0].try(:strip))
+      self.send("#{direction}_state=", city_state_array[1].try(:strip))
+    end
+  end
+
   def email
     self.voter&.email
   end
-  
-  def phone_number
-    self.voter&.phone_number
-  end
+
+  # Commented this out because it's conflicting with the attr_accessor above
+  # the attr_accessor should only be used as a passthrough, if you need the phone
+  # number use ride.voter.phone_number directly
+  # def phone_number
+  #   self.voter&.phone_number
+  # end
+
+  # TODO: See comment on this PR: https://github.com/john/drive.vote/pull/1085
+  # methods below may make sense, but they break specs to we'll look into later.
+  # ALSO see related comment on rides/_form.html.haml, related:
+  # https://github.com/john/drive.vote/pull/1085/files#diff-94d3916678683ed9ef30c06be68f0ee8R3
+  # def phone_number
+  #   voter&.phone_number
+  # end
+  #
+  # def phone_number=(number)
+  #   raise "Cannot set phone_number on a voterless ride" unless voter
+  #   voter.phone_number = number
+  # end
 
   # return true if ride can be assigned
   def assignable?

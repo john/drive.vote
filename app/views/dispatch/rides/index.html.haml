@@ -10,4 +10,4 @@
 
 .col-md-12
 
-  = render partial: 'rides/table', locals: {rides: @rides, admin: false}
+  = render partial: 'rides/table', locals: {rides: @rides, admin: (current_user.is_zone_admin? || current_user.is_super_admin?)}

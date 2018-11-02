@@ -1,3 +1,7 @@
+- dispatcher = false if local_assigns[:dispatcher].nil?
+- rescheduling = false if local_assigns[:rescheduling].nil?
+- @ride.phone_number = @ride&.voter&.phone_number # needed here because the controller isn't populating the attr_accessor
+
 :css
   sup { color: red; }
 
@@ -6,6 +10,9 @@
   = hidden_field_tag(:ride_zone_id, @ride_zone.id)
   = hidden_field_tag(:locale, @locale || 'en')
   = hidden_field_tag(:user_id, @user.try(:id))
+
+  - if dispatcher.present?
+    = hidden_field_tag(:dispatcher, "true")
 
   - if @ride && @ride.errors.any?
     #error_explanation
@@ -23,10 +30,9 @@
         - @user.errors.full_messages.each do |msg|
           %li= msg
 
-  - if !rescheduling && (!@user || @user.new_record?)
-    .col-sm-8.field
-      = f.label :name, "#{h t(:voter_name)} <sup>*</sup>".html_safe
-      = f.text_field :name, class: 'form-control', required: true, maxlength: 100, autofocus: true
+  .col-sm-8.field
+    = f.label :name, "#{h t(:voter_name)} <sup>*</sup>".html_safe
+    = f.text_field :name, class: 'form-control', required: true, maxlength: 100, autofocus: true
 
   .col-sm-8.field
     = f.label :from_address, "#{h t(:where_to_be_picked_up)} <sup>*</sup>".html_safe
@@ -34,7 +40,7 @@
 
   .col-sm-8.field
     = f.label :from_city_state, "#{h t(:city_for_pickup)} <sup>*</sup>".html_safe
-    = f.text_field :from_city_state, :value => !@ride_zone || @ride_zone.city+', '+@ride_zone.state, class: 'form-control', required: true, autocomplete: :off, maxlength: 40, pattern: "^.*#{@validation_pattern}\s*$"
+    = f.text_field :from_city_state, :value => !@ride_zone || @ride_zone.city+', '+@ride_zone.state, class: 'form-control', required: true, autocomplete: :off, maxlength: 40
 
     -# populated by location_autocomplete from city_state, which is populated by google places api
     = f.hidden_field :from_city, :value => ''
@@ -47,7 +53,9 @@
 
   .col-sm-8.field
     = f.label :to_city_state, "#{h t(:drop_off_city_state)}".html_safe
-    = f.text_field :to_city_state, class: 'form-control', required: false, autocomplete: :off, maxlength: 40, pattern: "^.*#{@validation_pattern}\s*$"
+
+    - to_city_state = (@ride.to_city.present? && @ride.to_state.present?) ? @ride.to_city+', '+@ride.to_state : ''
+    = f.text_field :to_city_state, :value => to_city_state, class: 'form-control', required: false, autocomplete: :off, maxlength: 40
 
     -# populated by location_autocomplete from city_state, which is populated by google places api
     = f.hidden_field :to_city, :value => ''
@@ -56,12 +64,19 @@
 
   .col-sm-8.field
     = f.label :pickup_at, "#{h t(:what_time_pickup)} <sup>*</sup>".html_safe
-    = datetime_select("ride", "pickup_at", selected: Date.new(2018,11,06), start_year: 2018, end_year: 2018, ampm: true)
+    - if @ride.persisted?
+      = datetime_select("ride", "pickup_at", selected: @ride.pickup_in_time_zone, ampm: true)
+    - else
+      = datetime_select("ride", "pickup_at", selected: Date.new(2018,11,06), start_year: 2018, end_year: 2018, start_hour: 6, ampm: true)
 
   .col-sm-8.field
-    = f.label :phone_number, "#{h t(:mobile_phone_number)}".html_safe
-    -# pretty liberal client-side tel number validation
-    = f.telephone_field :phone_number, class: 'form-control', required: false, maxlength: 17, placeholder: "ex. 555-555-5555", pattern: '^(\([2-9][0-9][0-9]\)[\- ]?|[2-9][0-9][0-9][\- .]?)[0-9]{3}[\- .]?[0-9]{4}$'
+    -# You can only edit the phone number if the ride doesn't have a conversation which has messages.
+    - if @ride.persisted? && @ride.has_conversation_with_messages?
+      Mobile phone number?<br />
+      <i>You can't edit phone numbers of rides with active conversations.</i>
+    - else
+      = f.label :phone_number, "#{h t(:mobile_phone_number)}".html_safe
+      = f.telephone_field :phone_number, class: 'form-control', required: false, maxlength: 17, placeholder: "ex. 555-555-5555", pattern: '^(\([2-9][0-9][0-9]\)[\- ]?|[2-9][0-9][0-9][\- .]?)[0-9]{3}[\- .]?[0-9]{4}$'
 
   .col-sm-8.field
     = f.label :additional_passengers, t(:how_many_additional)

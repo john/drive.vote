@@ -24,7 +24,7 @@
               = user.phone_number.phony_formatted(normalize: :US, spaces: '-')
               <br />
             = mail_to user.email, user.email, target: "_blank"
-            
+
         %td
           = user.created_at.strftime("%-m/%-d, %-H:%M %P")
         %td
@@ -33,12 +33,12 @@
           - if ride = user.active_ride
             #{ride.pickup_at.strftime("%-m/%-d, %-H:%M %P")} #{ride.status_str}
             = link_to "(edit ride)", admin_ride_path(ride)
-            
+
         %td{style: "font-size: 13px;"}
           = link_to 'Edit voter', edit_admin_user_path(user)
-          &nbsp; &#183; &nbsp;
+          &nbsp; · &nbsp;
           = link_to 'Destroy', admin_user_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }
-          &nbsp; &#183; &nbsp;
+          &nbsp; · &nbsp;
           = link_to 'QA Clear', qa_clear_admin_user_path(user), method: :post, data: { :confirm => "This will delete all conversations, rides, and messages for this user. Are you sure that's what you want to do?" }
 
 - if @users.present?

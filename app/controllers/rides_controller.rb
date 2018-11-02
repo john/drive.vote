@@ -2,18 +2,18 @@ require 'securerandom'
 
 class RidesController < ApplicationController
   include RideParams, RideZoneParams
-  
+
   before_action :require_session, only: [:edit, :update]
   before_action :set_ride, only: [:edit, :update]
   before_action :require_ride_zone
   around_action :set_time_zone
-  
+
   VALIDATION_PATTERN = "( CA| ca| DC| dc| FL| fl| HI| hi| IL| il| NV| nv| OH| oh| PA| pa| | TX| tx| UT| ut| WI| wi)"
 
   def new
     @locale = params[:locale]
     @validation_pattern = VALIDATION_PATTERN
-    @ride = Ride.new
+    @ride = Ride.new(pickup_at: Date.new(2018,11,6,6))
   end
 
   # TODO: This is similar to the code in ride_upload, they should be refactored to common methods
@@ -34,7 +34,7 @@ class RidesController < ApplicationController
     if normalized.present? && normalized != User::DUMMY_PHONE_NUMBER
       @user ||= User.find_by_phone_number_normalized(normalized)
     end
-    
+
     if @user
       existing = @user.open_ride # TODO: should this also check @user.active_ride ?
       if existing
@@ -48,19 +48,9 @@ class RidesController < ApplicationController
       flash[:notice] = "Please fill in scheduled date and time."
       render :new and return
     end
-    @pickup_at = @ride.pickup_at
 
-    if @ride.from_city_state.present? && @ride.from_city.blank? && @ride.from_state.blank?
-      city_state_array = @ride.from_city_state.split(',')
-      @ride.from_city = city_state_array[0].try(:strip)
-      @ride.from_state = city_state_array[1].try(:strip)
-    end
-
-    if @ride.to_city_state.present? && @ride.to_city.blank? && @ride.to_state.blank?
-      city_state_array = @ride.to_city_state.split(',')
-      @ride.to_city = city_state_array[0].try(:strip)
-      @ride.to_state = city_state_array[1].try(:strip)
-    end
+    @ride.break_out_city_state('from')
+    @ride.break_out_city_state('to')
 
     # if ride is rolled back we want to make sure the user is too.
     ActiveRecord::Base.transaction do
@@ -80,7 +70,6 @@ class RidesController < ApplicationController
             user_type: 'voter',
         }
 
-        # TODO: better error handling
         @user = User.create(user_attrs)
         if @user.errors.any?
           flash[:notice] = "Problem creating a new user."
@@ -110,22 +99,45 @@ class RidesController < ApplicationController
     @validation_pattern = VALIDATION_PATTERN
     I18n.locale = @ride.voter.locale
     @ride_zone = @ride.ride_zone
-    @pickup_at = @ride.pickup_in_time_zone
   end
 
   def update
     I18n.locale = @ride.voter.locale
+
+    # update the ride
     if @ride.update(ride_params)
-      render :success
-      @ride.conversation.send_from_staff(thanks_msg(@ride), Rails.configuration.twilio_timeout)
-      UserMailer.welcome_email_voter_ride(@ride.voter, @ride).deliver_later
+
+      # collect the params to use to update the user. move to method at some point
+      user_attrs = { name: params[:ride][:name], email: params[:ride][:email] }
+      # we don't update phone numbers if we have messages from them
+      if !@ride.has_conversation_with_messages?
+        user_attrs[:phone_number] = params[:ride][:phone_number]
+      end
+
+      # use the params just gathered to update the user
+      @ride.voter.update(user_attrs) if user_attrs.present?
+
+      #update the ride's conversation. SMS artifact; for consistency
+      Conversation.update_ride_conversation_from_ride(@ride)
+
+      # TODO post-election, see comments from @jamesarosen here:
+      # https://github.com/john/drive.vote/pull/1085
+      if params[:dispatcher] == 'true'
+       redirect_to rides_dispatch_path(@ride.ride_zone.slug), notice: "Ride Updated!" and return
+      else
+        render :success
+
+        # cheap asyn: this continues processes even after the render, so these get sent
+        @ride.conversation.send_from_staff(thanks_msg(@ride), Rails.configuration.twilio_timeout)
+        UserMailer.welcome_email_voter_ride(@ride.voter, @ride).deliver_later
+      end
     else
-      render :edit
+      render :edit and return
     end
   end
 
   private
-  
+
   def require_session
     redirect_to '/users/sign_in' unless user_signed_in?
   end

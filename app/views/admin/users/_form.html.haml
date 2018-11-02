@@ -20,7 +20,7 @@
         Driver for:
       - @zones_driving_for.each do |rz|
         %div
-          #{rz.name} &nbsp &#183; &nbsp; [#{link_to 'edit', edit_admin_ride_zone_path(rz)}]
+          #{rz.name} &nbsp · &nbsp; [#{link_to 'edit', edit_admin_ride_zone_path(rz)}]
 
   - if @zones_dispatching_for.present?
     .col-sm-8.field
@@ -28,7 +28,7 @@
         Dispatcher for:
       - @zones_dispatching_for.each do |rz|
         %div
-          #{rz.name} &nbsp &#183; &nbsp; [#{link_to 'edit', edit_admin_ride_zone_path(rz)}]
+          #{rz.name} &nbsp · &nbsp; [#{link_to 'edit', edit_admin_ride_zone_path(rz)}]
 
   .col-sm-8.field
     = f.label :name, "#{t(:full_name)} *"

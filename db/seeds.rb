@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-roles = Role.create([
+roles = Role.create!([
   {name: 'admin'},
   {name: 'dispatcher'},
   {name: 'driver'},
@@ -105,8 +105,8 @@ drivers = User.create!([
     available: false,
     email: 'deborah@fnnny.com',
     password: '1234abcd',
-    phone_number: '2073328709',
-    phone_number_normalized: '+12073328709',
+    phone_number: '15554222225',
+    phone_number_normalized: '+15554222225',
     image_url: '',
     locale: 'en',
     zip: '94121'

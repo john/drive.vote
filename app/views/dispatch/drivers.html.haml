@@ -18,10 +18,10 @@
         created_at
 
   - if current_user.has_role?(:admin, @ride_zone) || current_user.has_role?(:admin)
-    &nbsp;&nbsp; &#183; &nbsp;&nbsp;
+    &nbsp;&nbsp; · &nbsp;&nbsp;
     = link_to 'Download .csv', drivers_dispatch_path(format: 'csv'), class: 'btn btn-info btn-xs'
 
-  &nbsp;&nbsp; &#183; &nbsp;&nbsp;
+  &nbsp;&nbsp; · &nbsp;&nbsp;
   -# &#128308; = red_circle, &#128309; = blue_circle, &#128661; = taxi
   &#128309; = on duty &nbsp;&nbsp;&nbsp;&nbsp; &#128308; = off duty &nbsp;&nbsp;&nbsp; &#128661; = mid-ride
 
@@ -77,9 +77,6 @@
                     &#9208;
                 - else
                   = link_to raw('&#9208;'), toggle_available_admin_driver_path(id: driver.id), method: :post, title: "take driver off duty"
-              - else
-                -# play-button emoji
-                = link_to raw('&#9654;'), toggle_available_admin_driver_path(id: driver.id), method: :post, title: "put driver on duty"
 
     - else
       %tr
