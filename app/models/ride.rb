@@ -197,6 +197,8 @@ class Ride < ApplicationRecord
 
   # TODO: See comment on this PR: https://github.com/john/drive.vote/pull/1085
   # methods below may make sense, but they break specs to we'll look into later.
+  # ALSO see related comment on rides/_form.html.haml, related:
+  # https://github.com/john/drive.vote/pull/1085/files#diff-94d3916678683ed9ef30c06be68f0ee8R3
   # def phone_number
   #   voter&.phone_number
   # end
