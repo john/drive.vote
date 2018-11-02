@@ -47,10 +47,16 @@
         email
       %td
         phone
-      %td
-        signed up
-      - if current_user.has_role?(:admin, @ride_zone) || current_user.is_super_admin?
+      - if current_user.is_zone_or_super_admin?
         %td
+          signed up
+      %td
+        last active
+
+      - if current_user.is_zone_or_super_admin?
+        %td
+      %td
+
     - if @drivers&.size > 0
       - @drivers.each do |driver|
         %tr
@@ -63,20 +69,24 @@
             = mail_to driver.email
           %td
             = tel_to  driver.phone_number.phony_formatted(normalize: :US, spaces: '-')
-          %td.created_at
-            = driver.created_at.in_time_zone(@ride_zone.time_zone).strftime("%-m/%-d %l:%M%P")
 
-          - if current_user.has_role?(:admin, @ride_zone) || current_user.is_super_admin?
+          - if current_user.is_zone_or_super_admin?
+            %td.created_at
+              = driver.created_at.in_time_zone(@ride_zone.time_zone).strftime("%-m/%-d %l:%M%P")
+          %td.last_active
+            = driver.updated_at.in_time_zone(@ride_zone.time_zone).strftime("%l:%M%P, %-m/%-d")
+
+          - if current_user.is_zone_or_super_admin?
             %td
               = link_to 'demote', change_role_admin_ride_zone_path(@ride_zone, to_role: 'unassigned_driver', driver: driver.id), method: :post
-            %td
-              - if driver.available?
-                -# pause-button emoji
-                - if driver.active_ride.present?
-                  %span.no-off-duty{title: "cannot take driver off duty mid-ride"}
-                    &#9208;
-                - else
-                  = link_to raw('&#9208;'), toggle_available_admin_driver_path(id: driver.id), method: :post, title: "take driver off duty"
+          %td
+            - if driver.available?
+              -# pause-button emoji
+              - if driver.active_ride.present?
+                %span.no-off-duty{title: "Cannot take driver off duty mid-ride"}
+                  = link_to raw('&#9208;'), '#', onClick="You can't take a driver off duty mid-ride. If you think they just forgot to mark their last ride complete, please call and ask them to do so."
+              - else
+                = link_to raw('&#9208;'), toggle_available_admin_driver_path(id: driver.id), method: :post, title: "Take driver off duty"
 
     - else
       %tr
