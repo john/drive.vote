@@ -65,11 +65,13 @@ describe('appReducer', () => {
     const result = appReducer(defaultState, {
       type: 'FETCH_RIDE_ZONE_STATS_FULFILLED',
       payload: {
-        total_drivers: 1,
-        available_drivers: 2,
-        completed_rides: 3,
-        active_rides: 4,
-        scheduled_rides: 5,
+        response: {
+          total_drivers: 1,
+          available_drivers: 2,
+          completed_rides: 3,
+          active_rides: 4,
+          scheduled_rides: 5,
+        },
       },
     });
     expect(result).toEqual({

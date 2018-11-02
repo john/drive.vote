@@ -51,11 +51,11 @@ export function appReducer(state = defaultState, action) {
         ...state,
         isFetching: false,
         ride_zone_stats: {
-          total_drivers: action.payload.total_drivers,
-          available_drivers: action.payload.available_drivers,
-          completed_rides: action.payload.completed_rides,
-          active_rides: action.payload.active_rides,
-          scheduled_rides: action.payload.scheduled_rides,
+          total_drivers: action.payload.response.total_drivers,
+          available_drivers: action.payload.response.available_drivers,
+          completed_rides: action.payload.response.completed_rides,
+          active_rides: action.payload.response.active_rides,
+          scheduled_rides: action.payload.response.scheduled_rides,
         },
       };
     case 'SUBMIT_UNAVAILABLE_FULFILLED':

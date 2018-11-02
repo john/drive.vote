@@ -6,9 +6,9 @@ class Admin::UsersController < Admin::AdminApplicationController
   USER_SEARCH = "(lower(users.name) LIKE ?) OR (users.phone_number LIKE ?) OR (users.email LIKE ?) OR (lower(users.city) LIKE ?)".freeze
 
   def show
-    @admin_zones = RideZone.with_user_in_role(:admin, @user)
-    @dispatch_zones = RideZone.with_user_in_role(:dispatcher, @user)
-    @driving_zones = RideZone.with_user_in_role(:driver, @user)
+    @admin_zones = RideZone.with_user_in_role(@user, :admin)
+    @dispatch_zones = RideZone.with_user_in_role(@user, :dispatcher)
+    @driving_zones = RideZone.with_user_in_role(@user, :driver)
     @conversations = Conversation.where(user_id: @user.id)
   end
 
