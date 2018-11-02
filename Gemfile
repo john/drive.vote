@@ -13,6 +13,7 @@ gem 'geokit-rails', '2.3.1'
 gem 'google-api-client', '0.10.1'
 gem 'haml-rails', '1.0.0'
 gem 'humane-rails'
+gem 'loofah', '2.2.3' # https://github.com/flavorjones/loofah/issues/154
 gem 'nokogiri'
 gem 'pg', '1.0.0'
 gem 'phony_rails', '0.14.5' # <---------------- UPGRADING THIS to 0.14.7 BROKE HALF THE FUCKING SPECS.
