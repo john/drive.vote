@@ -82,11 +82,10 @@ class Ride < ApplicationRecord
   def self.confirm_scheduled_rides
     results = Hash.new(0)
     Ride.where(status: :scheduled).where('pickup_at < ?', SWITCH_TO_WAITING_ASSIGNMENT.minutes.from_now).each do |ride|
+      if ride.conversation && ride.ride_zone && ride.voter.present?
+        ride.update_attributes(status: :waiting_assignment)
 
-      # disabling the bot previously disabled confirmation, but I think we need those regardless...
-      if ride.conversation && ride.ride_zone
-
-        if ride.voter.present? && ride.voter.email.present?
+        if ride.voter.email.present?
           UserMailer.notify_scheduled_ride(ride).deliver_now
         end
 

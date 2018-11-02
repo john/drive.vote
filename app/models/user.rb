@@ -174,6 +174,10 @@ class User < ApplicationRecord
     self.has_role?(:admin)
   end
 
+  def is_zone_or_super_admin?
+    is_super_admin? || is_zone_admin?
+  end
+
   def is_zone_admin?
     RideZone.find_roles(:admin, self).present?
   end

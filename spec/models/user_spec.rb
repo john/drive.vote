@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, :type => :model do
-  
+
   describe 'creation' do
     context 'from potential ride' do
       let(:potential_ride) { create :potential_ride }
@@ -12,7 +12,7 @@ RSpec.describe User, :type => :model do
       end
     end
   end
-  
+
   describe 'find from potential ride' do
     context 'by email' do
       let(:potential_ride) { create :potential_ride, email: 'robreider@test.com', phone_number: '' }
@@ -26,7 +26,7 @@ RSpec.describe User, :type => :model do
         expect(found_user.email).to eq( potential_ride.email )
       end
     end
-      
+
     context 'by phone' do
       let(:potential_ride) { create :potential_ride, phone_number: '555.555.6789', email: '' }
       let(:user) {create :user, city_state: "Palmdale, CA", city: "Palmdale", state: "CA", email: '', phone_number: '(555) 555-6789' }
@@ -40,7 +40,7 @@ RSpec.describe User, :type => :model do
       end
     end
   end
-  
+
   describe 'state_city parsing' do
     context 'valid city_state' do
       let(:user) {build :user, city_state: "Carnegie, PA", city: "", state: ""}
@@ -253,39 +253,42 @@ RSpec.describe User, :type => :model do
     end
   end
 
-  it 'should allow no role' do
-    expect( build(:user) ).to be_valid
-  end
+  describe 'roles' do
+    it 'should allow no role' do
+      expect( build(:user) ).to be_valid
+    end
 
-  it 'should only allow valid roles' do
-    expect( build(:user, user_type: 'bad_role') ).to_not be_valid
-  end
+    it 'should only allow valid roles' do
+      expect( build(:user, user_type: 'bad_role') ).to_not be_valid
+    end
 
-  it 'removes :unassigned_driver role when made :driver' do
-    rz = create :ride_zone
-    u = create :unassigned_driver_user, rz: rz
+    it 'removes :unassigned_driver role when made :driver' do
+      rz = create :ride_zone
+      u = create :unassigned_driver_user, rz: rz
 
-    expect( u.has_role?(:unassigned_driver, :any) ).to be_truthy
-    expect( u.has_role?(:driver, rz) ).to be_falsy
+      expect( u.has_role?(:unassigned_driver, :any) ).to be_truthy
+      expect( u.has_role?(:driver, rz) ).to be_falsy
 
-    u.add_role(:driver, rz)
+      u.add_role(:driver, rz)
 
-    expect( u.has_role?(:unassigned_driver, :any) ).to be_falsy
-    expect( u.has_role?(:driver, rz) ).to be_truthy
-  end
+      expect( u.has_role?(:unassigned_driver, :any) ).to be_falsy
+      expect( u.has_role?(:driver, rz) ).to be_truthy
+    end
 
-  it 'adds back :unassigned_driver when :driver is removed' do
-    u = create :user
-    rz = create :ride_zone
-    u.add_role(:driver, rz)
+    it 'adds back :unassigned_driver when :driver is removed' do
+      u = create :user
+      rz = create :ride_zone
+      u.add_role(:driver, rz)
 
-    expect( u.has_role?(:unassigned_driver) ).to be_falsy
-    expect( u.has_role?(:driver, rz) ).to be_truthy
+      expect( u.has_role?(:unassigned_driver) ).to be_falsy
+      expect( u.has_role?(:driver, rz) ).to be_truthy
 
-    u.remove_role(:driver, rz)
+      u.remove_role(:driver, rz)
 
-    expect( u.has_role?(:unassigned_driver, rz) ).to be_truthy
-    expect( u.has_role?(:driver, rz) ).to be_falsy
+      expect( u.has_role?(:unassigned_driver, rz) ).to be_truthy
+      expect( u.has_role?(:driver, rz) ).to be_falsy
+    end
+
   end
 
   it 'is invalid with a non-permissible zip' do
@@ -381,6 +384,38 @@ RSpec.describe User, :type => :model do
 
   describe 'role checks' do
 
+    describe 'for admins' do
+      it 'should respect is_admin?' do
+        admin = create :admin_user
+        user = create :user
+
+        expect(admin.is_super_admin?).to eq(true)
+        expect(user.is_super_admin?).to eq(false)
+      end
+
+      it 'should respect is_zone_or_super_admin?' do
+        admin = create :admin_user
+        zone_admin = create :zoned_admin_user
+        user = create :user
+
+        expect(admin.is_zone_or_super_admin?).to eq(true)
+        expect(zone_admin.is_zone_or_super_admin?).to eq(true)
+        expect(zone_admin.is_super_admin?).to eq(false)
+        expect(user.is_zone_or_super_admin?).to eq(false)
+      end
+
+      it 'should respect is_zone_admin?' do
+        admin = create :admin_user
+        zone_admin = create :zoned_admin_user
+        user = create :user
+
+        expect(admin.is_zone_admin?).to eq(false)
+        expect(zone_admin.is_zone_admin?).to eq(true)
+        expect(zone_admin.is_super_admin?).to eq(false)
+        expect(user.is_zone_admin?).to eq(false)
+      end
+    end
+
     describe 'for voters' do
       let(:voter) { create :voter_user }
       let(:non_voter) { create :user }
@@ -470,27 +505,27 @@ RSpec.describe User, :type => :model do
       r = create :assigned_ride, voter: user
       expect(user.active_ride.id).to eq(r.id)
     end
-    
+
     it 'does return nil calling active_ride on a complete_ride' do
       create :complete_ride, voter: user
       expect(user.active_ride).to be_nil
     end
-    
+
     it 'returns true for open_ride on assigned_ride' do
       r = create :assigned_ride, voter: user
       expect(user.open_ride.id).to eq(r.id)
     end
-    
+
     it 'does return nil calling open_ride on a cancelled ride' do
       create :canceled_ride, voter: user
       expect(user.open_ride).to be_nil
     end
-    
+
     it 'returns truthy for active_or_open_rides? on an assigned_ride' do
       r = create :assigned_ride, voter: user
       expect(user.active_or_open_rides?).to be_truthy
     end
-    
+
     it 'returns falsy for active_or_open_rides? on complete_ride' do
       r = create :complete_ride, voter: user
       expect(user.active_or_open_rides?).to be_falsey

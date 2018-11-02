@@ -29,6 +29,21 @@ RSpec.describe Ride, type: :model do
     end
   end
 
+  describe "confirm_scheduled_rides" do
+    let(:scheduled_ride) { create :scheduled_ride, pickup_at: 10.minutes.from_now, conversation: create(:conversation) }
+
+    it "gets confirmed" do
+      Ride::SWITCH_TO_WAITING_ASSIGNMENT = 5
+      scheduled_ride.update_attributes(status: :scheduled)
+      Ride::SWITCH_TO_WAITING_ASSIGNMENT = 10
+
+      expect(scheduled_ride.status).to eq('scheduled')
+      Ride.confirm_scheduled_rides
+      expect(scheduled_ride.reload.status).to eq('waiting_assignment')
+    end
+
+  end
+
   describe 'radius validation' do
     let!(:zone) { create :ride_zone, latitude: 40.409, longitude: -80.09, max_pickup_radius: 5 }
 
