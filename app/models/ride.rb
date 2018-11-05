@@ -30,11 +30,11 @@ class Ride < ApplicationRecord
   validates :name, length: { maximum: 50 }
   validates :from_address, length: { maximum: 100 }
   validates :from_city, length: { maximum: 50 }
-  validates :from_state, length: { maximum: 2 }
+  # validates :from_state, length: { maximum: 2 }
   validates :from_zip, length: { maximum: 15 }
   validates :to_address, length: { maximum: 100 }
   validates :to_city, length: { maximum: 50 }
-  validates :to_state, length: { maximum: 2 }
+  # validates :to_state, length: { maximum: 2 }
   validates :to_zip, length: { maximum: 15 }
   validates :phone_number, length: { maximum: 17 }
   validates :email, length: { maximum: 50 }

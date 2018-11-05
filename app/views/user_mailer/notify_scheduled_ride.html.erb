@@ -1,6 +1,6 @@
 Hi <%= @user.name %>,<br /><br />
 
-Your ride to your polling place is scheduled for today at <%= @ride.pickup_at.strftime('%I:%M%P') %>. You'll receive a separate notification when a driver has been assigned to you.<br /><br />
+Your ride to your polling place is scheduled for today at <%= @ride.pickup_in_time_zone.strftime('%I:%M%P') %>. You'll receive a separate notification when a driver has been assigned to you.<br /><br />
 
 If you still want a ride, do nothing. If you want to cancel or reschedule your ride, please send a text message to <%= @ride.ride_zone.phone_number.phony_formatted(format: :national) %>, or email <%= @ride.ride_zone.email %>.<br /><br />
 
