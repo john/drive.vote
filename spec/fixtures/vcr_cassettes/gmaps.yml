@@ -7532,4 +7532,267 @@ http_interactions:
         }
     http_version: 
   recorded_at: Thu, 01 Nov 2018 07:21:33 GMT
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?address=330+Cabrillo+St.%2C+Carnegie%2C+areallylonginvalidstring&key=REDACTED&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 05 Nov 2018 17:19:48 GMT
+      Expires:
+      - Tue, 06 Nov 2018 17:19:48 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '632'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [
+              {
+                 "address_components" : [
+                    {
+                       "long_name" : "330",
+                       "short_name" : "330",
+                       "types" : [ "street_number" ]
+                    },
+                    {
+                       "long_name" : "Cabrillo Street",
+                       "short_name" : "Cabrillo St",
+                       "types" : [ "route" ]
+                    },
+                    {
+                       "long_name" : "Inner Richmond",
+                       "short_name" : "Inner Richmond",
+                       "types" : [ "neighborhood", "political" ]
+                    },
+                    {
+                       "long_name" : "San Francisco",
+                       "short_name" : "SF",
+                       "types" : [ "locality", "political" ]
+                    },
+                    {
+                       "long_name" : "San Francisco County",
+                       "short_name" : "San Francisco County",
+                       "types" : [ "administrative_area_level_2", "political" ]
+                    },
+                    {
+                       "long_name" : "California",
+                       "short_name" : "CA",
+                       "types" : [ "administrative_area_level_1", "political" ]
+                    },
+                    {
+                       "long_name" : "United States",
+                       "short_name" : "US",
+                       "types" : [ "country", "political" ]
+                    },
+                    {
+                       "long_name" : "94118",
+                       "short_name" : "94118",
+                       "types" : [ "postal_code" ]
+                    },
+                    {
+                       "long_name" : "3920",
+                       "short_name" : "3920",
+                       "types" : [ "postal_code_suffix" ]
+                    }
+                 ],
+                 "formatted_address" : "330 Cabrillo St, San Francisco, CA 94118, USA",
+                 "geometry" : {
+                    "location" : {
+                       "lat" : 37.775687,
+                       "lng" : -122.462329
+                    },
+                    "location_type" : "ROOFTOP",
+                    "viewport" : {
+                       "northeast" : {
+                          "lat" : 37.77703598029149,
+                          "lng" : -122.4609800197085
+                       },
+                       "southwest" : {
+                          "lat" : 37.7743380197085,
+                          "lng" : -122.4636779802915
+                       }
+                    }
+                 },
+                 "partial_match" : true,
+                 "place_id" : "ChIJXbsvIEeHhYAR0fRF5M_nERI",
+                 "plus_code" : {
+                    "compound_code" : "QGGQ+73 Richmond District, San Francisco, CA, United States",
+                    "global_code" : "849VQGGQ+73"
+                 },
+                 "types" : [ "street_address" ]
+              }
+           ],
+           "status" : "OK"
+        }
+    http_version: 
+  recorded_at: Mon, 05 Nov 2018 17:19:43 GMT
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?address=%2C+%2C+%2C+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx%2C+%2C+&key=REDACTED&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 05 Nov 2018 17:20:27 GMT
+      Expires:
+      - Tue, 06 Nov 2018 17:20:27 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '65'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [],
+           "status" : "ZERO_RESULTS"
+        }
+    http_version: 
+  recorded_at: Mon, 05 Nov 2018 17:20:22 GMT
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?address=%2C+%2C+%2C+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx%2C+%2C+&key=REDACTED&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 05 Nov 2018 17:20:28 GMT
+      Expires:
+      - Tue, 06 Nov 2018 17:20:28 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '65'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [],
+           "status" : "ZERO_RESULTS"
+        }
+    http_version: 
+  recorded_at: Mon, 05 Nov 2018 17:20:23 GMT
+- request:
+    method: get
+    uri: https://maps.googleapis.com/maps/api/geocode/json?address=%2C+%2C+Carnegie%2C+areallylonginvalidstringareallylonginvalidstringareallylonginvalidstring%2C+%2C+&key=REDACTED&language=en&sensor=false
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Mon, 05 Nov 2018 17:24:09 GMT
+      Expires:
+      - Tue, 06 Nov 2018 17:24:09 GMT
+      Cache-Control:
+      - public, max-age=86400
+      Access-Control-Allow-Origin:
+      - "*"
+      Server:
+      - mafe
+      Content-Length:
+      - '65'
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alt-Svc:
+      - quic=":443"; ma=2592000; v="44,43,39,35"
+    body:
+      encoding: UTF-8
+      string: |
+        {
+           "results" : [],
+           "status" : "ZERO_RESULTS"
+        }
+    http_version: 
+  recorded_at: Mon, 05 Nov 2018 17:24:04 GMT
 recorded_with: VCR 3.0.3

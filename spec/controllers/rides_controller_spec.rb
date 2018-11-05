@@ -40,7 +40,7 @@ RSpec.describe RidesController, type: :controller do
     let(:bad_data) { {"ride_zone_id"=>rz.id, "ride"=>
         { "name"=>"Gob",
           "from_address"=>"330 Cabrillo St.",
-          "from_city_state"=>"Carnegie, areallylonginvalidstring",
+          "from_city_state"=>"Carnegie, areallylonginvalidstringareallylonginvalidstringareallylonginvalidstring",
           "from_city"=>"Carnegie", "from_state"=>"areallylonginvalidstring",
           "pickup_at(1i)"=>"2016", "pickup_at(2i)"=>"11", "pickup_at(3i)"=>"8",
           "pickup_at(4i)"=>"05", "pickup_at(5i)"=>"00", "phone_number"=>"2083328765"}} }
