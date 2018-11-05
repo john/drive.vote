@@ -126,7 +126,7 @@ RSpec.describe User, :type => :model do
     it { should validate_length_of(:email).is_at_most(50)}
     it { should validate_length_of(:password).is_at_least(8).is_at_most(128)}
     it { should validate_length_of(:city).is_at_most(50)}
-    it { should validate_length_of(:state).is_at_most(2)}
+    it { should validate_length_of(:state).is_at_most(50)}
     it { should validate_length_of(:zip).is_at_most(12)}
 
     # shoulda-matchers doesn't really handle validations on derived fields that well
@@ -143,72 +143,6 @@ RSpec.describe User, :type => :model do
 
       second_user.phone_number = '+18005555555'
       expect(second_user).to be_valid
-    end
-
-    describe '#permissible_state' do
-      let(:user) {create :user}
-      let(:admin_user) {create :admin_user}
-
-      it 'is not valid if state is not supported' do
-        user.zip = ''
-        user.state = 'XX'
-        expect(user).to_not be_valid
-        expect(user.errors[:state]).to include('isn\'t a supported state.')
-      end
-
-      it 'is valid if state is supported' do
-        user.zip = ''
-        user.state = User::VALID_STATES.keys.first
-        expect(user).to be_valid
-      end
-
-      # The two char validation on 'state' prevents this from being possible,
-      # leavint around for the time being until we verify desired behavior
-      # it 'is valid if state is supported, but has surrounding whitespace' do
-      #   user.zip = ''
-      #   user.state = "#{User::VALID_STATES.keys.first} "
-      #   expect(user).to be_valid
-      # end
-
-      it 'is valid regardless of state, if user is admin' do
-        admin_user.state = 'XX' # zip not in state on approved list
-        expect(admin_user).to be_valid
-      end
-
-      it 'is valid if state is empty' do
-        user.zip = nil
-        user.state = nil
-        expect(user).to be_valid
-      end
-    end
-
-    describe '#permissible_zip' do
-      let(:user) {create :user}
-      let(:admin_user) {create :admin_user}
-      before(:all) do
-        ZipCodes.load
-      end
-
-      it 'is not valid if zipcode not in supported state' do
-        user.zip = '04101' # zip not in state on approved list
-        expect(user).to_not be_valid
-        expect(user.errors[:zip]).to include('isn\'t in a supported state.')
-      end
-
-      it 'is valid if zip in supported state' do
-        user.zip = 15106 # Carnegie, PA
-        expect(user).to be_valid
-      end
-
-      it 'is valid regardless of zipcode, if user is admin' do
-        admin_user.zip = 90026 # zip not in state on approved list
-        expect(admin_user).to be_valid
-      end
-
-      it 'is valid if zip is empty' do
-        user.zip = nil
-        expect(user).to be_valid
-      end
     end
   end
 
@@ -289,10 +223,6 @@ RSpec.describe User, :type => :model do
       expect( u.has_role?(:driver, rz) ).to be_falsy
     end
 
-  end
-
-  it 'is invalid with a non-permissible zip' do
-   expect( build(:user, zip: '04101') ).to_not be_valid
   end
 
   it 'returns driver ride zone' do

@@ -65,16 +65,13 @@ class User < ApplicationRecord
   validates :phone_number_normalized, phony_plausible: true, allow_blank: true, uniqueness: { message: 'already in use by another account' }
 
   validate :permissible_user_type
-  validate :permissible_zip, if: -> (obj) { obj.zip_changed? || obj.new_record? }
-  validate :permissible_state, if: -> (obj) { obj.state_changed? || obj.new_record? }
-
   validates :email, length: { maximum: 50 }
   validates :name, length: { maximum: 50 }
   validates :phone_number, length: { maximum: 17 }
   validates :address1, length: { maximum: 100 }
   validates :address2, length: { maximum: 100 }
   validates :city, length: { maximum: 50 }
-  validates :state, length: { maximum: 2 }
+  validates :state, length: { maximum: 50 }
   validates :zip, length: { maximum: 12 }
   validates :country, length: { maximum: 50 }
   validates :drivers_license, length: { maximum: 20 }
@@ -354,36 +351,6 @@ class User < ApplicationRecord
       end
     else
       true
-    end
-  end
-
-  def permissible_zip
-    if self.zip.blank?
-      true #no zip is allowed
-    elsif self.has_role? :admin
-      true # admins might live anywhere
-    else
-      if zip_hash = ZipCodes.identify( self.zip )
-        unless User::VALID_STATES.keys.include?( zip_hash[:state_code].to_s.upcase )
-          errors.add(:zip, "isn't in a supported state.")
-        end
-      else
-        errors.add(:zip, "couldn't be parsed")
-      end
-    end
-  end
-
-  def permissible_state
-    if self.has_role? :admin
-      true # admins might live anywhere
-    elsif self.state.blank?
-      true # no state is allowed
-    else
-      if User::VALID_STATES.keys.include?( self.state.upcase.strip )
-        true
-      else
-        errors.add(:state, "isn't a supported state.")
-      end
     end
   end
 
