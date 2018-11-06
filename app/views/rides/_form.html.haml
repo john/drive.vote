@@ -40,7 +40,7 @@
 
   .col-sm-8.field
     = f.label :from_city_state, "#{h t(:city_for_pickup)} <sup>*</sup>".html_safe
-    = f.text_field :from_city_state, :value => !@ride_zone || @ride_zone.city+', '+@ride_zone.state, class: 'form-control', required: true, autocomplete: :off, maxlength: 40
+    = f.text_field :from_city_state, class: 'form-control', required: true, autocomplete: :off, maxlength: 40
 
     -# populated by location_autocomplete from city_state, which is populated by google places api
     = f.hidden_field :from_city, :value => ''
