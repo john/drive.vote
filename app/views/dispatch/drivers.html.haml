@@ -84,9 +84,9 @@
               -# pause-button emoji
               - if driver.active_ride.present?
                 %span.no-off-duty{title: "Cannot take driver off duty mid-ride"}
-                  = link_to raw('&#9208;'), '#', onClick="You can't take a driver off duty mid-ride. If you think they just forgot to mark their last ride complete, please call and ask them to do so."
+                  = link_to '⏸️', '#', onClick: "You can't take a driver off duty mid-ride. If you think they just forgot to mark their last ride complete, please call and ask them to do so."
               - else
-                = link_to raw('&#9208;'), toggle_available_admin_driver_path(id: driver.id), method: :post, title: "Take driver off duty"
+                = link_to '⏸️', toggle_available_admin_driver_path(id: driver.id), method: :post, title: "Take driver off duty"
 
     - else
       %tr
