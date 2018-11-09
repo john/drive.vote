@@ -1,6 +1,6 @@
 var locationAutocomplete = {
 
-  attach: function( city_state_el, to_city_state_el, city_el, state_el, zip_el ) {
+  attach: function( city_state_el, city_el, state_el, zip_el ) {
     var addressPicker = new AddressPicker({autocompleteService: {types: ['(cities)'], componentRestrictions: {country: 'US'}}});
 
     $( city_state_el ).typeahead({minLength: 0}, {
