@@ -65,6 +65,9 @@ class DispatchController < ApplicationController
 
   def edit_ride
     @ride = Ride.find(params[:ride_id])
+    @ride.from_city_state = [@ride.from_city, @ride.from_state].reject {|s| s.blank?}.compact.join(', ')
+    @ride.to_city_state = [@ride.to_city, @ride.to_state].reject {|s| s.blank?}.compact.join(', ')
+
     I18n.locale = @ride.voter.locale
     @ride_zone = @ride.ride_zone
     render "dispatch/rides/edit"
