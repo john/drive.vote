@@ -2,7 +2,7 @@ module ControllerMacros
   def login_admin
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:admin]
-      admin = FactoryGirl.create(:admin_user)
+      admin = FactoryBot.create(:admin_user)
       sign_in admin, scope: :user
     end
   end
@@ -10,7 +10,7 @@ module ControllerMacros
   def login_rz_admin
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:user]
-      rz_admin_user = FactoryGirl.create(:zoned_admin_user, rz: (defined? rz) ? rz : create(:ride_zone))
+      rz_admin_user = FactoryBot.create(:zoned_admin_user, rz: (defined? rz) ? rz : create(:ride_zone))
       sign_in rz_admin_user
     end
   end
@@ -20,7 +20,7 @@ module ControllerMacros
   def login_dispatcher
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:dispatcher_user]
-      dispatcher_user = FactoryGirl.create(:dispatcher_user, rz: (defined? rz) ? rz : create(:ride_zone))
+      dispatcher_user = FactoryBot.create(:dispatcher_user, rz: (defined? rz) ? rz : create(:ride_zone))
       sign_in dispatcher_user, scope: :user
     end
   end
@@ -28,7 +28,7 @@ module ControllerMacros
   def login_driver
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:user]
-      driver_user = FactoryGirl.create(:driver_user, rz: (defined? rz) ? rz : create(:ride_zone))
+      driver_user = FactoryBot.create(:driver_user, rz: (defined? rz) ? rz : create(:ride_zone))
       sign_in driver_user
     end
   end
@@ -36,7 +36,7 @@ module ControllerMacros
   def login_user
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:user]
-      user = FactoryGirl.create(:user)
+      user = FactoryBot.create(:user)
       sign_in user
     end
   end
@@ -44,7 +44,7 @@ module ControllerMacros
   def login_voter
     before(:each) do
       @request.env["devise.mapping"] = Devise.mappings[:user]
-      user = FactoryGirl.create(:voter_user)
+      user = FactoryBot.create(:voter_user)
       sign_in user
     end
   end

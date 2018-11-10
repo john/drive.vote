@@ -4,7 +4,7 @@ shared_examples_for 'to_from_addressable' do
 
   describe 'after_validation geocode' do
     let(:model) { described_class } # the class that includes the concern
-    let(:addressable_instance) { FactoryGirl.create(model.to_s.underscore.to_sym) }
+    let(:addressable_instance) { FactoryBot.create(model.to_s.underscore.to_sym) }
 
     context 'lat/log have changed' do
 

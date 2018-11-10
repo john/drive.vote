@@ -10,35 +10,35 @@ gem 'coffee-rails' # shouldnt be necessary, not using, but one line in /spec/req
 gem 'devise', '4.5.0'
 gem 'geocoder', '1.5.0'
 gem 'geokit-rails', '2.3.1'
-gem 'google-api-client', '0.10.1'
+gem 'google-api-client', '0.25.0'
 gem 'haml-rails', '1.0.0'
 gem 'humane-rails'
-gem 'loofah', '2.2.3' # https://github.com/flavorjones/loofah/issues/154
+gem 'loofah', '2.2.3' # https:/0/github.com/flavorjones/loofah/issues/154
 gem 'nokogiri'
-gem 'pg', '1.0.0'
+gem 'pg', '1.1.3'
 gem 'phony_rails', '0.14.5' # <---------------- UPGRADING THIS to 0.14.7 BROKE HALF THE FUCKING SPECS.
 gem 'prawn', '2.2.2'
 gem 'puma', '3.12.0'
-gem 'pundit', '1.1.0'
+gem 'pundit', '2.0.0'
 gem 'rack-timeout', '0.4.2'
 gem 'rails', '5.2.1'
 gem 'redis', '3.3.3'
 gem 'redis-namespace', '1.5.3'
 gem 'remote_syslog_logger', '1.0.3'
-gem 'rolify', '5.1.0'
-gem 'rspec', '3.5.0'
-gem 'rspec-rails', '3.5.2'
-gem 'sass-rails', '5.0.6'
+gem 'rolify', '5.2.0'
+gem 'rspec', '3.8.0'
+gem 'rspec-rails', '3.8.1'
+gem 'sass-rails', '5.0.7'
 gem 'sidekiq', '4.2.10'
 gem 'sinatra', '1.0', require: false
-gem 'timezone', '1.2.6'
-gem 'tod', '2.1.0'
+gem 'timezone', '1.3.2'
+gem 'tod', '2.2.0'
 gem 'turbolinks', '~> 5'
 gem 'twilio-ruby', '4.13.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'underscore-rails', '1.8.3'
 gem 'webpacker', '1.1'
-gem 'will_paginate', '3.1.5'
+gem 'will_paginate', '3.1.6'
 # # gem 'will_paginate-bootstrap' # I'd like to use this, but it breaks specs, weirdly :/
 gem 'zip-codes'
 
@@ -62,7 +62,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'factory_girl_rails', '4.7.0', require: false
+  gem 'factory_bot_rails', require: false
   gem 'shoulda-matchers', '3.1.1'
   gem 'rails-controller-testing', '1.0.1'
   gem 'timecop', '0.8.1'
