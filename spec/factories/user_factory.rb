@@ -1,16 +1,16 @@
-FactoryGirl.define do
+FactoryBot.define do
 
   factory :user do
-    name 'Jamie Farr'
+    name {'Jamie Farr'}
     sequence(:email) { |n| "james#{n}@example.com" }
-    password '123456789'
-    city 'Carnegie'
-    state 'PA'
-    zip '15106'
+    password {'123456789'}
+    city {'Carnegie'}
+    state {'PA'}
+    zip {'15106'}
     sequence(:phone_number) { |n| "510-555-%04d" % n}
 
     factory :admin_user do
-      user_type :admin
+      user_type { :admin }
     end
 
     factory :zoned_admin_user do
@@ -90,16 +90,16 @@ FactoryGirl.define do
         rz { create( :ride_zone ) }
       end
 
-      user_type :voter
-      locale :en
+      user_type { :voter }
+      locale { :en }
 
       after(:create) do |user, evaluator|
         user.add_role( :voter, evaluator.rz)
       end
 
       factory :sms_voter_user do
-        phone_number '+15555551234'
-        name User.sms_name('+15555551234')
+        phone_number { '+15555551234' }
+        name { User.sms_name('+15555551234') }
       end
     end
   end

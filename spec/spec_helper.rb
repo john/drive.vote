@@ -15,8 +15,8 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-require 'factory_girl_rails'
-require 'support/factory_girl'
+require 'factory_bot_rails'
+require 'support/factory_bot'
 require 'support/view_spec_helper'
 
 RSpec.configure do |config|

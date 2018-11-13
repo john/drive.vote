@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
 
   factory :conversation do
     user
@@ -10,7 +10,7 @@ FactoryGirl.define do
 
     factory :conversation_with_messages do
       transient do
-        messages_count 2
+        messages_count {2}
       end
 
       after(:create) do |conversation, evaluator|
@@ -24,7 +24,7 @@ FactoryGirl.define do
     end
 
     factory :closed_conversation do
-      status :closed
+      status {:closed}
     end
 
     factory :convo_with_blacklisted_number do
@@ -34,18 +34,18 @@ FactoryGirl.define do
     end
 
     factory :complete_conversation do
-      from_address 'fake_address'
-      from_city 'fake_city'
-      from_latitude 40.409
-      from_longitude -80.090
-      from_confirmed true
-      to_latitude 41.410
-      to_longitude -80.190
-      to_confirmed true
-      pickup_at Time.now
-      time_confirmed true
-      additional_passengers 0
-      special_requests 'None'
+      from_address {'fake_address'}
+      from_city {'fake_city'}
+      from_latitude {40.409}
+      from_longitude {-80.090}
+      from_confirmed {true}
+      to_latitude {41.410}
+      to_longitude {-80.190}
+      to_confirmed {true}
+      pickup_at {Time.now}
+      time_confirmed {true}
+      additional_passengers {0}
+      special_requests {'None'}
       after(:create) do |conversation, evaluator|
         conversation.user.update_attribute(:language, :en) if conversation.user.language == 'unknown'
       end
