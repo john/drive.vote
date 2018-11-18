@@ -18,7 +18,7 @@ RSpec.describe "Metrics", type: :request do
 
     it "succeeds if you're logged in as an admin" do
       user = create(:admin_user)
-      user.add_role(:admin)
+      # user.add_role(:admin)
       sign_in user
 
       get admin_metrics_path
