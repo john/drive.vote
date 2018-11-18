@@ -74,7 +74,7 @@ RSpec.describe RidesController, type: :controller do
     let!(:ride) { create :scheduled_ride }
     let(:new_attributes) {
       { name: "Gob",
-        from_address: "541 Carothers Ave",
+        to_address: "541 Carothers Ave",
         from_city_state: "Carnegie, PA",
         from_city: "Carnegie",
         from_state: "PA",
@@ -92,12 +92,12 @@ RSpec.describe RidesController, type: :controller do
 
       describe "with valid params" do
         it "updates the requsted ride" do
-          pending "I have no idea why this fails"
           ride_to_update = create :scheduled_ride
-          expect(ride_to_update.from_address).to eq("123 Main")
+          Conversation.create_from_ride(ride_to_update, "Thanks")
+          expect(ride_to_update.to_address).to eq("123 Main")
           put :update, params: {dispatcher: 'true', id: ride_to_update.to_param, ride: new_attributes}
           ride_to_update.reload
-          expect(ride_to_update.from_address).to eq("541 Carothers Ave")
+          expect(ride_to_update.to_address).to eq("541 Carothers Ave")
         end
       end
     end
